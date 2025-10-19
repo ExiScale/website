@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExiScale - Advertising Infrastructure for Serious Operators</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #ff6a15;
+            --black: #0a0a0a;
+            --gray: #666;
+            --light-gray: #fafafa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--black);
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1.25rem 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-cta {
+            background: var(--black);
+            color: white;
+            padding: 0.65rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-cta:hover {
+            background: var(--orange);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 70px;
+            padding: 0 4%;
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 8rem;
+            padding-bottom: 6rem;
+            background-image: url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 5.5rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            margin-bottom: 0;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title-line {
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 2rem auto 0;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Trust Section */
+        .trust-section {
+            padding: 3rem 4% 4rem;
+            text-align: center;
+        }
+
+        .trust-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+        }
+
+        .trust-logos {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0.6;
+        }
+
+        .trust-logo {
+            width: 100px;
+            height: 40px;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        /* Hero Image Section */
+        .hero-image-section {
+            padding: 4rem 4%;
+            position: relative;
+        }
+
+        .hero-image-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.12);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Results Section */
+        .results-section {
+            padding: 8rem 4%;
+            background: var(--light-gray);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 4rem;
+            max-width: 800px;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 4rem;
+            border-radius: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .testimonial-quote {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .testimonial-text {
+            font-size: 1.05rem;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--light-gray);
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 8rem 4%;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #e5e5e5 100%);
+            position: relative;
+        }
+
+        .service-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            color: white;
+        }
+
+        .service-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 8rem 4%;
+            background: var(--light-gray);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 4rem auto 0;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--orange);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-tagline {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .pricing-period {
+            color: var(--gray);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            margin: 2rem 0;
+        }
+
+        .pricing-features ul {
+            list-style: none;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: var(--gray);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .pricing-features li:before {
+            content: "✓";
+            color: var(--orange);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .tooltip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: #e5e5e5;
+            color: var(--gray);
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: help;
+            position: relative;
+            font-weight: 600;
+            margin-left: 0.25rem;
+            flex-shrink: 0;
+        }
+
+        .tooltip:hover {
+            background: var(--orange);
+            color: white;
+        }
+
+        .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: var(--black);
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 400;
+        }
+
+        .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--black) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .pricing-cta {
+            display: block;
+            text-align: center;
+            background: var(--black);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2rem;
+        }
+
+        .pricing-cta:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 8rem 4%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            opacity: 0.7;
+        }
+
+        .faq-question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 4%;
+            text-align: center;
+            background: var(--black);
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 3rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--orange);
+            color: white;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 106, 21, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 4% 3rem;
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 4rem;
+        }
+
+        .footer-principle h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-principle p {
+            color: var(--gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .footer-bottom {
+            color: #999;
+            font-size: 0.875rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .testimonial-quote {
+                font-size: 1.5rem;
+            }
+
+            .testimonial-card {
+                padding: 2.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">ExiScale</div>
+        <a href="#pricing" class="nav-cta">Book a Call</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-badge">
+            For Serious Advertisers Only
+        </div>
+        <h1 class="hero-title">
+            <span class="hero-title-line">End-to-end partner</span>
+            <span class="hero-title-line">for unstoppable</span>
+            <span class="hero-title-line">advertising</span>
+        </h1>
+        <p class="hero-subtitle">
+            Infrastructure and support, handled to the highest standard by experts who keep 8-figure operators live 24/7.
+        </p>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <div class="trust-label">Trusted by 100+ advertisers and media buyers</div>
+        <div class="trust-logos">
+            <div class="trust-logo"></div>
+            <div class="trust-logo"></div>
+            <div class="trust-logo"></div>
+            <div class="trust-logo"></div>
+            <div class="trust-logo"></div>
+        </div>
+    </section>
+
+    <!-- Hero Image -->
+    <section class="hero-image-section">
+        <div class="hero-image-container">
+            <div class="hero-image">
+                Dashboard Preview
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="section-label">WHAT TO EXPECT</div>
+        <h2 class="section-title">"We scaled from $5K to $100K per day without a single ban killing our momentum."</h2>
+        
+        <div class="testimonial-card">
+            <p class="testimonial-quote">"Our conversion rate jumped from 2.6% to over 20% each month since the launch."</p>
+            <p class="testimonial-text">
+                Working with ExiScale has completely transformed how we run ads. From instant account replacements to 24/7 support that actually responds, they've eliminated the fear of scaling. Our ad spend went from $5K to over $100K daily, and we haven't worried about bans since.
+            </p>
+            <div class="testimonial-author">
+                <div class="author-image"></div>
+                <div class="author-info">
+                    <h4>Marcus Chen</h4>
+                    <p>Founder @ ScaleMedia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="section-label">WHAT WE DO</div>
+        <h2 class="section-title">Everything you need to advertise without limits</h2>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-title">Instant Recovery</h3>
+                        <p class="service-description">Back live in hours, not days. We handle the chaos.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-title">Unlimited Replacements</h3>
+                        <p class="service-description">Every asset replaced forever. No extra cost.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-title">Account Unbans</h3>
+                        <p class="service-description">We unban accounts, not just replace them.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-title">24/7 Live Support</h3>
+                        <p class="service-description">Real humans. Under 10-minute response times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="section-label">WHAT YOU GET</div>
+        <h2 class="section-title">Agencies are too slow. Freelancers are too flaky. We built these packages so you get senior service, zero hiring drama, and results you actually feel.</h2>
+        
+        <div class="pricing-grid">
+            <!-- Launch Package -->
+            <div class="pricing-card">
+                <h3 class="pricing-name">Launch</h3>
+                <p class="pricing-tagline">Get back online, fast</p>
+                <div class="pricing-price">$1,000</div>
+                <span class="pricing-period">per month</span>
+                
+                <div class="pricing-features">
+                    <ul>
+                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">AdsPower profile with aged US backup account</span></span></li>
+                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Pre-verified BM ready for immediate use</span></span></li>
+                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20K+ daily spend within week one</span></span></li>
+                        <li>10 Trusted Pages</li>
+                        <li>Unlimited Replacements</li>
+                        <li>Use Our Payment Method (0% fees)</li>
+                        <li>Scale $1K → $20K/day</li>
+                        <li>$6,500+ in Bonuses</li>
+                    </ul>
+                </div>
+                
+                <a href="#" class="pricing-cta">Get Started</a>
+            </div>
+
+            <!-- Scale Package -->
+            <div class="pricing-card">
+                <div class="pricing-badge">Most Popular</div>
+                <h3 class="pricing-name">Scale</h3>
+                <p class="pricing-tagline">Built for consistent growth</p>
+                <div class="pricing-price">$3,500</div>
+                <span class="pricing-period">per month</span>
+                
+                <div class="pricing-features">
+                    <ul>
+                        <li>Everything in Launch, plus:</li>
+                        <li>2 US Profiles (10+ years aged) <span class="tooltip">?<span class="tooltiptext">Decade-old profiles with complete history</span></span></li>
+                        <li>4 BMs + 1 Host BM <span class="tooltip">?<span class="tooltiptext">Multiple BMs for scaling + permanent host</span></span></li>
+                        <li>12 High-Spending Ad Accounts</li>
+                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Under 5-minute response times</span></span></li>
+                        <li>3 Ad Account Unbans/month <span class="tooltip">?<span class="tooltiptext">We unban instead of just replacing</span></span></li>
+                        <li>5 Ad Approvals/month</li>
+                        <li>Monthly Competitor Spy</li>
+                        <li>$18,000+ in Bonuses</li>
+                    </ul>
+                </div>
+                
+                <a href="#" class="pricing-cta">Get Started</a>
+            </div>
+
+            <!-- Invincible Package -->
+            <div class="pricing-card">
+                <h3 class="pricing-name">Invincible</h3>
+                <p class="pricing-tagline">Become untouchable</p>
+                <div class="pricing-price">$10,000</div>
+                <span class="pricing-period">per month</span>
+                
+                <div class="pricing-features">
+                    <ul>
+                        <li>Everything in Scale, plus:</li>
+                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Never lose a profitable account again</span></span></li>
+                        <li>Unlimited Page & Profile Unbans</li>
+                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">$2K back for every $100K spent</span></span></li>
+                        <li>Personal Network Access <span class="tooltip">?<span class="tooltiptext">Banks, processors, Meta insiders</span></span></li>
+                        <li>Private Slack with 8-Figure Operators</li>
+                        <li>Yearly Bangkok Mastermind</li>
+                        <li>Full Ads Management Available</li>
+                        <li>$100,000+ in Bonuses</li>
+                    </ul>
+                </div>
+                
+                <a href="#" class="pricing-cta">Apply Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="section-label">GOT QUESTIONS?</div>
+        <h2 class="section-title">FAQ</h2>
+        
+        <div class="faq-item">
+            <h3 class="faq-question">How quickly can I get started?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">What if I need to change my package?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">Do you offer support after setup?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">Who will manage my accounts?</h3>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to stop<br>playing defense?</h2>
+        <p>Join the advertisers who've removed Meta bans as a business risk.</p>
+        <a href="#pricing" class="cta-button">Book a Call</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3 class="footer-title">WE BELIEVE IN 3 CORE PRINCIPLES</h3>
+            
+            <div class="footer-grid">
+                <div class="footer-principle">
+                    <h4>Build useful infrastructure</h4>
+                    <p>Everything we create has to earn its place. Your accounts should be stable and actually help you scale profitably.</p>
+                </div>
+                
+                <div class="footer-principle">
+                    <h4>Speak plainly</h4>
+                    <p>We keep communication plain and honest. If something's wrong we speak up, so we can move to finding a solution.</p>
+                </div>
+                
+                <div class="footer-principle">
+                    <h4>Work with serious people</h4>
+                    <p>Great results grow out of solid relationships. We treat clients like teammates and move fast together.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                &copy; 2025 ExiScale. Built for serious advertisers.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
