@@ -19,7 +19,7 @@
         @keyframes stackFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes unlockGlow { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
         @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
-        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .logo img { height: 48px; transition: transform 0.4s ease; }
         .logo img:hover { transform: scale(1.05); }
         .nav-cta { background: var(--black); color: white; padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
@@ -62,7 +62,7 @@
         .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
         .service-card:hover::before { opacity: 1; }
         .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
-        .service-visual { width: 120px; height: 120px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-visual { width: 160px; height: 160px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .service-card:hover .service-visual { transform: scale(1.08); }
         .service-content { position: relative; z-index: 1; text-align: center; }
         .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
