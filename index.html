@@ -186,6 +186,7 @@
         .trust-section {
             padding: 3rem 4% 5rem;
             text-align: center;
+            background: white;
         }
 
         .trust-label {
@@ -193,8 +194,81 @@
             color: #999;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            padding: 8rem 4%;
+            background: white;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: var(--light-gray);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .review-stars {
+            color: #00b67a;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .review-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .review-author {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .review-author strong {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .review-author span {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Booking Section */
+        .booking-section {
+            padding: 8rem 4%;
+            background: var(--light-gray);
+        }
+
+        .booking-container {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
         }
 
         .trust-logos {
@@ -807,9 +881,24 @@
 
             .results-section,
             .services-section,
+            .reviews-section,
             .pricing-section,
+            .booking-section,
             .faq-section {
                 padding: 5rem 5%;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .review-card {
+                padding: 2rem;
+            }
+
+            .booking-container {
+                border-radius: 16px;
             }
 
             .testimonial-quote {
