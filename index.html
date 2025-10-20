@@ -19,56 +19,93 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             color: var(--black);
             background: #ffffff;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
+        /* Premium Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.25rem 4%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
         }
 
         .logo img {
-            height: 45px;
+            height: 48px;
             width: auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(1);
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
         }
 
         .nav-cta {
             background: var(--black);
             color: white;
-            padding: 0.65rem 1.5rem;
+            padding: 0.85rem 2rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
         }
 
         .nav-cta:hover {
             background: var(--orange);
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 106, 21, 0.4);
         }
 
+        /* Premium Hero Section */
         .hero-section {
-            margin-top: 70px;
-            padding: 8rem 4%;
+            margin-top: 90px;
+            padding: 10rem 5% 8rem;
             min-height: calc(100vh - 30px);
             display: flex;
             flex-direction: column;
@@ -79,6 +116,7 @@
             background-size: cover;
             background-position: center;
             position: relative;
+            overflow: hidden;
         }
 
         .hero-section::before {
@@ -88,166 +126,335 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.85) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.88) 100%);
             z-index: 0;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 106, 21, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -300px;
+            right: -200px;
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(50px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-30px, 30px) rotate(240deg);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .hero-badge {
             display: inline-flex;
-            background: rgba(250, 250, 250, 0.95);
-            padding: 0.5rem 1.25rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.65rem 1.5rem;
             border-radius: 50px;
             font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
             color: var(--gray);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             position: relative;
             z-index: 1;
+            border: 1px solid rgba(255, 106, 21, 0.2);
+            box-shadow: 0 4px 20px rgba(255, 106, 21, 0.1);
+            animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
         }
 
         .hero-title {
-            font-size: 5.5rem;
-            font-weight: 700;
+            font-size: 6rem;
+            font-weight: 800;
             line-height: 1.05;
-            letter-spacing: -0.04em;
-            max-width: 950px;
+            letter-spacing: -0.05em;
+            max-width: 1000px;
             position: relative;
             z-index: 1;
             color: var(--black);
+            margin-bottom: 0;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
         }
 
         .hero-title-line {
             display: block;
+            background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--gray);
-            max-width: 650px;
-            margin: 2rem auto 0;
-            line-height: 1.7;
+            max-width: 700px;
+            margin: 2.5rem auto 0;
+            line-height: 1.8;
             position: relative;
             z-index: 1;
+            font-weight: 400;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
         }
 
+        /* Premium Trust Section */
         .trust-section {
-            padding: 3rem 4%;
+            padding: 4rem 5%;
             text-align: center;
             background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .trust-label {
             font-size: 0.75rem;
             color: #999;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .trustpilot-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2.5rem;
+            background: var(--light-gray);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .trustpilot-badge:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Premium Reviews Section */
+        .reviews-section {
+            padding: 10rem 5%;
+            background: linear-gradient(180deg, #ffffff 0%, var(--light-gray) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 106, 21, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -200px;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
         }
 
         .section-label {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #999;
-            margin-bottom: 1rem;
-            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            text-align: center;
         }
 
         .section-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 4rem;
-            max-width: 850px;
-        }
-
-        .reviews-section {
-            padding: 8rem 4%;
-            background: white;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 5rem;
+            max-width: 900px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .review-card {
-            background: var(--light-gray);
-            padding: 2.5rem;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .review-card:hover::before {
+            transform: scaleX(1);
         }
 
         .review-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            border-color: var(--orange);
         }
 
         .review-stars {
             color: #00b67a;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
         }
 
         .review-text {
-            font-size: 1rem;
-            line-height: 1.7;
+            font-size: 1.05rem;
+            line-height: 1.8;
             color: var(--black);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
         }
 
         .review-author {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
 
         .review-author strong {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--black);
         }
 
         .review-author span {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--gray);
+            font-weight: 500;
         }
 
+        /* Premium Services Section */
         .services-section {
-            padding: 8rem 4%;
-            background: var(--light-gray);
+            padding: 10rem 5%;
+            background: white;
+            position: relative;
         }
 
         .services-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            gap: 2.5rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .service-card {
             position: relative;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
             aspect-ratio: 16/10;
-            transition: transform 0.4s ease;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            cursor: pointer;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 106, 21, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
         }
 
         .service-card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
         }
 
         .service-image {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--light-gray) 0%, #e5e5e5 100%);
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover .service-image {
+            transform: scale(1.1);
         }
 
         .service-content {
@@ -255,91 +462,141 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+            padding: 3rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 100%);
             color: white;
+            z-index: 2;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover .service-content {
+            padding-bottom: 4rem;
         }
 
         .service-title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
         }
 
         .service-description {
-            font-size: 1rem;
+            font-size: 1.05rem;
+            opacity: 0.95;
+            line-height: 1.6;
         }
 
+        /* Ultra Premium Pricing Section */
         .pricing-section {
-            padding: 8rem 4%;
-            background: white;
+            padding: 10rem 5%;
+            background: linear-gradient(180deg, var(--light-gray) 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-section::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 106, 21, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -400px;
+            right: -300px;
+            animation: float 30s ease-in-out infinite;
         }
 
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
             max-width: 1400px;
-            margin: 4rem auto 0;
+            margin: 5rem auto 0;
+            position: relative;
+            z-index: 1;
         }
 
         .pricing-card {
             background: white;
-            border-radius: 24px;
-            padding: 3rem;
-            transition: all 0.4s ease;
+            border-radius: 28px;
+            padding: 3.5rem;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            border: 2px solid rgba(0,0,0,0.05);
+            border: 2px solid rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 106, 21, 0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pricing-card:hover::before {
+            opacity: 1;
         }
 
         .pricing-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
             border-color: var(--orange);
         }
 
         .pricing-badge {
             position: absolute;
-            top: -14px;
+            top: -16px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--orange);
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%);
             color: white;
-            padding: 0.45rem 1.2rem;
+            padding: 0.6rem 1.5rem;
             border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.1em;
+            box-shadow: 0 6px 20px rgba(255, 106, 21, 0.5);
         }
 
         .pricing-name {
-            font-size: 1.6rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
         }
 
         .pricing-tagline {
             color: var(--gray);
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            font-weight: 500;
         }
 
         .pricing-price {
-            font-size: 3.75rem;
-            font-weight: 700;
+            font-size: 4.5rem;
+            font-weight: 900;
             margin-bottom: 0.25rem;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
             background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
         }
 
         .pricing-period {
             color: var(--gray);
-            font-size: 1rem;
+            font-size: 1.05rem;
             display: block;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 600;
         }
 
         .pricing-features ul {
@@ -347,59 +604,73 @@
         }
 
         .pricing-features li {
-            padding: 0.85rem 0;
+            padding: 1rem 0;
             color: var(--gray);
-            font-size: 0.95rem;
+            font-size: 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
+            gap: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-features li:hover {
+            padding-left: 0.5rem;
+            color: var(--black);
         }
 
         .pricing-features li:before {
             content: "✓";
             color: var(--orange);
-            font-weight: 700;
+            font-weight: 900;
             flex-shrink: 0;
+            font-size: 1.3rem;
         }
 
         .tooltip {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 17px;
-            height: 17px;
-            background: #e5e5e5;
-            color: var(--gray);
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 106, 21, 0.1);
+            color: var(--orange);
             border-radius: 50%;
-            font-size: 10px;
+            font-size: 11px;
             cursor: help;
             position: relative;
-            font-weight: 700;
-            margin-left: 0.3rem;
+            font-weight: 800;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 106, 21, 0.2);
         }
 
         .tooltip:hover {
             background: var(--orange);
             color: white;
+            transform: scale(1.15);
         }
 
         .tooltiptext {
             visibility: hidden;
-            width: 240px;
-            background-color: var(--black);
+            width: 260px;
+            background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
             color: white;
             text-align: left;
-            border-radius: 10px;
-            padding: 0.85rem;
+            border-radius: 12px;
+            padding: 1rem;
             position: absolute;
             z-index: 100;
-            bottom: 130%;
+            bottom: 140%;
             left: 50%;
-            margin-left: -120px;
+            margin-left: -130px;
             opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.82rem;
-            line-height: 1.5;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            font-weight: 400;
         }
 
         .tooltiptext::after {
@@ -407,415 +678,239 @@
             position: absolute;
             top: 100%;
             left: 50%;
-            margin-left: -6px;
-            border-width: 6px;
+            margin-left: -8px;
+            border-width: 8px;
             border-style: solid;
-            border-color: var(--black) transparent transparent transparent;
+            border-color: #1a1a1a transparent transparent transparent;
         }
 
         .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
+            bottom: 150%;
         }
 
         .pricing-cta {
             display: block;
             text-align: center;
-            background: var(--black);
+            background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
             color: white;
-            padding: 1.1rem 2rem;
+            padding: 1.3rem 2.5rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-top: 2rem;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2.5rem;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+        }
+
+        .pricing-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .pricing-cta:hover::before {
+            left: 100%;
         }
 
         .pricing-cta:hover {
-            background: var(--orange);
-            transform: translateY(-3px);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 106, 21, 0.5);
         }
 
+        /* Premium Booking Section */
         .booking-section {
-            padding: 8rem 4%;
-            background: var(--light-gray);
+            padding: 10rem 5%;
+            background: white;
+            position: relative;
         }
 
         .booking-container {
-            max-width: 1000px;
-            margin: 3rem auto 0;
+            max-width: 1100px;
+            margin: 4rem auto 0;
             background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        .booking-container:hover {
+            box-shadow: 0 40px 100px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Premium FAQ Section */
         .faq-section {
-            padding: 8rem 4%;
-            max-width: 950px;
+            padding: 10rem 5%;
+            max-width: 1000px;
             margin: 0 auto;
+            background: var(--light-gray);
         }
 
         .faq-item {
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding: 2.25rem 0;
+            border-bottom: 2px solid rgba(0,0,0,0.08);
+            padding: 2.5rem 0;
             cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .faq-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background: var(--orange);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item:hover::before {
+            width: 100%;
         }
 
         .faq-item:hover {
-            padding-left: 1rem;
+            padding-left: 1.5rem;
         }
 
         .faq-question {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+            letter-spacing: -0.01em;
         }
 
+        .faq-item:hover .faq-question {
+            color: var(--orange);
+        }
+
+        /* Ultra Premium CTA Section */
         .cta-section {
-            padding: 8rem 4%;
+            padding: 10rem 5%;
             text-align: center;
-            background: var(--black);
+            background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,106,21,0.15) 0%, transparent 70%);
+            animation: pulse 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
         }
 
         .cta-section h2 {
-            font-size: 3.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            letter-spacing: -0.04em;
+            position: relative;
+            z-index: 1;
+            line-height: 1.1;
         }
 
         .cta-section p {
-            font-size: 1.25rem;
-            color: rgba(255,255,255,0.75);
-            margin-bottom: 3rem;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-button {
             display: inline-block;
             background: var(--orange);
             color: white;
-            padding: 1.35rem 3.5rem;
+            padding: 1.5rem 4rem;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1.15rem;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 50px rgba(255, 106, 21, 0.4);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            letter-spacing: 0.02em;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(255, 106, 21, 0.6);
         }
 
+        /* Premium Footer */
         footer {
-            padding: 4.5rem 4% 3rem;
+            padding: 6rem 5% 3rem;
             background: white;
-            border-top: 1px solid rgba(0,0,0,0.05);
+            border-top: 2px solid rgba(0,0,0,0.06);
             text-align: center;
         }
 
         .footer-title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            margin-bottom: 3.5rem;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 4rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 3.5rem;
+            gap: 4rem;
             text-align: left;
-            margin-bottom: 4rem;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .footer-principle h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .footer-principle p {
-            color: var(--gray);
-            line-height: 1.7;
-        }
-
-        .footer-bottom {
-            color: #999;
-            font-size: 0.875rem;
-            padding-top: 2.5rem;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-
-        @media (max-width: 1024px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.2rem;
-            }
-            .section-title {
-                font-size: 2rem;
-            }
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-            .cta-section h2 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <div class="logo">
-            <img src="exiscale-logo.png" alt="ExiScale">
-        </div>
-        <a href="#booking" class="nav-cta">Book a Call</a>
-    </nav>
-
-    <section class="hero-section">
-        <div class="hero-badge">For Serious Advertisers Only</div>
-        <h1 class="hero-title">
-            <span class="hero-title-line">Built for advertisers</span>
-            <span class="hero-title-line">who can't afford</span>
-            <span class="hero-title-line">downtime.</span>
-        </h1>
-        <p class="hero-subtitle">
-            We deliver enterprise-grade reliability, security, and performance—the backbone for serious advertisers scaling past limits.
-        </p>
-    </section>
-
-    <section class="trust-section">
-        <div class="trust-label">Trusted by 100+ advertisers and media buyers</div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" style="height: 24px;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: #00b67a; font-size: 1.5rem;">★★★★★</span>
-                    <span style="font-weight: 600; font-size: 1.1rem;">4.7/5</span>
-                </div>
-            </div>
-            <span style="color: #999; font-size: 0.9rem;">Based on 32+ verified reviews</span>
-        </div>
-    </section>
-
-    <section class="reviews-section">
-        <div class="section-label">REAL REVIEWS FROM REAL CLIENTS</div>
-        <h2 class="section-title">Don't just take our word for it</h2>
-        
-        <div class="reviews-grid">
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"I wasted $1,000 on other so-called 'experts' who promised results but gave me nothing. Then I found Exiscale. Not only did they get my ads running profitably, but they also optimized my entire funnel, slashed my cost per lead, and brought in conversions like clockwork. They actually know what they're doing.. no fluff, no BS, just straight-up results."</p>
-                <div class="review-author">
-                    <strong>Verified Customer</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Forget the days of reaching out and receiving no support. Kyron and his 24 hr team will go above and beyond to troubleshoot any issues you have. Signing up has been the best decision I've made, the perfect agency to work with that is genuinely there to help. 11/10"</p>
-                <div class="review-author">
-                    <strong>Dennis</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"These guys are the best I've used by far for accounts. Really responsive and helpful support. Basically changed the game for me."</p>
-                <div class="review-author">
-                    <strong>Aaron</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Great service. They always reply within a few mins and help me solve many issues. I've been using their service for 4 years now. Reliable."</p>
-                <div class="review-author">
-                    <strong>Sam</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"Amazing service. They only ask for the fixed subscription. No % fees. So it's amazing if you want to scale. Their support is very helpful and efficient. They even gave me advices on how to run my campaigns and improve my performance (and it worked). I am very grateful that I found their service 👍 Thanks a lot guys!"</p>
-                <div class="review-author">
-                    <strong>Jeff</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-stars">★★★★★</div>
-                <p class="review-text">"I have a great experience with Exiscale. Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate. Keep up the good work!"</p>
-                <div class="review-author">
-                    <strong>Chris</strong>
-                    <span>Trustpilot Review</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="services-section">
-        <div class="section-label">WHAT WE DO</div>
-        <h2 class="section-title">Everything you need to advertise without limits</h2>
-        
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-title">Instant Recovery</h3>
-                        <p class="service-description">Back live in hours, not days. We handle the chaos.</p>
-                    </div>
-                </div>
-            </div>
+            margin-bottom: 5rem;
             
-            <div class="service-card">
-                <div class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-title">Unlimited Replacements</h3>
-                        <p class="service-description">Every asset replaced forever. No extra cost.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-title">Account Unbans</h3>
-                        <p class="service-description">We unban accounts, not just replace them.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-title">24/7 Live Support</h3>
-                        <p class="service-description">Real humans. Under 10-minute response times.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing-section" id="pricing">
-        <div class="section-label">WHAT YOU GET</div>
-        <h2 class="section-title">Agencies are too slow. Freelancers are too flaky. We built these packages so you get senior service, zero hiring drama, and results you actually feel.</h2>
-        
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3 class="pricing-name">Launch</h3>
-                <p class="pricing-tagline">Get back online, fast</p>
-                <div class="pricing-price">$1,000</div>
-                <span class="pricing-period">per month</span>
-                
-                <div class="pricing-features">
-                    <ul>
-                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">AdsPower profile with aged US backup account</span></span></li>
-                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Pre-verified BM ready for immediate use</span></span></li>
-                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20K+ daily spend within week one</span></span></li>
-                        <li>10 Trusted Pages</li>
-                        <li>Unlimited Replacements</li>
-                        <li>Use Our Payment Method (0% fees)</li>
-                        <li>Scale $1K → $20K/day</li>
-                        <li>$6,500+ in Bonuses</li>
-                    </ul>
-                </div>
-                
-                <a href="#booking" class="pricing-cta">Get Started</a>
-            </div>
-
-            <div class="pricing-card">
-                <div class="pricing-badge">Most Popular</div>
-                <h3 class="pricing-name">Scale</h3>
-                <p class="pricing-tagline">Built for consistent growth</p>
-                <div class="pricing-price">$3,500</div>
-                <span class="pricing-period">per month</span>
-                
-                <div class="pricing-features">
-                    <ul>
-                        <li>Everything in Launch, plus:</li>
-                        <li>2 US Profiles (10+ years aged) <span class="tooltip">?<span class="tooltiptext">Decade-old profiles with complete history</span></span></li>
-                        <li>4 BMs + 1 Host BM <span class="tooltip">?<span class="tooltiptext">Multiple BMs for scaling + permanent host</span></span></li>
-                        <li>12 High-Spending Ad Accounts</li>
-                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Under 5-minute response times</span></span></li>
-                        <li>3 Ad Account Unbans/month <span class="tooltip">?<span class="tooltiptext">We unban instead of just replacing</span></span></li>
-                        <li>5 Ad Approvals/month</li>
-                        <li>Monthly Competitor Spy</li>
-                        <li>$18,000+ in Bonuses</li>
-                    </ul>
-                </div>
-                
-                <a href="#booking" class="pricing-cta">Get Started</a>
-            </div>
-
-            <div class="pricing-card">
-                <h3 class="pricing-name">Invincible</h3>
-                <p class="pricing-tagline">Become untouchable</p>
-                <div class="pricing-price">$10,000</div>
-                <span class="pricing-period">per month</span>
-                
-                <div class="pricing-features">
-                    <ul>
-                        <li>Everything in Scale, plus:</li>
-                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Never lose a profitable account again</span></span></li>
-                        <li>Unlimited Page & Profile Unbans</li>
-                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">$2K back for every $100K spent</span></span></li>
-                        <li>Personal Network Access <span class="tooltip">?<span class="tooltiptext">Banks, processors, Meta insiders</span></span></li>
-                        <li>Private Slack with 8-Figure Operators</li>
-                        <li>Yearly Bangkok Mastermind</li>
-                        <li>Full Ads Management Available</li>
-                        <li>$100,000+ in Bonuses</li>
-                    </ul>
-                </div>
-                
-                <a href="#booking" class="pricing-cta">Apply Now</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="booking-section" id="booking">
-        <div class="section-label">READY TO GET STARTED?</div>
-        <h2 class="section-title">Book your strategy call now</h2>
-        <p style="text-align: center; color: var(--gray); font-size: 1.1rem; max-width: 700px; margin: 0 auto 3rem;">
-            Schedule a 30-minute call with our team. We'll analyze your current setup and show you exactly how ExiScale can eliminate your ad account headaches.
-        </p>
-        
-        <div class="booking-container">
-            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale-intro/org?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
-            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        </div>
-    </section>
-
-    <section class="faq-section">
-        <div class="section-label">GOT QUESTIONS?</div>
-        <h2 class="section-title">FAQ</h2>
-        
-        <div class="faq-item">
-            <h3 class="faq-question">How quickly can I get started?</h3>
-        </div>
-        <div class="faq-item">
-            <h3 class="faq-question">What if I need to change my package?</h3>
-        </div>
-        <div class="faq-item">
-            <h3 class="faq-question">Do you offer support after setup?</h3>
-        </div>
-        <div class="faq-item">
-            <h3 class="faq-question">Who will manage my accounts?</h
