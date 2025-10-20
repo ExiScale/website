@@ -68,13 +68,13 @@
         .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .pricing-period { color: var(--gray); font-size: 1.05rem; display: block; margin-bottom: 2.5rem; font-weight: 600; }
         .pricing-features ul { list-style: none; }
-        .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 500; transition: all 0.3s ease; }
+        .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
         .pricing-features li:hover { padding-left: 0.5rem; color: var(--black); }
         .pricing-features li:before { content: "✓"; color: var(--orange); font-weight: 900; flex-shrink: 0; font-size: 1.3rem; }
-        .tooltip { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(255,106,21,0.1); color: var(--orange); border-radius: 50%; font-size: 11px; cursor: help; position: relative; font-weight: 800; margin-left: 0.5rem; transition: all 0.3s ease; border: 1px solid rgba(255,106,21,0.2); z-index: 1; flex-shrink: 0; }
-        .tooltip:hover { background: var(--orange); color: white; transform: scale(1.15); z-index: 10000; }
-        .tooltiptext { visibility: hidden; width: 260px; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; text-align: left; border-radius: 12px; padding: 1rem; position: fixed; z-index: 99999; opacity: 0; transition: all 0.3s ease; font-size: 0.85rem; line-height: 1.6; box-shadow: 0 10px 40px rgba(0,0,0,0.5); font-weight: 400; pointer-events: none; white-space: normal; }
-        .tooltiptext::after { content: ""; position: absolute; bottom: -8px; left: 50%; margin-left: -8px; border-width: 8px; border-style: solid; border-color: #1a1a1a transparent transparent transparent; }
+        .tooltip { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(255,106,21,0.1); color: var(--orange); border-radius: 50%; font-size: 11px; cursor: help; font-weight: 800; margin-left: 0.5rem; transition: all 0.3s ease; border: 1px solid rgba(255,106,21,0.2); flex-shrink: 0; position: relative; }
+        .tooltip:hover { background: var(--orange); color: white; transform: scale(1.15); }
+        .tooltip .tooltiptext { visibility: hidden; width: 240px; background: var(--black); color: white; text-align: left; border-radius: 10px; padding: 0.85rem; position: absolute; z-index: 99999; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.82rem; line-height: 1.5; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-weight: 400; pointer-events: none; white-space: normal; }
+        .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px; border-style: solid; border-color: var(--black) transparent transparent transparent; }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
         .pricing-cta { display: block; text-align: center; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.3rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.4s ease; margin-top: 2.5rem; box-shadow: 0 6px 25px rgba(0,0,0,0.15); position: relative; overflow: hidden; font-size: 1.05rem; letter-spacing: 0.02em; }
         .pricing-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
@@ -336,30 +336,5 @@
             <div class="footer-bottom">&copy; 2025 ExiScale. Built for serious advertisers.</div>
         </div>
     </footer>
-    
-    <script>
-        // Tooltip positioning
-        document.addEventListener('DOMContentLoaded', function() {
-            const tooltips = document.querySelectorAll('.tooltip');
-            
-            tooltips.forEach(tooltip => {
-                const tooltiptext = tooltip.querySelector('.tooltiptext');
-                
-                tooltip.addEventListener('mouseenter', function() {
-                    const rect = this.getBoundingClientRect();
-                    const tooltipRect = tooltiptext.getBoundingClientRect();
-                    
-                    // Position tooltip above the question mark
-                    tooltiptext.style.left = (rect.left + rect.width / 2 - 130) + 'px';
-                    tooltiptext.style.top = (rect.top - tooltipRect.height - 15) + 'px';
-                });
-                
-                tooltip.addEventListener('mouseleave', function() {
-                    tooltiptext.style.left = '';
-                    tooltiptext.style.top = '';
-                });
-            });
-        });
-    </script>
 </body>
 </html>
