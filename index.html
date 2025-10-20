@@ -57,7 +57,7 @@
         .service-description { font-size: 1.05rem; opacity: 0.95; line-height: 1.6; }
         .pricing-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 3rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-items: center; width: 100%; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: 100%; }
         .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; }
         .pricing-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.6s ease; }
         .pricing-card:hover::before { opacity: 1; }
