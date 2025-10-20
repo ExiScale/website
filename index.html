@@ -24,13 +24,13 @@
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
         .hero-badge { display: inline-flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 0.65rem 1.5rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 2.5rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; border: 1px solid rgba(255,106,21,0.2); box-shadow: 0 4px 20px rgba(255,106,21,0.1); animation: fadeInDown 0.8s ease 0.2s both; }
-        .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.05; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; }
-        .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; padding: 0.2rem 0; }
+        .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .hero-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 700px; margin: 2.5rem auto 0; line-height: 1.8; position: relative; z-index: 1; animation: fadeInUp 1s ease 0.6s both; }
         .trust-section { padding: 4rem 5%; text-align: center; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .trust-label { font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.5rem; font-weight: 700; }
         .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
-        .section-title { font-size: 4rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 2rem; }
         .reviews-section { padding: 10rem 5%; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
         .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
@@ -65,7 +65,7 @@
         .pricing-badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 6px 20px rgba(255,106,21,0.5); }
         .pricing-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; position: relative; }
         .pricing-tagline { color: var(--gray); font-size: 1.05rem; margin-bottom: 2.5rem; font-weight: 500; }
-        .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .pricing-period { color: var(--gray); font-size: 1.05rem; display: block; margin-bottom: 2.5rem; font-weight: 600; }
         .pricing-features ul { list-style: none; }
         .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: flex-start; gap: 1rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
@@ -99,7 +99,7 @@
         .cta-button:hover::before { left: 100%; }
         .cta-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 60px rgba(255,106,21,0.6); }
         footer { padding: 6rem 5% 3rem; background: white; border-top: 2px solid rgba(0,0,0,0.06); text-align: center; }
-        .footer-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; text-align: left; margin-bottom: 5rem; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .footer-principle h4 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; }
         .footer-principle p { color: var(--gray); line-height: 1.8; font-size: 1.05rem; }
