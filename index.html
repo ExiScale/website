@@ -16,8 +16,11 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
         @keyframes scrollLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes clockTick { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(30deg); } }
+        @keyframes clockPulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+        @keyframes speedLines { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
         @keyframes stackFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        @keyframes unlockGlow { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+        @keyframes unlockGlow { 0%, 100% { opacity: 0.06; } 50% { opacity: 0.12; } }
+        @keyframes lockShackle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
         @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
         nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .logo img { height: 48px; transition: transform 0.4s ease; }
@@ -225,8 +228,8 @@
                                 </feMerge>
                             </filter>
                         </defs>
-                        <circle cx="60" cy="60" r="50" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.08"/>
-                        <circle cx="60" cy="60" r="42" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.12"/>
+                        <circle cx="60" cy="60" r="50" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.08" style="animation: clockPulse 3s ease-in-out infinite;"/>
+                        <circle cx="60" cy="60" r="42" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.12" style="animation: clockPulse 3s ease-in-out infinite; animation-delay: 0.5s;"/>
                         <circle cx="60" cy="60" r="34" stroke="url(#orangeGrad)" stroke-width="2" opacity="0.15"/>
                         <circle cx="60" cy="60" r="26" fill="url(#orangeGrad)" opacity="0.05"/>
                         <g style="transform-origin: 60px 60px; animation: clockTick 2s ease-in-out infinite;">
@@ -234,8 +237,10 @@
                         </g>
                         <path d="M60 60 L77 70" stroke="url(#orangeGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
                         <circle cx="60" cy="60" r="4" fill="#ff6a15" filter="url(#glow)"/>
-                        <path d="M88 23 L96 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
-                        <path d="M96 23 L88 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                        <g style="animation: speedLines 1.5s ease-in-out infinite;">
+                            <path d="M88 23 L96 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M96 23 L88 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                        </g>
                     </svg>
                 </div>
                 <div class="service-content">
@@ -282,10 +287,12 @@
                         </defs>
                         <rect x="38" y="53" width="44" height="38" rx="6" stroke="url(#orangeGrad3)" stroke-width="2.5"/>
                         <rect x="43" y="58" width="34" height="28" rx="4" fill="url(#orangeGrad3)" opacity="0.06" style="animation: unlockGlow 2s ease-in-out infinite;"/>
-                        <path d="M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53" stroke="url(#orangeGrad3)" stroke-width="2.8" stroke-linecap="round"/>
+                        <g style="animation: lockShackle 2.5s ease-in-out infinite;">
+                            <path d="M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53" stroke="url(#orangeGrad3)" stroke-width="2.8" stroke-linecap="round"/>
+                        </g>
                         <circle cx="60" cy="72" r="5" fill="url(#orangeGrad3)" opacity="0.9"/>
                         <line x1="60" y1="77" x2="60" y2="84" stroke="url(#orangeGrad3)" stroke-width="2.5" stroke-linecap="round"/>
-                        <g opacity="0.5">
+                        <g opacity="0.5" style="animation: speedLines 2s ease-in-out infinite;">
                             <path d="M78 40 L88 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
                             <path d="M88 40 L78 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
                         </g>
