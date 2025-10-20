@@ -6,10 +6,10 @@
     <title>ExiScale - Built for advertisers who can't afford downtime</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { max-width: 100%; overflow-x: hidden; }
         :root { --orange: #ff6a15; --black: #0a0a0a; --gray: #666; --light-gray: #fafafa; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--black); background: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        body > * { width: 100%; max-width: 100vw; }
-        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--black); background: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
