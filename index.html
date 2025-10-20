@@ -59,7 +59,7 @@
         .pricing-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
-        .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: 850px; isolation: isolate; }
+        .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: hidden; width: 100%; max-width: 400px; min-height: 850px; isolation: isolate; }
         .pricing-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: -1; }
         .pricing-card:hover::before { opacity: 1; }
         .pricing-card:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(0,0,0,0.2); border-color: var(--orange); z-index: 10; }
@@ -68,13 +68,14 @@
         .pricing-tagline { color: var(--gray); font-size: 1.05rem; margin-bottom: 2.5rem; font-weight: 500; }
         .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .pricing-period { color: var(--gray); font-size: 1.05rem; display: block; margin-bottom: 2.5rem; font-weight: 600; }
-        .pricing-features ul { list-style: none; }
+        .pricing-features { margin: 2.5rem 0; position: relative; z-index: 2; }
+        .pricing-features ul { list-style: none; position: relative; }
         .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; transition: all 0.3s ease; position: relative; min-height: 50px; }
         .pricing-features li:hover { padding-left: 0.5rem; color: var(--black); }
         .pricing-features li:before { content: "✓"; color: var(--orange); font-weight: 900; flex-shrink: 0; font-size: 1.3rem; }
         .tooltip { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; width: 18px; height: 18px; background: rgba(255,106,21,0.1); color: var(--orange); border-radius: 50%; font-size: 11px; cursor: help; font-weight: 800; margin-left: 0.3rem; transition: all 0.3s ease; border: 1px solid rgba(255,106,21,0.2); flex-shrink: 0; position: relative; }
         .tooltip:hover { background: var(--orange); color: white; transform: scale(1.15); z-index: 99999; }
-        .tooltip .tooltiptext { visibility: hidden; width: 240px; background: var(--black); color: white; text-align: left; border-radius: 10px; padding: 0.85rem; position: absolute; z-index: 999999; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.82rem; line-height: 1.5; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-weight: 400; pointer-events: none; white-space: normal; }
+        .tooltip .tooltiptext { visibility: hidden; width: 240px; background: var(--black); color: white; text-align: left; border-radius: 10px; padding: 0.85rem; position: fixed; z-index: 999999; opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.82rem; line-height: 1.5; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-weight: 400; pointer-events: none; white-space: normal; }
         .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px; border-style: solid; border-color: var(--black) transparent transparent transparent; }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
         .pricing-cta { display: block; text-align: center; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.3rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.4s ease; margin-top: 2.5rem; box-shadow: 0 6px 25px rgba(0,0,0,0.15); position: relative; overflow: hidden; font-size: 1.05rem; letter-spacing: 0.02em; }
@@ -337,5 +338,18 @@
             <div class="footer-bottom">&copy; 2025 ExiScale. Built for serious advertisers.</div>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltips = document.querySelectorAll('.tooltip');
+            tooltips.forEach(tooltip => {
+                const tooltiptext = tooltip.querySelector('.tooltiptext');
+                tooltip.addEventListener('mouseenter', function() {
+                    const rect = this.getBoundingClientRect();
+                    tooltiptext.style.left = (rect.left + rect.width / 2 - 120) + 'px';
+                    tooltiptext.style.top = (rect.top - 80) + 'px';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
