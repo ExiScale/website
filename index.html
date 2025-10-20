@@ -57,6 +57,8 @@
         .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
         .service-card:hover::before { opacity: 1; }
         .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .service-visual { width: 120px; height: 120px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover .service-visual { transform: scale(1.08); }
         .service-content { position: relative; z-index: 1; text-align: center; }
         .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
         .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
@@ -203,24 +205,67 @@
         <h2 class="section-title">Everything you need to advertise without limits</h2>
         <div class="services-grid">
             <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="60" cy="60" r="50" stroke="#ff6a15" stroke-width="2" opacity="0.1"/>
+                        <circle cx="60" cy="60" r="40" stroke="#ff6a15" stroke-width="2" opacity="0.2"/>
+                        <circle cx="60" cy="60" r="30" fill="#ff6a15" opacity="0.05"/>
+                        <path d="M60 30 L60 60" stroke="#ff6a15" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M60 60 L75 75" stroke="#ff6a15" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="60" cy="60" r="5" fill="#ff6a15"/>
+                        <path d="M85 25 L95 15 M95 25 L85 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    </svg>
+                </div>
                 <div class="service-content">
                     <h3 class="service-title">Instant Recovery</h3>
                     <p class="service-description">Back live in hours, not days. We handle the chaos.</p>
                 </div>
             </div>
             <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="25" y="35" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2" opacity="0.3"/>
+                        <rect x="35" y="45" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2" opacity="0.5"/>
+                        <rect x="45" y="55" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2.5"/>
+                        <rect x="50" y="60" width="25" height="25" rx="4" fill="#ff6a15" opacity="0.1"/>
+                        <path d="M90 50 L85 55 L90 60" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M90 55 L100 55" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 <div class="service-content">
                     <h3 class="service-title">Unlimited Replacements</h3>
                     <p class="service-description">Every asset replaced forever. No extra cost.</p>
                 </div>
             </div>
             <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="40" y="55" width="40" height="35" rx="4" stroke="#ff6a15" stroke-width="2.5"/>
+                        <rect x="45" y="60" width="30" height="25" rx="2" fill="#ff6a15" opacity="0.08"/>
+                        <path d="M50 55 L50 45 C50 38 55 33 60 33 C65 33 70 38 70 45 L70 55" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle cx="60" cy="72" r="4" fill="#ff6a15"/>
+                        <line x1="60" y1="76" x2="60" y2="82" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M75 45 L85 35 M85 45 L75 35" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                    </svg>
+                </div>
                 <div class="service-content">
                     <h3 class="service-title">Account Unbans</h3>
                     <p class="service-description">We unban accounts, not just replace them.</p>
                 </div>
             </div>
             <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M35 75 C35 55 45 50 60 50 C75 50 85 55 85 75 L85 85 C85 90 82 93 77 93 L43 93 C38 93 35 90 35 85 Z" stroke="#ff6a15" stroke-width="2.5"/>
+                        <path d="M35 75 C35 55 45 50 60 50 C75 50 85 55 85 75" fill="#ff6a15" opacity="0.05"/>
+                        <circle cx="47" cy="65" r="2.5" fill="#ff6a15"/>
+                        <circle cx="60" cy="65" r="2.5" fill="#ff6a15"/>
+                        <circle cx="73" cy="65" r="2.5" fill="#ff6a15"/>
+                        <circle cx="95" cy="35" r="8" fill="#ff6a15"/>
+                        <circle cx="95" cy="35" r="12" stroke="#ff6a15" stroke-width="2" opacity="0.3"/>
+                        <path d="M92 35 L94 37 L98 33" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
                 <div class="service-content">
                     <h3 class="service-title">24/7 Live Support</h3>
                     <p class="service-description">Real humans. Under 10-minute response times.</p>
