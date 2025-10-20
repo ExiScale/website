@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExiScale - Advertising Infrastructure for Serious Operators</title>
+    <title>ExiScale - Built for advertisers who can't afford downtime</title>
     <style>
         * {
             margin: 0;
@@ -36,7 +36,6 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             padding: 1.25rem 4%;
             display: flex;
             justify-content: space-between;
@@ -49,11 +48,6 @@
         .logo img {
             height: 45px;
             width: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .logo img:hover {
-            transform: scale(1.05);
         }
 
         .nav-cta {
@@ -64,33 +58,27 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
 
         .nav-cta:hover {
             background: var(--orange);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 106, 21, 0.3);
         }
 
         .hero-section {
             margin-top: 70px;
-            padding: 0 4%;
+            padding: 8rem 4%;
             min-height: calc(100vh - 30px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding-top: 8rem;
-            padding-bottom: 8rem;
             background-image: url('hero-bg.png');
             background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
+            background-position: center;
             position: relative;
-            overflow: hidden;
         }
 
         .hero-section::before {
@@ -104,21 +92,9 @@
             z-index: 0;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            50% {
-                transform: translate(30px, -30px) scale(1.1);
-            }
-        }
-
         .hero-badge {
             display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
             background: rgba(250, 250, 250, 0.95);
-            backdrop-filter: blur(10px);
             padding: 0.5rem 1.25rem;
             border-radius: 50px;
             font-size: 0.8rem;
@@ -129,30 +105,6 @@
             letter-spacing: 0.05em;
             position: relative;
             z-index: 1;
-            border: 1px solid rgba(0,0,0,0.05);
-            animation: fadeInDown 0.6s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .hero-title {
@@ -160,11 +112,9 @@
             font-weight: 700;
             line-height: 1.05;
             letter-spacing: -0.04em;
-            margin-bottom: 0;
             max-width: 950px;
             position: relative;
             z-index: 1;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
             color: var(--black);
         }
 
@@ -180,11 +130,10 @@
             line-height: 1.7;
             position: relative;
             z-index: 1;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .trust-section {
-            padding: 3rem 4% 5rem;
+            padding: 3rem 4%;
             text-align: center;
             background: white;
         }
@@ -196,137 +145,6 @@
             letter-spacing: 0.12em;
             margin-bottom: 1rem;
             font-weight: 600;
-        }
-
-        /* Reviews Section */
-        .reviews-section {
-            padding: 8rem 4%;
-            background: white;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .review-card {
-            background: var(--light-gray);
-            padding: 2.5rem;
-            border-radius: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .review-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .review-stars {
-            color: #00b67a;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-
-        .review-text {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: var(--black);
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }
-
-        .review-author {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .review-author strong {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--black);
-        }
-
-        .review-author span {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        /* Booking Section */
-        .booking-section {
-            padding: 8rem 4%;
-            background: var(--light-gray);
-        }
-
-        .booking-container {
-            max-width: 1000px;
-            margin: 3rem auto 0;
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-        }
-
-        .trust-logos {
-            display: flex;
-            gap: 3.5rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            opacity: 0.5;
-        }
-
-        .trust-logo {
-            width: 110px;
-            height: 45px;
-            background: var(--light-gray);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .trust-logo:hover {
-            opacity: 1;
-            transform: translateY(-4px);
-        }
-
-        .hero-image-section {
-            padding: 5rem 4%;
-            position: relative;
-        }
-
-        .hero-image-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
-            transition: transform 0.5s ease;
-        }
-
-        .hero-image-container:hover {
-            transform: translateY(-10px);
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 600px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        .results-section {
-            padding: 8rem 4%;
-            background: var(--light-gray);
         }
 
         .section-label {
@@ -347,62 +165,63 @@
             max-width: 850px;
         }
 
-        .testimonial-card {
+        .reviews-section {
+            padding: 8rem 4%;
             background: white;
-            padding: 4rem;
-            border-radius: 24px;
-            max-width: 950px;
-            margin: 0 auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-            transition: transform 0.4s ease;
         }
 
-        .testimonial-card:hover {
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: var(--light-gray);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .review-card:hover {
             transform: translateY(-5px);
         }
 
-        .testimonial-quote {
-            font-size: 2rem;
-            font-weight: 600;
-            line-height: 1.35;
-            margin-bottom: 2rem;
-            letter-spacing: -0.02em;
-            color: var(--black);
+        .review-stars {
+            color: #00b67a;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
         }
 
-        .testimonial-text {
-            font-size: 1.05rem;
-            color: var(--gray);
-            line-height: 1.8;
-            margin-bottom: 2.5rem;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .author-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--light-gray) 0%, #e5e5e5 100%);
-        }
-
-        .author-info h4 {
+        .review-text {
             font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
+            line-height: 1.7;
+            color: var(--black);
+            margin-bottom: 1.5rem;
         }
 
-        .author-info p {
-            font-size: 0.9rem;
+        .review-author {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .review-author strong {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .review-author span {
+            font-size: 0.85rem;
             color: var(--gray);
         }
 
         .services-section {
             padding: 8rem 4%;
+            background: var(--light-gray);
         }
 
         .services-grid {
@@ -418,9 +237,7 @@
             border-radius: 24px;
             overflow: hidden;
             aspect-ratio: 16/10;
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: transform 0.4s ease;
         }
 
         .service-card:hover {
@@ -431,12 +248,6 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--light-gray) 0%, #e5e5e5 100%);
-            position: relative;
-            transition: all 0.4s ease;
-        }
-
-        .service-card:hover .service-image {
-            filter: brightness(0.9);
         }
 
         .service-content {
@@ -457,12 +268,11 @@
 
         .service-description {
             font-size: 1rem;
-            opacity: 0.95;
         }
 
         .pricing-section {
             padding: 8rem 4%;
-            background: var(--light-gray);
+            background: white;
         }
 
         .pricing-grid {
@@ -477,7 +287,7 @@
             background: white;
             border-radius: 24px;
             padding: 3rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s ease;
             position: relative;
             border: 2px solid rgba(0,0,0,0.05);
         }
@@ -501,7 +311,6 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            box-shadow: 0 4px 12px rgba(255, 106, 21, 0.4);
         }
 
         .pricing-name {
@@ -524,7 +333,6 @@
             background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .pricing-period {
@@ -532,10 +340,6 @@
             font-size: 1rem;
             display: block;
             margin-bottom: 2rem;
-        }
-
-        .pricing-features {
-            margin: 2.5rem 0;
         }
 
         .pricing-features ul {
@@ -556,7 +360,6 @@
             color: var(--orange);
             font-weight: 700;
             flex-shrink: 0;
-            font-size: 1.1rem;
         }
 
         .tooltip {
@@ -573,14 +376,11 @@
             position: relative;
             font-weight: 700;
             margin-left: 0.3rem;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
         }
 
         .tooltip:hover {
             background: var(--orange);
             color: white;
-            transform: scale(1.1);
         }
 
         .tooltiptext {
@@ -600,8 +400,6 @@
             transition: opacity 0.3s;
             font-size: 0.82rem;
             line-height: 1.5;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            font-weight: 400;
         }
 
         .tooltiptext::after {
@@ -629,15 +427,27 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             margin-top: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .pricing-cta:hover {
             background: var(--orange);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 106, 21, 0.4);
+        }
+
+        .booking-section {
+            padding: 8rem 4%;
+            background: var(--light-gray);
+        }
+
+        .booking-container {
+            max-width: 1000px;
+            margin: 3rem auto 0;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
         }
 
         .faq-section {
@@ -650,23 +460,15 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
             padding: 2.25rem 0;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .faq-item:hover {
             padding-left: 1rem;
-            border-bottom-color: var(--orange);
         }
 
         .faq-question {
             font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 0;
-            transition: color 0.3s ease;
-        }
-
-        .faq-item:hover .faq-question {
-            color: var(--orange);
         }
 
         .cta-section {
@@ -674,30 +476,6 @@
             text-align: center;
             background: var(--black);
             color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,106,21,0.1) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
         }
 
         .cta-section h2 {
@@ -705,16 +483,12 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
             letter-spacing: -0.03em;
-            position: relative;
-            z-index: 1;
         }
 
         .cta-section p {
             font-size: 1.25rem;
             color: rgba(255,255,255,0.75);
             margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
         }
 
         .cta-button {
@@ -726,15 +500,11 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 1.15rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(255, 106, 21, 0.3);
-            position: relative;
-            z-index: 1;
+            transition: all 0.3s ease;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255, 106, 21, 0.5);
         }
 
         footer {
@@ -744,16 +514,10 @@
             text-align: center;
         }
 
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
         .footer-title {
             font-size: 1.85rem;
             font-weight: 700;
             margin-bottom: 3.5rem;
-            letter-spacing: -0.01em;
         }
 
         .footer-grid {
@@ -762,6 +526,9 @@
             gap: 3.5rem;
             text-align: left;
             margin-bottom: 4rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .footer-principle h4 {
@@ -773,7 +540,6 @@
         .footer-principle p {
             color: var(--gray);
             line-height: 1.7;
-            font-size: 0.98rem;
         }
 
         .footer-bottom {
@@ -784,235 +550,29 @@
         }
 
         @media (max-width: 1024px) {
-            .hero-title {
-                font-size: 4.5rem;
-            }
-
-            .section-title {
-                font-size: 3rem;
-            }
-
             .services-grid {
                 grid-template-columns: 1fr;
             }
-
             .pricing-grid {
                 grid-template-columns: 1fr;
             }
-
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 2.5rem;
             }
         }
 
         @media (max-width: 768px) {
-            nav {
-                padding: 1rem 5%;
-            }
-
-            .logo img {
-                height: 38px;
-            }
-
-            .nav-cta {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.85rem;
-            }
-
-            .hero-section {
-                padding-top: 5rem;
-                padding-bottom: 4rem;
-                min-height: calc(100vh - 30px);
-                margin-top: 70px;
-            }
-
-            .hero-badge {
-                font-size: 0.7rem;
-                padding: 0.45rem 1rem;
-                margin-bottom: 1.5rem;
-            }
-
             .hero-title {
                 font-size: 2.2rem;
-                line-height: 1.2;
-                max-width: 100%;
-                padding: 0 1rem;
             }
-
-            .hero-title-line {
-                display: block;
-            }
-
-            .hero-subtitle {
-                font-size: 0.95rem;
-                margin-top: 1.5rem;
-                padding: 0 1.5rem;
-                max-width: 100%;
-                line-height: 1.6;
-            }
-
-            .trust-section {
-                padding: 2.5rem 5% 3rem;
-            }
-
-            .trust-label {
-                font-size: 0.7rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .trust-logos {
-                gap: 2rem;
-            }
-
-            .trust-logo {
-                width: 90px;
-                height: 38px;
-            }
-
             .section-title {
                 font-size: 2rem;
-                padding: 0 1rem;
             }
-
-            .section-label {
-                font-size: 0.7rem;
-            }
-
-            .results-section,
-            .services-section,
-            .reviews-section,
-            .pricing-section,
-            .booking-section,
-            .faq-section {
-                padding: 5rem 5%;
-            }
-
             .reviews-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
             }
-
-            .review-card {
-                padding: 2rem;
-            }
-
-            .booking-container {
-                border-radius: 16px;
-            }
-
-            .testimonial-quote {
-                font-size: 1.4rem;
-            }
-
-            .testimonial-card {
-                padding: 2rem;
-            }
-
-            .testimonial-text {
-                font-size: 0.95rem;
-            }
-
-            .pricing-card {
-                padding: 2.5rem;
-            }
-
-            .pricing-price {
-                font-size: 3rem;
-            }
-
-            .service-title {
-                font-size: 1.5rem;
-            }
-
-            .service-description {
-                font-size: 0.9rem;
-            }
-
-            .cta-section {
-                padding: 5rem 5%;
-            }
-
             .cta-section h2 {
                 font-size: 2.5rem;
-            }
-
-            .cta-section p {
-                font-size: 1rem;
-            }
-
-            .cta-button {
-                padding: 1.15rem 2.5rem;
-                font-size: 1rem;
-            }
-
-            .hero-image {
-                height: 400px;
-            }
-
-            .footer-grid {
-                padding: 0 1rem;
-            }
-
-            .faq-question {
-                font-size: 1.1rem;
-            }
-        } {
-                font-size: 3.2rem;
-                line-height: 1.1;
-            }
-
-            .hero-subtitle {
-                font-size: 1.05rem;
-                margin-top: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 2.3rem;
-            }
-
-            .testimonial-quote {
-                font-size: 1.6rem;
-            }
-
-            .testimonial-card {
-                padding: 2.5rem;
-            }
-
-            .pricing-card {
-                padding: 2.5rem;
-            }
-
-            .pricing-price {
-                font-size: 3.2rem;
-            }
-
-            .cta-section h2 {
-                font-size: 2.8rem;
-            }
-
-            .cta-section p {
-                font-size: 1.1rem;
-            }
-
-            .cta-button {
-                padding: 1.15rem 2.5rem;
-                font-size: 1rem;
-            }
-
-            .hero-image {
-                height: 400px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .pricing-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
             }
         }
     </style>
@@ -1022,13 +582,11 @@
         <div class="logo">
             <img src="exiscale-logo.png" alt="ExiScale">
         </div>
-        <a href="#pricing" class="nav-cta">Book a Call</a>
+        <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
 
     <section class="hero-section">
-        <div class="hero-badge">
-            For Serious Advertisers Only
-        </div>
+        <div class="hero-badge">For Serious Advertisers Only</div>
         <h1 class="hero-title">
             <span class="hero-title-line">Built for advertisers</span>
             <span class="hero-title-line">who can't afford</span>
@@ -1041,39 +599,82 @@
 
     <section class="trust-section">
         <div class="trust-label">Trusted by 100+ advertisers and media buyers</div>
-        <div class="trust-logos">
-            <div class="trust-logo"></div>
-            <div class="trust-logo"></div>
-            <div class="trust-logo"></div>
-            <div class="trust-logo"></div>
-            <div class="trust-logo"></div>
-        </div>
-    </section>
-
-    <section class="hero-image-section">
-        <div class="hero-image-container">
-            <div class="hero-image">
-                Dashboard Preview
-            </div>
-        </div>
-    </section>
-
-    <section class="results-section">
-        <div class="section-label">WHAT TO EXPECT</div>
-        <h2 class="section-title">"We scaled from $5K to $100K per day without a single ban killing our momentum."</h2>
-        
-        <div class="testimonial-card">
-            <p class="testimonial-quote">"Our conversion rate jumped from 2.6% to over 20% each month since the launch."</p>
-            <p class="testimonial-text">
-                Working with ExiScale has completely transformed how we run ads. From instant account replacements to 24/7 support that actually responds, they've eliminated the fear of scaling. Our ad spend went from $5K to over $100K daily, and we haven't worried about bans since.
-            </p>
-            <div class="testimonial-author">
-                <div class="author-image"></div>
-                <div class="author-info">
-                    <h4>Marcus Chen</h4>
-                    <p>Founder @ ScaleMedia</p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" style="height: 24px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: #00b67a; font-size: 1.5rem;">★★★★★</span>
+                    <span style="font-weight: 600; font-size: 1.1rem;">4.7/5</span>
                 </div>
             </div>
+            <span style="color: #999; font-size: 0.9rem;">Based on 32+ verified reviews</span>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <div class="section-label">REAL REVIEWS FROM REAL CLIENTS</div>
+        <h2 class="section-title">Don't just take our word for it</h2>
+        
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"I wasted $1,000 on other so-called 'experts' who promised results but gave me nothing. Then I found Exiscale. Not only did they get my ads running profitably, but they also optimized my entire funnel, slashed my cost per lead, and brought in conversions like clockwork."</p>
+                <div class="review-author">
+                    <strong>Verified Customer</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Forget the days of reaching out and receiving no support. Kyron and his 24 hr team will go above and beyond to troubleshoot any issues you have. Signing up has been the best decision I've made. 11/10"</p>
+                <div class="review-author">
+                    <strong>Dennis</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"These guys are the best I've used by far for accounts. Really responsive and helpful support. Basically changed the game for me."</p>
+                <div class="review-author">
+                    <strong>Aaron</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Support is almost immediate. I've been using their service for 4 years now. Reliable."</p>
+                <div class="review-author">
+                    <strong>Sam</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"They only ask for the fixed subscription. No % fees. So it's amazing if you want to scale. Their support is very helpful and efficient. They even gave me advice on how to run my campaigns and improve my performance (and it worked)."</p>
+                <div class="review-author">
+                    <strong>Jeff</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate."</p>
+                <div class="review-author">
+                    <strong>Chris</strong>
+                    <span>Trustpilot Review</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="https://www.trustpilot.com/review/exiscale.com" target="_blank" style="display: inline-block; padding: 1rem 2.5rem; background: white; border: 2px solid var(--black); color: var(--black); text-decoration: none; border-radius: 50px; font-weight: 600; transition: all 0.3s ease;">
+                Read All Reviews on Trustpilot
+            </a>
         </div>
     </section>
 
@@ -1144,7 +745,7 @@
                     </ul>
                 </div>
                 
-                <a href="#" class="pricing-cta">Get Started</a>
+                <a href="#booking" class="pricing-cta">Get Started</a>
             </div>
 
             <div class="pricing-card">
@@ -1160,4 +761,67 @@
                         <li>2 US Profiles (10+ years aged) <span class="tooltip">?<span class="tooltiptext">Decade-old profiles with complete history</span></span></li>
                         <li>4 BMs + 1 Host BM <span class="tooltip">?<span class="tooltiptext">Multiple BMs for scaling + permanent host</span></span></li>
                         <li>12 High-Spending Ad Accounts</li>
-                        <li>Priority 24/7 Support <span class="tooltip">?<span
+                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Under 5-minute response times</span></span></li>
+                        <li>3 Ad Account Unbans/month <span class="tooltip">?<span class="tooltiptext">We unban instead of just replacing</span></span></li>
+                        <li>5 Ad Approvals/month</li>
+                        <li>Monthly Competitor Spy</li>
+                        <li>$18,000+ in Bonuses</li>
+                    </ul>
+                </div>
+                
+                <a href="#booking" class="pricing-cta">Get Started</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="pricing-name">Invincible</h3>
+                <p class="pricing-tagline">Become untouchable</p>
+                <div class="pricing-price">$10,000</div>
+                <span class="pricing-period">per month</span>
+                
+                <div class="pricing-features">
+                    <ul>
+                        <li>Everything in Scale, plus:</li>
+                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Never lose a profitable account again</span></span></li>
+                        <li>Unlimited Page & Profile Unbans</li>
+                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">$2K back for every $100K spent</span></span></li>
+                        <li>Personal Network Access <span class="tooltip">?<span class="tooltiptext">Banks, processors, Meta insiders</span></span></li>
+                        <li>Private Slack with 8-Figure Operators</li>
+                        <li>Yearly Bangkok Mastermind</li>
+                        <li>Full Ads Management Available</li>
+                        <li>$100,000+ in Bonuses</li>
+                    </ul>
+                </div>
+                
+                <a href="#booking" class="pricing-cta">Apply Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="booking-section" id="booking">
+        <div class="section-label">READY TO GET STARTED?</div>
+        <h2 class="section-title">Book your strategy call now</h2>
+        <p style="text-align: center; color: var(--gray); font-size: 1.1rem; max-width: 700px; margin: 0 auto 3rem;">
+            Schedule a 30-minute call with our team. We'll analyze your current setup and show you exactly how ExiScale can eliminate your ad account headaches.
+        </p>
+        
+        <div class="booking-container">
+            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale-intro/org?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="section-label">GOT QUESTIONS?</div>
+        <h2 class="section-title">FAQ</h2>
+        
+        <div class="faq-item">
+            <h3 class="faq-question">How quickly can I get started?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">What if I need to change my package?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">Do you offer support after setup?</h3>
+        </div>
+        <div class="faq-item">
+            <h3 class="faq-question">Who will manage my accounts?</h
