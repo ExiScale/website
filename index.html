@@ -15,6 +15,11 @@
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
         @keyframes scrollLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes clockTick { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(30deg); } }
+        @keyframes stackFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes unlockGlow { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+        @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .logo img { height: 48px; transition: transform 0.4s ease; }
         .logo img:hover { transform: scale(1.05); }
         .nav-cta { background: var(--black); color: white; padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
@@ -207,13 +212,30 @@
             <div class="service-card">
                 <div class="service-visual">
                     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="60" cy="60" r="50" stroke="#ff6a15" stroke-width="2" opacity="0.1"/>
-                        <circle cx="60" cy="60" r="40" stroke="#ff6a15" stroke-width="2" opacity="0.2"/>
-                        <circle cx="60" cy="60" r="30" fill="#ff6a15" opacity="0.05"/>
-                        <path d="M60 30 L60 60" stroke="#ff6a15" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M60 60 L75 75" stroke="#ff6a15" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="60" cy="60" r="5" fill="#ff6a15"/>
-                        <path d="M85 25 L95 15 M95 25 L85 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                        <defs>
+                            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="60" cy="60" r="50" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.08"/>
+                        <circle cx="60" cy="60" r="42" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.12"/>
+                        <circle cx="60" cy="60" r="34" stroke="url(#orangeGrad)" stroke-width="2" opacity="0.15"/>
+                        <circle cx="60" cy="60" r="26" fill="url(#orangeGrad)" opacity="0.05"/>
+                        <g style="transform-origin: 60px 60px; animation: clockTick 2s ease-in-out infinite;">
+                            <path d="M60 35 L60 60" stroke="url(#orangeGrad)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+                        </g>
+                        <path d="M60 60 L77 70" stroke="url(#orangeGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                        <circle cx="60" cy="60" r="4" fill="#ff6a15" filter="url(#glow)"/>
+                        <path d="M88 23 L96 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                        <path d="M96 23 L88 15" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
                     </svg>
                 </div>
                 <div class="service-content">
@@ -224,12 +246,24 @@
             <div class="service-card">
                 <div class="service-visual">
                     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="25" y="35" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2" opacity="0.3"/>
-                        <rect x="35" y="45" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2" opacity="0.5"/>
-                        <rect x="45" y="55" width="35" height="35" rx="6" stroke="#ff6a15" stroke-width="2.5"/>
-                        <rect x="50" y="60" width="25" height="25" rx="4" fill="#ff6a15" opacity="0.1"/>
-                        <path d="M90 50 L85 55 L90 60" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                        <path d="M90 55 L100 55" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="orangeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0s;">
+                            <rect x="23" y="33" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.5" opacity="0.2"/>
+                        </g>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.3s;">
+                            <rect x="33" y="43" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.8" opacity="0.4"/>
+                        </g>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.6s;">
+                            <rect x="43" y="53" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="2.2"/>
+                            <rect x="48" y="58" width="28" height="28" rx="6" fill="url(#orangeGrad2)" opacity="0.08"/>
+                        </g>
+                        <path d="M92 48 L87 53 L92 58" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                        <path d="M87 53 L100 53" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
                     </svg>
                 </div>
                 <div class="service-content">
@@ -240,12 +274,21 @@
             <div class="service-card">
                 <div class="service-visual">
                     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="40" y="55" width="40" height="35" rx="4" stroke="#ff6a15" stroke-width="2.5"/>
-                        <rect x="45" y="60" width="30" height="25" rx="2" fill="#ff6a15" opacity="0.08"/>
-                        <path d="M50 55 L50 45 C50 38 55 33 60 33 C65 33 70 38 70 45 L70 55" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                        <circle cx="60" cy="72" r="4" fill="#ff6a15"/>
-                        <line x1="60" y1="76" x2="60" y2="82" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M75 45 L85 35 M85 45 L75 35" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                        <defs>
+                            <linearGradient id="orangeGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="38" y="53" width="44" height="38" rx="6" stroke="url(#orangeGrad3)" stroke-width="2.5"/>
+                        <rect x="43" y="58" width="34" height="28" rx="4" fill="url(#orangeGrad3)" opacity="0.06" style="animation: unlockGlow 2s ease-in-out infinite;"/>
+                        <path d="M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53" stroke="url(#orangeGrad3)" stroke-width="2.8" stroke-linecap="round"/>
+                        <circle cx="60" cy="72" r="5" fill="url(#orangeGrad3)" opacity="0.9"/>
+                        <line x1="60" y1="77" x2="60" y2="84" stroke="url(#orangeGrad3)" stroke-width="2.5" stroke-linecap="round"/>
+                        <g opacity="0.5">
+                            <path d="M78 40 L88 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M88 40 L78 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                        </g>
                     </svg>
                 </div>
                 <div class="service-content">
@@ -256,14 +299,22 @@
             <div class="service-card">
                 <div class="service-visual">
                     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M35 75 C35 55 45 50 60 50 C75 50 85 55 85 75 L85 85 C85 90 82 93 77 93 L43 93 C38 93 35 90 35 85 Z" stroke="#ff6a15" stroke-width="2.5"/>
-                        <path d="M35 75 C35 55 45 50 60 50 C75 50 85 55 85 75" fill="#ff6a15" opacity="0.05"/>
-                        <circle cx="47" cy="65" r="2.5" fill="#ff6a15"/>
-                        <circle cx="60" cy="65" r="2.5" fill="#ff6a15"/>
-                        <circle cx="73" cy="65" r="2.5" fill="#ff6a15"/>
-                        <circle cx="95" cy="35" r="8" fill="#ff6a15"/>
-                        <circle cx="95" cy="35" r="12" stroke="#ff6a15" stroke-width="2" opacity="0.3"/>
-                        <path d="M92 35 L94 37 L98 33" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="orangeGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M32 73 C32 53 43 48 60 48 C77 48 88 53 88 73 L88 86 C88 92 84 96 78 96 L42 96 C36 96 32 92 32 86 Z" stroke="url(#orangeGrad4)" stroke-width="2.5"/>
+                        <path d="M32 73 C32 53 43 48 60 48 C77 48 88 53 88 73" fill="url(#orangeGrad4)" opacity="0.04"/>
+                        <circle cx="45" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <circle cx="60" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <circle cx="75" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <g style="animation: notificationPulse 2s ease-in-out infinite;">
+                            <circle cx="96" cy="32" r="10" fill="url(#orangeGrad4)"/>
+                            <circle cx="96" cy="32" r="14" stroke="#ff6a15" stroke-width="1.5" opacity="0.25"/>
+                        </g>
+                        <path d="M93 32 L95 34 L100 29" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
                 <div class="service-content">
