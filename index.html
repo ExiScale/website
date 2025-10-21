@@ -107,18 +107,20 @@
         .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
         .comparison-table-wrapper { margin-top: 5rem; overflow-x: auto; position: relative; z-index: 1; }
-        .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transform: translateY(0); transition: all 0.5s ease; }
+        .comparison-table:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-5px); }
         .comparison-table thead { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
         .comparison-table th { padding: 2rem 2.5rem; text-align: left; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); }
         .comparison-table th.exiscale-col { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; }
         .comparison-table th.exiscale-col::before { content: 'BEST CHOICE'; position: absolute; top: 0.5rem; right: 1rem; font-size: 0.6rem; background: rgba(255,255,255,0.25); padding: 0.25rem 0.6rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; }
         .comparison-table tbody tr { transition: all 0.3s ease; border-bottom: 1px solid rgba(0,0,0,0.04); }
         .comparison-table tbody tr:last-child { border-bottom: none; }
-        .comparison-table tbody tr:hover { background: linear-gradient(90deg, rgba(255,106,21,0.02) 0%, rgba(255,106,21,0.05) 100%); transform: scale(1.01); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .comparison-table tbody tr:hover { background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, rgba(255,106,21,0.06) 50%, rgba(255,106,21,0.03) 100%); transform: scale(1.005); box-shadow: 0 8px 25px rgba(0,0,0,0.08); z-index: 1; position: relative; }
         .comparison-table td { padding: 2rem 2.5rem; font-size: 1rem; vertical-align: middle; }
         .feature-col { width: 32%; background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
         .competitor-col { width: 34%; }
-        .exiscale-col { width: 34%; background: linear-gradient(135deg, rgba(255,106,21,0.05) 0%, rgba(255,106,21,0.02) 100%); }
+        .exiscale-col { width: 34%; background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); position: relative; }
+        .exiscale-col::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); }
         .feature-cell { font-weight: 600; }
         .feature-title { font-size: 1.15rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
         .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
@@ -127,6 +129,15 @@
         .positive-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(255,106,21,0.15); color: var(--orange); border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; animation: pulse 3s ease-in-out infinite; }
         .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.5; }
         .competitor-cell .cell-text { color: var(--gray); }
+        .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
+        .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .comparison-cta { display: inline-block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
+        .comparison-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .comparison-cta:hover::before { left: 100%; }
+        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
         .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
@@ -470,7 +481,7 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Days or weeks of downtime</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Back live in hours</span>
                             </td>
@@ -484,7 +495,7 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Fresh accounts that flag instantly</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">10+ year aged profiles</span>
                             </td>
@@ -498,7 +509,7 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Limited replacements, hidden fees</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Unlimited, forever</span>
                             </td>
@@ -512,7 +523,7 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Tickets ignored for days</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Under 10 minutes, 24/7</span>
                             </td>
@@ -526,7 +537,7 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Just sell you new accounts</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">We actually unban accounts</span>
                             </td>
@@ -540,13 +551,32 @@
                                 <span class="negative-indicator">✕</span>
                                 <span class="cell-text">Low daily limits, constant flags</span>
                             </td>
-                            <td class="exiscale-cell highlight-cell">
+                            <td class="exiscale-cell">
                                 <span class="positive-indicator">✓</span>
                                 <span class="cell-text">$20K+/day week one</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="comparison-stats">
+                <div class="stat-item">
+                    <div class="stat-value">6hrs</div>
+                    <div class="stat-label">Avg Recovery</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Live Support</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">99.8%</div>
+                    <div class="stat-label">Uptime Rate</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#booking" class="comparison-cta">Book Your Strategy Call</a>
             </div>
         </div>
     </section>
