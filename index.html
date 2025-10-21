@@ -32,23 +32,6 @@
         @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } }
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes cardHover { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
-        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
-        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
-        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
-        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin-top: 5rem; }
-        .result-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); padding: 3rem 2.5rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.04); min-height: 320px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .result-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.05) 0%, transparent 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
-        .result-card:hover::before { opacity: 1; }
-        .result-card:hover { transform: translateY(-12px); box-shadow: 0 24px 48px rgba(255,106,21,0.15); border-color: rgba(255,106,21,0.3); }
-        .result-icon-wrapper { width: 80px; height: 80px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 50%; position: relative; z-index: 1; transition: all 0.4s ease; }
-        .result-card:hover .result-icon-wrapper { transform: scale(1.1); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); box-shadow: 0 8px 24px rgba(255,106,21,0.2); }
-        .result-icon { width: 40px; height: 40px; }
-        .result-card-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); position: relative; z-index: 1; }
-        .result-card-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; position: relative; z-index: 1; }
-        @media (max-width: 1024px) { .results-headline { font-size: 3rem; } .results-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .results-headline { font-size: 2.2rem; } .results-subtext { font-size: 1.1rem; } .results-grid { grid-template-columns: 1fr; } .result-card { padding: 2rem; min-height: auto; } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes warningPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
@@ -118,7 +101,33 @@
         .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
         .review-author strong { font-size: 1rem; font-weight: 700; }
         .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
-        .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
+        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
+        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .comparison-table-wrapper { margin-top: 5rem; overflow-x: auto; position: relative; z-index: 1; }
+        .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .comparison-table thead { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+        .comparison-table th { padding: 2rem 2.5rem; text-align: left; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); }
+        .comparison-table th.exiscale-col { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; }
+        .comparison-table th.exiscale-col::before { content: 'BEST CHOICE'; position: absolute; top: 0.5rem; right: 1rem; font-size: 0.6rem; background: rgba(255,255,255,0.25); padding: 0.25rem 0.6rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; }
+        .comparison-table tbody tr { transition: all 0.3s ease; border-bottom: 1px solid rgba(0,0,0,0.04); }
+        .comparison-table tbody tr:last-child { border-bottom: none; }
+        .comparison-table tbody tr:hover { background: linear-gradient(90deg, rgba(255,106,21,0.02) 0%, rgba(255,106,21,0.05) 100%); transform: scale(1.01); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .comparison-table td { padding: 2rem 2.5rem; font-size: 1rem; vertical-align: middle; }
+        .feature-col { width: 32%; background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
+        .competitor-col { width: 34%; }
+        .exiscale-col { width: 34%; background: linear-gradient(135deg, rgba(255,106,21,0.05) 0%, rgba(255,106,21,0.02) 100%); }
+        .feature-cell { font-weight: 600; }
+        .feature-title { font-size: 1.15rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+        .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
+        .competitor-cell, .exiscale-cell { display: flex; align-items: center; gap: 1rem; }
+        .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(220,38,38,0.1); color: #dc2626; border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; }
+        .positive-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(255,106,21,0.15); color: var(--orange); border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; animation: pulse 3s ease-in-out infinite; }
+        .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.5; }
+        .competitor-cell .cell-text { color: var(--gray); }
+        .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
         .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: 850px; isolation: isolate; }
@@ -174,8 +183,8 @@
         .footer-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
         .footer-link:hover::after { width: 100%; }
         .footer-copyright { color: #999; }
-        @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } }
-        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } }
+        @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } .comparison-table th, .comparison-table td { padding: 1.5rem 1.5rem; } .feature-title { font-size: 1.05rem; } .cell-text { font-size: 0.95rem; } }
+        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } .comparison-table-wrapper { margin: 3rem -1rem 0; } .comparison-table { border-radius: 0; } .comparison-table th, .comparison-table td { padding: 1.2rem 1rem; font-size: 0.9rem; } .feature-title { font-size: 0.95rem; } .feature-desc { font-size: 0.8rem; } .cell-text { font-size: 0.85rem; } .negative-indicator, .positive-indicator { width: 26px; height: 26px; font-size: 1rem; } .feature-col { width: 35%; } .competitor-col, .exiscale-col { width: 32.5%; } }
     </style>
 </head>
 <body>
@@ -432,6 +441,112 @@
                 <div class="review-stars">★★★★★</div>
                 <p class="review-text">"I have a great experience with Exiscale. Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate. Keep up the good work!"</p>
                 <div class="review-author"><strong>Chris</strong><span>Trustpilot Review</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="results-content">
+            <div class="section-label">WHY EXISCALE</div>
+            <h2 class="results-headline">The infrastructure difference</h2>
+            <p class="results-subtext">While others sell accounts, we engineer reliability. Here's what sets us apart.</p>
+            
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-col">What Matters</th>
+                            <th class="competitor-col">Other Providers</th>
+                            <th class="exiscale-col">ExiScale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Recovery Time</div>
+                                <div class="feature-desc">When disaster strikes</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Days or weeks of downtime</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">Back live in hours</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Account Quality</div>
+                                <div class="feature-desc">Foundation that matters</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Fresh accounts that flag instantly</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">10+ year aged profiles</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Replacement Policy</div>
+                                <div class="feature-desc">Long-term protection</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Limited replacements, hidden fees</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">Unlimited, forever</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Support Response</div>
+                                <div class="feature-desc">When you need help</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Tickets ignored for days</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">Under 10 minutes, 24/7</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Account Unbans</div>
+                                <div class="feature-desc">Saving profitable accounts</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Just sell you new accounts</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">We actually unban accounts</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="feature-cell">
+                                <div class="feature-title">Scaling Capacity</div>
+                                <div class="feature-desc">Growth without limits</div>
+                            </td>
+                            <td class="competitor-cell">
+                                <span class="negative-indicator">✕</span>
+                                <span class="cell-text">Low daily limits, constant flags</span>
+                            </td>
+                            <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
+                                <span class="cell-text">$20K+/day week one</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
