@@ -150,7 +150,13 @@
         .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; text-align: left; margin-bottom: 5rem; max-width: 1400px; margin-left: auto; margin-right: auto; }
         .footer-principle h4 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; }
         .footer-principle p { color: var(--gray); line-height: 1.8; font-size: 1.05rem; }
-        .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 3rem; border-top: 1px solid rgba(0,0,0,0.06); font-weight: 500; }
+        .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 3rem; border-top: 1px solid rgba(0,0,0,0.06); font-weight: 500; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
+        .footer-links { display: flex; gap: 2rem; align-items: center; }
+        .footer-link { color: var(--black); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s ease; position: relative; }
+        .footer-link:hover { color: var(--orange); }
+        .footer-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+        .footer-link:hover::after { width: 100%; }
+        .footer-copyright { color: #999; }
         @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } }
         @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } }
     </style>
@@ -644,7 +650,14 @@
                     <p>Great results grow out of solid relationships. We treat clients like teammates and move fast together.</p>
                 </div>
             </div>
-            <div class="footer-bottom">&copy; 2025 ExiScale. Built for serious advertisers.</div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Refund Policy</a>
+                </div>
+                <div class="footer-copyright">&copy; 2025 ExiScale. Built for serious advertisers.</div>
+            </div>
         </div>
     </footer>
 </body>
