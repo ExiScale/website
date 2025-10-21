@@ -55,7 +55,26 @@
         .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
         .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
         .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 2rem; }
-        .reviews-section { padding: 10rem 5%; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
+        .problem-section { padding: 10rem 5%; background: linear-gradient(180deg, #fff 0%, #fafafa 100%); position: relative; overflow: hidden; }
+        .problem-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -200px; left: -100px; animation: float 25s ease-in-out infinite; }
+        .problem-content { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .problem-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; animation: fadeInUp 1s ease 0.2s both; }
+        .problem-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 5rem; font-weight: 500; animation: fadeInUp 1s ease 0.4s both; }
+        .problem-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 5rem; }
+        .problem-block { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .problem-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .problem-block:hover::before { transform: scaleX(1); }
+        .problem-block:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .problem-block:nth-child(1) { animation: slideInLeft 0.8s ease 0.6s both; }
+        .problem-block:nth-child(2) { animation: fadeInScale 0.8s ease 0.7s both; }
+        .problem-block:nth-child(3) { animation: slideInRight 0.8s ease 0.8s both; }
+        .problem-icon { width: 70px; height: 70px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 16px; transition: all 0.4s ease; }
+        .problem-block:hover .problem-icon { transform: scale(1.1) rotate(5deg); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); }
+        .problem-icon svg { width: 36px; height: 36px; }
+        .problem-block-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); }
+        .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
+        @media (max-width: 1024px) { .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } }
+        @media (max-width: 768px) { .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } }
         .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
         .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
@@ -170,6 +189,59 @@
                 <div class="logo-item"><img src="https://exiscale.github.io/website/shopify-logo.png?v=2" alt="Shopify"></div>
                 <div class="logo-item"><img src="https://exiscale.github.io/website/maxweb-logo.png?v=2" alt="MaxWeb"></div>
                 <div class="logo-item"><img src="https://exiscale.github.io/website/clickbank-logo.png?v=2" alt="ClickBank"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem-section">
+        <div class="problem-content">
+            <div class="section-label">THE PROBLEM</div>
+            <h2 class="problem-headline">When Meta kills your accounts, your business stops.</h2>
+            <p class="problem-subtext">Your ads go dark. Spend freezes. Revenue tanks. We built ExiScale so that never happens again.</p>
+            
+            <div class="problem-blocks">
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="6" r="3" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
+                            <path d="M17.5 5.5L18.5 6.5M17.5 6.5L18.5 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">Ad Accounts Disabled Overnight</h3>
+                    <p class="problem-block-text">Campaigns pause mid-scale. You lose data, momentum, and sales.</p>
+                </div>
+                
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="#ff6a15" stroke-width="2"/>
+                            <path d="M2 12H22" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" style="animation: shimmer 2s ease-in-out infinite; stroke-dasharray: 20; stroke-dashoffset: 20;"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">Revenue Vanishes Instantly</h3>
+                    <p class="problem-block-text">Every minute offline means money lost — and Meta doesn't care.</p>
+                </div>
+                
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ff6a15" stroke-width="2"/>
+                            <path d="M3 8H21" stroke="#ff6a15" stroke-width="2"/>
+                            <circle cx="7" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <circle cx="9" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <circle cx="11" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <path d="M8 13H16M8 16H13" stroke="#ff6a15" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                            <circle cx="18" cy="18" r="4" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
+                            <path d="M18 16V18.5M18 20H18.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">No Support. No Answers.</h3>
+                    <p class="problem-block-text">Endless appeals and "review in progress" emails while your team waits.</p>
+                </div>
             </div>
         </div>
     </section>
