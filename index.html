@@ -31,6 +31,24 @@
         @keyframes unlockIndicator { 0% { opacity: 0.9; } 50% { opacity: 0.2; } 100% { opacity: 0.9; } }
         @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } }
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes cardHover { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
+        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin-top: 5rem; }
+        .result-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); padding: 3rem 2.5rem; border-radius: 24px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.04); min-height: 320px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .result-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.05) 0%, transparent 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
+        .result-card:hover::before { opacity: 1; }
+        .result-card:hover { transform: translateY(-12px); box-shadow: 0 24px 48px rgba(255,106,21,0.15); border-color: rgba(255,106,21,0.3); }
+        .result-icon-wrapper { width: 80px; height: 80px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 50%; position: relative; z-index: 1; transition: all 0.4s ease; }
+        .result-card:hover .result-icon-wrapper { transform: scale(1.1); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); box-shadow: 0 8px 24px rgba(255,106,21,0.2); }
+        .result-icon { width: 40px; height: 40px; }
+        .result-card-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); position: relative; z-index: 1; }
+        .result-card-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; position: relative; z-index: 1; }
+        @media (max-width: 1024px) { .results-headline { font-size: 3rem; } .results-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .results-headline { font-size: 2.2rem; } .results-subtext { font-size: 1.1rem; } .results-grid { grid-template-columns: 1fr; } .result-card { padding: 2rem; min-height: auto; } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes warningPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
@@ -414,6 +432,60 @@
                 <div class="review-stars">★★★★★</div>
                 <p class="review-text">"I have a great experience with Exiscale. Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate. Keep up the good work!"</p>
                 <div class="review-author"><strong>Chris</strong><span>Trustpilot Review</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="results-content">
+            <div class="section-label">THE RESULTS</div>
+            <h2 class="results-headline">We don't sell features. We deliver freedom to scale.</h2>
+            <p class="results-subtext">Every part of ExiScale is engineered to give you more control, more stability, and more profit — no matter how chaotic Meta gets.</p>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-icon-wrapper">
+                        <svg class="result-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#ff6a15" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="result-card-title">Run Ads Without Fear</h3>
+                    <p class="result-card-text">No bans. No breaks. Just campaigns that keep spending while others pause.</p>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon-wrapper">
+                        <svg class="result-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="result-card-title">Stable Infrastructure</h3>
+                    <p class="result-card-text">Your ad stack — from profiles to pixels — built on enterprise-grade systems.</p>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon-wrapper">
+                        <svg class="result-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="#ff6a15" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="result-card-title">Higher ROI, Lower Chaos</h3>
+                    <p class="result-card-text">Eliminate downtime losses and wasted spend from account resets.</p>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon-wrapper">
+                        <svg class="result-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 12H18L15 21L9 3L6 12H2" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="result-card-title">Focus on Growth</h3>
+                    <p class="result-card-text">We handle the infrastructure, you focus on scaling your offers.</p>
+                </div>
             </div>
         </div>
     </section>
