@@ -101,17 +101,18 @@
         .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
         .review-author strong { font-size: 1rem; font-weight: 700; }
         .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
-        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: visible; }
         .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
         .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
         .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .comparison-table-wrapper { margin-top: 5rem; overflow: visible; position: relative; z-index: 1; padding: 3rem 1rem; }
-        .comparison-table { width: 100%; max-width: 1200px; margin: 0 auto; border-collapse: separate; border-spacing: 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.18), 0 15px 50px rgba(0,0,0,0.12); transform: translateY(0); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .comparison-table-wrapper { margin-top: 5rem; position: relative; z-index: 1; padding: 4rem 2rem; }
+        .comparison-table { display: table; width: 100%; max-width: 1200px; margin: 0 auto; border-collapse: separate; border-spacing: 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.18), 0 15px 50px rgba(0,0,0,0.12); transform: translateY(0); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .comparison-table:hover { box-shadow: 0 50px 140px rgba(0,0,0,0.22), 0 20px 60px rgba(0,0,0,0.15); transform: translateY(-8px); }
-        .comparison-table thead { background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%); position: relative; }
+        .comparison-table thead { display: table-header-group; background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%); position: relative; }
         .comparison-table thead::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--orange) 50%, transparent 100%); opacity: 0.4; }
-        .comparison-table th { padding: 2.5rem 2.5rem; text-align: left; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); position: relative; border-right: 1px solid rgba(255,255,255,0.05); }
+        .comparison-table thead tr { display: table-row; }
+        .comparison-table th { display: table-cell; padding: 2.5rem 2.5rem; text-align: left; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); position: relative; border-right: 1px solid rgba(255,255,255,0.05); width: 33.33%; }
         .comparison-table th:last-child { border-right: none; }
         .comparison-table th.exiscale-col { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; box-shadow: inset 0 -2px 10px rgba(0,0,0,0.1); }
         .comparison-table th.exiscale-col::before { content: 'BEST CHOICE'; position: absolute; top: 0.6rem; right: 1.2rem; font-size: 0.65rem; background: rgba(255,255,255,0.3); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; backdrop-filter: blur(10px); }
