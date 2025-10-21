@@ -96,10 +96,17 @@
         .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
         .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 4rem; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; }
+        .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
         .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
-        .comparison-card-title { font-size: 2rem; font-weight: 800; color: var(--black); margin-bottom: 1rem; }
-        .comparison-card-text { font-size: 1.1rem; color: var(--gray); line-height: 1.8; }
+        .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; transition: all 0.5s ease; }
+        .comparison-stats:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .comparison-cta { display: inline-block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
+        .comparison-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .comparison-cta:hover::before { left: 100%; }
+        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
         .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
         .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
@@ -110,40 +117,24 @@
         .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
         .review-author strong { font-size: 1rem; font-weight: 700; }
         .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
-        .results-section { padding: 10rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: visible; }
-        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
-        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
-        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .comparison-table-wrapper { margin-top: 5rem; position: relative; z-index: 1; padding: 4rem 2rem; overflow-x: auto; }
-        .comparison-table { display: table; width: 100%; max-width: 1200px; min-width: 900px; margin: 0 auto; border-collapse: separate; border-spacing: 0; background: white; border-radius: 28px; box-shadow: 0 40px 120px rgba(0,0,0,0.18), 0 15px 50px rgba(0,0,0,0.12); transform: translateY(0); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); table-layout: fixed; }
-        .comparison-table:hover { box-shadow: 0 50px 140px rgba(0,0,0,0.22), 0 20px 60px rgba(0,0,0,0.15); transform: translateY(-8px); }
-        .comparison-table thead { display: table-header-group; background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%); position: relative; }
-        .comparison-table thead::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--orange) 50%, transparent 100%); opacity: 0.4; }
-        .comparison-table thead tr { display: table-row; }
-        .comparison-table th { display: table-cell; padding: 2.5rem 2.5rem; text-align: left; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); position: relative; border-right: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-        .comparison-table th:first-child { width: 30%; }
-        .comparison-table th:nth-child(2) { width: 35%; }
-        .comparison-table th:last-child { width: 35%; border-right: none; }
-        .comparison-table th.exiscale-col { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; box-shadow: inset 0 -2px 10px rgba(0,0,0,0.1); }
-        .comparison-table th.exiscale-col::before { content: 'BEST CHOICE'; position: absolute; top: 0.6rem; right: 1.2rem; font-size: 0.65rem; background: rgba(255,255,255,0.3); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; backdrop-filter: blur(10px); }
-        .comparison-table tbody tr { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-bottom: 1px solid rgba(0,0,0,0.04); position: relative; }
-        .comparison-table tbody tr:last-child { border-bottom: none; }
-        .comparison-table tbody tr::before { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(255,106,21,0.02) 0%, rgba(255,106,21,0.06) 50%, rgba(255,106,21,0.02) 100%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
-        .comparison-table tbody tr:hover::before { opacity: 1; }
-        .comparison-table tbody tr:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); z-index: 1; position: relative; transform: scale(1.008); }
-        .comparison-table td { padding: 2.5rem 2.5rem; font-size: 1rem; vertical-align: middle; position: relative; }
-        .feature-col { width: 32%; background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
-        .competitor-col { width: 34%; }
-        .exiscale-col { width: 34%; }
-        .comparison-table tbody td.exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); position: relative; display: table-cell; }
-        .comparison-table tbody td.exiscale-cell::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); }
-        .feature-cell { font-weight: 600; display: table-cell; }
-        .feature-title { font-size: 1.2rem; font-weight: 800; color: var(--black); margin-bottom: 0.4rem; letter-spacing: -0.02em; }
-        .feature-desc { font-size: 0.95rem; color: var(--gray); font-weight: 500; line-height: 1.5; }
-        .competitor-cell { display: table-cell; }
-        .exiscale-cell { display: table-cell; background: linear-gradient(135deg, rgba(255,106,21,0.06) 0%, rgba(255,106,21,0.03) 100%); position: relative; }
-        .exiscale-cell::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); box-shadow: 2px 0 8px rgba(255,106,21,0.3); }
+        .comparison-grid-wrapper { width: 100%; overflow-x: auto; }
+        .comparison-grid-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%); position: relative; }
+        .comparison-grid-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--orange) 50%, transparent 100%); opacity: 0.4; }
+        .comparison-header-cell { padding: 2.5rem 2.5rem; text-align: left; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); border-right: 1px solid rgba(255,255,255,0.05); }
+        .comparison-header-cell:last-child { border-right: none; }
+        .comparison-header-cell.exiscale-header { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; box-shadow: inset 0 -2px 10px rgba(0,0,0,0.1); }
+        .comparison-header-cell.exiscale-header::before { content: 'BEST CHOICE'; position: absolute; top: 0.6rem; right: 1.2rem; font-size: 0.65rem; background: rgba(255,255,255,0.3); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; backdrop-filter: blur(10px); }
+        .comparison-grid-body { display: flex; flex-direction: column; }
+        .comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(0,0,0,0.04); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .comparison-row:last-child { border-bottom: none; }
+        .comparison-row::before { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(255,106,21,0.02) 0%, rgba(255,106,21,0.06) 50%, rgba(255,106,21,0.02) 100%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 0; }
+        .comparison-row:hover::before { opacity: 1; }
+        .comparison-row:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); z-index: 1; transform: scale(1.008); }
+        .comparison-cell { padding: 2.5rem 2.5rem; font-size: 1rem; display: flex; align-items: center; position: relative; }
+        .comparison-cell.feature-col { background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
+        .comparison-cell.exiscale-col { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
+        .comparison-cell.exiscale-col::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); box-shadow: 2px 0 8px rgba(255,106,21,0.3); }
+        .feature-desc { font-size: 0.95rem; color: var(--gray); font-weight: 600; line-height: 1.5; }
         .cell-content { display: flex; align-items: center; gap: 1.2rem; }
         .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, rgba(220,38,38,0.12) 0%, rgba(220,38,38,0.08) 100%); color: #dc2626; border-radius: 50%; font-size: 1.3rem; font-weight: 900; flex-shrink: 0; box-shadow: 0 4px 12px rgba(220,38,38,0.15); transition: all 0.3s ease; }
         .negative-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(220,38,38,0.25); }
@@ -151,17 +142,6 @@
         .positive-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(255,106,21,0.35); animation: none; }
         .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.6; }
         .competitor-cell .cell-text { color: var(--gray); }
-        .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
-        .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
-        .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; transition: all 0.5s ease; }
-        .comparison-stats:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
-        .stat-item { text-align: center; }
-        .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-        .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .comparison-cta { display: inline-block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
-        .comparison-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
-        .comparison-cta:hover::before { left: 100%; }
-        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
         .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
@@ -486,36 +466,124 @@
             <h2 class="results-headline">The infrastructure difference</h2>
             <p class="results-subtext">While others sell accounts, we engineer reliability. Here's what sets us apart.</p>
             
-            <div class="comparison-stats">
-                <div class="stat-item">
-                    <div class="stat-value">6hrs</div>
-                    <div class="stat-label">Avg Recovery</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">24/7</div>
-                    <div class="stat-label">Live Support</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">99.8%</div>
-                    <div class="stat-label">Uptime Rate</div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="#booking" class="comparison-cta">Book Your Strategy Call</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="results-section">
-        <div class="results-content">
-            <div class="section-label">WHY EXISCALE</div>
-            <h2 class="results-headline">The infrastructure difference</h2>
-            <p class="results-subtext">While others sell accounts, we engineer reliability. Here's what sets us apart.</p>
-            
             <div class="comparison-card">
-                <h3 class="comparison-card-title">Your content goes here</h3>
-                <p class="comparison-card-text">Add your comparison content or benefits here.</p>
+                <div class="comparison-grid-wrapper">
+                    <div class="comparison-grid-header">
+                        <div class="comparison-header-cell">WHAT MATTERS</div>
+                        <div class="comparison-header-cell">OTHER PROVIDERS</div>
+                        <div class="comparison-header-cell exiscale-header">EXISCALE</div>
+                    </div>
+                    
+                    <div class="comparison-grid-body">
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">When disaster strikes</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Days or weeks of downtime</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Back live in hours</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">Foundation that matters</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Fresh accounts that flag instantly</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">10+ year aged profiles</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">Long-term protection</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Limited replacements, hidden fees</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Unlimited, forever</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">When you need help</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Tickets ignored for days</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Under 10 minutes, 24/7</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">Saving profitable accounts</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Just sell you new accounts</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">We actually unban accounts</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-desc">Growth without limits</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Low daily limits, constant flags</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">$20K+/day week one</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="comparison-stats">
