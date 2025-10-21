@@ -125,10 +125,12 @@
         .feature-title { font-size: 1.15rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
         .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         .competitor-cell, .exiscale-cell { display: flex; align-items: center; gap: 1rem; }
+        .exiscale-cell { justify-content: center; }
         .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(220,38,38,0.1); color: #dc2626; border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; }
         .positive-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(255,106,21,0.15); color: var(--orange); border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; animation: pulse 3s ease-in-out infinite; }
         .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.5; }
         .competitor-cell .cell-text { color: var(--gray); }
+        .exiscale-cell .cell-text { text-align: center; }
         .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
         .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
         .stat-item { text-align: center; }
@@ -482,6 +484,7 @@
                                 <span class="cell-text">Days or weeks of downtime</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Back live in hours</span>
                             </td>
                         </tr>
@@ -495,6 +498,7 @@
                                 <span class="cell-text">Fresh accounts that flag instantly</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">10+ year aged profiles</span>
                             </td>
                         </tr>
@@ -508,6 +512,7 @@
                                 <span class="cell-text">Limited replacements, hidden fees</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Unlimited, forever</span>
                             </td>
                         </tr>
@@ -521,6 +526,7 @@
                                 <span class="cell-text">Tickets ignored for days</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">Under 10 minutes, 24/7</span>
                             </td>
                         </tr>
@@ -534,6 +540,7 @@
                                 <span class="cell-text">Just sell you new accounts</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">We actually unban accounts</span>
                             </td>
                         </tr>
@@ -547,6 +554,7 @@
                                 <span class="cell-text">Low daily limits, constant flags</span>
                             </td>
                             <td class="exiscale-cell">
+                                <span class="positive-indicator">✓</span>
                                 <span class="cell-text">$20K+/day week one</span>
                             </td>
                         </tr>
