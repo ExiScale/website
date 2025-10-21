@@ -119,18 +119,18 @@
         .comparison-table td { padding: 2rem 2.5rem; font-size: 1rem; vertical-align: middle; }
         .feature-col { width: 32%; background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
         .competitor-col { width: 34%; }
-        .exiscale-col { width: 34%; background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); position: relative; }
-        .exiscale-col::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); }
+        .exiscale-col { width: 34%; }
+        .comparison-table tbody td.exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); position: relative; }
+        .comparison-table tbody td.exiscale-cell::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); }
         .feature-cell { font-weight: 600; }
         .feature-title { font-size: 1.15rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
         .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         .competitor-cell, .exiscale-cell { display: flex; align-items: center; gap: 1rem; }
-        .exiscale-cell { justify-content: center; }
         .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(220,38,38,0.1); color: #dc2626; border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; }
         .positive-indicator { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(255,106,21,0.15); color: var(--orange); border-radius: 50%; font-size: 1.2rem; font-weight: 900; flex-shrink: 0; animation: pulse 3s ease-in-out infinite; }
         .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.5; }
         .competitor-cell .cell-text { color: var(--gray); }
-        .exiscale-cell .cell-text { text-align: center; }
+        .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
         .exiscale-cell { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
         .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
         .stat-item { text-align: center; }
