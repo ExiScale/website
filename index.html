@@ -55,7 +55,7 @@
         .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
         .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
         .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 2rem; }
-        .problem-section { padding: 10rem 5%; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%); position: relative; overflow: hidden; }
+        .problem-section { padding: 6rem 5%; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%); position: relative; overflow: hidden; }
         .problem-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -200px; left: -100px; animation: float 25s ease-in-out infinite; }
         .problem-content { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
         .problem-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; animation: fadeInUp 1s ease 0.2s both; }
@@ -86,7 +86,7 @@
         .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
         .review-author strong { font-size: 1rem; font-weight: 700; }
         .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
-        .services-section { padding: 10rem 5%; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
+        .services-section { padding: 6rem 5%; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
         .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
         .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
@@ -458,128 +458,6 @@
                     </div>
                     <h3 class="problem-block-title">No Support. No Answers.</h3>
                     <p class="problem-block-text">Endless appeals and "review in progress" emails while your team waits.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="services-section">
-        <div class="section-label">THE EXISCALE SYSTEM</div>
-        <h2 class="section-title">Stay live. Stay profitable. Stay unstoppable.</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-visual">
-                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
-                            </linearGradient>
-                            <filter id="glow">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <circle cx="60" cy="60" r="50" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.08" style="animation: clockPulse 3s ease-in-out infinite;"/>
-                        <circle cx="60" cy="60" r="42" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.12" style="animation: clockPulse 3s ease-in-out infinite; animation-delay: 0.5s;"/>
-                        <circle cx="60" cy="60" r="34" stroke="url(#orangeGrad)" stroke-width="2" opacity="0.15"/>
-                        <circle cx="60" cy="60" r="26" fill="url(#orangeGrad)" opacity="0.05"/>
-                        <g style="transform-origin: 60px 60px; animation: clockSpin 3s linear infinite;">
-                            <path d="M60 35 L60 60" stroke="url(#orangeGrad)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
-                            <path d="M60 60 L77 70" stroke="url(#orangeGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
-                        </g>
-                        <circle cx="60" cy="60" r="4" fill="#ff6a15" filter="url(#glow)"/>
-                        <g style="animation: speedLines 1.5s ease-in-out infinite;">
-                            <path d="M88 23 L96 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                            <path d="M96 23 L88 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </div>
-                <div class="service-content">
-                    <h3 class="service-title">Instant Recovery</h3>
-                    <p class="service-description">Back live in hours, not days. We handle the chaos.</p>
-                </div>
-            </div>
-            <div class="service-card">
-                <div class="service-visual">
-                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="orangeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0s;">
-                            <rect x="23" y="33" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.5" opacity="0.2"/>
-                        </g>
-                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.3s;">
-                            <rect x="33" y="43" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.8" opacity="0.4"/>
-                        </g>
-                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.6s;">
-                            <rect x="43" y="53" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="2.2"/>
-                            <rect x="48" y="58" width="28" height="28" rx="6" fill="url(#orangeGrad2)" opacity="0.08"/>
-                        </g>
-                        <path d="M92 48 L87 53 L92 58" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
-                        <path d="M87 53 L100 53" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-                    </svg>
-                </div>
-                <div class="service-content">
-                    <h3 class="service-title">Unlimited Replacements</h3>
-                    <p class="service-description">Every asset replaced forever. No extra cost.</p>
-                </div>
-            </div>
-            <div class="service-card">
-                <div class="service-visual">
-                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="orangeGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <rect x="38" y="53" width="44" height="38" rx="6" stroke="url(#orangeGrad3)" stroke-width="2.5"/>
-                        <rect x="43" y="58" width="34" height="28" rx="4" fill="url(#orangeGrad3)" opacity="0.06" style="animation: unlockGlow 2.5s ease-in-out infinite;"/>
-                        <path d="M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53" stroke="url(#orangeGrad3)" stroke-width="2.8" stroke-linecap="round" style="animation: lockUnlock 3s ease-in-out infinite;"/>
-                        <circle cx="60" cy="72" r="5" fill="url(#orangeGrad3)" opacity="0.9"/>
-                        <line x1="60" y1="77" x2="60" y2="84" stroke="url(#orangeGrad3)" stroke-width="2.5" stroke-linecap="round"/>
-                        <g style="animation: unlockIndicator 2s ease-in-out infinite;">
-                            <path d="M78 40 L88 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                            <path d="M88 40 L78 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
-                        </g>
-                    </svg>
-                </div>
-                <div class="service-content">
-                    <h3 class="service-title">Account Unbans</h3>
-                    <p class="service-description">We unban accounts, not just replace them.</p>
-                </div>
-            </div>
-            <div class="service-card">
-                <div class="service-visual">
-                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="orangeGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M26 73 C26 53 37 48 54 48 C71 48 82 53 82 73 L82 86 C82 92 78 96 72 96 L36 96 C30 96 26 92 26 86 Z" stroke="url(#orangeGrad4)" stroke-width="2.5"/>
-                        <path d="M26 73 C26 53 37 48 54 48 C71 48 82 53 82 73" fill="url(#orangeGrad4)" opacity="0.04"/>
-                        <circle cx="39" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
-                        <circle cx="54" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
-                        <circle cx="69" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
-                        <g style="animation: notificationPulse 2s ease-in-out infinite;">
-                            <circle cx="88" cy="42" r="10" fill="url(#orangeGrad4)"/>
-                            <circle cx="88" cy="42" r="14" stroke="#ff6a15" stroke-width="1.5" opacity="0.25"/>
-                        </g>
-                        <path d="M85 42 L87 44 L92 39" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div class="service-content">
-                    <h3 class="service-title">24/7 Live Support</h3>
-                    <p class="service-description">Real humans. Under 10-minute response times.</p>
                 </div>
             </div>
         </div>
