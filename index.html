@@ -30,6 +30,11 @@
         }
         @keyframes unlockIndicator { 0% { opacity: 0.9; } 50% { opacity: 0.2; } 100% { opacity: 0.9; } }
         @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes warningPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .logo img { height: 48px; transition: transform 0.4s ease; }
         .logo img:hover { transform: scale(1.05); }
@@ -73,19 +78,6 @@
         .problem-icon svg { width: 36px; height: 36px; }
         .problem-block-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); }
         .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
-        @media (max-width: 1024px) { .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } }
-        @media (max-width: 768px) { .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } }
-        .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
-        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-        .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
-        .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
-        .review-card:hover::before { transform: scaleX(1); }
-        .review-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-color: var(--orange); }
-        .review-stars { color: #00b67a; font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 3px; }
-        .review-text { font-size: 1.05rem; line-height: 1.8; color: var(--black); margin-bottom: 2rem; }
-        .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
-        .review-author strong { font-size: 1rem; font-weight: 700; }
-        .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         .services-section { padding: 4rem 5% 6rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
         .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
@@ -97,6 +89,18 @@
         .service-content { position: relative; z-index: 1; text-align: center; }
         .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
         .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
+        .reviews-section { padding: 10rem 5%; background: linear-gradient(180deg, #fafafa 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
+        .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+        .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .review-card:hover::before { transform: scaleX(1); }
+        .review-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-color: var(--orange); }
+        .review-stars { color: #00b67a; font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 3px; }
+        .review-text { font-size: 1.05rem; line-height: 1.8; color: var(--black); margin-bottom: 2rem; }
+        .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
+        .review-author strong { font-size: 1rem; font-weight: 700; }
+        .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
@@ -147,8 +151,8 @@
         .footer-principle h4 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; }
         .footer-principle p { color: var(--gray); line-height: 1.8; font-size: 1.05rem; }
         .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 3rem; border-top: 1px solid rgba(0,0,0,0.06); font-weight: 500; }
-        @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } }
+        @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } }
+        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } }
     </style>
 </head>
 <body>
@@ -406,59 +410,6 @@
                 <div class="review-stars">★★★★★</div>
                 <p class="review-text">"I have a great experience with Exiscale. Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate. Keep up the good work!"</p>
                 <div class="review-author"><strong>Chris</strong><span>Trustpilot Review</span></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="problem-section">
-        <div class="problem-content">
-            <div class="section-label">THE PROBLEM</div>
-            <h2 class="problem-headline">When Meta kills your accounts, your business stops.</h2>
-            <p class="problem-subtext">Your ads go dark. Spend freezes. Revenue tanks. We built ExiScale so that never happens again.</p>
-            
-            <div class="problem-blocks">
-                <div class="problem-block">
-                    <div class="problem-icon">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M2 17L12 22L22 17" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M2 12L12 17L22 12" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="18" cy="6" r="3" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
-                            <path d="M17.5 5.5L18.5 6.5M17.5 6.5L18.5 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <h3 class="problem-block-title">Ad Accounts Disabled Overnight</h3>
-                    <p class="problem-block-text">Campaigns pause mid-scale. You lose data, momentum, and sales.</p>
-                </div>
-                
-                <div class="problem-block">
-                    <div class="problem-icon">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
-                            <circle cx="12" cy="12" r="3" stroke="#ff6a15" stroke-width="2"/>
-                            <path d="M2 12H22" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" style="animation: shimmer 2s ease-in-out infinite; stroke-dasharray: 20; stroke-dashoffset: 20;"/>
-                        </svg>
-                    </div>
-                    <h3 class="problem-block-title">Revenue Vanishes Instantly</h3>
-                    <p class="problem-block-text">Every minute offline means money lost — and Meta doesn't care.</p>
-                </div>
-                
-                <div class="problem-block">
-                    <div class="problem-icon">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ff6a15" stroke-width="2"/>
-                            <path d="M3 8H21" stroke="#ff6a15" stroke-width="2"/>
-                            <circle cx="7" cy="5.5" r="0.5" fill="#ff6a15"/>
-                            <circle cx="9" cy="5.5" r="0.5" fill="#ff6a15"/>
-                            <circle cx="11" cy="5.5" r="0.5" fill="#ff6a15"/>
-                            <path d="M8 13H16M8 16H13" stroke="#ff6a15" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
-                            <circle cx="18" cy="18" r="4" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
-                            <path d="M18 16V18.5M18 20H18.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <h3 class="problem-block-title">No Support. No Answers.</h3>
-                    <p class="problem-block-text">Endless appeals and "review in progress" emails while your team waits.</p>
-                </div>
             </div>
         </div>
     </section>
