@@ -109,9 +109,10 @@
         .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
         .pricing-section { padding: 5rem 5% 8rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: none; }
-        .booking-section { padding: 5rem 5%; background: white; }
-        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
+        .booking-section { padding: 5rem 5% 8rem; background: white; }
+        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: visible; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
         .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
+        .calendly-inline-widget { border-radius: 28px; overflow: hidden; }
         .faq-section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; background: white; }
         .faq-container { max-width: 900px; margin: 0 auto; }
         .faq-item { background: white; border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
@@ -119,10 +120,11 @@
         .faq-item.active { border-color: var(--orange); box-shadow: 0 12px 40px rgba(255,106,21,0.15); }
         .faq-question-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 2rem 2.5rem; }
         .faq-question { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; color: var(--black); margin: 0; }
-        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); transition: transform 0.3s ease; line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: all 0.6s cubic-bezier(0.65, 0, 0.35, 1); opacity: 0; padding: 0 2.5rem; }
-        .faq-item.active .faq-answer { max-height: 800px; padding: 0 2.5rem 2rem 2.5rem; opacity: 1; }
-        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; }
+        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-answer > * { min-height: 0; padding: 0 2.5rem 2rem 2.5rem; }
+        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; padding: 0.75rem 2.5rem 1.5rem 2.5rem; }
         .cta-section { padding: 5rem 5%; text-align: center; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
@@ -256,20 +258,21 @@
         .pricing-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .pricing-cta:hover::before { left: 100%; }
         .pricing-cta:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
-        .booking-section { padding: 5rem 5%; background: white; }
-        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
+        .booking-section { padding: 5rem 5% 8rem; background: white; }
+        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: visible; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
         .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
+        .calendly-inline-widget { border-radius: 28px; overflow: hidden; }
         .faq-section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; background: white; }
         .faq-container { max-width: 900px; margin: 0 auto; }
         .faq-item { background: white; border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
         .faq-item:hover { border-color: rgba(255,106,21,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
         .faq-item.active { border-color: var(--orange); box-shadow: 0 12px 40px rgba(255,106,21,0.15); }
         .faq-question-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 2rem 2.5rem; }
-        .faq-question { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; color: var(--black); margin: 0; }
-        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); transition: transform 0.3s ease; line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .faq-answer { max-height: 0; overflow: hidden; transition: all 0.6s cubic-bezier(0.65, 0, 0.35, 1); opacity: 0; padding: 0 2.5rem; }
-        .faq-item.active .faq-answer { max-height: 800px; padding: 0 2.5rem 2rem 2.5rem; opacity: 1; }
-        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; }
+        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-answer > * { min-height: 0; padding: 0 2.5rem 2rem 2.5rem; }
+        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; padding: 0.75rem 2.5rem 1.5rem 2.5rem; }
         .cta-section { padding: 10rem 5%; text-align: center; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; position: relative; overflow: hidden; }
         .cta-section::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,106,21,0.15) 0%, transparent 70%); animation: pulse 10s ease-in-out infinite; }
         .cta-section h2 { font-size: 4.5rem; font-weight: 900; margin-bottom: 2rem; letter-spacing: -0.04em; position: relative; z-index: 1; line-height: 1.1; }
