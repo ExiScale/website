@@ -132,10 +132,11 @@
         .comparison-row:hover::before { opacity: 1; }
         .comparison-row:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); z-index: 1; transform: scale(1.008); }
         .comparison-cell { padding: 2.5rem 2.5rem; font-size: 1rem; display: flex; align-items: center; position: relative; }
-        .comparison-cell.feature-col { background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); }
+        .comparison-cell.feature-col { background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); flex-direction: column; align-items: flex-start; justify-content: center; }
+        .feature-name { font-size: 1.1rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+        .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; line-height: 1.5; }
         .comparison-cell.exiscale-col { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
         .comparison-cell.exiscale-col::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); box-shadow: 2px 0 8px rgba(255,106,21,0.3); }
-        .feature-desc { font-size: 0.95rem; color: var(--gray); font-weight: 600; line-height: 1.5; }
         .cell-content { display: flex; align-items: center; gap: 1.2rem; }
         .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, rgba(220,38,38,0.12) 0%, rgba(220,38,38,0.08) 100%); color: #dc2626; border-radius: 50%; font-size: 1.3rem; font-weight: 900; flex-shrink: 0; box-shadow: 0 4px 12px rgba(220,38,38,0.15); transition: all 0.3s ease; }
         .negative-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(220,38,38,0.25); }
@@ -478,6 +479,7 @@
                     <div class="comparison-grid-body">
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Recovery Time</div>
                                 <div class="feature-desc">When disaster strikes</div>
                             </div>
                             <div class="comparison-cell competitor-col">
@@ -496,6 +498,7 @@
                         
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Account Quality</div>
                                 <div class="feature-desc">Foundation that matters</div>
                             </div>
                             <div class="comparison-cell competitor-col">
@@ -514,6 +517,7 @@
                         
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Replacement Policy</div>
                                 <div class="feature-desc">Long-term protection</div>
                             </div>
                             <div class="comparison-cell competitor-col">
@@ -532,6 +536,7 @@
                         
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Support Response</div>
                                 <div class="feature-desc">When you need help</div>
                             </div>
                             <div class="comparison-cell competitor-col">
@@ -550,6 +555,7 @@
                         
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Account Unbans</div>
                                 <div class="feature-desc">Saving profitable accounts</div>
                             </div>
                             <div class="comparison-cell competitor-col">
@@ -568,6 +574,7 @@
                         
                         <div class="comparison-row">
                             <div class="comparison-cell feature-col">
+                                <div class="feature-name">Scaling Capacity</div>
                                 <div class="feature-desc">Growth without limits</div>
                             </div>
                             <div class="comparison-cell competitor-col">
