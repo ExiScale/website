@@ -119,12 +119,12 @@
         .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
         .comparison-grid-wrapper { width: 100%; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
         .comparison-grid-wrapper::-webkit-scrollbar { display: none; }
-        .comparison-grid-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%); position: relative; }
-        .comparison-grid-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--orange) 50%, transparent 100%); opacity: 0.4; }
-        .comparison-header-cell { padding: 2.5rem 2.5rem; text-align: left; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); border-right: 1px solid rgba(255,255,255,0.05); }
+        .comparison-grid-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fafafa; position: relative; border-bottom: 1px solid rgba(0,0,0,0.08); }
+        .comparison-grid-header::after { content: none; }
+        .comparison-header-cell { padding: 1.2rem 2.5rem; text-align: left; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(0,0,0,0.4); border-right: 1px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
         .comparison-header-cell:last-child { border-right: none; }
-        .comparison-header-cell.exiscale-header { background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; position: relative; box-shadow: inset 0 -2px 10px rgba(0,0,0,0.1); }
-        .comparison-header-cell.exiscale-header::before { content: 'BEST CHOICE'; position: absolute; top: 0.6rem; right: 1.2rem; font-size: 0.65rem; background: rgba(255,255,255,0.3); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 900; letter-spacing: 0.12em; backdrop-filter: blur(10px); }
+        .comparison-header-cell.exiscale-header { background: linear-gradient(135deg, #ff6a15 0%, #ff7a25 100%); color: white; position: relative; box-shadow: 0 2px 8px rgba(255,106,21,0.15); border-right: none; }
+        .comparison-header-cell.exiscale-header::before { content: 'RECOMMENDED'; position: absolute; top: 0.4rem; right: 1.2rem; font-size: 0.5rem; background: rgba(255,255,255,0.25); padding: 0.2rem 0.6rem; border-radius: 8px; font-weight: 700; letter-spacing: 0.12em; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); }
         .comparison-grid-body { display: flex; flex-direction: column; }
         .comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(0,0,0,0.04); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
         .comparison-row:last-child { border-bottom: none; }
