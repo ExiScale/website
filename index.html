@@ -42,7 +42,79 @@
         .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
-        .hero-section { margin-top: 70px; padding: 8rem 5% 8rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
+        .hero-section { margin-top: 70px; padding: 8rem 5% 5rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
+        .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
+        .hero-badge { display: inline-flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 0.65rem 1.5rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; border: 1px solid rgba(255,106,21,0.2); box-shadow: 0 4px 20px rgba(255,106,21,0.1); animation: fadeInDown 0.8s ease 0.2s both; }
+        .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; padding: 0.2rem 0; }
+        .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 700px; margin: 2.5rem auto 0; line-height: 1.8; position: relative; z-index: 1; animation: fadeInUp 1s ease 0.6s both; }
+        .hero-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; z-index: 1; margin-top: 2.5rem; animation: fadeInUp 1s ease 0.8s both; }
+        .hero-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .hero-cta:hover::before { left: 100%; }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
+        .trust-section { padding: 5rem 5%; text-align: center; background: linear-gradient(180deg, white 0%, white 100%); border-bottom: 1px solid rgba(0,0,0,0.05); overflow: hidden; }
+        .trust-label { font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 3rem; font-weight: 700; }
+        .logo-carousel { position: relative; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .logo-track { display: flex; gap: 6rem; animation: scrollLogos 60s linear infinite; width: fit-content; align-items: center; will-change: transform; }
+        .logo-track:hover { animation-play-state: paused; }
+        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(100%) opacity(0.4); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
+        .logo-item:hover { filter: grayscale(0%) opacity(0.8); transform: scale(1.05); }
+        .logo-item img { height: 50px; width: auto; max-width: 180px; object-fit: contain; mix-blend-mode: darken; }
+        .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
+        .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 2rem; }
+        .problem-section { padding: 5rem 5% 10rem; background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%); position: relative; overflow: hidden; }
+        .problem-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -200px; left: -100px; animation: float 25s ease-in-out infinite; }
+        .problem-content { max-width: 900px; margin: 5rem auto 0; text-align: center; position: relative; z-index: 1; }
+        .problem-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; animation: fadeInUp 1s ease 0.2s both; }
+        .problem-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 5rem; font-weight: 500; animation: fadeInUp 1s ease 0.4s both; }
+        .problem-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 5rem; margin-bottom: 0; }
+        .problem-block { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .problem-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .problem-block:hover::before { transform: scaleX(1); }
+        .problem-block:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .problem-block:nth-child(1) { animation: slideInLeft 0.8s ease 0.6s both; }
+        .problem-block:nth-child(2) { animation: fadeInScale 0.8s ease 0.7s both; }
+        .problem-block:nth-child(3) { animation: slideInRight 0.8s ease 0.8s both; }
+        .problem-icon { width: 70px; height: 70px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 16px; transition: all 0.4s ease; }
+        .problem-block:hover .problem-icon { transform: scale(1.1) rotate(5deg); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); }
+        .problem-icon svg { width: 36px; height: 36px; }
+        .problem-block-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); }
+        .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
+        .services-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
+        .service-card:hover::before { opacity: 1; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .service-visual { width: 160px; height: 160px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover .service-visual { transform: scale(1.08); }
+        .service-content { position: relative; z-index: 1; text-align: center; }
+        .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
+        .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
+        .reviews-section { padding: 5rem 5%; background: linear-gradient(180deg, #fafafa 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
+        .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
+        .results-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
+        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
+        .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
+        .pricing-section { padding: 5rem 5%; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
+        .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
+        .booking-section { padding: 5rem 5%; background: white; }
+        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
+        .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
+        .faq-section { padding: 5rem 5%; max-width: 1000px; margin: 0 auto; background: var(--light-gray); }
+        .faq-item { border-bottom: 2px solid rgba(0,0,0,0.08); padding: 2.5rem 0; cursor: pointer; transition: all 0.4s ease; position: relative; }
+        .faq-item::before { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 2px; background: var(--orange); transition: width 0.4s ease; }
+        .faq-item:hover::before { width: 100%; }
+        .faq-item:hover { padding-left: 1.5rem; }
+        .faq-question { font-size: 1.4rem; font-weight: 700; transition: color 0.3s ease; letter-spacing: -0.01em; }
+        .faq-item:hover .faq-question { color: var(--orange); }
+        .cta-section { padding: 5rem 5%; text-align: center; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
         .hero-badge { display: inline-flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 0.65rem 1.5rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; border: 1px solid rgba(255,106,21,0.2); box-shadow: 0 4px 20px rgba(255,106,21,0.1); animation: fadeInDown 0.8s ease 0.2s both; }
@@ -149,7 +221,7 @@
         .positive-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(255,106,21,0.35); animation: none; }
         .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.6; }
         .competitor-cell .cell-text { color: var(--gray); }
-        .pricing-section { padding: 10rem 5% 10rem; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
+        .pricing-section { padding: 10rem 5% 5rem; background: linear-gradient(180deg, #fff 0%, var(--light-gray) 100%); position: relative; overflow-x: hidden; overflow-y: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -300px; animation: float 30s ease-in-out infinite; }
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
         .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: 850px; isolation: isolate; }
@@ -175,7 +247,7 @@
         .pricing-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .pricing-cta:hover::before { left: 100%; }
         .pricing-cta:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
-        .booking-section { padding: 10rem 5%; background: white; }
+        .booking-section { padding: 5rem 5%; background: white; }
         .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
         .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
         .faq-section { padding: 10rem 5%; max-width: 1000px; margin: 0 auto; background: var(--light-gray); }
