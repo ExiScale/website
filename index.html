@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExiScale - The Unstoppable Meta Account Solution</title>
+    <!-- Preconnect to Calendly for faster loading -->
+    <link rel="preconnect" href="https://assets.calendly.com">
+    <link rel="preconnect" href="https://calendly.com">
+    <link rel="dns-prefetch" href="https://assets.calendly.com">
+    <link rel="dns-prefetch" href="https://calendly.com">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { max-width: 100%; overflow-x: hidden; }
@@ -769,7 +774,6 @@
         <h2 class="section-title">Book your strategy call now</h2>
         <p style="text-align: center; color: var(--gray); font-size: 1.2rem; max-width: 700px; margin: 0 auto 3rem; line-height: 1.8;">
             Schedule a 30-minute call with our team. We'll analyze your current setup and show you exactly how ExiScale can eliminate your ad account headaches.
-        </p>
         <div class="booking-container">
             <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale-intro/org?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
             <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
@@ -826,5 +830,7 @@
             </div>
         </div>
     </footer>
+    <!-- Load Calendly script early for faster widget rendering -->
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 </body>
 </html>
