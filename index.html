@@ -49,6 +49,10 @@
         .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; padding: 0.2rem 0; }
         .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .hero-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 700px; margin: 2.5rem auto 0; line-height: 1.8; position: relative; z-index: 1; animation: fadeInUp 1s ease 0.6s both; }
+        .hero-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; z-index: 1; margin-top: 2.5rem; animation: fadeInUp 1s ease 0.8s both; }
+        .hero-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .hero-cta:hover::before { left: 100%; }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
         .trust-section { padding: 2rem 5% 1rem; text-align: center; background: linear-gradient(180deg, white 0%, white 100%); border-bottom: 1px solid rgba(0,0,0,0.05); overflow: hidden; }
         .trust-label { font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 3rem; font-weight: 700; }
         .logo-carousel { position: relative; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
@@ -221,6 +225,7 @@
         <p class="hero-subtitle">
             We build infrastructure that keeps you scaling, no matter what.
         </p>
+        <a href="#booking" class="hero-cta">Book Your Strategy Call</a>
     </section>
 
     <section class="trust-section">
