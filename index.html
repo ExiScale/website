@@ -282,18 +282,23 @@
         .cta-button::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .cta-button:hover::before { left: 100%; }
         .cta-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 60px rgba(255,106,21,0.6); }
-        footer { padding: 6rem 5% 3rem; background: white; border-top: 2px solid rgba(0,0,0,0.06); text-align: center; }
-        .footer-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
-        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; text-align: left; margin-bottom: 5rem; max-width: 1400px; margin-left: auto; margin-right: auto; }
-        .footer-principle h4 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; }
-        .footer-principle p { color: var(--gray); line-height: 1.8; font-size: 1.05rem; }
-        .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 3rem; border-top: 1px solid rgba(0,0,0,0.06); font-weight: 500; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
-        .footer-links { display: flex; gap: 2rem; align-items: center; }
+        footer { padding: 8rem 5% 5rem; background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 100%); text-align: center; position: relative; }
+        .footer-content { max-width: 1400px; margin: 0 auto; }
+        .footer-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; text-align: left; margin-bottom: 5rem; }
+        .footer-principle { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .footer-principle::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); opacity: 0; transition: opacity 0.4s ease; }
+        .footer-principle:hover::before { opacity: 1; }
+        .footer-principle:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); border-color: rgba(255,106,21,0.2); }
+        .footer-principle h4 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1.25rem; letter-spacing: -0.02em; color: var(--black); }
+        .footer-principle p { color: var(--gray); line-height: 1.75; font-size: 1rem; font-weight: 500; }
+        .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 4rem; border-top: 1px solid rgba(0,0,0,0.08); font-weight: 500; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
+        .footer-links { display: flex; gap: 2.5rem; align-items: center; }
         .footer-link { color: var(--black); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s ease; position: relative; }
         .footer-link:hover { color: var(--orange); }
-        .footer-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+        .footer-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
         .footer-link:hover::after { width: 100%; }
-        .footer-copyright { color: #999; }
+        .footer-copyright { color: #999; font-size: 0.9rem; }
         @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } .comparison-table th, .comparison-table td { padding: 1.5rem 1.5rem; } .feature-title { font-size: 1.05rem; } .cell-text { font-size: 0.95rem; } }
         @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 6rem 5% 4rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } .comparison-table-wrapper { margin: 3rem -1rem 0; } .comparison-table { border-radius: 0; } .comparison-table th, .comparison-table td { padding: 1.2rem 1rem; font-size: 0.9rem; } .feature-title { font-size: 0.95rem; } .feature-desc { font-size: 0.8rem; } .cell-text { font-size: 0.85rem; } .negative-indicator, .positive-indicator { width: 26px; height: 26px; font-size: 1rem; } .feature-col { width: 35%; } .competitor-col, .exiscale-col { width: 32.5%; } }
     </style>
@@ -874,7 +879,7 @@
                     <span class="faq-toggle">+</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Advertisers, agencies, and brands spending $1K+/month who want reliable, ban-proof infrastructure to scale without interruption.</p>
+                    <p>Advertisers, agencies, and brands spending $1K+/day who want reliable, ban-proof infrastructure to scale without interruption.</p>
                 </div>
             </div>
         </div>
@@ -909,19 +914,19 @@
 
     <footer>
         <div class="footer-content">
-            <h3 class="footer-title">WE BELIEVE IN 3 CORE PRINCIPLES</h3>
+            <h3 class="footer-title">The ExiScale Standard</h3>
             <div class="footer-grid">
                 <div class="footer-principle">
-                    <h4>Build useful infrastructure</h4>
-                    <p>Everything we create has to earn its place. Your accounts should be stable and actually help you scale profitably.</p>
+                    <h4>Who we work with</h4>
+                    <p>We partner with serious advertisers and agencies who value uptime, control, and profit. Built for those spending $1K–$20K+ per day who treat Meta like a business, not a bet.</p>
                 </div>
                 <div class="footer-principle">
-                    <h4>Speak plainly</h4>
-                    <p>We keep communication plain and honest. If something's wrong we speak up, so we can move to finding a solution.</p>
+                    <h4>How we operate</h4>
+                    <p>Instant support. Enterprise infrastructure. Zero downtime. We keep your systems stable, scaling, and online, even when Meta doesn't.</p>
                 </div>
                 <div class="footer-principle">
-                    <h4>Work with serious people</h4>
-                    <p>Great results grow out of solid relationships. We treat clients like teammates and move fast together.</p>
+                    <h4>Our track record</h4>
+                    <p>99.8% uptime. Millions in ad spend protected. When others go dark, ExiScale clients keep scaling.</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -930,7 +935,7 @@
                     <a href="#" class="footer-link">Privacy Policy</a>
                     <a href="#" class="footer-link">Refund Policy</a>
                 </div>
-                <div class="footer-copyright">&copy; 2025 ExiScale. Built for serious advertisers.</div>
+                <div class="footer-copyright">&copy; 2025 ExiScale LLC. Built for serious advertisers.</div>
             </div>
         </div>
     </footer>
