@@ -238,7 +238,7 @@
         .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; align-items: start; }
         .pricing-card { background: white; border-radius: 28px; padding: 2.5rem 3rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: auto; isolation: isolate; }
         .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 50%, transparent 80%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: 0; border-radius: 28px; }
-        .pricing-card:hover::before { opacity: 1; }
+        .pricing-card:hover::before { opacity: 0; }
         .pricing-card:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.35); border-color: var(--orange); z-index: 10; }
         .pricing-card.featured { border: 2px solid var(--orange); transform: translateY(-10px); box-shadow: 0 25px 70px rgba(255,106,21,0.25); }
         .pricing-card.featured:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.45); }
@@ -263,6 +263,9 @@
         .pricing-cta:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: var(--orange); }
         .pricing-card.featured .pricing-cta { background: var(--orange); box-shadow: 0 6px 25px rgba(255,106,21,0.4); }
         .pricing-card.featured .pricing-cta:hover { box-shadow: 0 12px 40px rgba(255,106,21,0.6); }
+        .price-wrapper { position: relative; display: inline-block; }
+        .price-blurred { filter: blur(8px); opacity: 0.4; user-select: none; }
+        .application-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%); color: white; padding: 0.7rem 1.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; box-shadow: 0 8px 25px rgba(0,0,0,0.3); white-space: nowrap; border: 1px solid rgba(255,106,21,0.3); }
         .booking-section { padding: 5rem 5% 8rem; background: white; }
         .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: visible; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
         .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
@@ -626,9 +629,8 @@
                         <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
                         <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
                         <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
-                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">$2K back for every $100K spent</span></span></li>
-                        <li>Private Slack with 8-Figure Operators</li>
-                        <li>Full Ads Management Available</li>
+                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">Earn 2% cashback on every dollar spent. Available exclusively for clients using our in-house payment methods</span></span></li>
+                        <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
                     </ul>
                 </div>
                 <a href="#booking" class="pricing-cta">Get Started</a>
