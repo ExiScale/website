@@ -191,10 +191,10 @@
         .stat-item { text-align: center; }
         .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
         .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .comparison-cta { display: inline-block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
+        .comparison-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
         .comparison-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .comparison-cta:hover::before { left: 100%; }
-        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); }
+        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
         .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
         .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
@@ -278,10 +278,10 @@
         .cta-section::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,106,21,0.15) 0%, transparent 70%); animation: pulse 10s ease-in-out infinite; }
         .cta-section h2 { font-size: 4.5rem; font-weight: 900; margin-bottom: 2rem; letter-spacing: -0.04em; position: relative; z-index: 1; line-height: 1.1; }
         .cta-section p { font-size: 1.4rem; color: rgba(255,255,255,0.8); margin-bottom: 4rem; position: relative; z-index: 1; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .cta-button { display: inline-block; background: var(--orange); color: white; padding: 1.5rem 4rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: all 0.4s ease; box-shadow: 0 15px 50px rgba(255,106,21,0.4); position: relative; z-index: 1; overflow: hidden; letter-spacing: 0.02em; }
+        .cta-button { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; z-index: 1; overflow: hidden; }
         .cta-button::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .cta-button:hover::before { left: 100%; }
-        .cta-button:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 60px rgba(255,106,21,0.6); }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
         footer { padding: 8rem 5% 5rem; background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 100%); text-align: center; position: relative; }
         .footer-content { max-width: 1400px; margin: 0 auto; }
         .footer-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
