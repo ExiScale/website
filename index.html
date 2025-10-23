@@ -90,7 +90,7 @@
         .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
         .services-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
-        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 3.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
         .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
         .service-card:hover::before { opacity: 1; }
         .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
@@ -168,7 +168,7 @@
         .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
         .services-section { padding: 4rem 5% 6rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
         .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
-        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 3.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
         .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
         .service-card:hover::before { opacity: 1; }
         .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
@@ -186,7 +186,7 @@
         .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
         .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
         .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
-        .comparison-stats { display: flex; justify-content: center; align-items: center; gap: 4rem; margin-top: 4rem; padding: 3rem; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; transition: all 0.5s ease; }
+        .comparison-stats { display: flex; justify-content: space-evenly; align-items: center; gap: 3.5rem; margin-top: 4rem; padding: 3rem 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); max-width: 1100px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; transition: all 0.5s ease; }
         .comparison-stats:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
         .stat-item { text-align: center; }
         .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
@@ -196,7 +196,7 @@
         .comparison-cta:hover::before { left: 100%; }
         .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-        .review-card { background: white; padding: 3rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+        .review-card { background: white; padding: 3rem 3.5rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
         .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
         .review-card:hover::before { transform: scaleX(1); }
         .review-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-color: var(--orange); }
@@ -768,15 +768,19 @@
             <div class="comparison-stats">
                 <div class="stat-item">
                     <div class="stat-value">6hrs</div>
-                    <div class="stat-label">Avg Recovery</div>
+                    <div class="stat-label">AVG RECOVERY</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">24/7</div>
-                    <div class="stat-label">Live Support</div>
+                    <div class="stat-label">LIVE SUPPORT</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">99.8%</div>
-                    <div class="stat-label">Uptime Rate</div>
+                    <div class="stat-label">UPTIME RATE</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$500M+</div>
+                    <div class="stat-label">TOTAL AD SPEND</div>
                 </div>
             </div>
             
