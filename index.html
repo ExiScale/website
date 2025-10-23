@@ -235,9 +235,9 @@
         .competitor-cell .cell-text { color: var(--gray); }
         .pricing-section { padding: 5rem 5% 8rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: none; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; }
-        .pricing-card { background: white; border-radius: 28px; padding: 3.5rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: 850px; isolation: isolate; }
-        .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255,106,21,0.05) 0%, transparent 70%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: 0; border-radius: 28px; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; align-items: start; }
+        .pricing-card { background: white; border-radius: 28px; padding: 2.5rem 3rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: auto; isolation: isolate; }
+        .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 50%, transparent 80%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: 0; border-radius: 28px; }
         .pricing-card:hover::before { opacity: 1; }
         .pricing-card:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.35); border-color: var(--orange); z-index: 10; }
         .pricing-card.featured { border: 2px solid var(--orange); transform: translateY(-10px); box-shadow: 0 25px 70px rgba(255,106,21,0.25); }
@@ -247,9 +247,9 @@
         .pricing-tagline { color: var(--gray); font-size: 1.05rem; margin-bottom: 2.5rem; font-weight: 500; }
         .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
         .pricing-period { color: var(--gray); font-size: 1.05rem; display: block; margin-bottom: 2.5rem; font-weight: 600; }
-        .pricing-features { margin: 2.5rem 0; position: relative; z-index: 2; }
+        .pricing-features { margin: 1.5rem 0 1rem 0; position: relative; z-index: 2; }
         .pricing-features ul { list-style: none; position: relative; }
-        .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; transition: all 0.3s ease; position: relative; min-height: 50px; }
+        .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
         .pricing-features li:hover { padding-left: 0.5rem; color: var(--black); }
         .pricing-features li:before { content: "✓"; color: var(--orange); font-weight: 900; flex-shrink: 0; font-size: 1.3rem; }
         .tooltip { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; width: 18px; height: 18px; background: rgba(255,106,21,0.1); color: var(--orange); border-radius: 50%; font-size: 11px; cursor: help; font-weight: 800; margin-left: 0.3rem; transition: all 0.3s ease; border: 1px solid rgba(255,106,21,0.2); flex-shrink: 0; position: relative; }
@@ -257,7 +257,7 @@
         .tooltip .tooltiptext { visibility: hidden; width: 240px; background: var(--black); color: white; text-align: left; border-radius: 10px; padding: 0.85rem; position: absolute; z-index: 999999; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.82rem; line-height: 1.5; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-weight: 400; pointer-events: none; white-space: normal; }
         .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px; border-style: solid; border-color: var(--black) transparent transparent transparent; }
         .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
-        .pricing-cta { display: block; text-align: center; background: var(--black); color: white; padding: 1.3rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.4s ease; margin-top: 2.5rem; box-shadow: 0 6px 25px rgba(0,0,0,0.15); position: relative; overflow: hidden; font-size: 1.05rem; letter-spacing: 0.02em; }
+        .pricing-cta { display: block; text-align: center; background: var(--black); color: white; padding: 1.3rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.4s ease; margin-top: 1.5rem; box-shadow: 0 6px 25px rgba(0,0,0,0.15); position: relative; overflow: hidden; font-size: 1.05rem; letter-spacing: 0.02em; }
         .pricing-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
         .pricing-cta:hover::before { left: 100%; }
         .pricing-cta:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: var(--orange); }
@@ -581,14 +581,13 @@
                 <span class="pricing-period">per month</span>
                 <div class="pricing-features">
                     <ul>
-                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">AdsPower profile with aged US backup account</span></span></li>
-                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Pre-verified BM ready for immediate use</span></span></li>
-                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20K+ daily spend within week one</span></span></li>
-                        <li>10 Trusted Pages</li>
-                        <li>Unlimited Replacements</li>
-                        <li>Use Our Payment Method (0% fees)</li>
-                        <li>Scale $1K → $20K/day</li>
-                        <li>$6,500+ in Bonuses</li>
+                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">Aged 10+ year profile loaded in AdsPower as your main user profile, plus a secure backup stored on our private servers with trusted IPs</span></span></li>
+                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Ready-to-use business manager optimized for instant delivery</span></span></li>
+                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of 20k+ daily spend within the one week</span></span></li>
+                        <li>10 Trusted Pages <span class="tooltip">?<span class="tooltiptext">Pre-built, trusted pages with likes and reviews, ready to advertise under your chosen names</span></span></li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Our Payment Method (0% fees) <span class="tooltip">?<span class="tooltiptext">All payments are processed through ExiScale's trusted payment methods. Crypto top-ups are instant, and bank transfers credit upon arrival</span></span></li>
+                        <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
                     </ul>
                 </div>
                 <a href="#booking" class="pricing-cta">Get Started</a>
@@ -601,38 +600,38 @@
                 <span class="pricing-period">per month</span>
                 <div class="pricing-features">
                     <ul>
-                        <li>Everything in Launch, plus:</li>
-                        <li>2 US Profiles (10+ years aged) <span class="tooltip">?<span class="tooltiptext">Decade-old profiles with complete history</span></span></li>
-                        <li>4 BMs + 1 Host BM <span class="tooltip">?<span class="tooltiptext">Multiple BMs for scaling + permanent host</span></span></li>
+                        <li>1 User Profile + 2 Backups <span class="tooltip">?<span class="tooltiptext">One aged 10+ year profile loaded in AdsPower as your main user profile, plus two secure backups stored on private servers with trusted IPs to keep you live at all times</span></span></li>
+                        <li>4 Business Managers <span class="tooltip">?<span class="tooltiptext">Multiple Business Managers, each preloaded with 3 high-trust ad accounts, built for consistent scaling and asset control</span></span></li>
+                        <li>1 Host Business Manager <span class="tooltip">?<span class="tooltiptext">Dedicated Business Manager to store your pixels safely. It never runs ads, so it stays trusted and permanently yours</span></span></li>
                         <li>12 High-Spending Ad Accounts</li>
-                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Under 5-minute response times</span></span></li>
-                        <li>3 Ad Account Unbans/month <span class="tooltip">?<span class="tooltiptext">We unban instead of just replacing</span></span></li>
-                        <li>5 Ad Approvals/month</li>
-                        <li>Monthly Competitor Spy</li>
-                        <li>$18,000+ in Bonuses</li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Own Payment Method <span class="tooltip">?<span class="tooltiptext">Use your own cards or ExiScale's zero-fee payment method. Crypto top-ups are instant, and bank transfers credit on arrival, giving you total flexibility and uptime assurance</span></span></li>
+                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Instant access to our senior support queue, your requests skip the line and are handled first</span></span></li>
+                        <li>3 Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Up to 3 recoveries per month for banned ad accounts running active campaigns, keeping your data, spend history, and momentum intact</span></span></li>
+                        <li>Ad Approval Service <span class="tooltip">?<span class="tooltiptext">Up to 5 monthly requests for reinstating previously approved ads, ideal for reviving profitable ads that were rejected</span></span></li>
+                        <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
                     </ul>
                 </div>
                 <a href="#booking" class="pricing-cta">Get Started</a>
             </div>
             <div class="pricing-card">
                 <h3 class="pricing-name">Invincible</h3>
-                <p class="pricing-tagline">Become untouchable</p>
+                <p class="pricing-tagline">Become Unstoppable</p>
                 <div class="pricing-price">$10,000</div>
                 <span class="pricing-period">per month</span>
                 <div class="pricing-features">
                     <ul>
                         <li>Everything in Scale, plus:</li>
-                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Never lose a profitable account again</span></span></li>
-                        <li>Unlimited Page & Profile Unbans</li>
+                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Full ad account recovery service, we'll reinstate any banned account tied to profitable campaigns, preserving your spend history and ad data indefinitely</span></span></li>
+                        <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
+                        <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
+                        <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
                         <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">$2K back for every $100K spent</span></span></li>
-                        <li>Personal Network Access <span class="tooltip">?<span class="tooltiptext">Banks, processors, Meta insiders</span></span></li>
                         <li>Private Slack with 8-Figure Operators</li>
-                        <li>Yearly Bangkok Mastermind</li>
                         <li>Full Ads Management Available</li>
-                        <li>$100,000+ in Bonuses</li>
                     </ul>
                 </div>
-                <a href="#booking" class="pricing-cta">Apply Now</a>
+                <a href="#booking" class="pricing-cta">Get Started</a>
             </div>
         </div>
     </section>
