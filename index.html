@@ -48,6 +48,7 @@
         .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
+        .version-tag { position: fixed; top: 10px; right: 10px; background: var(--orange); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 10000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .hero-section { margin-top: 70px; padding: 8rem 5% 5rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
@@ -307,7 +308,7 @@
         .footer-link:hover::after { width: 100%; }
         .footer-copyright { color: #999; font-size: 0.9rem; }
         @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } .comparison-table th, .comparison-table td { padding: 1.5rem 1.5rem; } .feature-title { font-size: 1.05rem; } .cell-text { font-size: 0.95rem; } }
-        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 3rem 5% 2rem; } .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1.1rem; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } .comparison-table-wrapper { margin: 3rem -1rem 0; } .comparison-table { border-radius: 0; } .comparison-table th, .comparison-table td { padding: 1.2rem 1rem; font-size: 0.9rem; } .feature-title { font-size: 0.95rem; } .feature-desc { font-size: 0.8rem; } .cell-text { font-size: 0.85rem; } .negative-indicator, .positive-indicator { width: 26px; height: 26px; font-size: 1rem; } .feature-col { width: 35%; } .competitor-col, .exiscale-col { width: 32.5%; } }
+        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 2rem 5% 1.5rem; } .hero-badge { font-size: 0.65rem; padding: 0.5rem 1rem; margin-bottom: 1rem; white-space: nowrap; } .hero-title { font-size: 2.5rem; margin-bottom: 0.5rem; } .hero-subtitle { font-size: 1.1rem; margin: 1rem auto 0; } .section-title { font-size: 2.2rem; } .reviews-grid { grid-template-columns: 1fr; } .review-card { padding: 2rem; } .pricing-grid { grid-template-columns: 1fr; } .pricing-card { padding: 2.5rem; max-width: 100%; min-height: auto; } .pricing-price { font-size: 3.5rem; } .cta-section h2 { font-size: 2.5rem; } .cta-section p { font-size: 1.1rem; } .problem-headline { font-size: 2.2rem; } .problem-subtext { font-size: 1.1rem; } .problem-block { padding: 2rem; } .comparison-table-wrapper { margin: 3rem -1rem 0; } .comparison-table { border-radius: 0; } .comparison-table th, .comparison-table td { padding: 1.2rem 1rem; font-size: 0.9rem; } .feature-title { font-size: 0.95rem; } .feature-desc { font-size: 0.8rem; } .cell-text { font-size: 0.85rem; } .negative-indicator, .positive-indicator { width: 26px; height: 26px; font-size: 1rem; } .feature-col { width: 35%; } .competitor-col, .exiscale-col { width: 32.5%; } }
     </style>
 </head>
 <body>
@@ -315,6 +316,8 @@
         <div class="logo"><img src="https://exiscale.github.io/website/exiscale-logo.png" alt="ExiScale"></div>
         <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
+
+    <div class="version-tag">v1.1</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
