@@ -103,6 +103,7 @@
         .service-content { position: relative; z-index: 1; text-align: center; }
         .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
         .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
+        .mobile-comparison { display: none; }
         .reviews-section { padding: 5rem 5%; background: linear-gradient(180deg, #fafafa 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
         .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
         .results-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
@@ -338,7 +339,19 @@
         .pricing-features li .tooltip { position: relative; }
         .pricing-features li:has(.tooltip) { font-size: 0.9rem !important; }
         .pricing-features li .tooltiptext { width: 200px !important; max-width: calc(100vw - 80px) !important; left: -180px !important; right: auto !important; transform: translateX(0) !important; margin-left: 0 !important; position: absolute !important; }
-        .tooltiptext { width: 200px !important; left: 50% !important; margin-left: -100px !important; bottom: 120% !important; white-space: normal !important; } .pricing-price { font-size: 3.5rem; } .cta-section { padding: 4rem 5%; } .cta-section h2 { font-size: 2.5rem; padding: 0 1rem; } .cta-section p { font-size: 1.1rem; padding: 0 1rem; } .results-section { padding: 4rem 5%; } .results-headline { font-size: 2rem !important; padding: 0 1rem !important; line-height: 1.3 !important; word-wrap: break-word; } .results-subtext { font-size: 1.1rem; padding: 0 1rem; } .comparison-section { padding: 4rem 5%; overflow-x: auto; } .comparison-headline { font-size: 1.8rem; padding: 0 1rem; line-height: 1.3; } .comparison-subtext { padding: 0 1rem; } .comparison-stats { flex-wrap: wrap; gap: 1.5rem; padding: 2rem 1rem; margin: 2rem 1rem 0; } .stat-item { flex: 1 1 40%; min-width: 120px; } .stat-value { font-size: 2.5rem; } .stat-label { font-size: 0.7rem; } .comparison-table-wrapper { margin: 3rem 0 0; transform: scale(0.7); transform-origin: center top; } .comparison-table { font-size: 0.7rem; min-width: 100%; border-radius: 8px; width: 100%; } .comparison-table th, .comparison-table td { padding: 0.7rem 0.4rem; font-size: 0.7rem; } .feature-title { font-size: 0.75rem; line-height: 1.3; } .feature-desc { display: none; } .cell-text { font-size: 0.7rem; line-height: 1.3; } .negative-indicator, .positive-indicator { width: 20px; height: 20px; font-size: 0.8rem; } .feature-col { width: 38%; } .competitor-col, .exiscale-col { width: 31%; } .faq-section { padding: 4rem 5%; } footer { padding: 4rem 5% 5rem; } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; text-align: center; } .footer-links { flex-direction: row; gap: 1rem; font-size: 0.75rem; flex-wrap: nowrap; padding: 0 1rem; } .footer-link { white-space: nowrap; } }
+        .tooltiptext { width: 200px !important; left: 50% !important; margin-left: -100px !important; bottom: 120% !important; white-space: normal !important; } .pricing-price { font-size: 3.5rem; } .cta-section { padding: 4rem 5%; } .cta-section h2 { font-size: 2.5rem; padding: 0 1rem; } .cta-section p { font-size: 1.1rem; padding: 0 1rem; } .results-section { padding: 4rem 5%; } .results-headline { font-size: 2rem !important; padding: 0 1rem !important; line-height: 1.3 !important; word-wrap: break-word; } .results-subtext { font-size: 1.1rem; padding: 0 1rem; } .comparison-section { padding: 4rem 5%; } .comparison-headline { font-size: 1.8rem; padding: 0 1rem; line-height: 1.3; } .comparison-subtext { padding: 0 1rem; } .comparison-card { display: none; } .comparison-stats { flex-wrap: wrap; gap: 1.5rem; padding: 2rem 1rem; margin: 2rem 1rem 0; } .stat-item { flex: 1 1 40%; min-width: 120px; } .stat-value { font-size: 2.5rem; } .stat-label { font-size: 0.7rem; } .faq-section { padding: 4rem 5%; } footer { padding: 4rem 5% 5rem; } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; text-align: center; } .footer-links { flex-direction: row; gap: 1rem; font-size: 0.75rem; flex-wrap: nowrap; padding: 0 1rem; } .footer-link { white-space: nowrap; } 
+        
+        .mobile-comparison { display: block; padding: 0 1rem; margin-top: 2rem; }
+        .mobile-comparison-item { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .mobile-comparison-feature { font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid rgba(255,106,21,0.1); }
+        .mobile-comparison-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+        .mobile-comparison-row:last-child { margin-bottom: 0; }
+        .mobile-comparison-col { flex: 1; }
+        .mobile-comparison-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 0.5rem; font-weight: 700; }
+        .mobile-comparison-value { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; line-height: 1.4; }
+        .mobile-comparison-col.exiscale { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); padding: 0.75rem; border-radius: 8px; border-left: 3px solid var(--orange); }
+        .mobile-comparison-col.exiscale .mobile-comparison-label { color: var(--orange); }
+        }
     </style>
 </head>
 <body>
@@ -347,7 +360,7 @@
         <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
 
-    <div class="version-tag">v9.8</div>
+    <div class="version-tag">v10.0</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
@@ -904,6 +917,109 @@
                 <div class="stat-item">
                     <div class="stat-value">$500M+</div>
                     <div class="stat-label">TOTAL AD SPEND</div>
+                </div>
+            </div>
+            
+            <!-- Mobile-Only Comparison Cards -->
+            <div class="mobile-comparison">
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Recovery Time</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Other Providers</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Days or weeks of downtime</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Back live in hours, not days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Account Quality</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Other Providers</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Fresh accounts that flag instantly</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>10+ year aged profiles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Replacement Policy</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Other Providers</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Limited replacements, hidden fees</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Unlimited, forever</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Support Response</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Other Providers</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Tickets ignored for days</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Under 2 minutes. 24/7/365</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Technical Infrastructure</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Other Providers</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Basic setups prone to failure</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Distributed, redundant systems</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
