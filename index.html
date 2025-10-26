@@ -256,7 +256,7 @@
         .pricing-card:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.35); border-color: var(--orange); z-index: 10; }
         .pricing-card.featured { border: 2px solid var(--orange); transform: translateY(-10px); box-shadow: 0 25px 70px rgba(255,106,21,0.25); }
         .pricing-card.featured:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.45); }
-        .pricing-badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 6px 20px rgba(255,106,21,0.5); z-index: 10; }
+        .pricing-badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 6px 20px rgba(255,106,21,0.5); z-index: 10; white-space: nowrap; }
         .pricing-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; position: relative; }
         .pricing-tagline { color: var(--gray); font-size: 1.05rem; margin-bottom: 2.5rem; font-weight: 500; }
         .pricing-price { font-size: 4.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.04em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
@@ -1075,7 +1075,7 @@
                     init = true;
                     pricingSwiper = new Swiper('.pricing-swiper', {
                         slidesPerView: 1,
-                        spaceBetween: 20,
+                        spaceBetween: 40,
                         centeredSlides: true,
                         grabCursor: true,
                         keyboard: {
@@ -1088,7 +1088,7 @@
                         breakpoints: {
                             480: {
                                 slidesPerView: 1.1,
-                                spaceBetween: 20
+                                spaceBetween: 40
                             }
                         }
                     });
