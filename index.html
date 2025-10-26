@@ -329,8 +329,9 @@
         .pricing-swiper-container { display: block !important; }
         
         .pricing-card { padding: 2rem 1.5rem; max-width: 100%; margin: 0 auto; width: 100%; } 
-        .pricing-features li { transition: none !important; }
-        .pricing-features li:hover { padding-left: 0 !important; color: var(--gray) !important; }
+        .pricing-features li { transition: none !important; padding: 1rem 0 !important; pointer-events: none !important; -webkit-tap-highlight-color: transparent !important; }
+        .pricing-features li * { pointer-events: auto !important; }
+        .pricing-features li:hover, .pricing-features li:active, .pricing-features li:focus { padding-left: 0 !important; padding: 1rem 0 !important; color: var(--gray) !important; transform: none !important; }
         .pricing-features ul { padding-left: 0; text-align: left; } .pricing-features li { text-align: left; padding-left: 0.5rem; font-size: 0.95rem; } .pricing-features ul { padding-left: 0; text-align: left; } .pricing-features li { text-align: left; padding-left: 1.5rem; font-size: 0.95rem; } .tooltip { display: inline-flex !important; align-items: center !important; justify-content: center !important; line-height: 1 !important; } 
         
         .tooltip .tooltiptext { width: 220px !important; max-width: calc(100vw - 60px) !important; left: auto !important; right: -10px !important; transform: none !important; }
@@ -343,7 +344,7 @@
         <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
 
-    <div class="version-tag">v8.6</div>
+    <div class="version-tag">v8.8</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
