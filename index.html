@@ -68,8 +68,8 @@
         .logo-carousel { position: relative; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
         .logo-track { display: flex; gap: 6rem; animation: scrollLogos 60s linear infinite; width: fit-content; align-items: center; will-change: transform; }
         .logo-track:hover { animation-play-state: paused; }
-        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(0%) opacity(1); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
-        .logo-item:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(100%) opacity(0.4); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
+        .logo-item:hover { filter: grayscale(0%) opacity(0.8); transform: scale(1.05); }
         .logo-item img { height: 50px; width: auto; max-width: 180px; object-fit: contain; mix-blend-mode: darken; }
         .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
         .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
@@ -147,8 +147,8 @@
         .logo-carousel { position: relative; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
         .logo-track { display: flex; gap: 6rem; animation: scrollLogos 40s linear infinite; width: fit-content; align-items: center; }
         .logo-track:hover { animation-play-state: paused; }
-        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(0%) opacity(1); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
-        .logo-item:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(100%) opacity(0.4); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
+        .logo-item:hover { filter: grayscale(0%) opacity(0.8); transform: scale(1.05); }
         .logo-item img { height: 50px; width: auto; max-width: 180px; object-fit: contain; mix-blend-mode: darken; }
         .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
         .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
@@ -360,7 +360,7 @@
         <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
 
-    <div class="version-tag">v10.8</div>
+    <div class="version-tag">v11.0</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
@@ -373,10 +373,10 @@
             We build infrastructure that keeps you scaling, no matter what.
         </p>
         <a href="#booking" class="hero-cta">Book Your Strategy Call</a>
-        <div class="hero-trustpilot" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
-            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" style="height: 20px; opacity: 1;">
-            <span style="color: #00b67a; font-size: 1.3rem;">★★★★★</span>
-            <span style="font-weight: 600; font-size: 0.95rem; color: var(--black);">4.6/5</span>
+        <div class="hero-trustpilot" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; position: relative; z-index: 10;">
+            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" style="height: 20px; opacity: 1 !important; filter: none !important;">
+            <span style="color: #00b67a; font-size: 1.3rem; opacity: 1 !important;">★★★★★</span>
+            <span style="font-weight: 600; font-size: 0.95rem; color: var(--black); opacity: 1 !important;">4.6/5</span>
         </div>
     </section>
 
