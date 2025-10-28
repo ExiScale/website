@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - ExiScale</title>
+    <link rel="icon" type="image/png" href="https://exiscale.github.io/website/exiscale-favicon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { max-width: 100%; overflow-x: hidden; }
+        :root { --orange: #ff6a15; --black: #0a0a0a; --gray: #666; --light-gray: #fafafa; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--black); background: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
+        
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .logo img { height: 48px; transition: transform 0.4s ease; }
+        .logo img:hover { transform: scale(1.05); }
+        .nav-cta { background: var(--black); color: white; padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
+        .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
+        .nav-cta:hover::before { left: 100%; }
+        .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
+
+        /* Legal Document Container */
+        .legal-container { max-width: 900px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .legal-header { text-align: center; margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 2px solid rgba(255,106,21,0.1); }
+        .legal-title { font-size: 3rem; font-weight: 900; color: var(--black); margin-bottom: 1rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .legal-date { color: var(--gray); font-size: 1rem; font-weight: 500; }
+        
+        /* Content Sections */
+        .legal-section { margin-bottom: 3rem; }
+        .section-title { font-size: 1.5rem; font-weight: 800; color: var(--black); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--orange); }
+        .section-number { color: var(--orange); margin-right: 0.5rem; }
+        .legal-content { font-size: 1rem; line-height: 1.8; color: var(--gray); margin-bottom: 1.5rem; }
+        .legal-content strong { color: var(--black); font-weight: 700; }
+        .legal-content a { color: var(--orange); text-decoration: none; font-weight: 600; }
+        .legal-content a:hover { text-decoration: underline; }
+        
+        /* Subsections */
+        .subsection { margin-left: 2rem; margin-top: 1.5rem; }
+        .subsection-title { font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 0.75rem; }
+        
+        /* Lists */
+        .legal-list { margin-left: 3rem; margin-top: 1rem; margin-bottom: 1rem; }
+        .legal-list li { margin-bottom: 0.75rem; color: var(--gray); line-height: 1.8; }
+        
+        /* Important Notice Box */
+        .notice-box { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.03) 100%); border-left: 4px solid var(--orange); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; }
+        .notice-box strong { color: var(--black); display: block; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        
+        /* Footer */
+        footer { background: var(--black); color: white; padding: 5rem 5% 3rem; }
+        .footer-content { max-width: 1400px; margin: 0 auto; }
+        .footer-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 3rem; text-align: center; background: linear-gradient(135deg, white 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-bottom: 4rem; }
+        .footer-principle h4 { color: var(--orange); font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; }
+        .footer-principle p { color: rgba(255,255,255,0.7); line-height: 1.8; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .footer-link { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .footer-link:hover { color: var(--orange); }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 5%; }
+            .logo img { height: 40px; }
+            .legal-container { padding: 6rem 1.5rem 3rem; }
+            .legal-title { font-size: 2rem; }
+            .section-title { font-size: 1.3rem; }
+            .subsection { margin-left: 1rem; }
+            .legal-list { margin-left: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="https://exiscale.github.io/website/" class="logo">
+            <img src="https://exiscale.github.io/website/exiscale-logo.png" alt="ExiScale">
+        </a>
+        <a href="https://exiscale.github.io/website/#booking" class="nav-cta">Book a Call</a>
+    </nav>
+
+    <div class="legal-container">
+        <div class="legal-header">
+            <h1 class="legal-title">Terms of Service</h1>
+            <p class="legal-date">Last Updated: October 24, 2025</p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">1.</span> Agreement to Terms</h2>
+            <p class="legal-content">
+                By accessing or using ExiScale's services ("Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, you may not use our Services. These Terms apply to all users, including but not limited to clients, visitors, and others who access the Services.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">2.</span> Description of Services</h2>
+            <p class="legal-content">
+                ExiScale provides Meta advertising infrastructure services, including but not limited to:
+            </p>
+            <ul class="legal-list">
+                <li>Business Manager and Ad Account provisioning</li>
+                <li>Account recovery and unban services</li>
+                <li>Meta advertising support and consultation</li>
+                <li>Ad account infrastructure management</li>
+                <li>Payment processing services</li>
+            </ul>
+            <p class="legal-content">
+                We reserve the right to modify, suspend, or discontinue any part of our Services at any time without prior notice.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">3.</span> Eligibility and Account Requirements</h2>
+            <p class="legal-content">
+                You must be at least 18 years of age to use our Services. By using our Services, you represent and warrant that you meet this age requirement and have the legal capacity to enter into these Terms.
+            </p>
+            <p class="legal-content">
+                You agree to provide accurate, current, and complete information during registration and to update such information as necessary to maintain its accuracy.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">4.</span> Payment Terms</h2>
+            <div class="subsection">
+                <h3 class="subsection-title">4.1 Pricing and Billing</h3>
+                <p class="legal-content">
+                    All fees are stated in USD and are billed on a recurring monthly basis unless otherwise specified. You agree to pay all fees associated with your chosen service package.
+                </p>
+            </div>
+            <div class="subsection">
+                <h3 class="subsection-title">4.2 Payment Methods</h3>
+                <p class="legal-content">
+                    We accept payment via credit card, cryptocurrency, and bank transfer. By providing payment information, you represent that you are authorized to use the payment method and that all information is accurate and complete.
+                </p>
+            </div>
+            <div class="subsection">
+                <h3 class="subsection-title">4.3 Automatic Renewal</h3>
+                <p class="legal-content">
+                    Your subscription will automatically renew at the end of each billing period unless you cancel before the renewal date. You authorize us to charge your payment method for the renewal fee.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">5.</span> Refund Policy</h2>
+            <p class="legal-content">
+                Please refer to our separate <a href="exiscale-refund-policy.html">Refund Policy</a> for detailed information about refunds, cancellations, and money-back guarantees.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">6.</span> User Conduct and Prohibited Activities</h2>
+            <p class="legal-content">
+                You agree not to use our Services for any unlawful purpose or in violation of these Terms. Prohibited activities include but are not limited to:
+            </p>
+            <ul class="legal-list">
+                <li>Violating any applicable laws or regulations</li>
+                <li>Infringing upon intellectual property rights</li>
+                <li>Attempting to gain unauthorized access to our systems</li>
+                <li>Using the Services to advertise illegal products or services</li>
+                <li>Engaging in fraudulent or deceptive practices</li>
+                <li>Violating Meta's Terms of Service or Advertising Policies</li>
+                <li>Reselling or redistributing our Services without authorization</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">7.</span> Service Level and Performance</h2>
+            <p class="legal-content">
+                While we strive to maintain high availability and performance, we do not guarantee uninterrupted access to our Services. We are not liable for any downtime, service interruptions, or performance issues that may occur.
+            </p>
+            <p class="legal-content">
+                We do not guarantee specific results from using our Services, including but not limited to ad account approval, unban success rates, or advertising performance.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">8.</span> Intellectual Property Rights</h2>
+            <p class="legal-content">
+                All content, materials, and intellectual property associated with ExiScale, including but not limited to logos, trademarks, text, graphics, and software, are owned by or licensed to ExiScale and are protected by copyright, trademark, and other intellectual property laws.
+            </p>
+            <p class="legal-content">
+                You may not use, copy, reproduce, or distribute any of our intellectual property without prior written consent.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">9.</span> Privacy and Data Protection</h2>
+            <p class="legal-content">
+                Your privacy is important to us. Please review our <a href="exiscale-privacy-policy.html">Privacy Policy</a> to understand how we collect, use, and protect your personal information. By using our Services, you consent to our data practices as described in the Privacy Policy.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">10.</span> Third-Party Services and Meta Policies</h2>
+            <p class="legal-content">
+                Our Services involve interaction with Meta (Facebook) platforms and services. You acknowledge that:
+            </p>
+            <ul class="legal-list">
+                <li>You are solely responsible for compliance with Meta's Terms of Service and Advertising Policies</li>
+                <li>ExiScale is not affiliated with, endorsed by, or sponsored by Meta</li>
+                <li>Meta's policies and decisions are outside of our control</li>
+                <li>We cannot guarantee Meta's actions or decisions regarding your accounts</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">11.</span> Limitation of Liability</h2>
+            <div class="notice-box">
+                <strong>IMPORTANT NOTICE:</strong>
+                TO THE MAXIMUM EXTENT PERMITTED BY LAW, EXISCALE SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, OR ADVERTISING SPEND, ARISING FROM YOUR USE OF OUR SERVICES.
+            </div>
+            <p class="legal-content">
+                Our total liability to you for any claims arising from your use of the Services shall not exceed the amount you paid to ExiScale in the twelve (12) months preceding the claim.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">12.</span> Disclaimer of Warranties</h2>
+            <p class="legal-content">
+                THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+            </p>
+            <p class="legal-content">
+                We do not warrant that the Services will meet your requirements, be uninterrupted, timely, secure, or error-free.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">13.</span> Indemnification</h2>
+            <p class="legal-content">
+                You agree to indemnify, defend, and hold harmless ExiScale, its affiliates, officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising from:
+            </p>
+            <ul class="legal-list">
+                <li>Your use of the Services</li>
+                <li>Your violation of these Terms</li>
+                <li>Your violation of any third-party rights</li>
+                <li>Your advertising content or campaigns</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">14.</span> Termination</h2>
+            <p class="legal-content">
+                We reserve the right to terminate or suspend your access to the Services at any time, with or without cause, with or without notice. You may cancel your subscription at any time by contacting support.
+            </p>
+            <p class="legal-content">
+                Upon termination, your right to use the Services will immediately cease. Sections of these Terms that by their nature should survive termination will survive, including but not limited to indemnification, limitation of liability, and dispute resolution provisions.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">15.</span> Dispute Resolution and Arbitration</h2>
+            <div class="notice-box">
+                <strong>ARBITRATION AGREEMENT:</strong>
+                You agree that any disputes arising from these Terms or your use of the Services will be resolved through binding arbitration rather than in court, except where prohibited by law.
+            </div>
+            <p class="legal-content">
+                Any disputes shall be resolved through confidential binding arbitration in accordance with the rules of the American Arbitration Association. You waive your right to participate in class action lawsuits or class-wide arbitration.
+            </p>
+            <div class="subsection">
+                <h3 class="subsection-title">Opt-Out Right</h3>
+                <p class="legal-content">
+                    You may opt out of this arbitration agreement within 30 days of first accepting these Terms by sending written notice to: ExiScale LLC, 30 North Gould Street, Sheridan, Wyoming 82801, United States of America.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">16.</span> Governing Law</h2>
+            <p class="legal-content">
+                These Terms shall be governed by and construed in accordance with the laws of [INSERT JURISDICTION], without regard to its conflict of law provisions.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">17.</span> Changes to Terms</h2>
+            <p class="legal-content">
+                We reserve the right to modify these Terms at any time. We will notify you of material changes by posting the updated Terms on our website and updating the "Last Updated" date. Your continued use of the Services after such changes constitutes acceptance of the modified Terms.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">18.</span> Severability</h2>
+            <p class="legal-content">
+                If any provision of these Terms is found to be invalid or unenforceable, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">19.</span> Entire Agreement</h2>
+            <p class="legal-content">
+                These Terms, together with our Privacy Policy and Refund Policy, constitute the entire agreement between you and ExiScale regarding your use of the Services and supersede all prior agreements and understandings.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2 class="section-title"><span class="section-number">20.</span> Contact Information</h2>
+            <p class="legal-content">
+                For questions about these Terms or our Services, please contact us at:
+            </p>
+            <p class="legal-content">
+                <strong>Email:</strong> support@exiscale.com<br>
+                <strong>Phone:</strong> +1 (307) 461-9524<br>
+                <strong>Address:</strong> 30 North Gould Street, Sheridan, Wyoming 82801, United States of America
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 2px solid rgba(255,106,21,0.1);">
+            <p class="legal-content">&copy; 2025 ExiScale LLC. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3 class="footer-title">The ExiScale Standard</h3>
+            <div class="footer-grid">
+                <div class="footer-principle">
+                    <h4>Who we work with</h4>
+                    <p>We partner with serious advertisers and agencies who value uptime, control, and profit. Built for those spending $1K–$20K+ per day who treat Meta like a business, not a bet.</p>
+                </div>
+                <div class="footer-principle">
+                    <h4>How we operate</h4>
+                    <p>Instant support. Enterprise infrastructure. Zero downtime. We keep your systems stable, scaling, and online, even when Meta doesn't.</p>
+                </div>
+                <div class="footer-principle">
+                    <h4>Our track record</h4>
+                    <p>99.8% uptime. Millions in ad spend protected. When others go dark, ExiScale clients keep scaling.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="https://exiscale.github.io/website/exiscale-terms-of-service.html" class="footer-link">Terms of Service</a>
+                    <a href="https://exiscale.github.io/website/exiscale-privacy-policy.html" class="footer-link">Privacy Policy</a>
+                    <a href="https://exiscale.github.io/website/exiscale-refund-policy.html" class="footer-link">Refund Policy</a>
+                </div>
+                <div class="footer-copyright">&copy; 2025 ExiScale LLC. Built for serious advertisers.</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
