@@ -386,7 +386,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v12.1</div>
+    <div class="version-tag">v12.2</div>
     <nav>
         <div class="logo"><img src="https://exiscale.github.io/website/logos/exiscale-logo.png" alt="ExiScale"></div>
         <a href="#booking" class="nav-cta">Book a Call</a>
@@ -1475,14 +1475,23 @@
                     monthlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile ONLY - switch swipers and maintain slide position
+                // Mobile ONLY - switch swipers and maintain slide position with smooth fade
                 if (isMobile) {
                     const monthlySwiper = document.getElementById('monthly-swiper');
                     const yearlySwiper = document.getElementById('yearly-swiper');
                     
-                    if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
+                    // Fade out current swiper
+                    if (yearlySwiper) {
+                        yearlySwiper.style.setProperty('transition', 'opacity 0.3s ease', 'important');
+                        yearlySwiper.style.setProperty('opacity', '0', 'important');
+                        
+                        setTimeout(() => {
+                            yearlySwiper.style.setProperty('display', 'none', 'important');
+                        }, 300);
+                    }
+                    
                     if (monthlySwiper) {
-                        // Hide first, then set slide, then show
+                        // Prepare new swiper (hidden, correct slide)
                         monthlySwiper.style.setProperty('opacity', '0', 'important');
                         monthlySwiper.style.setProperty('display', 'block', 'important');
                         
@@ -1492,10 +1501,12 @@
                             if (swiper && swiper.swiper) {
                                 console.log('Switching to monthly slide:', currentSlideIndex);
                                 swiper.swiper.slideTo(currentSlideIndex, 0);
-                                // Show after slide is set
+                                
+                                // Smooth fade in after old swiper fades out
                                 setTimeout(() => {
+                                    monthlySwiper.style.setProperty('transition', 'opacity 0.4s ease', 'important');
                                     monthlySwiper.style.setProperty('opacity', '1', 'important');
-                                }, 50);
+                                }, 150);
                             }
                         }, 50);
                     }
@@ -1510,14 +1521,23 @@
                     yearlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile ONLY - switch swipers and maintain slide position
+                // Mobile ONLY - switch swipers and maintain slide position with smooth fade
                 if (isMobile) {
                     const monthlySwiper = document.getElementById('monthly-swiper');
                     const yearlySwiper = document.getElementById('yearly-swiper');
                     
-                    if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
+                    // Fade out current swiper
+                    if (monthlySwiper) {
+                        monthlySwiper.style.setProperty('transition', 'opacity 0.3s ease', 'important');
+                        monthlySwiper.style.setProperty('opacity', '0', 'important');
+                        
+                        setTimeout(() => {
+                            monthlySwiper.style.setProperty('display', 'none', 'important');
+                        }, 300);
+                    }
+                    
                     if (yearlySwiper) {
-                        // Hide first, then set slide, then show
+                        // Prepare new swiper (hidden, correct slide)
                         yearlySwiper.style.setProperty('opacity', '0', 'important');
                         yearlySwiper.style.setProperty('display', 'block', 'important');
                         
@@ -1527,10 +1547,12 @@
                             if (swiper && swiper.swiper) {
                                 console.log('Switching to yearly slide:', currentSlideIndex);
                                 swiper.swiper.slideTo(currentSlideIndex, 0);
-                                // Show after slide is set
+                                
+                                // Smooth fade in after old swiper fades out
                                 setTimeout(() => {
+                                    yearlySwiper.style.setProperty('transition', 'opacity 0.4s ease', 'important');
                                     yearlySwiper.style.setProperty('opacity', '1', 'important');
-                                }, 50);
+                                }, 150);
                             }
                         }, 50);
                     }
