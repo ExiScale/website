@@ -127,9 +127,13 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         
         /* Pricing Cards with Toggle */
-        .pricing-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
-        .pricing-content.active { display: block; animation: fadeInPricing 0.4s ease forwards; }
-        @keyframes fadeInPricing { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .pricing-content { display: none; opacity: 0; }
+        .pricing-content.active { display: block; animation: fadeInPricing 0.5s ease forwards; }
+        @keyframes fadeInPricing { 
+            0% { opacity: 0; transform: translateY(10px); } 
+            1% { opacity: 0; } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
         
         /* Mobile Responsive for Billing Toggle */
         @media (max-width: 768px) {
@@ -1443,19 +1447,47 @@
             const yearlySwiper = document.getElementById('yearly-swiper');
             
             if (period === 'monthly') {
+                // Fade out yearly first
                 yearlyContent.classList.remove('active');
-                setTimeout(() => monthlyContent.classList.add('active'), 50);
                 
-                // Mobile - set inline styles to override media query
+                // Wait for fade out, then show monthly
+                setTimeout(() => {
+                    monthlyContent.classList.add('active');
+                }, 150);
+                
+                // Mobile - switch swipers and reset to first slide
                 if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
-                if (monthlySwiper) monthlySwiper.style.setProperty('display', 'block', 'important');
+                if (monthlySwiper) {
+                    monthlySwiper.style.setProperty('display', 'block', 'important');
+                    // Reset to first slide after a brief delay
+                    setTimeout(() => {
+                        const swiper = document.querySelector('#monthly-swiper .swiper');
+                        if (swiper && swiper.swiper) {
+                            swiper.swiper.slideTo(0, 300);
+                        }
+                    }, 100);
+                }
             } else {
+                // Fade out monthly first
                 monthlyContent.classList.remove('active');
-                setTimeout(() => yearlyContent.classList.add('active'), 50);
                 
-                // Mobile - set inline styles to override media query
+                // Wait for fade out, then show yearly
+                setTimeout(() => {
+                    yearlyContent.classList.add('active');
+                }, 150);
+                
+                // Mobile - switch swipers and reset to first slide
                 if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
-                if (yearlySwiper) yearlySwiper.style.setProperty('display', 'block', 'important');
+                if (yearlySwiper) {
+                    yearlySwiper.style.setProperty('display', 'block', 'important');
+                    // Reset to first slide after a brief delay
+                    setTimeout(() => {
+                        const swiper = document.querySelector('#yearly-swiper .swiper');
+                        if (swiper && swiper.swiper) {
+                            swiper.swiper.slideTo(0, 300);
+                        }
+                    }, 100);
+                }
             }
         }
     </script>
