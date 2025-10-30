@@ -129,10 +129,15 @@
         /* Pricing Cards with Toggle */
         .pricing-content { display: none; opacity: 0; }
         .pricing-content.active { display: block; animation: fadeInPricing 0.5s ease forwards; }
+        .pricing-content.fading-out { animation: fadeOutPricing 0.2s ease forwards; }
         @keyframes fadeInPricing { 
             0% { opacity: 0; transform: translateY(10px); } 
             1% { opacity: 0; } 
             100% { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes fadeOutPricing { 
+            0% { opacity: 1; } 
+            100% { opacity: 0; } 
         }
         
         /* Mobile Responsive for Billing Toggle */
@@ -1447,13 +1452,14 @@
             const yearlySwiper = document.getElementById('yearly-swiper');
             
             if (period === 'monthly') {
-                // Fade out yearly first
-                yearlyContent.classList.remove('active');
+                // Add fade-out class to yearly
+                yearlyContent.classList.add('fading-out');
                 
-                // Wait for fade out, then show monthly
+                // After fade-out completes, hide yearly and show monthly
                 setTimeout(() => {
+                    yearlyContent.classList.remove('active', 'fading-out');
                     monthlyContent.classList.add('active');
-                }, 150);
+                }, 200);
                 
                 // Mobile - switch swipers and reset to first slide
                 if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
@@ -1468,13 +1474,14 @@
                     }, 100);
                 }
             } else {
-                // Fade out monthly first
-                monthlyContent.classList.remove('active');
+                // Add fade-out class to monthly
+                monthlyContent.classList.add('fading-out');
                 
-                // Wait for fade out, then show yearly
+                // After fade-out completes, hide monthly and show yearly
                 setTimeout(() => {
+                    monthlyContent.classList.remove('active', 'fading-out');
                     yearlyContent.classList.add('active');
-                }, 150);
+                }, 200);
                 
                 // Mobile - switch swipers and reset to first slide
                 if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
