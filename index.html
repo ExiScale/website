@@ -1447,9 +1447,8 @@
             const monthlyContent = document.getElementById('monthly-pricing');
             const yearlyContent = document.getElementById('yearly-pricing');
             
-            // Switch mobile swipers
-            const monthlySwiper = document.getElementById('monthly-swiper');
-            const yearlySwiper = document.getElementById('yearly-swiper');
+            // Check if mobile
+            const isMobile = window.innerWidth <= 768;
             
             if (period === 'monthly') {
                 // Add fade-out class to yearly
@@ -1461,17 +1460,22 @@
                     monthlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile - switch swipers and reset to first slide
-                if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
-                if (monthlySwiper) {
-                    monthlySwiper.style.setProperty('display', 'block', 'important');
-                    // Reset to first slide after a brief delay
-                    setTimeout(() => {
-                        const swiper = document.querySelector('#monthly-swiper .swiper');
-                        if (swiper && swiper.swiper) {
-                            swiper.swiper.slideTo(0, 300);
-                        }
-                    }, 100);
+                // Mobile ONLY - switch swipers and reset to first slide
+                if (isMobile) {
+                    const monthlySwiper = document.getElementById('monthly-swiper');
+                    const yearlySwiper = document.getElementById('yearly-swiper');
+                    
+                    if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
+                    if (monthlySwiper) {
+                        monthlySwiper.style.setProperty('display', 'block', 'important');
+                        // Reset to first slide instantly
+                        setTimeout(() => {
+                            const swiper = document.querySelector('#monthly-swiper .swiper');
+                            if (swiper && swiper.swiper) {
+                                swiper.swiper.slideTo(0, 0);
+                            }
+                        }, 250);
+                    }
                 }
             } else {
                 // Add fade-out class to monthly
@@ -1483,17 +1487,22 @@
                     yearlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile - switch swipers and reset to first slide
-                if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
-                if (yearlySwiper) {
-                    yearlySwiper.style.setProperty('display', 'block', 'important');
-                    // Reset to first slide after a brief delay
-                    setTimeout(() => {
-                        const swiper = document.querySelector('#yearly-swiper .swiper');
-                        if (swiper && swiper.swiper) {
-                            swiper.swiper.slideTo(0, 300);
-                        }
-                    }, 100);
+                // Mobile ONLY - switch swipers and reset to first slide
+                if (isMobile) {
+                    const monthlySwiper = document.getElementById('monthly-swiper');
+                    const yearlySwiper = document.getElementById('yearly-swiper');
+                    
+                    if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
+                    if (yearlySwiper) {
+                        yearlySwiper.style.setProperty('display', 'block', 'important');
+                        // Reset to first slide instantly
+                        setTimeout(() => {
+                            const swiper = document.querySelector('#yearly-swiper .swiper');
+                            if (swiper && swiper.swiper) {
+                                swiper.swiper.slideTo(0, 0);
+                            }
+                        }, 250);
+                    }
                 }
             }
         }
