@@ -386,7 +386,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v12.0</div>
+    <div class="version-tag">v12.1</div>
     <nav>
         <div class="logo"><img src="https://exiscale.github.io/website/logos/exiscale-logo.png" alt="ExiScale"></div>
         <a href="#booking" class="nav-cta">Book a Call</a>
@@ -1482,15 +1482,22 @@
                     
                     if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
                     if (monthlySwiper) {
+                        // Hide first, then set slide, then show
+                        monthlySwiper.style.setProperty('opacity', '0', 'important');
                         monthlySwiper.style.setProperty('display', 'block', 'important');
-                        // Go to the same slide index that was active
+                        
+                        // Set the slide position immediately while hidden
                         setTimeout(() => {
                             const swiper = document.querySelector('#monthly-swiper .swiper');
                             if (swiper && swiper.swiper) {
                                 console.log('Switching to monthly slide:', currentSlideIndex);
-                                swiper.swiper.slideTo(currentSlideIndex, 300);
+                                swiper.swiper.slideTo(currentSlideIndex, 0);
+                                // Show after slide is set
+                                setTimeout(() => {
+                                    monthlySwiper.style.setProperty('opacity', '1', 'important');
+                                }, 50);
                             }
-                        }, 100);
+                        }, 50);
                     }
                 }
             } else {
@@ -1510,15 +1517,22 @@
                     
                     if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
                     if (yearlySwiper) {
+                        // Hide first, then set slide, then show
+                        yearlySwiper.style.setProperty('opacity', '0', 'important');
                         yearlySwiper.style.setProperty('display', 'block', 'important');
-                        // Go to the same slide index that was active
+                        
+                        // Set the slide position immediately while hidden
                         setTimeout(() => {
                             const swiper = document.querySelector('#yearly-swiper .swiper');
                             if (swiper && swiper.swiper) {
                                 console.log('Switching to yearly slide:', currentSlideIndex);
-                                swiper.swiper.slideTo(currentSlideIndex, 300);
+                                swiper.swiper.slideTo(currentSlideIndex, 0);
+                                // Show after slide is set
+                                setTimeout(() => {
+                                    yearlySwiper.style.setProperty('opacity', '1', 'important');
+                                }, 50);
                             }
-                        }, 100);
+                        }, 50);
                     }
                 }
             }
