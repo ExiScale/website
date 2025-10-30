@@ -51,6 +51,7 @@
         .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
+        .version-tag { position: fixed; top: 10px; right: 10px; background: var(--orange); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 10000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .hero-section { margin-top: 70px; padding: 8rem 5% 5rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('https://exiscale.github.io/website/logos/hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
@@ -385,6 +386,7 @@
     </style>
 </head>
 <body>
+    <div class="version-tag">v12.0</div>
     <nav>
         <div class="logo"><img src="https://exiscale.github.io/website/logos/exiscale-logo.png" alt="ExiScale"></div>
         <a href="#booking" class="nav-cta">Book a Call</a>
@@ -1450,6 +1452,19 @@
             // Check if mobile
             const isMobile = window.innerWidth <= 768;
             
+            // Store current slide index on mobile before switching
+            let currentSlideIndex = 0;
+            if (isMobile) {
+                const currentSwiper = period === 'monthly' 
+                    ? document.querySelector('#yearly-swiper .swiper')
+                    : document.querySelector('#monthly-swiper .swiper');
+                
+                if (currentSwiper && currentSwiper.swiper) {
+                    currentSlideIndex = currentSwiper.swiper.realIndex || currentSwiper.swiper.activeIndex || 0;
+                    console.log('Preserving slide index:', currentSlideIndex);
+                }
+            }
+            
             if (period === 'monthly') {
                 // Add fade-out class to yearly
                 yearlyContent.classList.add('fading-out');
@@ -1460,7 +1475,7 @@
                     monthlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile ONLY - switch swipers and reset to first slide
+                // Mobile ONLY - switch swipers and maintain slide position
                 if (isMobile) {
                     const monthlySwiper = document.getElementById('monthly-swiper');
                     const yearlySwiper = document.getElementById('yearly-swiper');
@@ -1468,13 +1483,14 @@
                     if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
                     if (monthlySwiper) {
                         monthlySwiper.style.setProperty('display', 'block', 'important');
-                        // Reset to first slide after swiper is fully rendered
+                        // Go to the same slide index that was active
                         setTimeout(() => {
                             const swiper = document.querySelector('#monthly-swiper .swiper');
                             if (swiper && swiper.swiper) {
-                                swiper.swiper.slideTo(0, 0);
+                                console.log('Switching to monthly slide:', currentSlideIndex);
+                                swiper.swiper.slideTo(currentSlideIndex, 300);
                             }
-                        }, 400);
+                        }, 100);
                     }
                 }
             } else {
@@ -1487,7 +1503,7 @@
                     yearlyContent.classList.add('active');
                 }, 200);
                 
-                // Mobile ONLY - switch swipers and reset to first slide
+                // Mobile ONLY - switch swipers and maintain slide position
                 if (isMobile) {
                     const monthlySwiper = document.getElementById('monthly-swiper');
                     const yearlySwiper = document.getElementById('yearly-swiper');
@@ -1495,13 +1511,14 @@
                     if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
                     if (yearlySwiper) {
                         yearlySwiper.style.setProperty('display', 'block', 'important');
-                        // Reset to first slide after swiper is fully rendered
+                        // Go to the same slide index that was active
                         setTimeout(() => {
                             const swiper = document.querySelector('#yearly-swiper .swiper');
                             if (swiper && swiper.swiper) {
-                                swiper.swiper.slideTo(0, 0);
+                                console.log('Switching to yearly slide:', currentSlideIndex);
+                                swiper.swiper.slideTo(currentSlideIndex, 300);
                             }
-                        }, 400);
+                        }, 100);
                     }
                 }
             }
