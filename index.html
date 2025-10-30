@@ -345,6 +345,7 @@
         .pricing-section { padding: 4rem 1.5% 4rem; } 
         .pricing-grid { display: none !important; }
         .pricing-swiper-container { display: block !important; }
+        #yearly-swiper { display: none !important; }
         
         .pricing-card { padding: 2rem 1.5rem; max-width: 100%; margin: 0 auto; width: 100%; } 
         .pricing-features li { transition: none !important; padding: 1rem 0 !important; pointer-events: none !important; -webkit-tap-highlight-color: transparent !important; }
@@ -871,7 +872,7 @@
         </div>
         
         <!-- Swiper Slider for Mobile - Yearly -->
-        <div class="pricing-swiper-container" id="yearly-swiper" style="display: none;">
+        <div class="pricing-swiper-container" id="yearly-swiper">
             <div class="pricing-swiper swiper">
                 <div class="swiper-wrapper">
                     <!-- Slide 1: Launch -->
@@ -1442,16 +1443,16 @@
                 yearlyContent.classList.remove('active');
                 setTimeout(() => monthlyContent.classList.add('active'), 50);
                 
-                // Mobile
-                yearlySwiper.style.display = 'none';
-                monthlySwiper.style.display = 'block';
+                // Mobile - set inline styles to override media query
+                if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
+                if (monthlySwiper) monthlySwiper.style.setProperty('display', 'block', 'important');
             } else {
                 monthlyContent.classList.remove('active');
                 setTimeout(() => yearlyContent.classList.add('active'), 50);
                 
-                // Mobile
-                monthlySwiper.style.display = 'none';
-                yearlySwiper.style.display = 'block';
+                // Mobile - set inline styles to override media query
+                if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
+                if (yearlySwiper) yearlySwiper.style.setProperty('display', 'block', 'important');
             }
         }
     </script>
