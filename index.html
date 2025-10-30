@@ -113,7 +113,7 @@
         .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
         .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
         .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
-        .pricing-section { padding: 5rem 5% 8rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
+        .pricing-section { padding: 5rem 5% 10rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: none; }
         
         /* Premium Billing Toggle */
@@ -265,7 +265,7 @@
         .competitor-cell .cell-text { color: var(--gray); }
         .pricing-section { padding: 5rem 5% 4rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
         .pricing-section::before { content: none; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem; align-items: start; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem 3rem; align-items: start; }
         
         /* Swiper Slider Styles for Mobile */
         .pricing-swiper-container { display: none; width: 100%; max-width: 100%; margin: 5rem auto 0; position: relative; overflow: visible; padding: 0 20px 80px; }
@@ -1468,13 +1468,13 @@
                     if (yearlySwiper) yearlySwiper.style.setProperty('display', 'none', 'important');
                     if (monthlySwiper) {
                         monthlySwiper.style.setProperty('display', 'block', 'important');
-                        // Reset to first slide instantly
+                        // Reset to first slide after swiper is fully rendered
                         setTimeout(() => {
                             const swiper = document.querySelector('#monthly-swiper .swiper');
                             if (swiper && swiper.swiper) {
                                 swiper.swiper.slideTo(0, 0);
                             }
-                        }, 250);
+                        }, 400);
                     }
                 }
             } else {
@@ -1495,13 +1495,13 @@
                     if (monthlySwiper) monthlySwiper.style.setProperty('display', 'none', 'important');
                     if (yearlySwiper) {
                         yearlySwiper.style.setProperty('display', 'block', 'important');
-                        // Reset to first slide instantly
+                        // Reset to first slide after swiper is fully rendered
                         setTimeout(() => {
                             const swiper = document.querySelector('#yearly-swiper .swiper');
                             if (swiper && swiper.swiper) {
                                 swiper.swiper.slideTo(0, 0);
                             }
-                        }, 250);
+                        }, 400);
                     }
                 }
             }
