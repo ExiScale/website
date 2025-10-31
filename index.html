@@ -51,7 +51,6 @@
         .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
-        .version-tag { position: fixed; top: 10px; right: 10px; background: var(--orange); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 10000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .hero-section { margin-top: 70px; padding: 8rem 5% 5rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('https://exiscale.github.io/website/logos/hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
         .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
         .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
@@ -384,9 +383,17 @@
         .mobile-comparison-col.exiscale .mobile-comparison-value { background: linear-gradient(135deg, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 100%); border: 2px solid rgba(255,106,21,0.2); color: var(--black); font-weight: 600; }
         }
     </style>
+    
+    <!-- Hyros Tracking Script -->
+    <script>
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://t.exiscale.com/v1/lst/universal-script?ph=9eec468a397f9cc4dcd8de884d07b21f552c46ea0b48477082ad13e493113e40&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+    head.appendChild(script);
+    </script>
 </head>
 <body>
-    <div class="version-tag">v12.2</div>
     <nav>
         <div class="logo"><img src="https://exiscale.github.io/website/logos/exiscale-logo.png" alt="ExiScale"></div>
         <a href="#booking" class="nav-cta">Book a Call</a>
