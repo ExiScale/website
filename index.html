@@ -1621,13 +1621,17 @@
         function openBankTransferModal(plan) {
             const modal = document.getElementById('bankTransferModal');
             const modalTitle = document.getElementById('modalTitle');
+            const modalAmount = document.getElementById('modalAmount');
             
             if (plan === 'launch') {
                 modalTitle.textContent = 'Launch - Annual Plan';
+                modalAmount.textContent = '$10,000';
             } else if (plan === 'scale') {
                 modalTitle.textContent = 'Scale - Annual Plan';
+                modalAmount.textContent = '$35,000';
             } else if (plan === 'invincible') {
                 modalTitle.textContent = 'Invincible - Annual Plan';
+                modalAmount.textContent = '$100,000';
             }
             
             modal.classList.add('active');
@@ -1665,6 +1669,14 @@
                 <p class="modal-subtitle">Annual subscriptions require bank transfer payment. Contact our team to get started.</p>
             </div>
             <div class="modal-body">
+                <div class="info-section">
+                    <div class="info-label">Transfer Amount</div>
+                    <div class="info-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.03em;" id="modalAmount">$10,000</div>
+                        <div style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem; font-weight: 600;">USD - One-time annual payment</div>
+                    </div>
+                </div>
+                
                 <div class="info-section">
                     <div class="info-label">Contact Support</div>
                     <div class="contact-info">
