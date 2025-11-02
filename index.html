@@ -815,7 +815,7 @@
                         <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
                     </ul>
                 </div>
-                <a href="#" class="pricing-cta">Get Started</a>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('launch'); return false;">Get Started</a>
             </div>
             <div class="pricing-card featured">
                 <div class="pricing-badge">Most Popular</div>
@@ -1622,7 +1622,9 @@
             const modal = document.getElementById('bankTransferModal');
             const modalTitle = document.getElementById('modalTitle');
             
-            if (plan === 'scale') {
+            if (plan === 'launch') {
+                modalTitle.textContent = 'Launch - Annual Plan';
+            } else if (plan === 'scale') {
                 modalTitle.textContent = 'Scale - Annual Plan';
             } else if (plan === 'invincible') {
                 modalTitle.textContent = 'Invincible - Annual Plan';
