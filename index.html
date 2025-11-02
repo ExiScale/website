@@ -140,6 +140,54 @@
             100% { opacity: 0; } 
         }
         
+        /* Premium Bank Transfer Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; }
+        .modal-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background: white; border-radius: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-header { padding: 2.5rem 2.5rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); position: relative; }
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.5rem; color: var(--gray); }
+        .modal-close:hover { background: var(--orange); color: white; transform: rotate(90deg); }
+        .modal-title { font-size: 2rem; font-weight: 800; color: var(--black); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .modal-subtitle { font-size: 1rem; color: var(--gray); line-height: 1.6; }
+        .modal-body { padding: 2rem 2.5rem 2.5rem; }
+        .info-section { margin-bottom: 2rem; }
+        .info-section:last-child { margin-bottom: 0; }
+        .info-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); font-weight: 800; margin-bottom: 0.75rem; }
+        .info-box { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.03) 100%); border: 1px solid rgba(255,106,21,0.15); border-radius: 12px; padding: 1.5rem; }
+        .info-row { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; gap: 1rem; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-row-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; white-space: nowrap; }
+        .info-row-value { font-size: 0.95rem; color: var(--black); font-weight: 700; text-align: right; word-break: break-word; }
+        .contact-info { display: flex; align-items: center; gap: 1rem; background: white; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; padding: 1.25rem 1.5rem; }
+        .contact-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .contact-icon svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
+        .contact-details { flex: 1; }
+        .contact-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.25rem; }
+        .contact-value { font-size: 1.05rem; color: var(--black); font-weight: 700; }
+        .contact-value a { color: var(--orange); text-decoration: none; transition: color 0.3s ease; }
+        .contact-value a:hover { color: #ff8a3d; text-decoration: underline; }
+        .modal-note { background: rgba(0,0,0,0.02); border-left: 3px solid var(--orange); padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.9rem; color: var(--gray); line-height: 1.7; margin-top: 1.5rem; }
+        .modal-note strong { color: var(--black); }
+        
+        /* Mobile Modal Styles */
+        @media (max-width: 768px) {
+            .modal-overlay { padding: 0.5rem; align-items: flex-end; }
+            .modal-content { max-height: 95vh; border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-bottom: 0; }
+            .modal-header { padding: 2rem 1.5rem 1.25rem; }
+            .modal-title { font-size: 1.6rem; }
+            .modal-subtitle { font-size: 0.9rem; }
+            .modal-body { padding: 1.5rem; }
+            .modal-close { width: 36px; height: 36px; top: 1.25rem; right: 1.25rem; }
+            .info-box { padding: 1.25rem; }
+            .info-row { flex-direction: column; gap: 0.25rem; }
+            .info-row-label { font-size: 0.85rem; }
+            .info-row-value { font-size: 0.9rem; text-align: left; }
+            .contact-info { flex-direction: column; text-align: center; }
+            .contact-icon { margin: 0 auto; }
+        }
+        
         /* Mobile Responsive for Billing Toggle */
         @media (max-width: 768px) {
             .billing-toggle-container { max-width: 340px; padding: 0.4rem; }
@@ -789,7 +837,7 @@
                         <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
                     </ul>
                 </div>
-                <a href="#" class="pricing-cta">Get Started</a>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('scale'); return false;">Get Started</a>
             </div>
             <div class="pricing-card">
                 <h3 class="pricing-name">Invincible</h3>
@@ -807,7 +855,7 @@
                         <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
                     </ul>
                 </div>
-                <a href="#" class="pricing-cta">Get Started</a>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('invincible'); return false;">Get Started</a>
             </div>
         </div>
         </div>
@@ -1567,6 +1615,105 @@
             }
         }
     </script>
+    
+    <!-- Bank Transfer Modal Script -->
+    <script>
+        function openBankTransferModal(plan) {
+            const modal = document.getElementById('bankTransferModal');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            if (plan === 'scale') {
+                modalTitle.textContent = 'Scale - Annual Plan';
+            } else if (plan === 'invincible') {
+                modalTitle.textContent = 'Invincible - Annual Plan';
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeBankTransferModal() {
+            const modal = document.getElementById('bankTransferModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('bankTransferModal');
+            if (event.target === modal) {
+                closeBankTransferModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeBankTransferModal();
+            }
+        });
+    </script>
+    
+    <!-- Bank Transfer Modal -->
+    <div class="modal-overlay" id="bankTransferModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeBankTransferModal()">&times;</button>
+                <h2 class="modal-title" id="modalTitle">Premium Plan</h2>
+                <p class="modal-subtitle">Annual subscriptions require bank transfer payment. Contact our team to get started.</p>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <div class="info-label">Contact Support</div>
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <div class="contact-label">Email Us</div>
+                            <div class="contact-value"><a href="mailto:support@exiscale.com">support@exiscale.com</a></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-label">Bank Transfer Details (USD)</div>
+                    <div class="info-box">
+                        <div class="info-row">
+                            <span class="info-row-label">Beneficiary Name:</span>
+                            <span class="info-row-value">Exiscale LLC</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Account Number:</span>
+                            <span class="info-row-value">202377432894</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Routing Number:</span>
+                            <span class="info-row-value">091311229</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Bank Name:</span>
+                            <span class="info-row-value">Choice Financial Group</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Bank Address:</span>
+                            <span class="info-row-value">4501 23rd Avenue S, Fargo, ND 58104</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">SWIFT/BIC:</span>
+                            <span class="info-row-value">CHFGUS44021</span>
+                        </div>
+                    </div>
+                    <div class="modal-note">
+                        <strong>Important:</strong> After completing your transfer, email us at <a href="mailto:support@exiscale.com">support@exiscale.com</a> with your transfer confirmation to activate your subscription immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Freshchat Widget -->
     <script
