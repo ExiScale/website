@@ -17,17 +17,22 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--black); line-height: 1.6; overflow-x: hidden; }
         
         /* Navigation */
-        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: center; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .logo { cursor: pointer; }
         .logo img { height: 48px; transition: transform 0.4s ease; }
         .logo img:hover { transform: scale(1.05); }
         
         /* Confirmation Section */
         .confirmation-section { margin-top: 100px; min-height: calc(100vh - 200px); padding: 6rem 5% 4rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); }
-        .confirmation-icon { width: 120px; height: 120px; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 2.5rem; box-shadow: 0 20px 60px rgba(255,106,21,0.3); animation: scaleIn 0.6s ease-out; }
-        .confirmation-icon svg { width: 60px; height: 60px; stroke: white; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; animation: checkmark 0.8s ease-out 0.3s; }
-        @keyframes scaleIn { 0% { transform: scale(0); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes checkmark { 0% { stroke-dasharray: 0, 100; } 100% { stroke-dasharray: 100, 100; } }
+        .success-animation { width: 140px; height: 140px; margin: 0 auto 2.5rem; position: relative; }
+        .success-circle { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); display: flex; align-items: center; justify-content: center; position: relative; animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .success-circle::before { content: ''; position: absolute; width: 160px; height: 160px; border: 3px solid rgba(255,106,21,0.2); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        .success-circle::after { content: ''; position: absolute; width: 180px; height: 180px; border: 2px solid rgba(255,106,21,0.1); border-radius: 50%; animation: pulse 2s ease-in-out infinite 0.5s; }
+        .calendar-icon { width: 60px; height: 60px; position: relative; z-index: 1; }
+        .calendar-icon svg { width: 100%; height: 100%; stroke: var(--orange); stroke-width: 2; fill: none; animation: fadeIn 0.6s ease 0.3s both; }
+        @keyframes scaleIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.5; } }
         .confirmation-title { font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 1.5rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: fadeInUp 0.8s ease-out 0.4s both; }
         .confirmation-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 600px; margin: 0 auto 3rem; line-height: 1.8; animation: fadeInUp 0.8s ease-out 0.6s both; }
         @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -86,10 +91,18 @@
     </nav>
 
     <section class="confirmation-section">
-        <div class="confirmation-icon">
-            <svg viewBox="0 0 52 52">
-                <polyline points="14 27 22 35 38 19"/>
-            </svg>
+        <div class="success-animation">
+            <div class="success-circle">
+                <div class="calendar-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path>
+                    </svg>
+                </div>
+            </div>
         </div>
         <h1 class="confirmation-title">You're All Set!</h1>
         <p class="confirmation-subtitle">Your call has been confirmed. We'll send you a calendar invite and reminder shortly. Looking forward to speaking with you!</p>
