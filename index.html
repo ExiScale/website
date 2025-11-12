@@ -433,11 +433,11 @@
         }
         
         /* Lead Magnet Popup */
-        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; overflow-y: auto; }
         .popup-overlay.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popupSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .popup-content { background: #0a0a0a; border-radius: 24px; max-width: 600px; width: 100%; position: relative; padding: 3rem 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); animation: popupSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .popup-content { background: #0a0a0a; border-radius: 24px; max-width: 600px; width: 100%; position: relative; padding: 3rem 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); animation: popupSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin: auto; max-height: 90vh; overflow-y: auto; }
         .popup-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #666; font-size: 2rem; line-height: 1; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
         .popup-close:hover { color: #999; background: rgba(255,255,255,0.05); transform: rotate(90deg); }
         .popup-badge { display: inline-block; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(255,106,21,0.4); animation: pulse 2s ease-in-out infinite; }
@@ -462,10 +462,12 @@
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .popup-disclaimer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; line-height: 1.5; }
         @media (max-width: 768px) {
-            .popup-content { padding: 2.5rem 1.5rem; max-width: 95%; }
+            .popup-overlay { padding: 0.5rem; align-items: flex-start; padding-top: 2rem; }
+            .popup-content { padding: 2rem 1.5rem; max-width: 100%; border-radius: 20px; max-height: calc(100vh - 4rem); }
             .popup-title { font-size: 1.6rem; }
             .popup-subtitle { font-size: 1rem; }
             .popup-cta { font-size: 1rem; padding: 1.1rem 1.5rem; }
+            .popup-close { top: 0.75rem; right: 0.75rem; font-size: 1.5rem; }
         }
     </style>
     
@@ -1925,9 +1927,16 @@
         // Exit Intent Detection
         let popupShown = false;
         
-        document.addEventListener('mouseleave', function(e) {
-            // Trigger when mouse leaves from the top of the viewport
-            if (e.clientY <= 0 && !popupShown && !sessionStorage.getItem('popupShown')) {
+        document.addEventListener('mouseout', function(e) {
+            // Trigger when mouse leaves viewport from the top
+            if (!e.relatedTarget && !e.toElement && !popupShown && !sessionStorage.getItem('popupShown')) {
+                showPopup();
+            }
+        });
+        
+        // Backup trigger for desktop - mouse near top edge
+        document.addEventListener('mousemove', function(e) {
+            if (e.clientY <= 10 && !popupShown && !sessionStorage.getItem('popupShown')) {
                 showPopup();
             }
         });
