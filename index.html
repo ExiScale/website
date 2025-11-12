@@ -431,6 +431,34 @@
         .mobile-comparison-col.exiscale .mobile-comparison-label { color: var(--orange); }
         .mobile-comparison-col.exiscale .mobile-comparison-value { background: linear-gradient(135deg, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 100%); border: 2px solid rgba(255,106,21,0.2); color: var(--black); font-weight: 600; }
         }
+        
+        /* Lead Magnet Popup */
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; }
+        .popup-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popupSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .popup-content { background: #0a0a0a; border-radius: 24px; max-width: 600px; width: 100%; position: relative; padding: 3rem 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); animation: popupSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .popup-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #666; font-size: 2rem; line-height: 1; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .popup-close:hover { color: #999; background: rgba(255,255,255,0.05); transform: rotate(90deg); }
+        .popup-badge { display: inline-block; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(255,106,21,0.4); animation: pulse 2s ease-in-out infinite; }
+        .popup-title { font-size: 2.2rem; font-weight: 900; color: white; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .popup-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 1.5rem; font-weight: 500; }
+        .popup-highlight { background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); border-left: 4px solid var(--orange); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; }
+        .popup-highlight p { color: rgba(255,255,255,0.95); font-size: 1rem; line-height: 1.7; margin: 0; }
+        .popup-bonuses { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.08); }
+        .popup-bonuses-title { color: var(--orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .bonus-item { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; font-size: 0.95rem; }
+        .bonus-item:last-child { margin-bottom: 0; }
+        .bonus-item svg { width: 20px; height: 20px; stroke: var(--orange); flex-shrink: 0; }
+        .popup-cta { display: block; width: 100%; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 1.3rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.15rem; text-align: center; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 8px 30px rgba(255,106,21,0.4); margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .popup-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.6); background: linear-gradient(135deg, #ff7a25 0%, #ff9a4d 100%); }
+        .popup-disclaimer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; line-height: 1.5; }
+        @media (max-width: 768px) {
+            .popup-content { padding: 2.5rem 1.5rem; max-width: 95%; }
+            .popup-title { font-size: 1.6rem; }
+            .popup-subtitle { font-size: 1rem; }
+            .popup-cta { font-size: 1rem; padding: 1.1rem 1.5rem; }
+        }
     </style>
     
     <!-- Meta Pixel Code -->
@@ -1752,6 +1780,82 @@
     <script
     src='//fw-cdn.com/10686344/3499220.js'
     chat='true'>
+    </script>
+    
+    <!-- Lead Magnet Popup -->
+    <div class="popup-overlay" id="leadMagnetPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div class="popup-badge">⚡ FREE INSTANT DOWNLOAD</div>
+            <h2 class="popup-title">$500M META SURVIVAL KIT</h2>
+            <p class="popup-subtitle">How top advertisers spend $1K–$20K+/day without getting banned or rejected (even when Meta's AI goes psycho)</p>
+            
+            <div class="popup-highlight">
+                <p><strong>Steal the exact approval hacks + ban-proof systems we used to scale $500M+ in ad spend</strong></p>
+            </div>
+            
+            <div class="popup-bonuses">
+                <div class="popup-bonuses-title">Includes $49,997 in bonuses:</div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>5 AI Tools</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>2,000+ Canva Templates</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Lifetime Access</span>
+                </div>
+            </div>
+            
+            <a href="#" class="popup-cta" onclick="handlePopupCTA(event)">GET IT FREE →</a>
+            
+            <p class="popup-disclaimer">No card needed. Instant PDF delivery.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Popup trigger after 7 seconds
+        setTimeout(function() {
+            const popup = document.getElementById('leadMagnetPopup');
+            if (!sessionStorage.getItem('popupShown')) {
+                popup.classList.add('active');
+                sessionStorage.setItem('popupShown', 'true');
+            }
+        }, 7000);
+        
+        function closePopup() {
+            document.getElementById('leadMagnetPopup').classList.remove('active');
+        }
+        
+        // Close popup when clicking outside
+        document.getElementById('leadMagnetPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+        
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+        
+        function handlePopupCTA(e) {
+            e.preventDefault();
+            // Open download link in new tab
+            window.open('https://bit.ly/4oJ5Hli', '_blank');
+            closePopup();
+        }
     </script>
 </body>
 </html>
