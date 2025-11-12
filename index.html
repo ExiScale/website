@@ -1922,14 +1922,41 @@
             }
         }
         
-        // Popup trigger after 7 seconds
-        setTimeout(function() {
-            const popup = document.getElementById('leadMagnetPopup');
-            if (!sessionStorage.getItem('popupShown')) {
-                popup.classList.add('active');
-                sessionStorage.setItem('popupShown', 'true');
+        // Exit Intent Detection
+        let popupShown = false;
+        
+        document.addEventListener('mouseleave', function(e) {
+            // Trigger when mouse leaves from the top of the viewport
+            if (e.clientY <= 0 && !popupShown && !sessionStorage.getItem('popupShown')) {
+                showPopup();
             }
-        }, 7000);
+        });
+        
+        // Also trigger on mobile when user scrolls up quickly (simulates exit intent)
+        let lastScrollY = window.scrollY;
+        let scrollUpCount = 0;
+        
+        window.addEventListener('scroll', function() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < lastScrollY && currentScrollY < 100) {
+                scrollUpCount++;
+                if (scrollUpCount >= 2 && !popupShown && !sessionStorage.getItem('popupShown')) {
+                    showPopup();
+                }
+            } else {
+                scrollUpCount = 0;
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+        
+        function showPopup() {
+            const popup = document.getElementById('leadMagnetPopup');
+            popup.classList.add('active');
+            popupShown = true;
+            sessionStorage.setItem('popupShown', 'true');
+        }
         
         function closePopup() {
             document.getElementById('leadMagnetPopup').classList.remove('active');
