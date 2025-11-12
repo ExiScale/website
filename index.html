@@ -450,8 +450,16 @@
         .bonus-item { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; font-size: 0.95rem; }
         .bonus-item:last-child { margin-bottom: 0; }
         .bonus-item svg { width: 20px; height: 20px; stroke: var(--orange); flex-shrink: 0; }
-        .popup-cta { display: block; width: 100%; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 1.3rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.15rem; text-align: center; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 8px 30px rgba(255,106,21,0.4); margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.03em; }
-        .popup-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.6); background: linear-gradient(135deg, #ff7a25 0%, #ff9a4d 100%); }
+        .popup-email-section { margin: 2rem 0 1rem; }
+        .popup-email-input { width: 100%; padding: 1.1rem 1.5rem; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        .popup-email-input::placeholder { color: rgba(255,255,255,0.4); }
+        .popup-email-input:focus { border-color: var(--orange); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+        .popup-email-input.error { border-color: #ff4444; }
+        .popup-email-error { color: #ff4444; font-size: 0.85rem; margin-top: 0.5rem; min-height: 20px; }
+        .popup-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 1.3rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.15rem; text-align: center; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 8px 30px rgba(255,106,21,0.4); margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .popup-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+        .popup-cta:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.6); background: linear-gradient(135deg, #ff7a25 0%, #ff9a4d 100%); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .popup-disclaimer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; line-height: 1.5; }
         @media (max-width: 768px) {
             .popup-content { padding: 2.5rem 1.5rem; max-width: 95%; }
@@ -1816,13 +1824,104 @@
                 </div>
             </div>
             
-            <a href="#" class="popup-cta" onclick="handlePopupCTA(event)">GET IT FREE →</a>
+            <div class="popup-email-section">
+                <input type="email" id="popupEmail" class="popup-email-input" placeholder="Enter your email address" required>
+                <div id="emailError" class="popup-email-error"></div>
+            </div>
+            
+            <button class="popup-cta" id="popupCTA" disabled onclick="handlePopupCTA(event)">
+                <span id="ctaText">GET IT FREE →</span>
+                <span id="ctaLoader" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                        <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
+                        <path d="M12 2 A10 10 0 0 1 22 12" opacity="1"></path>
+                    </svg>
+                </span>
+            </button>
             
             <p class="popup-disclaimer">No card needed. Instant PDF delivery.</p>
         </div>
     </div>
     
     <script>
+        // Klaviyo Configuration
+        const KLAVIYO_API_KEY = 'UwPqGX';
+        const KLAVIYO_LIST_ID = 'VkhJVx';
+        
+        // Email validation
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // Enable/disable button based on email validity
+        const emailInput = document.getElementById('popupEmail');
+        const ctaButton = document.getElementById('popupCTA');
+        const emailError = document.getElementById('emailError');
+        
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (email === '') {
+                ctaButton.disabled = true;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else if (isValidEmail(email)) {
+                ctaButton.disabled = false;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else {
+                ctaButton.disabled = true;
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+            }
+        });
+        
+        // Handle form submission
+        async function handlePopupCTA(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+                return;
+            }
+            
+            // Show loading state
+            ctaButton.disabled = true;
+            document.getElementById('ctaText').style.display = 'none';
+            document.getElementById('ctaLoader').style.display = 'inline-block';
+            
+            try {
+                // Subscribe to Klaviyo
+                const response = await fetch(`https://a.klaviyo.com/api/v2/list/${KLAVIYO_LIST_ID}/subscribe?api_key=${KLAVIYO_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        profiles: [{
+                            email: email
+                        }]
+                    })
+                });
+                
+                if (response.ok) {
+                    // Success! Redirect to download
+                    window.open('https://bit.ly/4oJ5Hli', '_blank');
+                    closePopup();
+                } else {
+                    throw new Error('Subscription failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Still redirect even if Klaviyo fails (better user experience)
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
+            }
+        }
+        
         // Popup trigger after 7 seconds
         setTimeout(function() {
             const popup = document.getElementById('leadMagnetPopup');
@@ -1849,13 +1948,6 @@
                 closePopup();
             }
         });
-        
-        function handlePopupCTA(e) {
-            e.preventDefault();
-            // Open download link in new tab
-            window.open('https://bit.ly/4oJ5Hli', '_blank');
-            closePopup();
-        }
     </script>
 </body>
 </html>
