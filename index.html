@@ -505,23 +505,7 @@
     </nav>
     
     <!-- Version Number -->
-    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v1.9.0</div>
-    
-    <!-- Hidden Klaviyo Form Container -->
-    <div style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
-        <div class="klaviyo-form-QXSEfy"></div>
-    </div>
-    
-    <!-- Klaviyo Form Script -->
-    <script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=UwPqGX"></script>
-    <script>
-        // Prevent Klaviyo's own popups from showing
-        window.addEventListener('load', function() {
-            const style = document.createElement('style');
-            style.textContent = '.klaviyo-form-QXSEfy { display: none !important; }';
-            document.head.appendChild(style);
-        });
-    </script>
+    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v2.0.0</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
@@ -1865,9 +1849,8 @@
     </div>
     
     <script>
-        // Klaviyo Configuration
-        const KLAVIYO_COMPANY_ID = 'UwPqGX';
-        const KLAVIYO_FORM_ID = 'QXSEfy';
+        // Make.com Webhook Configuration
+        const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/6alm8d6y96prclifwcmwwopu5o2vomgu';
         
         // Email validation
         function isValidEmail(email) {
@@ -1915,50 +1898,28 @@
             document.getElementById('ctaLoader').style.display = 'inline-block';
             
             try {
-                // Use Klaviyo's API to submit the form
-                if (window._learnq) {
-                    // Identify the user
-                    window._learnq.push(['identify', {
-                        '$email': email
-                    }]);
-                    
-                    // Submit to the specific form
-                    const formData = {
-                        'email': email,
-                        '$source': KLAVIYO_FORM_ID
-                    };
-                    
-                    // Track form submission
-                    window._learnq.push(['track', 'Form Submitted', formData]);
-                    
-                    console.log('Email submitted to Klaviyo via _learnq:', email);
-                    
-                    // Give Klaviyo time to process
-                    setTimeout(() => {
-                        window.open('https://bit.ly/4oJ5Hli', '_blank');
-                        closePopup();
-                    }, 1000);
-                } else {
-                    console.warn('Klaviyo not loaded, trying fallback');
-                    // Fallback to direct submission
-                    const formData = new URLSearchParams();
-                    formData.append('g', KLAVIYO_FORM_ID);
-                    formData.append('email', email);
-                    
-                    await fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: formData.toString()
-                    });
-                    
-                    window.open('https://bit.ly/4oJ5Hli', '_blank');
-                    closePopup();
-                }
+                // Send email to Make.com webhook
+                const response = await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        source: 'ExiScale Lead Magnet Popup',
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                console.log('Email sent to Make.com webhook:', email);
+                
+                // Open download link
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
                 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Webhook error:', error);
+                // Still redirect for better UX
                 window.open('https://bit.ly/4oJ5Hli', '_blank');
                 closePopup();
             }
