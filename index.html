@@ -504,8 +504,11 @@
         <a href="#booking" class="nav-cta">Book a Call</a>
     </nav>
     
+    <!-- Reset Popup Button (for testing) -->
+    <button onclick="sessionStorage.removeItem('popupShown'); location.reload();" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: orange; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px;">RESET POPUP</button>
+    
     <!-- Version Number -->
-    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v1.3.0</div>
+    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v1.3.1</div>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
@@ -1927,14 +1930,22 @@
             }
         }
         
+        // Popup state
+        let popupShown = false;
+        
         // Popup trigger after 5 seconds
         setTimeout(function() {
-            if (!sessionStorage.getItem('popupShown')) {
+            console.log('5 seconds passed, checking if should show popup...');
+            console.log('popupShown:', popupShown);
+            console.log('sessionStorage:', sessionStorage.getItem('popupShown'));
+            
+            if (!popupShown && !sessionStorage.getItem('popupShown')) {
+                console.log('Showing popup now!');
                 showPopup();
+            } else {
+                console.log('Popup already shown, skipping');
             }
         }, 5000);
-        
-        let popupShown = false;
         
         function showPopup() {
             const popup = document.getElementById('leadMagnetPopup');
