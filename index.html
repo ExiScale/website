@@ -505,7 +505,23 @@
     </nav>
     
     <!-- Version Number -->
-    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v1.8.2</div>
+    <div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; background: rgba(0,0,0,0.7); color: white; padding: 8px 15px; border-radius: 6px; font-size: 12px; font-family: monospace;">v1.9.0</div>
+    
+    <!-- Hidden Klaviyo Form Container -->
+    <div style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
+        <div class="klaviyo-form-QXSEfy"></div>
+    </div>
+    
+    <!-- Klaviyo Form Script -->
+    <script src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=UwPqGX"></script>
+    <script>
+        // Prevent Klaviyo's own popups from showing
+        window.addEventListener('load', function() {
+            const style = document.createElement('style');
+            style.textContent = '.klaviyo-form-QXSEfy { display: none !important; }';
+            document.head.appendChild(style);
+        });
+    </script>
 
     <section class="hero-section">
         <div class="hero-badge">For advertisers that can't afford downtime</div>
@@ -1899,28 +1915,50 @@
             document.getElementById('ctaLoader').style.display = 'inline-block';
             
             try {
-                // Submit directly to Klaviyo form endpoint
-                const formData = new URLSearchParams();
-                formData.append('g', KLAVIYO_FORM_ID);
-                formData.append('email', email);
-                
-                const response = await fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData.toString()
-                });
-                
-                console.log('Klaviyo submission response:', response.status);
-                
-                // Redirect regardless of response (Klaviyo might not return proper CORS)
-                window.open('https://bit.ly/4oJ5Hli', '_blank');
-                closePopup();
+                // Use Klaviyo's API to submit the form
+                if (window._learnq) {
+                    // Identify the user
+                    window._learnq.push(['identify', {
+                        '$email': email
+                    }]);
+                    
+                    // Submit to the specific form
+                    const formData = {
+                        'email': email,
+                        '$source': KLAVIYO_FORM_ID
+                    };
+                    
+                    // Track form submission
+                    window._learnq.push(['track', 'Form Submitted', formData]);
+                    
+                    console.log('Email submitted to Klaviyo via _learnq:', email);
+                    
+                    // Give Klaviyo time to process
+                    setTimeout(() => {
+                        window.open('https://bit.ly/4oJ5Hli', '_blank');
+                        closePopup();
+                    }, 1000);
+                } else {
+                    console.warn('Klaviyo not loaded, trying fallback');
+                    // Fallback to direct submission
+                    const formData = new URLSearchParams();
+                    formData.append('g', KLAVIYO_FORM_ID);
+                    formData.append('email', email);
+                    
+                    await fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formData.toString()
+                    });
+                    
+                    window.open('https://bit.ly/4oJ5Hli', '_blank');
+                    closePopup();
+                }
                 
             } catch (error) {
                 console.error('Error:', error);
-                // Still redirect for better UX
                 window.open('https://bit.ly/4oJ5Hli', '_blank');
                 closePopup();
             }
