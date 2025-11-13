@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExiScale - The Unstoppable Meta Account Solution</title>
+    <link rel="icon" type="image/png" href="exiscale-favicon.png">
+    <link rel="shortcut icon" href="exiscale-favicon.png">
+    <!-- Preconnect to Calendly for faster loading -->
+    <link rel="preconnect" href="https://assets.calendly.com">
+    <link rel="preconnect" href="https://calendly.com">
+    <link rel="dns-prefetch" href="https://assets.calendly.com">
+    <link rel="dns-prefetch" href="https://calendly.com">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { max-width: 100%; overflow-x: hidden; }
+        :root { --orange: #ff6a15; --black: #0a0a0a; --gray: #666; --light-gray: #fafafa; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--black); background: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; width: 100%; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        @keyframes scrollLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes clockSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes clockPulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.2; } }
+        @keyframes speedLines { 0% { opacity: 0.3; } 50% { opacity: 0.8; } 100% { opacity: 0.3; } }
+        @keyframes stackFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes unlockGlow { 0%, 100% { opacity: 0.06; } 50% { opacity: 0.15; } }
+        @keyframes lockUnlock { 
+            0%, 100% { 
+                d: path("M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53"); 
+            } 
+            50% { 
+                d: path("M48 43 L48 35 C48 28 53 23 60 23 C67 23 72 28 72 35 L72 53"); 
+            } 
+        }
+        @keyframes unlockIndicator { 0% { opacity: 0.9; } 50% { opacity: 0.2; } 100% { opacity: 0.9; } }
+        @keyframes notificationPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: 0.7; } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes cardHover { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes warningPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .logo img { height: 48px; transition: transform 0.4s ease; }
+        .logo img:hover { transform: scale(1.05); }
+        .nav-cta { background: var(--black); color: white; padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
+        .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
+        .nav-cta:hover::before { left: 100%; }
+        .nav-cta:hover { background: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,106,21,0.4); }
+        .hero-section { margin-top: 70px; padding: 8rem 5% 5rem; min-height: calc(100vh - 30px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background-image: url('logos/hero-bg.png'); background-size: cover; background-position: center; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
+        .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
+        .hero-badge { display: inline-flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 0.65rem 1.5rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; border: 1px solid rgba(255,106,21,0.2); box-shadow: 0 4px 20px rgba(255,106,21,0.1); animation: fadeInDown 0.8s ease 0.2s both; }
+        .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; padding: 0.5rem 2rem; }
+        .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0 0.15em; }
+        .hero-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 700px; margin: 2.5rem auto 0; line-height: 1.8; position: relative; z-index: 1; animation: fadeInUp 1s ease 0.6s both; }
+        .hero-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; z-index: 1; margin-top: 2.5rem; animation: fadeInUp 1s ease 0.8s both; }
+        .hero-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .hero-cta:hover::before { left: 100%; }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
+        .hero-trustpilot { display: none; }
+        .trust-section { padding: 5rem 5%; text-align: center; background: linear-gradient(180deg, white 0%, white 100%); border-bottom: 1px solid rgba(0,0,0,0.05); overflow: hidden; }
+        .trust-label { font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 3rem; font-weight: 700; }
+        .logo-carousel { position: relative; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .logo-track { display: flex; gap: 6rem; animation: scrollLogos 40s linear infinite; width: fit-content; align-items: center; will-change: transform; }
+        .logo-track:hover { animation-play-state: paused; }
+        .logo-item { flex-shrink: 0; height: 50px; display: flex; align-items: center; filter: grayscale(100%) opacity(0.4); transition: all 0.3s ease; padding: 0.5rem 1rem; border-radius: 8px; }
+        .logo-item:hover { filter: grayscale(0%) opacity(0.8); transform: scale(1.05); }
+        .logo-item img { height: 50px; width: auto; max-width: 180px; object-fit: contain; mix-blend-mode: darken; }
+        .logo-item img[alt="WooCommerce"] { height: 110px !important; max-width: 320px !important; background: white; padding: 1rem 1.5rem; border-radius: 6px; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
+        .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.5rem 2.5rem; }
+        .problem-section { padding: 5rem 5% 10rem; background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%); position: relative; overflow: hidden; }
+        .problem-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -200px; left: -100px; animation: float 25s ease-in-out infinite; }
+        .problem-content { max-width: 900px; margin: 5rem auto 0; text-align: center; position: relative; z-index: 1; }
+        .problem-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; animation: fadeInUp 1s ease 0.2s both; }
+        .problem-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 5rem; font-weight: 500; animation: fadeInUp 1s ease 0.4s both; }
+        .problem-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 5rem; margin-bottom: 0; }
+        .problem-block { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .problem-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .problem-block:hover::before { transform: scaleX(1); }
+        .problem-block:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .problem-block:nth-child(1) { animation: slideInLeft 0.8s ease 0.6s both; }
+        .problem-block:nth-child(2) { animation: fadeInScale 0.8s ease 0.7s both; }
+        .problem-block:nth-child(3) { animation: slideInRight 0.8s ease 0.8s both; }
+        .problem-icon { width: 70px; height: 70px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 16px; transition: all 0.4s ease; }
+        .problem-block:hover .problem-icon { transform: scale(1.1) rotate(5deg); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); }
+        .problem-icon svg { width: 36px; height: 36px; }
+        .problem-block-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); }
+        .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
+        .services-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 3.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
+        .service-card:hover::before { opacity: 1; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .service-visual { width: 160px; height: 160px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover .service-visual { transform: scale(1.08); }
+        .service-content { position: relative; z-index: 1; text-align: center; }
+        .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
+        .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
+        .mobile-comparison { display: none; }
+        .reviews-section { padding: 5rem 5%; background: linear-gradient(180deg, #fafafa 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
+        .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
+        .results-section { padding: 5rem 5% 5rem; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
+        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
+        .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
+        .pricing-section { padding: 5rem 5% 10rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
+        .pricing-section::before { content: none; }
+        
+        /* Premium Billing Toggle */
+        .billing-toggle-container { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 3rem auto 0; background: white; padding: 0.5rem; border-radius: 60px; box-shadow: 0 4px 30px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.06); max-width: 420px; position: relative; }
+        .billing-option { padding: 0.85rem 2rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 2; color: var(--gray); user-select: none; }
+        .billing-option:hover { color: var(--black); }
+        .billing-option.active { color: white; }
+        .billing-toggle-slider { position: absolute; left: 0.5rem; top: 0.5rem; height: calc(100% - 1rem); width: calc(50% - 0.5rem); background: linear-gradient(135deg, var(--orange) 0%, #ff7a25 100%); border-radius: 50px; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(255,106,21,0.3); z-index: 1; }
+        .billing-option[data-period="yearly"].active ~ .billing-toggle-slider { transform: translateX(calc(100% + 0.5rem)); }
+        .billing-savings-badge { position: absolute; top: -12px; right: 15px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 0.35rem 0.8rem; border-radius: 20px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.03em; box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3); animation: pulse 2s ease-in-out infinite; z-index: 3; white-space: nowrap; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        
+        /* Pricing Cards with Toggle */
+        .pricing-content { display: none; opacity: 0; }
+        .pricing-content.active { display: block; animation: fadeInPricing 0.5s ease forwards; }
+        .pricing-content.fading-out { animation: fadeOutPricing 0.2s ease forwards; }
+        @keyframes fadeInPricing { 
+            0% { opacity: 0; transform: translateY(10px); } 
+            1% { opacity: 0; } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes fadeOutPricing { 
+            0% { opacity: 1; } 
+            100% { opacity: 0; } 
+        }
+        
+        /* Premium Bank Transfer Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; }
+        .modal-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background: white; border-radius: 24px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-header { padding: 2.5rem 2.5rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); position: relative; }
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.5rem; color: var(--gray); }
+        .modal-close:hover { background: var(--orange); color: white; transform: rotate(90deg); }
+        .modal-title { font-size: 2rem; font-weight: 800; color: var(--black); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .modal-subtitle { font-size: 1rem; color: var(--gray); line-height: 1.6; }
+        .modal-body { padding: 2rem 2.5rem 2.5rem; }
+        .info-section { margin-bottom: 2rem; }
+        .info-section:last-child { margin-bottom: 0; }
+        .info-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); font-weight: 800; margin-bottom: 0.75rem; }
+        .info-box { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.03) 100%); border: 1px solid rgba(255,106,21,0.15); border-radius: 12px; padding: 1.5rem; }
+        .info-row { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; gap: 1rem; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-row-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; white-space: nowrap; }
+        .info-row-value { font-size: 0.95rem; color: var(--black); font-weight: 700; text-align: right; word-break: break-word; }
+        .contact-info { display: flex; align-items: center; gap: 1rem; background: white; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; padding: 1.25rem 1.5rem; }
+        .contact-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .contact-icon svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
+        .contact-details { flex: 1; }
+        .contact-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.25rem; }
+        .contact-value { font-size: 1.05rem; color: var(--black); font-weight: 700; }
+        .contact-value a { color: var(--orange); text-decoration: none; transition: color 0.3s ease; }
+        .contact-value a:hover { color: #ff8a3d; text-decoration: underline; }
+        .modal-note { background: rgba(0,0,0,0.02); border-left: 3px solid var(--orange); padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.9rem; color: var(--gray); line-height: 1.7; margin-top: 1.5rem; }
+        .modal-note strong { color: var(--black); }
+        
+        /* Mobile Modal Styles */
+        @media (max-width: 768px) {
+            .modal-overlay { padding: 1rem; align-items: center; justify-content: center; }
+            .modal-content { max-height: 85vh; max-width: 90%; border-radius: 24px; margin: auto; }
+            .modal-header { padding: 2rem 1.5rem 1.25rem; }
+            .modal-title { font-size: 1.6rem; }
+            .modal-subtitle { font-size: 0.9rem; }
+            .modal-body { padding: 1.5rem; }
+            .modal-close { width: 36px; height: 36px; top: 1.25rem; right: 1.25rem; }
+            .info-box { padding: 1.25rem; }
+            .info-row { flex-direction: column; gap: 0.25rem; }
+            .info-row-label { font-size: 0.85rem; }
+            .info-row-value { font-size: 0.9rem; text-align: left; }
+            .contact-info { flex-direction: column; text-align: center; }
+            .contact-icon { margin: 0 auto; }
+            #modalAmount { font-size: 2.2rem !important; }
+        }
+        
+        /* Mobile Responsive for Billing Toggle */
+        @media (max-width: 768px) {
+            .billing-toggle-container { max-width: 340px; padding: 0.4rem; }
+            .billing-option { padding: 0.7rem 1.5rem; font-size: 0.85rem; }
+            .billing-savings-badge { font-size: 0.65rem; padding: 0.3rem 0.6rem; top: -10px; right: 10px; }
+            #yearly-pricing .pricing-price { font-size: 2.8rem; padding: 0.2rem 0.3rem; }
+        }
+        .booking-section { padding: 5rem 5% 8rem; background: white; }
+        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: visible; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
+        .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
+        .calendly-inline-widget { border-radius: 28px; overflow: hidden; }
+        .faq-section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; background: white; }
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item { background: white; border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+        .faq-item:hover { border-color: rgba(255,106,21,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+        .faq-item.active { border-color: var(--orange); box-shadow: 0 12px 40px rgba(255,106,21,0.15); }
+        .faq-question-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 2rem 2.5rem; }
+        .faq-question { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; color: var(--black); margin: 0; }
+        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-answer > * { min-height: 0; padding: 0 2.5rem 2rem 2.5rem; }
+        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; padding: 0.75rem 2.5rem 1.5rem 2.5rem; }
+        .cta-section { padding: 5rem 5%; text-align: center; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.88) 100%); z-index: 0; }
+        .hero-section::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -300px; right: -200px; animation: float 20s ease-in-out infinite; z-index: 0; }
+        .hero-badge { display: inline-flex; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 0.65rem 1.5rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; margin-bottom: 2rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; position: relative; z-index: 1; border: 1px solid rgba(255,106,21,0.2); box-shadow: 0 4px 20px rgba(255,106,21,0.1); animation: fadeInDown 0.8s ease 0.2s both; }
+        .hero-title { font-size: 6rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.05em; max-width: 1000px; position: relative; z-index: 1; margin-bottom: 0; animation: fadeInUp 1s ease 0.4s both; margin-left: auto; margin-right: auto; padding: 0.5rem 2rem; }
+        .hero-title-line { display: block; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0 0.15em; }
+        .hero-subtitle { font-size: 1.3rem; color: var(--gray); max-width: 700px; margin: 2.5rem auto 0; line-height: 1.8; position: relative; z-index: 1; animation: fadeInUp 1s ease 0.6s both; }
+        .hero-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; z-index: 1; margin-top: 2.5rem; animation: fadeInUp 1s ease 0.8s both; }
+        .hero-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .hero-cta:hover::before { left: 100%; }
+        .hero-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
+        .trust-section { padding: 2rem 5% 2rem; text-align: center; background: linear-gradient(180deg, white 0%, white 100%); border-bottom: 1px solid rgba(0,0,0,0.05); overflow: hidden; }
+        .trust-label { font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 3rem; font-weight: 700; }
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--orange); margin-bottom: 1.5rem; font-weight: 800; text-align: center; }
+        .section-title { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 5rem; max-width: 900px; text-align: center; margin-left: auto; margin-right: auto; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.5rem 2.5rem; }
+        .problem-section { padding: 15rem 5% 4rem; background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%); position: relative; overflow: hidden; }
+        .problem-section::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.06) 0%, transparent 70%); border-radius: 50%; top: -200px; left: -100px; animation: float 25s ease-in-out infinite; }
+        .problem-content { max-width: 900px; margin: 4rem auto 0; text-align: center; position: relative; z-index: 1; }
+        .problem-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; animation: fadeInUp 1s ease 0.2s both; }
+        .problem-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 5rem; font-weight: 500; animation: fadeInUp 1s ease 0.4s both; }
+        .problem-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 5rem; margin-bottom: 0; }
+        .problem-block { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .problem-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .problem-block:hover::before { transform: scaleX(1); }
+        .problem-block:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .problem-block:nth-child(1) { animation: slideInLeft 0.8s ease 0.6s both; }
+        .problem-block:nth-child(2) { animation: fadeInScale 0.8s ease 0.7s both; }
+        .problem-block:nth-child(3) { animation: slideInRight 0.8s ease 0.8s both; }
+        .problem-icon { width: 70px; height: 70px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%); border-radius: 16px; transition: all 0.4s ease; }
+        .problem-block:hover .problem-icon { transform: scale(1.1) rotate(5deg); background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); }
+        .problem-icon svg { width: 36px; height: 36px; }
+        .problem-block-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.01em; color: var(--black); }
+        .problem-block-text { font-size: 1.05rem; color: var(--gray); line-height: 1.7; font-weight: 500; }
+        .services-section { padding: 4rem 5% 6rem; background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%); position: relative; }
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        .service-card { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/10; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: white; border: 1px solid rgba(0,0,0,0.06); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 3.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+        .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,106,21,0.03) 0%, rgba(10,10,10,0.02) 100%); opacity: 0; transition: opacity 0.5s ease; z-index: 0; }
+        .service-card:hover::before { opacity: 1; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); border-color: rgba(255,106,21,0.2); }
+        .service-visual { width: 160px; height: 160px; margin-bottom: 2rem; position: relative; z-index: 1; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover .service-visual { transform: scale(1.08); }
+        .service-content { position: relative; z-index: 1; text-align: center; }
+        .service-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.02em; color: var(--black); }
+        .service-description { font-size: 1.05rem; color: var(--gray); line-height: 1.6; font-weight: 500; }
+        .reviews-section { padding: 5rem 5% 4rem; background: linear-gradient(180deg, var(--light-gray) 0%, var(--light-gray) 100%); position: relative; overflow: hidden; }
+        .reviews-section::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -200px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
+        .results-section { padding: 2rem 5%; background: linear-gradient(180deg, var(--light-gray) 0%, #fff 100%); position: relative; overflow: hidden; }
+        .results-section::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,106,21,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: -200px; animation: float 30s ease-in-out infinite; }
+        .results-content { max-width: 1400px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .results-headline { font-size: 4rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.04em; margin-bottom: 2rem; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .results-subtext { font-size: 1.3rem; color: var(--gray); line-height: 1.8; margin-bottom: 6rem; font-weight: 500; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .comparison-card { max-width: 1200px; margin: 0 auto 4rem; padding: 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); transition: all 0.5s ease; overflow: hidden; }
+        .comparison-card:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
+        .comparison-stats { display: flex; justify-content: space-evenly; align-items: center; gap: 3.5rem; margin-top: 4rem; padding: 3rem 0; background: white; border-radius: 20px; box-shadow: 0 30px 90px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.1); max-width: 1100px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; transition: all 0.5s ease; }
+        .comparison-stats:hover { box-shadow: 0 40px 110px rgba(0,0,0,0.2), 0 15px 40px rgba(0,0,0,0.12); transform: translateY(-3px); }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .stat-label { font-size: 0.9rem; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .comparison-cta { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; overflow: hidden; }
+        .comparison-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .comparison-cta:hover::before { left: 100%; }
+        .comparison-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+        .review-card { background: white; padding: 3rem 3.5rem; border-radius: 24px; transition: all 0.5s ease; border: 1px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+        .review-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease; }
+        .review-card:hover::before { transform: scaleX(1); }
+        .review-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.15); border-color: var(--orange); }
+        .review-stars { color: #00b67a; font-size: 1.4rem; margin-bottom: 1.5rem; letter-spacing: 3px; }
+        .review-title { font-size: 1.2rem; font-weight: 800; color: var(--black); margin-bottom: 1rem; line-height: 1.4; }
+        .review-text { font-size: 1.05rem; line-height: 1.8; color: var(--black); margin-bottom: 2rem; }
+        .review-author { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); }
+        .review-author strong { font-size: 1rem; font-weight: 700; }
+        .review-author span { font-size: 0.9rem; color: var(--gray); font-weight: 500; }
+        .comparison-grid-wrapper { width: 100%; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+        .comparison-grid-wrapper::-webkit-scrollbar { display: none; }
+        .comparison-grid-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fafafa; position: relative; border-bottom: 1px solid rgba(0,0,0,0.08); }
+        .comparison-grid-header::after { content: none; }
+        .comparison-header-cell { padding: 1.2rem 2.5rem; text-align: left; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(0,0,0,0.4); border-right: 1px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .comparison-header-cell:last-child { border-right: none; }
+        .comparison-header-cell.exiscale-header { background: linear-gradient(135deg, #ff6a15 0%, #ff7a25 100%); color: white; position: relative; box-shadow: 0 2px 8px rgba(255,106,21,0.15); border-right: none; }
+        .comparison-header-cell.exiscale-header::before { content: 'RECOMMENDED'; position: absolute; top: 0.4rem; right: 1.2rem; font-size: 0.5rem; background: rgba(255,255,255,0.25); padding: 0.2rem 0.6rem; border-radius: 8px; font-weight: 700; letter-spacing: 0.12em; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); }
+        .comparison-grid-body { display: flex; flex-direction: column; }
+        .comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid rgba(0,0,0,0.04); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .comparison-row:last-child { border-bottom: none; }
+        .comparison-row::before { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(255,106,21,0.02) 0%, rgba(255,106,21,0.06) 50%, rgba(255,106,21,0.02) 100%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 0; }
+        .comparison-row:hover::before { opacity: 1; }
+        .comparison-row:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.08); z-index: 1; transform: scale(1.008); }
+        .comparison-cell { padding: 2.5rem 2.5rem; font-size: 1rem; display: flex; align-items: center; position: relative; }
+        .comparison-cell.feature-col { background: linear-gradient(90deg, rgba(255,106,21,0.03) 0%, transparent 100%); flex-direction: column; align-items: flex-start; justify-content: center; }
+        .feature-name { font-size: 1.1rem; font-weight: 800; color: var(--black); margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+        .feature-desc { font-size: 0.9rem; color: var(--gray); font-weight: 500; line-height: 1.5; }
+        .comparison-cell.exiscale-col { background: linear-gradient(135deg, rgba(255,106,21,0.08) 0%, rgba(255,106,21,0.04) 100%); }
+        .comparison-cell.exiscale-col::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--orange) 0%, #ff8a3d 100%); box-shadow: 2px 0 8px rgba(255,106,21,0.3); }
+        .cell-content { display: flex; align-items: center; gap: 1.2rem; }
+        .negative-indicator { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, rgba(220,38,38,0.12) 0%, rgba(220,38,38,0.08) 100%); color: #dc2626; border-radius: 50%; font-size: 1.3rem; font-weight: 900; flex-shrink: 0; box-shadow: 0 4px 12px rgba(220,38,38,0.15); transition: all 0.3s ease; }
+        .negative-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(220,38,38,0.25); }
+        .positive-indicator { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: linear-gradient(135deg, rgba(255,106,21,0.2) 0%, rgba(255,106,21,0.15) 100%); color: var(--orange); border-radius: 50%; font-size: 1.3rem; font-weight: 900; flex-shrink: 0; animation: pulse 3s ease-in-out infinite; box-shadow: 0 4px 12px rgba(255,106,21,0.2); transition: all 0.3s ease; }
+        .positive-indicator:hover { transform: scale(1.1); box-shadow: 0 6px 18px rgba(255,106,21,0.35); animation: none; }
+        .cell-text { font-size: 1.05rem; font-weight: 600; color: var(--black); line-height: 1.6; }
+        .competitor-cell .cell-text { color: var(--gray); }
+        .pricing-section { padding: 5rem 5% 4rem; background: var(--light-gray); position: relative; overflow: visible; display: flex; flex-direction: column; align-items: center; }
+        .pricing-section::before { content: none; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(380px, 400px)); gap: 2.5rem; max-width: 1400px; margin: 5rem auto 0; position: relative; z-index: 1; justify-content: center; width: calc(100% - 4rem); padding: 0 2rem 3rem; align-items: start; }
+        
+        /* Swiper Slider Styles for Mobile */
+        .pricing-swiper-container { display: none; width: 100%; max-width: 100%; margin: 5rem auto 0; position: relative; overflow: visible; padding: 0 20px 80px; }
+        #monthly-swiper { display: none; }
+        #yearly-swiper { display: none; }
+        .pricing-swiper { overflow: visible; }
+        .pricing-swiper .swiper-wrapper { align-items: stretch; }
+        .pricing-swiper .swiper-slide { height: auto; display: flex; justify-content: center; }
+        .pricing-swiper .pricing-card { width: 100%; max-width: 380px; margin: 0 auto; }
+        .swiper-pagination { bottom: 10px !important; }
+        .swiper-pagination-bullet { width: 12px; height: 12px; background: var(--gray); opacity: 0.3; transition: all 0.3s ease; }
+        .swiper-pagination-bullet-active { background: var(--orange); opacity: 1; transform: scale(1.2); }
+        .pricing-card { background: white; border-radius: 28px; padding: 2.5rem 3rem; transition: all 0.6s ease; position: relative; border: 2px solid rgba(0,0,0,0.06); overflow: visible; width: 100%; max-width: 400px; min-height: auto; isolation: isolate; }
+        .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 50%, transparent 80%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: 0; border-radius: 28px; }
+        .pricing-card:hover::before { opacity: 0; }
+        .pricing-card:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.35); border-color: var(--orange); z-index: 10; }
+        .pricing-card.featured { border: 2px solid var(--orange); transform: translateY(-10px); box-shadow: 0 25px 70px rgba(255,106,21,0.25); }
+        .pricing-card.featured:hover { transform: translateY(-15px) scale(1.03); box-shadow: 0 30px 80px rgba(255,106,21,0.45); }
+        .pricing-badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.6rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 6px 20px rgba(255,106,21,0.5); z-index: 10; white-space: nowrap; }
+        .pricing-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; position: relative; }
+        .pricing-tagline { color: var(--gray); font-size: 1.05rem; margin-bottom: 2.5rem; font-weight: 500; }
+        .pricing-price { font-size: 3.5rem; font-weight: 900; margin-bottom: 0.25rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0.5rem; }
+        #yearly-pricing .pricing-price { font-size: 3.5rem; letter-spacing: -0.03em; padding: 0.2rem 0.5rem; }
+        .pricing-period { color: var(--gray); font-size: 1.05rem; display: block; margin-bottom: 2.5rem; font-weight: 600; }
+        .pricing-features { margin: 1.5rem 0 1rem 0; position: relative; z-index: 2; }
+        .pricing-features ul { list-style: none; position: relative; }
+        .pricing-features li { padding: 1rem 0; color: var(--gray); font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .pricing-features li:hover { padding-left: 0.5rem; color: var(--black); }
+        .pricing-features li:before { content: "✓"; color: var(--orange); font-weight: 900; flex-shrink: 0; font-size: 1.3rem; }
+        .tooltip { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; width: 18px; height: 18px; background: rgba(255,106,21,0.1); color: var(--orange); border-radius: 50%; font-size: 11px; cursor: help; font-weight: 800; margin-left: 0.3rem; transition: all 0.3s ease; border: 1px solid rgba(255,106,21,0.2); flex-shrink: 0; position: relative; }
+        .tooltip:hover { background: var(--orange); color: white; transform: scale(1.15); z-index: 99999; }
+        .tooltip .tooltiptext { visibility: hidden; width: 240px; background: var(--black); color: white; text-align: left; border-radius: 10px; padding: 0.85rem; position: absolute; z-index: 999999; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s, visibility 0.3s; font-size: 0.82rem; line-height: 1.5; box-shadow: 0 8px 20px rgba(0,0,0,0.4); font-weight: 400; pointer-events: none; white-space: normal; max-width: calc(100vw - 40px); }
+        .tooltip .tooltiptext::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px; border-style: solid; border-color: var(--black) transparent transparent transparent; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .pricing-cta { display: block; text-align: center; background: var(--black); color: white; padding: 1.3rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.4s ease; margin-top: 1.5rem; box-shadow: 0 6px 25px rgba(0,0,0,0.15); position: relative; overflow: hidden; font-size: 1.05rem; letter-spacing: 0.02em; }
+        .pricing-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .pricing-cta:hover::before { left: 100%; }
+        .pricing-cta:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: var(--orange); }
+        .pricing-card.featured .pricing-cta { background: var(--orange); box-shadow: 0 6px 25px rgba(255,106,21,0.4); }
+        .pricing-card.featured .pricing-cta:hover { box-shadow: 0 12px 40px rgba(255,106,21,0.6); }
+        .price-wrapper { position: relative; display: inline-block; }
+        .price-blurred { filter: blur(8px); opacity: 0.4; user-select: none; }
+        .application-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%); color: white; padding: 0.7rem 1.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; box-shadow: 0 8px 25px rgba(0,0,0,0.3); white-space: nowrap; border: 1px solid rgba(255,106,21,0.3); }
+        .booking-section { padding: 5rem 5% 8rem; background: white; }
+        .booking-container { max-width: 1100px; margin: 4rem auto 0; background: white; border-radius: 28px; overflow: visible; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.06); transition: all 0.6s ease; }
+        .booking-container:hover { box-shadow: 0 40px 100px rgba(0,0,0,0.2); transform: translateY(-5px); }
+        .calendly-inline-widget { border-radius: 28px; overflow: hidden; }
+        .faq-section { padding: 8rem 5%; max-width: 1200px; margin: 0 auto; background: white; }
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-item { background: white; border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; margin-bottom: 1.5rem; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+        .faq-item:hover { border-color: rgba(255,106,21,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+        .faq-item.active { border-color: var(--orange); box-shadow: 0 12px 40px rgba(255,106,21,0.15); }
+        .faq-question-wrapper { display: flex; justify-content: space-between; align-items: center; padding: 2rem 2.5rem; }
+        .faq-toggle { font-size: 2rem; font-weight: 300; color: var(--orange); line-height: 1; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-item.active .faq-answer { max-height: 300px; }
+        .faq-answer > * { min-height: 0; padding: 0 2.5rem 2rem 2.5rem; }
+        .faq-answer p { font-size: 1.05rem; line-height: 1.8; color: var(--gray); margin: 0; padding: 0.75rem 2.5rem 1.5rem 2.5rem; }
+        .cta-section { padding: 10rem 5%; text-align: center; background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%); color: white; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,106,21,0.15) 0%, transparent 70%); animation: pulse 10s ease-in-out infinite; }
+        .cta-section h2 { font-size: 4.5rem; font-weight: 900; margin-bottom: 2rem; letter-spacing: -0.04em; position: relative; z-index: 1; line-height: 1.1; }
+        .cta-section p { font-size: 1.4rem; color: rgba(255,255,255,0.8); margin-bottom: 4rem; position: relative; z-index: 1; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .cta-button { display: inline-block; background: var(--orange); color: white; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.4s ease; box-shadow: 0 8px 30px rgba(255,106,21,0.3); position: relative; z-index: 1; overflow: hidden; }
+        .cta-button::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.6s; }
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.5); background: #ff7a25; }
+        footer { padding: 8rem 5% 5rem; background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 100%); text-align: center; position: relative; }
+        .footer-content { max-width: 1400px; margin: 0 auto; }
+        .footer-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 4rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 0.2rem 0; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; text-align: left; margin-bottom: 5rem; }
+        .footer-principle { background: white; padding: 3rem 2.5rem; border-radius: 20px; border: 1px solid rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .footer-principle::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--orange) 0%, transparent 100%); opacity: 0; transition: opacity 0.4s ease; }
+        .footer-principle:hover::before { opacity: 1; }
+        .footer-principle:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); border-color: rgba(255,106,21,0.2); }
+        .footer-principle h4 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1.25rem; letter-spacing: -0.02em; color: var(--black); }
+        .footer-principle p { color: var(--gray); line-height: 1.75; font-size: 1rem; font-weight: 500; }
+        .footer-bottom { color: #999; font-size: 0.9rem; padding-top: 4rem; border-top: 1px solid rgba(0,0,0,0.08); font-weight: 500; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
+        .footer-links { display: flex; gap: 2.5rem; align-items: center; }
+        .footer-link { color: var(--black); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: all 0.3s ease; position: relative; }
+        .footer-link:hover { color: var(--orange); }
+        .footer-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s ease; }
+        .footer-link:hover::after { width: 100%; }
+        .footer-copyright { color: #999; font-size: 0.9rem; }
+        @media (max-width: 1024px) { .hero-title { font-size: 4rem; } .section-title { font-size: 3rem; } .services-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; justify-items: center; } .pricing-card { max-width: 500px; min-height: auto; } .footer-grid { grid-template-columns: 1fr; } .problem-blocks { grid-template-columns: 1fr; } .problem-headline { font-size: 3rem; } .comparison-table th, .comparison-table td { padding: 1.5rem 1.5rem; } .feature-title { font-size: 1.05rem; } .cell-text { font-size: 0.95rem; } }
+        @media (max-width: 768px) { nav { padding: 1rem 5%; } .logo img { height: 40px; } .hero-section { padding: 4rem 5% 3rem; min-height: auto; } .hero-badge { font-size: 0.65rem; padding: 0.5rem 1rem; margin-bottom: 2rem; white-space: nowrap; } .hero-title { font-size: 2.5rem; margin-bottom: 1.5rem; line-height: 1.2; padding: 0 1rem; } .hero-subtitle { font-size: 1.1rem; margin: 0 auto 2rem; padding: 0 1rem; } .hero-cta { margin-bottom: 0; } .hero-trustpilot { display: flex !important; } .trust-section { padding: 3rem 5%; } .trust-label { font-size: 0.7rem; margin-bottom: 1.5rem; } .reviews-section { padding: 4rem 5%; } .section-label { margin-bottom: 1rem; } .section-title { font-size: 2.2rem; padding: 0 1rem; margin-bottom: 2rem; } .reviews-grid { grid-template-columns: 1fr; gap: 2rem; padding: 0 1rem; } .review-card { padding: 2rem; margin: 0; } .review-card:nth-child(n+4) { display: none; } .problem-section { padding: 4rem 5%; } .problem-headline { font-size: 1.8rem; padding: 0 1rem; margin-bottom: 1.5rem; line-height: 1.3; } .problem-subtext { font-size: 1.1rem; padding: 0 1rem; margin-bottom: 3rem; } .problem-blocks { gap: 2rem; padding: 0 1rem; } .problem-block { padding: 8.5rem 1.5rem 2.5rem; margin: 0 auto; min-height: auto; position: relative; width: 100%; } .problem-icon { width: 100px; height: 100px; position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%); margin: 0; } .services-section { padding: 4rem 5%; } .services-headline { font-size: 1.8rem; padding: 0 1rem; margin-bottom: 1.5rem; line-height: 1.3; } .services-grid { gap: 2rem; padding: 0 1rem; grid-template-columns: 1fr; } .service-card { padding: 8.5rem 1.5rem 2.5rem; margin: 0 auto; min-height: auto; position: relative; text-align: center; width: 100%; box-sizing: border-box; aspect-ratio: auto; } .service-card:hover { transform: none !important; box-shadow: 0 4px 24px rgba(0,0,0,0.06); } .service-card:hover .service-visual { transform: translateX(-50%) !important; } .service-visual { width: 100px; height: 100px; margin: 0; position: absolute; top: 1.5rem; left: 50%; transform: translateX(-50%) !important; flex-shrink: 0; transition: none !important; } .service-visual svg { width: 100%; height: 100%; } .service-icon { width: 90px; height: 90px; position: relative; top: 0; left: 0; transform: none; margin: 0 auto; } .service-content { display: block; } .service-title { font-size: 1.2rem; line-height: 1.3; margin-bottom: 0.5rem; } .service-description { font-size: 1rem; line-height: 1.5; } .what-you-get-section { padding: 4rem 5%; } 
+        
+        /* Mobile Pricing: Hide Grid, Show Swiper */
+        .pricing-section { padding: 4rem 1.5% 4rem; } 
+        .pricing-grid { display: none !important; }
+        .pricing-swiper-container { display: block !important; }
+        #monthly-swiper { display: block !important; }
+        #yearly-swiper { display: none !important; }
+        
+        .pricing-card { padding: 2rem 1.5rem; max-width: 100%; margin: 0 auto; width: 100%; } 
+        .pricing-features li { transition: none !important; padding: 1rem 0 !important; pointer-events: none !important; -webkit-tap-highlight-color: transparent !important; }
+        .pricing-features li * { pointer-events: auto !important; }
+        .pricing-features li:hover, .pricing-features li:active, .pricing-features li:focus { padding-left: 0 !important; padding: 1rem 0 !important; color: var(--gray) !important; transform: none !important; }
+        .pricing-features ul { padding-left: 0; text-align: left; } .pricing-features li { text-align: left; padding-left: 0.5rem; font-size: 0.95rem; } .pricing-features ul { padding-left: 0; text-align: left; } .pricing-features li { text-align: left; padding-left: 1.5rem; font-size: 0.95rem; } .tooltip { display: inline-flex !important; align-items: center !important; justify-content: center !important; line-height: 1 !important; } 
+        
+        .pricing-features li { position: relative; }
+        .pricing-features li .tooltip { position: relative; }
+        .pricing-features li:has(.tooltip) { font-size: 0.9rem !important; }
+        .pricing-features li .tooltiptext { width: 200px !important; max-width: calc(100vw - 80px) !important; left: -180px !important; right: auto !important; transform: translateX(0) !important; margin-left: 0 !important; position: absolute !important; }
+        .tooltiptext { width: 200px !important; left: 50% !important; margin-left: -100px !important; bottom: 120% !important; white-space: normal !important; } .pricing-price { font-size: 3.5rem; } .cta-section { padding: 4rem 5%; } .cta-section h2 { font-size: 2.5rem; padding: 0 1rem; } .cta-section p { font-size: 1.1rem; padding: 0 1rem; } .results-section { padding: 4rem 5%; } .results-headline { font-size: 2rem !important; padding: 0 1rem !important; line-height: 1.3 !important; word-wrap: break-word; } .results-subtext { font-size: 1.1rem; padding: 0 1rem; } .comparison-section { padding: 4rem 5%; } .comparison-headline { font-size: 1.8rem; padding: 0 1rem; line-height: 1.3; } .comparison-subtext { padding: 0 1rem; } .comparison-card { display: none; } .comparison-stats { flex-wrap: wrap; gap: 1rem; padding: 2rem 1rem; margin: 2rem 1rem 0; max-width: 100%; } .stat-item { flex: 1 1 calc(50% - 0.5rem); min-width: 140px; text-align: center; } .stat-value { font-size: 2rem; } .stat-label { font-size: 0.65rem; } .faq-section { padding: 4rem 5%; } footer { padding: 4rem 5% 5rem; } .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { flex-direction: column; text-align: center; } .footer-links { flex-direction: row; gap: 1rem; font-size: 0.75rem; flex-wrap: nowrap; padding: 0 1rem; } .footer-link { white-space: nowrap; } 
+        
+        .mobile-comparison { display: block; padding: 0 1rem; margin-top: 2rem; }
+        .mobile-comparison-item { background: white; border-radius: 20px; padding: 2rem 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); }
+        .mobile-comparison-feature { font-size: 1.3rem; font-weight: 800; color: var(--black); margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid rgba(255,106,21,0.15); letter-spacing: -0.02em; }
+        .mobile-comparison-row { display: flex; flex-direction: column; gap: 1rem; }
+        .mobile-comparison-col { flex: 1; display: flex; flex-direction: column; }
+        .mobile-comparison-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(0,0,0,0.4); margin-bottom: 0.75rem; font-weight: 800; }
+        .mobile-comparison-value { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; line-height: 1.5; color: var(--gray); font-weight: 500; padding: 1rem; background: rgba(0,0,0,0.02); border-radius: 12px; flex-grow: 1; }
+        .mobile-comparison-col.exiscale { border-radius: 12px; }
+        .mobile-comparison-col.exiscale .mobile-comparison-label { color: var(--orange); }
+        .mobile-comparison-col.exiscale .mobile-comparison-value { background: linear-gradient(135deg, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 100%); border: 2px solid rgba(255,106,21,0.2); color: var(--black); font-weight: 600; }
+        }
+        
+        /* Lead Magnet Popup */
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; overflow-y: auto; }
+        .popup-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popupSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .popup-content { background: #0a0a0a; border-radius: 24px; max-width: 600px; width: 100%; position: relative; padding: 3rem 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); animation: popupSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin: auto; max-height: 90vh; overflow-y: auto; }
+        .popup-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #666; font-size: 2rem; line-height: 1; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .popup-close:hover { color: #999; background: rgba(255,255,255,0.05); transform: rotate(90deg); }
+        .popup-badge { display: inline-block; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(255,106,21,0.4); animation: pulse 2s ease-in-out infinite; }
+        .popup-title { font-size: 2.2rem; font-weight: 900; color: white; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .popup-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 1.5rem; font-weight: 500; }
+        .popup-highlight { background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); border-left: 4px solid var(--orange); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; }
+        .popup-highlight p { color: rgba(255,255,255,0.95); font-size: 1rem; line-height: 1.7; margin: 0; }
+        .popup-bonuses { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.08); }
+        .popup-bonuses-title { color: var(--orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .bonus-item { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; font-size: 0.95rem; }
+        .bonus-item:last-child { margin-bottom: 0; }
+        .bonus-item svg { width: 20px; height: 20px; stroke: var(--orange); flex-shrink: 0; }
+        .popup-email-section { margin: 2rem 0 1rem; }
+        .popup-email-input { width: 100%; padding: 1.1rem 1.5rem; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        .popup-email-input::placeholder { color: rgba(255,255,255,0.4); }
+        .popup-email-input:focus { border-color: var(--orange); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+        .popup-email-input.error { border-color: #ff4444; }
+        .popup-email-error { color: #ff4444; font-size: 0.85rem; margin-top: 0.5rem; min-height: 20px; }
+        .popup-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 1.3rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.15rem; text-align: center; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 8px 30px rgba(255,106,21,0.4); margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .popup-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+        .popup-cta:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.6); background: linear-gradient(135deg, #ff7a25 0%, #ff9a4d 100%); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .popup-disclaimer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; line-height: 1.5; }
+        @media (max-width: 768px) {
+            .popup-overlay { padding: 0.5rem; align-items: flex-start; padding-top: 2rem; }
+            .popup-content { padding: 2rem 1.5rem; max-width: 100%; border-radius: 20px; max-height: calc(100vh - 4rem); }
+            .popup-title { font-size: 1.6rem; }
+            .popup-subtitle { font-size: 1rem; }
+            .popup-cta { font-size: 1rem; padding: 1.1rem 1.5rem; }
+            .popup-close { top: 0.75rem; right: 0.75rem; font-size: 1.5rem; }
+        }
+    </style>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '493125080289626');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=493125080289626&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    
+    <!-- Hyros Tracking Script -->
+    <script>
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://t.exiscale.com/v1/lst/universal-script?ph=9eec468a397f9cc4dcd8de884d07b21f552c46ea0b48477082ad13e493113e40&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+    head.appendChild(script);
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="logo"><img src="logos/exiscale-logo.png" alt="ExiScale"></div>
+        <a href="#booking" class="nav-cta">Book a Call</a>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-badge">For advertisers that can't afford downtime</div>
+        <h1 class="hero-title">
+            <span class="hero-title-line">The Unstoppable</span>
+            <span class="hero-title-line">Meta Account</span>
+            <span class="hero-title-line">Solution</span>
+        </h1>
+        <p class="hero-subtitle">
+            We build infrastructure that keeps you scaling, no matter what.
+        </p>
+        <a href="#booking" class="hero-cta">Book Your Strategy Call</a>
+        <div class="hero-trustpilot" style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; position: relative; z-index: 10;">
+            <img src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" alt="Trustpilot" style="height: 20px; opacity: 1 !important; filter: none !important;">
+            <span style="color: #00b67a; font-size: 1.3rem; opacity: 1 !important;">★★★★★</span>
+            <span style="font-weight: 600; font-size: 0.95rem; color: var(--black); opacity: 1 !important;">4.6/5</span>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <div class="trust-label">BUILT FOR ELITE ADVERTISERS SCALING ACROSS THE WORLD'S TOP PLATFORMS</div>
+        <div class="logo-carousel">
+            <div class="logo-track">
+                <!-- First set -->
+                <div class="logo-item"><img src="logos/facebook-logo.png?v=2" alt="Facebook"></div>
+                <div class="logo-item"><img src="logos/shopify-logo.png?v=2" alt="Shopify"></div>
+                <div class="logo-item"><img src="logos/maxweb-logo.png?v=2" alt="MaxWeb"></div>
+                <div class="logo-item"><img src="logos/clickbank-logo.png?v=2" alt="ClickBank"></div>
+                <div class="logo-item"><img src="logos/checkoutchamp-logo.png?v=2" alt="Checkout Champ"></div>
+                <div class="logo-item"><img src="logos/woocommerce-logo.png?v=3" alt="WooCommerce"></div>
+                <div class="logo-item"><img src="logos/digistore-logo.png?v=2" alt="Digistore"></div>
+                <!-- Second set -->
+                <div class="logo-item"><img src="logos/facebook-logo.png?v=2" alt="Facebook"></div>
+                <div class="logo-item"><img src="logos/shopify-logo.png?v=2" alt="Shopify"></div>
+                <div class="logo-item"><img src="logos/maxweb-logo.png?v=2" alt="MaxWeb"></div>
+                <div class="logo-item"><img src="logos/clickbank-logo.png?v=2" alt="ClickBank"></div>
+                <div class="logo-item"><img src="logos/checkoutchamp-logo.png?v=2" alt="Checkout Champ"></div>
+                <div class="logo-item"><img src="logos/woocommerce-logo.png?v=3" alt="WooCommerce"></div>
+                <div class="logo-item"><img src="logos/digistore-logo.png?v=2" alt="Digistore"></div>
+                <!-- Third set -->
+                <div class="logo-item"><img src="logos/facebook-logo.png?v=2" alt="Facebook"></div>
+                <div class="logo-item"><img src="logos/shopify-logo.png?v=2" alt="Shopify"></div>
+                <div class="logo-item"><img src="logos/maxweb-logo.png?v=2" alt="MaxWeb"></div>
+                <div class="logo-item"><img src="logos/clickbank-logo.png?v=2" alt="ClickBank"></div>
+                <div class="logo-item"><img src="logos/checkoutchamp-logo.png?v=2" alt="Checkout Champ"></div>
+                <div class="logo-item"><img src="logos/woocommerce-logo.png?v=3" alt="WooCommerce"></div>
+                <div class="logo-item"><img src="logos/digistore-logo.png?v=2" alt="Digistore"></div>
+                <!-- Fourth set -->
+                <div class="logo-item"><img src="logos/facebook-logo.png?v=2" alt="Facebook"></div>
+                <div class="logo-item"><img src="logos/shopify-logo.png?v=2" alt="Shopify"></div>
+                <div class="logo-item"><img src="logos/maxweb-logo.png?v=2" alt="MaxWeb"></div>
+                <div class="logo-item"><img src="logos/clickbank-logo.png?v=2" alt="ClickBank"></div>
+                <div class="logo-item"><img src="logos/checkoutchamp-logo.png?v=2" alt="Checkout Champ"></div>
+                <div class="logo-item"><img src="logos/woocommerce-logo.png?v=3" alt="WooCommerce"></div>
+                <div class="logo-item"><img src="logos/digistore-logo.png?v=2" alt="Digistore"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <div class="section-label">REAL REVIEWS FROM REAL CLIENTS</div>
+        <h2 class="section-title">Don't take our word for it</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">Best Scaling Tool in the Ecom Space</p>
+                <p class="review-text">"They have walked us through the process of multiple ad accounts and setting everything up. We have seen a significant increase in our ability to scale because of them. The entire team from sales to support has earned this 5-star review. Don't trust your business to anyone else!"</p>
+                <div class="review-author"><strong>Matt Lane</strong><span>Trustpilot Review</span></div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">10/10 experience!</p>
+                <p class="review-text">"Lovely experience with ExiScale and the team they have! They've never took longer than 5 minutes to reply to us! ExiScale is the best in the space!"</p>
+                <div class="review-author"><strong>Felix</strong><span>Trustpilot Review</span></div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">This is a great service</p>
+                <p class="review-text">"This is a great service! The set-up is easy and the 24/7 support are always available to help make sure things move smoothly."</p>
+                <div class="review-author"><strong>Andrew</strong><span>Trustpilot Review</span></div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">best support in the game</p>
+                <p class="review-text">"Forget the days of reaching out and receiving no support. Kyron and his 24 hr team will go above and beyond to troubleshoot any issues you have. Signing up has been the best decision I've made, the perfect agency to work with that is genuinely there to help. 11/10"</p>
+                <div class="review-author"><strong>Dennis</strong><span>Trustpilot Review</span></div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">I wasted $1,000 on other so-called...</p>
+                <p class="review-text">"I wasted $1,000 on other so-called 'experts' who promised results but gave me nothing. Then I found Exiscale. Not only did they get my ads running profitably, but they also optimized my entire funnel, slashed my cost per lead, and brought in conversions like clockwork. They actually know what they're doing.. no fluff, no BS, just straight-up results. If you're tired of burning money on agencies that talk big but can't deliver, Exiscale is the only team you need. LEGENDS."</p>
+                <div class="review-author"><strong>Ayaan Khan</strong><span>Trustpilot Review</span></div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-title">Great service and support, reliable</p>
+                <p class="review-text">"I have a great experience with Exiscale. Have been using the service for about 3 months now with great satisfaction and no more 'off time' with our ads. Support is almost immediate. Keep up the good work!"</p>
+                <div class="review-author"><strong>Chris</strong><span>Trustpilot Review</span></div>
+            </div>
+        </div>
+    </section>
+        <div class="problem-content">
+            <div class="section-label">THE PROBLEM</div>
+            <h2 class="problem-headline">When Meta kills your accounts, your business stops.</h2>
+            <p class="problem-subtext">Your ads go dark. Spend freezes. Revenue tanks. We built ExiScale so that never happens again.</p>
+            
+            <div class="problem-blocks">
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="18" cy="6" r="3" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
+                            <path d="M17.5 5.5L18.5 6.5M17.5 6.5L18.5 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">Ad Accounts Disabled Overnight</h3>
+                    <p class="problem-block-text">Campaigns pause mid-scale. You lose data, momentum, and sales.</p>
+                </div>
+                
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" stroke="#ff6a15" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="#ff6a15" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">Revenue Vanishes Instantly</h3>
+                    <p class="problem-block-text">Every minute offline means money lost — and Meta doesn't care.</p>
+                </div>
+                
+                <div class="problem-block">
+                    <div class="problem-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ff6a15" stroke-width="2"/>
+                            <path d="M3 8H21" stroke="#ff6a15" stroke-width="2"/>
+                            <circle cx="7" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <circle cx="9" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <circle cx="11" cy="5.5" r="0.5" fill="#ff6a15"/>
+                            <path d="M8 13H16M8 16H13" stroke="#ff6a15" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                            <circle cx="18" cy="18" r="4" fill="#ff6a15" style="animation: warningPulse 2s ease-in-out infinite;"/>
+                            <path d="M18 16V18.5M18 20H18.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="problem-block-title">No Support. No Answers.</h3>
+                    <p class="problem-block-text">Endless appeals and "review in progress" emails while your team waits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="section-label">THE EXISCALE SYSTEM</div>
+        <h2 class="section-title">Stay live. Stay profitable. Stay unstoppable.</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="60" cy="60" r="50" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.08" style="animation: clockPulse 3s ease-in-out infinite;"/>
+                        <circle cx="60" cy="60" r="42" stroke="url(#orangeGrad)" stroke-width="1.5" opacity="0.12" style="animation: clockPulse 3s ease-in-out infinite; animation-delay: 0.5s;"/>
+                        <circle cx="60" cy="60" r="34" stroke="url(#orangeGrad)" stroke-width="2" opacity="0.15"/>
+                        <circle cx="60" cy="60" r="26" fill="url(#orangeGrad)" opacity="0.05"/>
+                        <g style="transform-origin: 60px 60px; animation: clockSpin 3s linear infinite;">
+                            <path d="M60 35 L60 60" stroke="url(#orangeGrad)" stroke-width="3" stroke-linecap="round" filter="url(#glow)"/>
+                            <path d="M60 60 L77 70" stroke="url(#orangeGrad)" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                        </g>
+                        <circle cx="60" cy="60" r="4" fill="#ff6a15" filter="url(#glow)"/>
+                        <g style="animation: speedLines 1.5s ease-in-out infinite;">
+                            <path d="M88 23 L96 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M96 23 L88 15" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Instant Recovery</h3>
+                    <p class="service-description">Back live in hours, not days. We handle the chaos.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="orangeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0s;">
+                            <rect x="23" y="33" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.5" opacity="0.2"/>
+                        </g>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.3s;">
+                            <rect x="33" y="43" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="1.8" opacity="0.4"/>
+                        </g>
+                        <g style="animation: stackFloat 3s ease-in-out infinite; animation-delay: 0.6s;">
+                            <rect x="43" y="53" width="38" height="38" rx="8" stroke="url(#orangeGrad2)" stroke-width="2.2"/>
+                            <rect x="48" y="58" width="28" height="28" rx="6" fill="url(#orangeGrad2)" opacity="0.08"/>
+                        </g>
+                        <path d="M92 48 L87 53 L92 58" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                        <path d="M87 53 L100 53" stroke="#ff6a15" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Unlimited Replacements</h3>
+                    <p class="service-description">Every asset replaced forever. No extra cost.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="orangeGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="38" y="53" width="44" height="38" rx="6" stroke="url(#orangeGrad3)" stroke-width="2.5"/>
+                        <rect x="43" y="58" width="34" height="28" rx="4" fill="url(#orangeGrad3)" opacity="0.06" style="animation: unlockGlow 2.5s ease-in-out infinite;"/>
+                        <path d="M48 53 L48 42 C48 35 53 30 60 30 C67 30 72 35 72 42 L72 53" stroke="url(#orangeGrad3)" stroke-width="2.8" stroke-linecap="round" style="animation: lockUnlock 3s ease-in-out infinite;"/>
+                        <circle cx="60" cy="72" r="5" fill="url(#orangeGrad3)" opacity="0.9"/>
+                        <line x1="60" y1="77" x2="60" y2="84" stroke="url(#orangeGrad3)" stroke-width="2.5" stroke-linecap="round"/>
+                        <g style="animation: unlockIndicator 2s ease-in-out infinite;">
+                            <path d="M78 40 L88 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M88 40 L78 30" stroke="#ff6a15" stroke-width="2.5" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Account Unbans</h3>
+                    <p class="service-description">We unban accounts, not just replace them.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-visual">
+                    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="orangeGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6a15;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff8a3d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M26 73 C26 53 37 48 54 48 C71 48 82 53 82 73 L82 86 C82 92 78 96 72 96 L36 96 C30 96 26 92 26 86 Z" stroke="url(#orangeGrad4)" stroke-width="2.5"/>
+                        <path d="M26 73 C26 53 37 48 54 48 C71 48 82 53 82 73" fill="url(#orangeGrad4)" opacity="0.04"/>
+                        <circle cx="39" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <circle cx="54" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <circle cx="69" cy="64" r="2.5" fill="#ff6a15" opacity="0.7"/>
+                        <g style="animation: notificationPulse 2s ease-in-out infinite;">
+                            <circle cx="88" cy="42" r="10" fill="url(#orangeGrad4)"/>
+                            <circle cx="88" cy="42" r="14" stroke="#ff6a15" stroke-width="1.5" opacity="0.25"/>
+                        </g>
+                        <path d="M85 42 L87 44 L92 39" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">24/7 Live Support</h3>
+                    <p class="service-description">Real humans. Under 2-minute response times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="pricing">
+        <div class="section-label">WHAT YOU GET</div>
+        <h2 class="section-title">No fluff. No delays. Just what you need to scale.</h2>
+        
+        <!-- Billing Toggle -->
+        <div class="billing-toggle-container">
+            <div class="billing-option active" data-period="monthly" onclick="switchBilling('monthly')">Monthly</div>
+            <div class="billing-option" data-period="yearly" onclick="switchBilling('yearly')">Yearly</div>
+            <div class="billing-toggle-slider"></div>
+            <div class="billing-savings-badge">SAVE 2 MONTHS</div>
+        </div>
+        
+        <!-- Monthly Pricing -->
+        <div class="pricing-content active" id="monthly-pricing">
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pricing-name">Launch</h3>
+                <p class="pricing-tagline">Get back online, fast</p>
+                <div class="pricing-price">$1,000</div>
+                <span class="pricing-period">per month</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">Aged 10+ year profile loaded in AdsPower as your main user profile, plus a secure backup stored on our private servers with trusted IPs</span></span></li>
+                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Ready-to-use business manager optimized for instant delivery</span></span></li>
+                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                        <li>10 Trusted Pages <span class="tooltip">?<span class="tooltiptext">Pre-built, trusted pages with likes and reviews, ready to advertise under your chosen names</span></span></li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Our Payment Method (0% fees) <span class="tooltip">?<span class="tooltiptext">All payments are processed through ExiScale's trusted payment methods. Crypto top-ups are instant, and bank transfers credit upon arrival</span></span></li>
+                        <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
+                    </ul>
+                </div>
+                <a href="https://whop.com/checkout/plan_TxENXHlmHxojF?a=chasebarmore" class="pricing-cta">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3 class="pricing-name">Scale</h3>
+                <p class="pricing-tagline">Built for consistent growth</p>
+                <div class="pricing-price">$3,500</div>
+                <span class="pricing-period">per month</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>1 User Profile + 2 Backups <span class="tooltip">?<span class="tooltiptext">One aged 10+ year profile loaded in AdsPower as your main user profile, plus two secure backups stored on private servers with trusted IPs to keep you live at all times</span></span></li>
+                        <li>4 Business Managers <span class="tooltip">?<span class="tooltiptext">Multiple Business Managers, each preloaded with 3 high-trust ad accounts, built for consistent scaling and asset control</span></span></li>
+                        <li>1 Host Business Manager <span class="tooltip">?<span class="tooltiptext">Dedicated Business Manager to store your pixels safely. It never runs ads, so it stays trusted and permanently yours</span></span></li>
+                        <li>12 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Own Payment Method <span class="tooltip">?<span class="tooltiptext">Use your own cards or ExiScale's zero-fee payment method. Crypto top-ups are instant, and bank transfers credit on arrival, giving you total flexibility and uptime assurance</span></span></li>
+                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Instant access to our senior support queue, your requests skip the line and are handled first</span></span></li>
+                        <li>3 Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Up to 3 recoveries per month for banned ad accounts running active campaigns, keeping your data, spend history, and momentum intact</span></span></li>
+                        <li>Ad Approval Service <span class="tooltip">?<span class="tooltiptext">Up to 5 monthly requests for reinstating previously approved ads, ideal for reviving profitable ads that were rejected</span></span></li>
+                        <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
+                    </ul>
+                </div>
+                <a href="https://whop.com/checkout/plan_1cPdjlNNFcqTd?a=chasebarmore" class="pricing-cta">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <h3 class="pricing-name">Invincible</h3>
+                <p class="pricing-tagline">Become Unstoppable</p>
+                <div class="pricing-price">$10,000</div>
+                <span class="pricing-period">per month</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>Everything in Scale, plus:</li>
+                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Full ad account recovery service, we'll reinstate any banned account tied to profitable campaigns, preserving your spend history and ad data indefinitely</span></span></li>
+                        <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
+                        <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
+                        <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
+                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">Earn 2% cashback on every dollar spent. Available exclusively for clients using our in-house payment methods</span></span></li>
+                        <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
+                    </ul>
+                </div>
+                <a href="https://whop.com/checkout/plan_2DerSyBoIBMxM?a=chasebarmore" class="pricing-cta">Get Started</a>
+            </div>
+        </div>
+        </div>
+        
+        <!-- Yearly Pricing -->
+        <div class="pricing-content" id="yearly-pricing">
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pricing-name">Launch</h3>
+                <p class="pricing-tagline">Get back online, fast</p>
+                <div class="pricing-price">$10,000</div>
+                <span class="pricing-period">per year</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">Aged 10+ year profile loaded in AdsPower as your main user profile, plus a secure backup stored on our private servers with trusted IPs</span></span></li>
+                        <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Ready-to-use business manager optimized for instant delivery</span></span></li>
+                        <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                        <li>10 Trusted Pages <span class="tooltip">?<span class="tooltiptext">Pre-built, trusted pages with likes and reviews, ready to advertise under your chosen names</span></span></li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Our Payment Method (0% fees) <span class="tooltip">?<span class="tooltiptext">All payments are processed through ExiScale's trusted payment methods. Crypto top-ups are instant, and bank transfers credit upon arrival</span></span></li>
+                        <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
+                    </ul>
+                </div>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('launch'); return false;">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3 class="pricing-name">Scale</h3>
+                <p class="pricing-tagline">Built for consistent growth</p>
+                <div class="pricing-price">$35,000</div>
+                <span class="pricing-period">per year</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>1 User Profile + 2 Backups <span class="tooltip">?<span class="tooltiptext">One aged 10+ year profile loaded in AdsPower as your main user profile, plus two secure backups stored on private servers with trusted IPs to keep you live at all times</span></span></li>
+                        <li>4 Business Managers <span class="tooltip">?<span class="tooltiptext">Multiple Business Managers, each preloaded with 3 high-trust ad accounts, built for consistent scaling and asset control</span></span></li>
+                        <li>1 Host Business Manager <span class="tooltip">?<span class="tooltiptext">Dedicated Business Manager to store your pixels safely. It never runs ads, so it stays trusted and permanently yours</span></span></li>
+                        <li>12 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                        <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                        <li>Own Payment Method <span class="tooltip">?<span class="tooltiptext">Use your own cards or ExiScale's zero-fee payment method. Crypto top-ups are instant, and bank transfers credit on arrival, giving you total flexibility and uptime assurance</span></span></li>
+                        <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Instant access to our senior support queue, your requests skip the line and are handled first</span></span></li>
+                        <li>3 Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Up to 3 recoveries per month for banned ad accounts running active campaigns, keeping your data, spend history, and momentum intact</span></span></li>
+                        <li>Ad Approval Service <span class="tooltip">?<span class="tooltiptext">Up to 5 monthly requests for reinstating previously approved ads, ideal for reviving profitable ads that were rejected</span></span></li>
+                        <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
+                    </ul>
+                </div>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('scale'); return false;">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <h3 class="pricing-name">Invincible</h3>
+                <p class="pricing-tagline">Become Unstoppable</p>
+                <div class="pricing-price">$100,000</div>
+                <span class="pricing-period">per year</span>
+                <div class="pricing-features">
+                    <ul>
+                        <li>Everything in Scale, plus:</li>
+                        <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Full ad account recovery service, we'll reinstate any banned account tied to profitable campaigns, preserving your spend history and ad data indefinitely</span></span></li>
+                        <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
+                        <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
+                        <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
+                        <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">Earn 2% cashback on every dollar spent. Available exclusively for clients using our in-house payment methods</span></span></li>
+                        <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
+                    </ul>
+                </div>
+                <a href="#" class="pricing-cta" onclick="openBankTransferModal('invincible'); return false;">Get Started</a>
+            </div>
+        </div>
+        </div>
+        
+        <!-- Swiper Slider for Mobile - Monthly -->
+        <div class="pricing-swiper-container" id="monthly-swiper">
+            <div class="pricing-swiper swiper">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1: Launch -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card">
+                            <h3 class="pricing-name">Launch</h3>
+                            <p class="pricing-tagline">Get back online, fast</p>
+                            <div class="pricing-price">$1,000</div>
+                            <span class="pricing-period">per month</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">Aged 10+ year profile loaded in AdsPower as your main user profile, plus a secure backup stored on our private servers with trusted IPs</span></span></li>
+                                    <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Ready-to-use business manager optimized for instant delivery</span></span></li>
+                                    <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                                    <li>10 Trusted Pages <span class="tooltip">?<span class="tooltiptext">Pre-built, trusted pages with likes and reviews, ready to advertise under your chosen names</span></span></li>
+                                    <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                                    <li>Our Payment Method (0% fees) <span class="tooltip">?<span class="tooltiptext">All payments are processed through ExiScale's trusted payment methods. Crypto top-ups are instant, and bank transfers credit upon arrival</span></span></li>
+                                    <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="https://whop.com/checkout/plan_TxENXHlmHxojF?a=chasebarmore" class="pricing-cta">Get Started</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: Scale (Featured) -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card featured">
+                            <div class="pricing-badge">Most Popular</div>
+                            <h3 class="pricing-name">Scale</h3>
+                            <p class="pricing-tagline">Built for consistent growth</p>
+                            <div class="pricing-price">$3,500</div>
+                            <span class="pricing-period">per month</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>1 User Profile + 2 Backups <span class="tooltip">?<span class="tooltiptext">One aged 10+ year profile loaded in AdsPower as your main user profile, plus two secure backups stored on private servers with trusted IPs to keep you live at all times</span></span></li>
+                                    <li>4 Business Managers <span class="tooltip">?<span class="tooltiptext">Multiple Business Managers, each preloaded with 3 high-trust ad accounts, built for consistent scaling and asset control</span></span></li>
+                                    <li>1 Host Business Manager <span class="tooltip">?<span class="tooltiptext">Dedicated Business Manager to store your pixels safely. It never runs ads, so it stays trusted and permanently yours</span></span></li>
+                                    <li>12 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                                    <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                                    <li>Own Payment Method <span class="tooltip">?<span class="tooltiptext">Use your own cards or ExiScale's zero-fee payment method. Crypto top-ups are instant, and bank transfers credit on arrival, giving you total flexibility and uptime assurance</span></span></li>
+                                    <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Instant access to our senior support queue, your requests skip the line and are handled first</span></span></li>
+                                    <li>3 Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Up to 3 recoveries per month for banned ad accounts running active campaigns, keeping your data, spend history, and momentum intact</span></span></li>
+                                    <li>Ad Approval Service <span class="tooltip">?<span class="tooltiptext">Up to 5 monthly requests for reinstating previously approved ads, ideal for reviving profitable ads that were rejected</span></span></li>
+                                    <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="https://whop.com/checkout/plan_1cPdjlNNFcqTd?a=chasebarmore" class="pricing-cta">Get Started</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: Invincible -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card">
+                            <h3 class="pricing-name">Invincible</h3>
+                            <p class="pricing-tagline">Become Unstoppable</p>
+                            <div class="pricing-price">$10,000</div>
+                            <span class="pricing-period">per month</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>Everything in Scale, plus:</li>
+                                    <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Full ad account recovery service, we'll reinstate any banned account tied to profitable campaigns, preserving your spend history and ad data indefinitely</span></span></li>
+                                    <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
+                                    <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
+                                    <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
+                                    <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">Earn 2% cashback on every dollar spent. Available exclusively for clients using our in-house payment methods</span></span></li>
+                                    <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="https://whop.com/checkout/plan_2DerSyBoIBMxM?a=chasebarmore" class="pricing-cta">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination dots -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        
+        <!-- Swiper Slider for Mobile - Yearly -->
+        <div class="pricing-swiper-container" id="yearly-swiper">
+            <div class="pricing-swiper swiper">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1: Launch -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card">
+                            <h3 class="pricing-name">Launch</h3>
+                            <p class="pricing-tagline">Get back online, fast</p>
+                            <div class="pricing-price">$10,000</div>
+                            <span class="pricing-period">per year</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>1 User Profile + 1 Backup <span class="tooltip">?<span class="tooltiptext">Aged 10+ year profile loaded in AdsPower as your main user profile, plus a secure backup stored on our private servers with trusted IPs</span></span></li>
+                                    <li>1 Business Manager <span class="tooltip">?<span class="tooltiptext">Ready-to-use business manager optimized for instant delivery</span></span></li>
+                                    <li>3 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                                    <li>10 Trusted Pages <span class="tooltip">?<span class="tooltiptext">Pre-built, trusted pages with likes and reviews, ready to advertise under your chosen names</span></span></li>
+                                    <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                                    <li>Our Payment Method (0% fees) <span class="tooltip">?<span class="tooltiptext">All payments are processed through ExiScale's trusted payment methods. Crypto top-ups are instant, and bank transfers credit upon arrival</span></span></li>
+                                    <li>Scale From $1K → $20K/day <span class="tooltip">?<span class="tooltiptext">Built to handle aggressive scaling without bans or downtime</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="pricing-cta" onclick="openBankTransferModal('launch'); return false;">Get Started</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: Scale (Featured) -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card featured">
+                            <div class="pricing-badge">Most Popular</div>
+                            <h3 class="pricing-name">Scale</h3>
+                            <p class="pricing-tagline">Built for consistent growth</p>
+                            <div class="pricing-price">$35,000</div>
+                            <span class="pricing-period">per year</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>1 User Profile + 2 Backups <span class="tooltip">?<span class="tooltiptext">One aged 10+ year profile loaded in AdsPower as your main user profile, plus two secure backups stored on private servers with trusted IPs to keep you live at all times</span></span></li>
+                                    <li>4 Business Managers <span class="tooltip">?<span class="tooltiptext">Multiple Business Managers, each preloaded with 3 high-trust ad accounts, built for consistent scaling and asset control</span></span></li>
+                                    <li>1 Host Business Manager <span class="tooltip">?<span class="tooltiptext">Dedicated Business Manager to store your pixels safely. It never runs ads, so it stays trusted and permanently yours</span></span></li>
+                                    <li>12 High-Spending Ad Accounts <span class="tooltip">?<span class="tooltiptext">Capable of $20k+ daily spend within the first week</span></span></li>
+                                    <li>Unlimited Replacements <span class="tooltip">?<span class="tooltiptext">Unlimited replacements for all core assets, profiles, business managers, ad accounts, and pages</span></span></li>
+                                    <li>Own Payment Method <span class="tooltip">?<span class="tooltiptext">Use your own cards or ExiScale's zero-fee payment method. Crypto top-ups are instant, and bank transfers credit on arrival, giving you total flexibility and uptime assurance</span></span></li>
+                                    <li>Priority 24/7 Support <span class="tooltip">?<span class="tooltiptext">Instant access to our senior support queue, your requests skip the line and are handled first</span></span></li>
+                                    <li>3 Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Up to 3 recoveries per month for banned ad accounts running active campaigns, keeping your data, spend history, and momentum intact</span></span></li>
+                                    <li>Ad Approval Service <span class="tooltip">?<span class="tooltiptext">Up to 5 monthly requests for reinstating previously approved ads, ideal for reviving profitable ads that were rejected</span></span></li>
+                                    <li>Competitor Spy Report <span class="tooltip">?<span class="tooltiptext">Gain monthly access to insider data from a real competitors ad account, including budgets, audiences, top-performing creatives, and targeting breakdowns</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="pricing-cta" onclick="openBankTransferModal('scale'); return false;">Get Started</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: Invincible -->
+                    <div class="swiper-slide">
+                        <div class="pricing-card">
+                            <h3 class="pricing-name">Invincible</h3>
+                            <p class="pricing-tagline">Become Unstoppable</p>
+                            <div class="pricing-price">$100,000</div>
+                            <span class="pricing-period">per year</span>
+                            <div class="pricing-features">
+                                <ul>
+                                    <li>Everything in Scale, plus:</li>
+                                    <li>Unlimited Ad Account Unbans <span class="tooltip">?<span class="tooltiptext">Full ad account recovery service, we'll reinstate any banned account tied to profitable campaigns, preserving your spend history and ad data indefinitely</span></span></li>
+                                    <li>Unlimited Profile Unbans <span class="tooltip">?<span class="tooltiptext">No profiles are left behind. If one goes down, we'll recover it, keeping your account ecosystem intact</span></span></li>
+                                    <li>Unlimited Page Unbans <span class="tooltip">?<span class="tooltiptext">Instant recovery for disabled pages, preserving post history, comments, and pixel data so your campaigns stay live and trusted</span></span></li>
+                                    <li>Unlimited Ad Approvals <span class="tooltip">?<span class="tooltiptext">Get ads approved & reapproved. Perfect for reviving proven creatives and scaling without disruption</span></span></li>
+                                    <li>2% Cashback on Ad Spend <span class="tooltip">?<span class="tooltiptext">Earn 2% cashback on every dollar spent. Available exclusively for clients using our in-house payment methods</span></span></li>
+                                    <li>Telegram Group with 8-Figure Marketers <span class="tooltip">?<span class="tooltiptext">Gain insider access to an elite private group of 8-figure advertisers sharing live strategies, what's working now, and how to perform like the top 1%</span></span></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="pricing-cta" onclick="openBankTransferModal('invincible'); return false;">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination dots -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="results-content">
+            <div class="section-label">WHY EXISCALE</div>
+            <h2 class="results-headline">The infrastructure difference</h2>
+            <p class="results-subtext">While others sell accounts, we engineer reliability. Here's what sets us apart.</p>
+            
+            <div class="comparison-card">
+                <div class="comparison-grid-wrapper">
+                    <div class="comparison-grid-header">
+                        <div class="comparison-header-cell">WHAT MATTERS</div>
+                        <div class="comparison-header-cell">OTHER PROVIDERS</div>
+                        <div class="comparison-header-cell exiscale-header">EXISCALE</div>
+                    </div>
+                    
+                    <div class="comparison-grid-body">
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Recovery Time</div>
+                                <div class="feature-desc">When disaster strikes</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Days or weeks of downtime</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Back live in hours</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Account Quality</div>
+                                <div class="feature-desc">Foundation that matters</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Fresh accounts that flag instantly</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">10+ year aged profiles</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Replacement Policy</div>
+                                <div class="feature-desc">Long-term protection</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Limited replacements, hidden fees</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Unlimited, forever</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Support Response</div>
+                                <div class="feature-desc">When you need help</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Tickets ignored for days</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">Under 2 minutes</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Account Unbans</div>
+                                <div class="feature-desc">Saving profitable accounts</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Just sell you new accounts</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">We actually unban accounts</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-row">
+                            <div class="comparison-cell feature-col">
+                                <div class="feature-name">Scaling Capacity</div>
+                                <div class="feature-desc">Growth without limits</div>
+                            </div>
+                            <div class="comparison-cell competitor-col">
+                                <div class="cell-content">
+                                    <span class="negative-indicator">✗</span>
+                                    <span class="cell-text">Low daily limits, constant flags</span>
+                                </div>
+                            </div>
+                            <div class="comparison-cell exiscale-col">
+                                <div class="cell-content">
+                                    <span class="positive-indicator">✓</span>
+                                    <span class="cell-text">$20K+/day week one</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Mobile-Only Comparison Cards -->
+            <div class="mobile-comparison">
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Recovery Time</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Others</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Days or weeks of downtime</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Back live in hours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Account Quality</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Others</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Fresh accounts that flag instantly</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>10+ year aged profiles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Replacement Policy</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Others</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Limited, hidden fees</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Unlimited, forever</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Support Response</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Others</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Days to respond</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Under 2 minutes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-comparison-item">
+                    <div class="mobile-comparison-feature">Infrastructure</div>
+                    <div class="mobile-comparison-row">
+                        <div class="mobile-comparison-col">
+                            <div class="mobile-comparison-label">Others</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: #ff4444; font-weight: 700;">✗</span>
+                                <span>Basic, prone to failure</span>
+                            </div>
+                        </div>
+                        <div class="mobile-comparison-col exiscale">
+                            <div class="mobile-comparison-label">ExiScale</div>
+                            <div class="mobile-comparison-value">
+                                <span style="color: var(--orange); font-weight: 700;">✓</span>
+                                <span>Redundant systems</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-stats">
+                <div class="stat-item">
+                    <div class="stat-value">6hrs</div>
+                    <div class="stat-label">AVG RECOVERY</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">LIVE SUPPORT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">99.8%</div>
+                    <div class="stat-label">UPTIME RATE</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$500M+</div>
+                    <div class="stat-label">TOTAL AD SPEND</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#booking" class="comparison-cta">Book Your Strategy Call</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="booking-section" id="booking">
+        <div class="section-label">READY TO GET STARTED?</div>
+        <h2 class="section-title">Book your strategy call now</h2>
+        <p style="text-align: center; color: var(--gray); font-size: 1.2rem; max-width: 700px; margin: 0 auto 3rem; line-height: 1.8;">
+            Schedule a 30-minute call with our team. We'll analyze your current setup and show you exactly how ExiScale can eliminate your ad account headaches.
+        <div class="booking-container">
+            <!-- Calendly inline widget begin -->
+            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale/strategy-call?hide_gdpr_banner=1&primary_color=ff6a15&utm_source=affiliate&utm_medium=chasebarmore&utm_campaign=chasebarmore_referral" style="min-width:320px;height:700px;"></div>
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            <!-- Calendly inline widget end -->
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="section-label">GOT QUESTIONS?</div>
+        <h2 class="section-title">Everything you need to know</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">How quickly can I start advertising again?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Most clients are live within hours. Your setup is pre-built, tested, and ready to scale.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">What happens if my account gets banned?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You're covered. Every package includes lifetime replacements, and higher tiers include unbans and proactive recovery.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">How do you ensure account quality?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>All assets are real, aged & ID-verified. No farms. No fakes. No junk.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Is it secure to use, even while traveling?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes. Each setup includes a dedicated US-based IP and isolated environment for safe access anywhere.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Can I use ExiScale for high-risk offers?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, but we're transparent: black or grey-hat offers carry more volatility. We help you minimize bans, not defy policy.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Do you offer real human support?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes. 24/7 coverage with sub-2-minute response times from our internal team.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Can I upgrade later?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Anytime. You can scale from Launch to Invincible as your spend and team grow.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Who manages my system once it's live?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>You do, with full control. We handle the infrastructure, security, and replacements behind the scenes.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question-wrapper">
+                    <h3 class="faq-question">Who is ExiScale built for?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Advertisers, agencies, and brands spending $1K+/day who want reliable, ban-proof infrastructure to scale without interruption.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.faq-toggle').textContent = '+';
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    item.querySelector('.faq-toggle').textContent = '−';
+                }
+            });
+        });
+    </script>
+
+    <section class="cta-section">
+        <h2>Stop reacting.<br>Start scaling.</h2>
+        <p>Join the network of elite advertisers who operate above Meta's rules, stable, scalable, unstoppable.</p>
+        <a href="#booking" class="cta-button">Book Your Strategy Call</a>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <h3 class="footer-title">The ExiScale Standard</h3>
+            <div class="footer-grid">
+                <div class="footer-principle">
+                    <h4>Who we work with</h4>
+                    <p>We partner with serious advertisers and agencies who value uptime, control, and profit. Built for those spending $1K–$20K+ per day who treat Meta like a business, not a bet.</p>
+                </div>
+                <div class="footer-principle">
+                    <h4>How we operate</h4>
+                    <p>Instant support. Enterprise infrastructure. Zero downtime. We keep your systems stable, scaling, and online, even when Meta doesn't.</p>
+                </div>
+                <div class="footer-principle">
+                    <h4>Our track record</h4>
+                    <p>99.8% uptime. Millions in ad spend protected. When others go dark, ExiScale clients keep scaling.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="/legal/terms/" class="footer-link">Terms of Service</a>
+                    <a href="/legal/privacy/" class="footer-link">Privacy Policy</a>
+                    <a href="/legal/refund/" class="footer-link">Refund Policy</a>
+                </div>
+                <div class="footer-copyright">&copy; 2025 ExiScale LLC. Built for serious advertisers.</div>
+            </div>
+        </div>
+    </footer>
+    <!-- Load Calendly script early for faster widget rendering -->
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+    
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize Swiper for pricing cards on mobile
+        var pricingSwiper;
+        var init = false;
+        
+        function swiperMode() {
+            let mobile = window.innerWidth <= 768;
+            
+            // Enable (for mobile)
+            if (mobile) {
+                if (!init) {
+                    init = true;
+                    pricingSwiper = new Swiper('.pricing-swiper', {
+                        slidesPerView: 1,
+                        spaceBetween: 40,
+                        centeredSlides: true,
+                        grabCursor: true,
+                        keyboard: {
+                            enabled: true,
+                        },
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            480: {
+                                slidesPerView: 1.1,
+                                spaceBetween: 40
+                            }
+                        }
+                    });
+                }
+            } else if (init) {
+                // Disable (for desktop)
+                pricingSwiper.destroy();
+                init = false;
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            swiperMode();
+        });
+        
+        // Re-initialize on resize
+        window.addEventListener('resize', function() {
+            swiperMode();
+        });
+    </script>
+    
+    <!-- Billing Toggle Script -->
+    <script>
+        function switchBilling(period) {
+            // Update toggle UI
+            const options = document.querySelectorAll('.billing-option');
+            options.forEach(opt => opt.classList.remove('active'));
+            document.querySelector(`[data-period="${period}"]`).classList.add('active');
+            
+            // Switch pricing content with smooth fade (desktop)
+            const monthlyContent = document.getElementById('monthly-pricing');
+            const yearlyContent = document.getElementById('yearly-pricing');
+            
+            // Check if mobile
+            const isMobile = window.innerWidth <= 768;
+            
+            // Store current slide index on mobile before switching
+            let currentSlideIndex = 0;
+            if (isMobile) {
+                const currentSwiper = period === 'monthly' 
+                    ? document.querySelector('#yearly-swiper .swiper')
+                    : document.querySelector('#monthly-swiper .swiper');
+                
+                if (currentSwiper && currentSwiper.swiper) {
+                    currentSlideIndex = currentSwiper.swiper.realIndex || currentSwiper.swiper.activeIndex || 0;
+                    console.log('Preserving slide index:', currentSlideIndex);
+                }
+            }
+            
+            if (period === 'monthly') {
+                // Add fade-out class to yearly
+                yearlyContent.classList.add('fading-out');
+                
+                // After fade-out completes, hide yearly and show monthly
+                setTimeout(() => {
+                    yearlyContent.classList.remove('active', 'fading-out');
+                    monthlyContent.classList.add('active');
+                }, 200);
+                
+                // Mobile ONLY - switch swipers and maintain slide position with smooth fade
+                if (isMobile) {
+                    const monthlySwiper = document.getElementById('monthly-swiper');
+                    const yearlySwiper = document.getElementById('yearly-swiper');
+                    
+                    // Fade out current swiper
+                    if (yearlySwiper) {
+                        yearlySwiper.style.setProperty('transition', 'opacity 0.3s ease', 'important');
+                        yearlySwiper.style.setProperty('opacity', '0', 'important');
+                        
+                        setTimeout(() => {
+                            yearlySwiper.style.setProperty('display', 'none', 'important');
+                        }, 300);
+                    }
+                    
+                    if (monthlySwiper) {
+                        // Prepare new swiper (hidden, correct slide)
+                        monthlySwiper.style.setProperty('opacity', '0', 'important');
+                        monthlySwiper.style.setProperty('display', 'block', 'important');
+                        
+                        // Set the slide position immediately while hidden
+                        setTimeout(() => {
+                            const swiper = document.querySelector('#monthly-swiper .swiper');
+                            if (swiper && swiper.swiper) {
+                                console.log('Switching to monthly slide:', currentSlideIndex);
+                                swiper.swiper.slideTo(currentSlideIndex, 0);
+                                
+                                // Smooth fade in after old swiper fades out
+                                setTimeout(() => {
+                                    monthlySwiper.style.setProperty('transition', 'opacity 0.4s ease', 'important');
+                                    monthlySwiper.style.setProperty('opacity', '1', 'important');
+                                }, 150);
+                            }
+                        }, 50);
+                    }
+                }
+            } else {
+                // Add fade-out class to monthly
+                monthlyContent.classList.add('fading-out');
+                
+                // After fade-out completes, hide monthly and show yearly
+                setTimeout(() => {
+                    monthlyContent.classList.remove('active', 'fading-out');
+                    yearlyContent.classList.add('active');
+                }, 200);
+                
+                // Mobile ONLY - switch swipers and maintain slide position with smooth fade
+                if (isMobile) {
+                    const monthlySwiper = document.getElementById('monthly-swiper');
+                    const yearlySwiper = document.getElementById('yearly-swiper');
+                    
+                    // Fade out current swiper
+                    if (monthlySwiper) {
+                        monthlySwiper.style.setProperty('transition', 'opacity 0.3s ease', 'important');
+                        monthlySwiper.style.setProperty('opacity', '0', 'important');
+                        
+                        setTimeout(() => {
+                            monthlySwiper.style.setProperty('display', 'none', 'important');
+                        }, 300);
+                    }
+                    
+                    if (yearlySwiper) {
+                        // Prepare new swiper (hidden, correct slide)
+                        yearlySwiper.style.setProperty('opacity', '0', 'important');
+                        yearlySwiper.style.setProperty('display', 'block', 'important');
+                        
+                        // Set the slide position immediately while hidden
+                        setTimeout(() => {
+                            const swiper = document.querySelector('#yearly-swiper .swiper');
+                            if (swiper && swiper.swiper) {
+                                console.log('Switching to yearly slide:', currentSlideIndex);
+                                swiper.swiper.slideTo(currentSlideIndex, 0);
+                                
+                                // Smooth fade in after old swiper fades out
+                                setTimeout(() => {
+                                    yearlySwiper.style.setProperty('transition', 'opacity 0.4s ease', 'important');
+                                    yearlySwiper.style.setProperty('opacity', '1', 'important');
+                                }, 150);
+                            }
+                        }, 50);
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Bank Transfer Modal Script -->
+    <script>
+        function openBankTransferModal(plan) {
+            const modal = document.getElementById('bankTransferModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalAmount = document.getElementById('modalAmount');
+            
+            if (plan === 'launch') {
+                modalTitle.textContent = 'Launch - Annual Plan';
+                modalAmount.textContent = '$10,000';
+            } else if (plan === 'scale') {
+                modalTitle.textContent = 'Scale - Annual Plan';
+                modalAmount.textContent = '$35,000';
+            } else if (plan === 'invincible') {
+                modalTitle.textContent = 'Invincible - Annual Plan';
+                modalAmount.textContent = '$100,000';
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeBankTransferModal() {
+            const modal = document.getElementById('bankTransferModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('bankTransferModal');
+            if (event.target === modal) {
+                closeBankTransferModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeBankTransferModal();
+            }
+        });
+    </script>
+    
+    <!-- Bank Transfer Modal -->
+    <div class="modal-overlay" id="bankTransferModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeBankTransferModal()">&times;</button>
+                <h2 class="modal-title" id="modalTitle">Premium Plan</h2>
+                <p class="modal-subtitle">Annual subscriptions require bank transfer payment. Contact our team to get started.</p>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <div class="info-label">Transfer Amount</div>
+                    <div class="info-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--black) 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.03em;" id="modalAmount">$10,000</div>
+                        <div style="font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem; font-weight: 600;">USD - One-time annual payment</div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-label">Contact Support</div>
+                    <div class="contact-info">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <div class="contact-label">Email Us</div>
+                            <div class="contact-value"><a href="mailto:support@exiscale.com">support@exiscale.com</a></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-label">Bank Transfer Details (USD)</div>
+                    <div class="info-box">
+                        <div class="info-row">
+                            <span class="info-row-label">Beneficiary Name:</span>
+                            <span class="info-row-value">Exiscale LLC</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Account Number:</span>
+                            <span class="info-row-value">202377432894</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Routing Number:</span>
+                            <span class="info-row-value">091311229</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Bank Name:</span>
+                            <span class="info-row-value">Choice Financial Group</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Bank Address:</span>
+                            <span class="info-row-value">4501 23rd Avenue S, Fargo, ND 58104</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">SWIFT/BIC:</span>
+                            <span class="info-row-value">CHFGUS44021</span>
+                        </div>
+                    </div>
+                    <div class="modal-note">
+                        <strong>Important:</strong> After completing your transfer, email us at <a href="mailto:support@exiscale.com">support@exiscale.com</a> with your transfer confirmation to activate your subscription immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Freshchat Widget -->
+    <script
+    src='//fw-cdn.com/10686344/3499220.js'
+    chat='true'>
+    </script>
+    
+    <!-- Lead Magnet Popup -->
+    <div class="popup-overlay" id="leadMagnetPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div class="popup-badge">⚡ FREE INSTANT DOWNLOAD</div>
+            <h2 class="popup-title">$500M META SURVIVAL KIT</h2>
+            <p class="popup-subtitle">How top advertisers spend $1K–$20K+/day without getting banned or rejected (even when Meta's AI goes psycho)</p>
+            
+            <div class="popup-highlight">
+                <p><strong>Steal the exact approval hacks + ban-proof systems we used to scale $500M+ in ad spend</strong></p>
+            </div>
+            
+            <div class="popup-bonuses">
+                <div class="popup-bonuses-title">Includes $49,997 in bonuses:</div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>2 AI Tools</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>2,000+ Canva Templates</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Lifetime Access</span>
+                </div>
+            </div>
+            
+            <div class="popup-email-section">
+                <input type="email" id="popupEmail" class="popup-email-input" placeholder="Enter your email address" required>
+                <div id="emailError" class="popup-email-error"></div>
+            </div>
+            
+            <button class="popup-cta" id="popupCTA" disabled onclick="handlePopupCTA(event)">
+                <span id="ctaText">GET IT FREE →</span>
+                <span id="ctaLoader" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                        <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
+                        <path d="M12 2 A10 10 0 0 1 22 12" opacity="1"></path>
+                    </svg>
+                </span>
+            </button>
+            
+            <p class="popup-disclaimer">No card needed. Instant PDF delivery.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Make.com Webhook Configuration
+        const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/6alm8d6y96prclifwcmwwopu5o2vomgu';
+        
+        // Email validation
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // Enable/disable button based on email validity
+        const emailInput = document.getElementById('popupEmail');
+        const ctaButton = document.getElementById('popupCTA');
+        const emailError = document.getElementById('emailError');
+        
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (email === '') {
+                ctaButton.disabled = true;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else if (isValidEmail(email)) {
+                ctaButton.disabled = false;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else {
+                ctaButton.disabled = true;
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+            }
+        });
+        
+        // Handle form submission
+        async function handlePopupCTA(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+                return;
+            }
+            
+            // Show loading state
+            ctaButton.disabled = true;
+            document.getElementById('ctaText').style.display = 'none';
+            document.getElementById('ctaLoader').style.display = 'inline-block';
+            
+            try {
+                // Send email to Make.com webhook
+                const response = await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        source: 'ExiScale Lead Magnet Popup',
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                console.log('Email sent to Make.com webhook:', email);
+                
+                // Open download link
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
+                
+            } catch (error) {
+                console.error('Webhook error:', error);
+                // Still redirect for better UX
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
+            }
+        }
+        
+        // Popup state
+        let popupShown = false;
+        
+        // Popup trigger after 5 seconds
+        setTimeout(function() {
+            console.log('5 seconds passed - showing popup');
+            showPopup();
+        }, 5000);
+        
+        function showPopup() {
+            if (popupShown) {
+                console.log('Popup already shown in this session');
+                return;
+            }
+            console.log('Displaying popup now');
+            const popup = document.getElementById('leadMagnetPopup');
+            popup.classList.add('active');
+            popupShown = true;
+        }
+        
+        function closePopup() {
+            document.getElementById('leadMagnetPopup').classList.remove('active');
+        }
+        
+        // Close popup when clicking outside
+        document.getElementById('leadMagnetPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+        
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+    </script>
+</body>
+</html>
