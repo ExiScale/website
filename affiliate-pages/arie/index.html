@@ -431,7 +431,63 @@
         .mobile-comparison-col.exiscale .mobile-comparison-label { color: var(--orange); }
         .mobile-comparison-col.exiscale .mobile-comparison-value { background: linear-gradient(135deg, rgba(255,106,21,0.12) 0%, rgba(255,106,21,0.06) 100%); border: 2px solid rgba(255,106,21,0.2); color: var(--black); font-weight: 600; }
         }
+        
+        /* Lead Magnet Popup */
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.3s ease; overflow-y: auto; }
+        .popup-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popupSlideUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .popup-content { background: #0a0a0a; border-radius: 24px; max-width: 600px; width: 100%; position: relative; padding: 3rem 2.5rem; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); animation: popupSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); margin: auto; max-height: 90vh; overflow-y: auto; }
+        .popup-close { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #666; font-size: 2rem; line-height: 1; cursor: pointer; padding: 0.5rem; transition: all 0.3s ease; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .popup-close:hover { color: #999; background: rgba(255,255,255,0.05); transform: rotate(90deg); }
+        .popup-badge { display: inline-block; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(255,106,21,0.4); animation: pulse 2s ease-in-out infinite; }
+        .popup-title { font-size: 2.2rem; font-weight: 900; color: white; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .popup-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 1.5rem; font-weight: 500; }
+        .popup-highlight { background: linear-gradient(135deg, rgba(255,106,21,0.15) 0%, rgba(255,106,21,0.08) 100%); border-left: 4px solid var(--orange); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; }
+        .popup-highlight p { color: rgba(255,255,255,0.95); font-size: 1rem; line-height: 1.7; margin: 0; }
+        .popup-bonuses { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid rgba(255,255,255,0.08); }
+        .popup-bonuses-title { color: var(--orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .bonus-item { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; font-size: 0.95rem; }
+        .bonus-item:last-child { margin-bottom: 0; }
+        .bonus-item svg { width: 20px; height: 20px; stroke: var(--orange); flex-shrink: 0; }
+        .popup-email-section { margin: 2rem 0 1rem; }
+        .popup-email-input { width: 100%; padding: 1.1rem 1.5rem; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-size: 1rem; transition: all 0.3s ease; outline: none; }
+        .popup-email-input::placeholder { color: rgba(255,255,255,0.4); }
+        .popup-email-input:focus { border-color: var(--orange); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+        .popup-email-input.error { border-color: #ff4444; }
+        .popup-email-error { color: #ff4444; font-size: 0.85rem; margin-top: 0.5rem; min-height: 20px; }
+        .popup-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%); color: white; padding: 1.3rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.15rem; text-align: center; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 8px 30px rgba(255,106,21,0.4); margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        .popup-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+        .popup-cta:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,106,21,0.6); background: linear-gradient(135deg, #ff7a25 0%, #ff9a4d 100%); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .popup-disclaimer { text-align: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 1rem; line-height: 1.5; }
+        @media (max-width: 768px) {
+            .popup-overlay { padding: 0.5rem; align-items: flex-start; padding-top: 2rem; }
+            .popup-content { padding: 2rem 1.5rem; max-width: 100%; border-radius: 20px; max-height: calc(100vh - 4rem); }
+            .popup-title { font-size: 1.6rem; }
+            .popup-subtitle { font-size: 1rem; }
+            .popup-cta { font-size: 1rem; padding: 1.1rem 1.5rem; }
+            .popup-close { top: 0.75rem; right: 0.75rem; font-size: 1.5rem; }
+        }
     </style>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '493125080289626');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=493125080289626&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
     
     <!-- Hyros Tracking Script -->
     <script>
@@ -1734,6 +1790,175 @@
     <script
     src='//fw-cdn.com/10686344/3499220.js'
     chat='true'>
+    </script>
+    
+    <!-- Lead Magnet Popup -->
+    <div class="popup-overlay" id="leadMagnetPopup">
+        <div class="popup-content">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div class="popup-badge">⚡ FREE INSTANT DOWNLOAD</div>
+            <h2 class="popup-title">$500M META SURVIVAL KIT</h2>
+            <p class="popup-subtitle">How top advertisers spend $1K–$20K+/day without getting banned or rejected (even when Meta's AI goes psycho)</p>
+            
+            <div class="popup-highlight">
+                <p><strong>Steal the exact approval hacks + ban-proof systems we used to scale $500M+ in ad spend</strong></p>
+            </div>
+            
+            <div class="popup-bonuses">
+                <div class="popup-bonuses-title">Includes $49,997 in bonuses:</div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>2 AI Tools</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>2,000+ Canva Templates</span>
+                </div>
+                <div class="bonus-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>Lifetime Access</span>
+                </div>
+            </div>
+            
+            <div class="popup-email-section">
+                <input type="email" id="popupEmail" class="popup-email-input" placeholder="Enter your email address" required>
+                <div id="emailError" class="popup-email-error"></div>
+            </div>
+            
+            <button class="popup-cta" id="popupCTA" disabled onclick="handlePopupCTA(event)">
+                <span id="ctaText">GET IT FREE →</span>
+                <span id="ctaLoader" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                        <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
+                        <path d="M12 2 A10 10 0 0 1 22 12" opacity="1"></path>
+                    </svg>
+                </span>
+            </button>
+            
+            <p class="popup-disclaimer">No card needed. Instant PDF delivery.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Make.com Webhook Configuration
+        const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/6alm8d6y96prclifwcmwwopu5o2vomgu';
+        
+        // Email validation
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // Enable/disable button based on email validity
+        const emailInput = document.getElementById('popupEmail');
+        const ctaButton = document.getElementById('popupCTA');
+        const emailError = document.getElementById('emailError');
+        
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (email === '') {
+                ctaButton.disabled = true;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else if (isValidEmail(email)) {
+                ctaButton.disabled = false;
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            } else {
+                ctaButton.disabled = true;
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+            }
+        });
+        
+        // Handle form submission
+        async function handlePopupCTA(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+                return;
+            }
+            
+            // Show loading state
+            ctaButton.disabled = true;
+            document.getElementById('ctaText').style.display = 'none';
+            document.getElementById('ctaLoader').style.display = 'inline-block';
+            
+            try {
+                // Send email to Make.com webhook
+                const response = await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        source: 'ExiScale Lead Magnet Popup',
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                console.log('Email sent to Make.com webhook:', email);
+                
+                // Open download link
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
+                
+            } catch (error) {
+                console.error('Webhook error:', error);
+                // Still redirect for better UX
+                window.open('https://bit.ly/4oJ5Hli', '_blank');
+                closePopup();
+            }
+        }
+        
+        // Popup state
+        let popupShown = false;
+        
+        // Popup trigger after 5 seconds
+        setTimeout(function() {
+            console.log('5 seconds passed - showing popup');
+            showPopup();
+        }, 5000);
+        
+        function showPopup() {
+            if (popupShown) {
+                console.log('Popup already shown in this session');
+                return;
+            }
+            console.log('Displaying popup now');
+            const popup = document.getElementById('leadMagnetPopup');
+            popup.classList.add('active');
+            popupShown = true;
+        }
+        
+        function closePopup() {
+            document.getElementById('leadMagnetPopup').classList.remove('active');
+        }
+        
+        // Close popup when clicking outside
+        document.getElementById('leadMagnetPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+        
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
     </script>
 </body>
 </html>
