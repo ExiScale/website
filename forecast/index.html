@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your 2026 Meta Ban Financial Forecast - ExiScale</title>
+    <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
+    <link rel="shortcut icon" href="https://exiscale.com/exiscale-favicon.png">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { 
+            --orange: #ff6a15; 
+            --black: #0a0a0a; 
+            --dark-gray: #1a1a1a;
+            --gray: #666; 
+            --light-gray: #fafafa; 
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            line-height: 1.6; 
+            color: white; 
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        
+        /* Navigation */
+        nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background: rgba(10,10,10,0.95); 
+            backdrop-filter: blur(30px); 
+            padding: 1.5rem 5%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+        }
+        .logo img { height: 48px; }
+        
+        /* Hero Section */
+        .hero-section { 
+            margin-top: 100px; 
+            padding: 6rem 5% 4rem; 
+            max-width: 1200px; 
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        
+        .warning-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255,0,0,0.2) 0%, rgba(255,106,21,0.2) 100%);
+            border: 2px solid var(--orange);
+            color: var(--orange);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, white 0%, rgba(255,106,21,0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.5;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 4rem auto;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%);
+            border: 1px solid rgba(255,106,21,0.2);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--orange);
+            box-shadow: 0 10px 30px rgba(255,106,21,0.3);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--orange);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%);
+            padding: 4rem 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin: 4rem 0;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--black);
+            color: white;
+            padding: 1.5rem 4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            background: #000;
+        }
+        
+        .time-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .time-indicator svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-label {
+            text-align: center;
+            color: var(--orange);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 4rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,106,21,0.3);
+            background: rgba(255,106,21,0.05);
+            box-shadow: 0 15px 40px rgba(255,106,21,0.2);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: white;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-description {
+            color: rgba(255,255,255,0.6);
+            line-height: 1.7;
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            background: rgba(255,255,255,0.02);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        
+        .trust-title {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+        
+        .trust-stat {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+        
+        .trust-label {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 5%;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        footer a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--orange);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .stat-number { font-size: 2.5rem; }
+            .cta-title { font-size: 1.8rem; }
+            .cta-subtitle { font-size: 1.1rem; }
+            .cta-button { padding: 1.2rem 2.5rem; font-size: 1rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
+            .trust-stat { font-size: 3rem; }
+        }
+    </style>
+    
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '493125080289626');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=493125080289626&ev=PageView&noscript=1"
+    /></noscript>
+    
+    <!-- Hyros Tracking Script -->
+    <script>
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://t.exiscale.com/v1/lst/universal-script?ph=9eec468a397f9cc4dcd8de884d07b21f552c46ea0b48477082ad13e493113e40&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+    head.appendChild(script);
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="https://exiscale.com/logos/exiscale-logo.png" alt="ExiScale">
+        </a>
+    </nav>
+
+    <section class="hero-section">
+        <div class="warning-badge">⚠️ 2026 FINANCIAL WARNING</div>
+        <h1 class="hero-title">Your 2026 Meta Ban<br>Financial Forecast</h1>
+        <p class="hero-subtitle">In 90 seconds see how much money you'll lose to bans and disables next year if nothing changes.</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">$2.4M</div>
+                <div class="stat-label">Avg. Loss per Advertiser</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">90 sec</div>
+                <div class="stat-label">To See Your Forecast</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Questions</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Get Your Personal Ban-Risk Score</h2>
+            <p class="cta-subtitle">Answer 13 questions about your current setup and we'll calculate exactly how much profit you're projected to lose in 2026.</p>
+            <a href="#" class="cta-button" onclick="startQuiz(event)">Start Your Forecast →</a>
+            <div class="time-indicator">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Takes 80-110 seconds</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="section-label">WHAT YOU'LL DISCOVER</div>
+        <h2 class="section-title">Your Complete 2026 Risk Profile</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M2 12h20"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Ban Frequency Forecast</h3>
+                <p class="feature-description">How many times you'll get hit in 2026 based on your current setup and Meta's escalating ban patterns.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Exact Dollar Loss</h3>
+                <p class="feature-description">Your projected profit loss calculated from daily spend, margins, downtime, and ban frequency.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Risk Score Breakdown</h3>
+                <p class="feature-description">Which parts of your setup are most vulnerable and what changes would drop your risk under 15%.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <p class="trust-title">Trusted by advertisers spending</p>
+        <div class="trust-stat">$500M+</div>
+        <p class="trust-label">in combined annual Meta ad spend</p>
+    </section>
+
+    <footer>
+        <a href="https://exiscale.com/legal/terms/">Terms of Service</a>
+        <a href="https://exiscale.com/legal/privacy/">Privacy Policy</a>
+        <a href="https://exiscale.com/legal/refund/">Refund Policy</a>
+        <p style="margin-top: 1rem; opacity: 0.7;">© 2025 ExiScale LLC. Built for serious advertisers.</p>
+    </footer>
+    
+    <!-- Freshchat Widget -->
+    <script src='//fw-cdn.com/10686344/3499220.js' chat='true'></script>
+    
+    <script>
+        function startQuiz(e) {
+            e.preventDefault();
+            // TODO: Replace with your actual Typeform or ScoreApp quiz URL
+            alert('Add your Typeform/ScoreApp embed URL here!');
+            // window.location.href = 'YOUR_QUIZ_URL_HERE';
+        }
+    </script>
+</body>
+</html>
