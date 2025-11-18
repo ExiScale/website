@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your 2026 Meta Ban Financial Forecast - ExiScale</title>
+    <title>Meta's New AI Review System - ExiScale</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
@@ -186,7 +186,7 @@
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%);
-            padding: 5rem 5%;
+            padding: 6rem 5%;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -205,63 +205,128 @@
         }
         
         .cta-content {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
         
-        .cta-body {
-            font-size: 1.3rem;
+        .cta-intro {
+            margin-bottom: 3rem;
+        }
+        
+        .cta-lead {
+            font-size: 1.4rem;
             color: white;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            font-weight: 600;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .cta-body strong {
-            font-weight: 800;
+        .cta-divider {
+            width: 100px;
+            height: 4px;
+            background: rgba(0,0,0,0.2);
+            margin: 3rem auto;
+            border-radius: 2px;
         }
         
-        .cta-list {
-            list-style: none;
-            margin: 2rem auto 2rem auto;
-            padding: 0;
-            max-width: 600px;
-            text-align: left;
+        .cta-action-box {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
         
-        .cta-list li {
-            font-size: 1.2rem;
+        .cta-action-title {
+            font-size: 2rem;
+            font-weight: 900;
             color: white;
-            margin-bottom: 1rem;
-            padding-left: 2rem;
-            position: relative;
+            margin-bottom: 3rem;
+            line-height: 1.3;
+        }
+        
+        .calculation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .calculation-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .calculation-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            border-color: rgba(0,0,0,0.1);
+        }
+        
+        .calc-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--orange), #ff8a3d);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .calc-icon svg {
+            width: 30px;
+            height: 30px;
+            stroke: white;
+        }
+        
+        .calc-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 0.75rem;
+        }
+        
+        .calc-desc {
+            font-size: 1rem;
+            color: var(--gray);
             line-height: 1.6;
         }
         
-        .cta-list li:before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: rgba(0,0,0,0.3);
+        .cta-footer {
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 3rem;
+        }
+        
+        .cta-time {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 2rem;
+            font-weight: 600;
         }
         
         .cta-button {
             display: inline-block;
             background: var(--black);
             color: white;
-            padding: 1.5rem 4rem;
+            padding: 1.8rem 5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             text-transform: none;
             letter-spacing: 0;
-            margin-top: 2rem;
         }
         
         .cta-button:hover {
@@ -396,9 +461,11 @@
             .hero-subtitle { font-size: 1.2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .stat-number { font-size: 2.5rem; }
-            .cta-body { font-size: 1.1rem; }
-            .cta-list li { font-size: 1rem; }
-            .cta-button { padding: 1.2rem 2.5rem; font-size: 1rem; }
+            .cta-lead { font-size: 1.1rem; }
+            .cta-action-box { padding: 2.5rem 1.5rem; }
+            .cta-action-title { font-size: 1.5rem; }
+            .calculation-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .cta-button { padding: 1.4rem 3rem; font-size: 1.1rem; }
         }
     </style>
     
@@ -457,17 +524,55 @@
 
     <section class="cta-section">
         <div class="cta-content">
-            <p class="cta-body">I run a company that keeps $20k–$100k+/day spenders alive when Meta's AI decides to kill accounts.</p>
-            <p class="cta-body">We've seen the new December AI update wipe out 7-figure campaigns in under 48 hours.</p>
-            <p class="cta-body">Before you spend another dollar, answer 13 quick questions.</p>
-            <p class="cta-body"><strong>I'll calculate:</strong></p>
-            <ul class="cta-list">
-                <li>How many times your accounts will die in 2026</li>
-                <li>How many days of revenue you'll lose each time</li>
-                <li>Exact dollar amount of profit that disappears</li>
-            </ul>
-            <p class="cta-body">Takes 90 seconds. Costs nothing.</p>
-            <a href="#" class="cta-button" onclick="startQuiz(event)">Show Me How Much I'll Lose →</a>
+            <div class="cta-intro">
+                <p class="cta-lead">I run a company that keeps $20k–$100k+/day spenders alive when Meta's AI decides to kill accounts.</p>
+                <p class="cta-lead">We've seen the new December AI update wipe out 7-figure campaigns in under 48 hours.</p>
+            </div>
+            
+            <div class="cta-divider"></div>
+            
+            <div class="cta-action-box">
+                <h2 class="cta-action-title">Before you spend another dollar, answer 13 quick questions.</h2>
+                
+                <div class="calculation-grid">
+                    <div class="calculation-card">
+                        <div class="calc-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M12 2v20M2 12h20"></path>
+                            </svg>
+                        </div>
+                        <h3 class="calc-title">Account Deaths</h3>
+                        <p class="calc-desc">How many times your accounts will die in 2026</p>
+                    </div>
+                    
+                    <div class="calculation-card">
+                        <div class="calc-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="calc-title">Lost Revenue Days</h3>
+                        <p class="calc-desc">How many days of revenue you'll lose each time</p>
+                    </div>
+                    
+                    <div class="calculation-card">
+                        <div class="calc-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="calc-title">Exact Dollar Loss</h3>
+                        <p class="calc-desc">Exact dollar amount of profit that disappears</p>
+                    </div>
+                </div>
+                
+                <div class="cta-footer">
+                    <p class="cta-time">Takes 90 seconds. Costs nothing.</p>
+                    <a href="#" class="cta-button" onclick="startQuiz(event)">Show Me How Much I'll Lose →</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -490,5 +595,3 @@
     </script>
 </body>
 </html>
-
-
