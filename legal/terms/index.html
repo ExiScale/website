@@ -25,7 +25,7 @@
         
         /* Navigation */
         nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(30px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .logo img { height: 48px; transition: transform 0.4s ease; }
+        .logo img { height: 40px; transition: transform 0.4s ease; }
         .logo img:hover { transform: scale(1.05); }
         .nav-cta { background: var(--black); color: white; padding: 0.85rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
         .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.6s; }
@@ -89,7 +89,7 @@
 <body>
     <nav>
         <a href="/" class="logo">
-            <img src="/exiscale-logo.png" alt="ExiScale">
+            <img src="../../exiscale-logo.png" alt="ExiScale">
         </a>
         <a href="/#booking" class="nav-cta">Book a Call</a>
     </nav>
@@ -314,7 +314,7 @@
                 For questions about these Terms or our Services, please contact us at:
             </p>
             <p class="legal-content">
-                <strong>Email:</strong> support@exiscale.com<br>
+                <strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb888e8b8b94898fbb9e839288989a979ed5989496">[email&#160;protected]</a><br>
                 <strong>Phone:</strong> +1 (307) 461-9524<br>
                 <strong>Address:</strong> 30 North Gould Street, Sheridan, Wyoming 82801, United States of America
             </p>
@@ -353,10 +353,6 @@
         </div>
     </footer>
     
-    <!-- Freshchat Widget -->
-    <script
-    src='//fw-cdn.com/10686344/3499220.js'
-    chat='true'>
-    </script>
-</body>
+    <!-- </body>
+
 </html>
