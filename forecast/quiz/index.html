@@ -452,6 +452,9 @@
     </div>
 
     <script>
+        // Make.com Webhook Configuration
+        const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/6alm8d6y96prclifwcmwwopu5o2vomgu';
+        
         // Quiz Questions Data
         const questions = [
             {
@@ -652,7 +655,14 @@
                 const emailInput = document.getElementById('email-input');
                 emailInput.value = answers.email;
                 emailInput.oninput = function() {
-                    nextBtn.disabled = !validateEmail(this.value);
+                    const isValid = validateEmail(this.value);
+                    nextBtn.disabled = !isValid;
+                    // Visual feedback
+                    if (this.value.length > 0) {
+                        emailInput.style.borderColor = isValid ? '#22c55e' : '#ef4444';
+                    } else {
+                        emailInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    }
                 };
                 nextBtn.disabled = !validateEmail(emailInput.value);
                 nextBtn.textContent = 'Get My Results';
@@ -695,8 +705,9 @@
 
         // Validate Email
         function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
+            // More strict email validation
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return re.test(String(email).toLowerCase().trim());
         }
 
         // Next Question
@@ -713,9 +724,26 @@
                 }
             }
             
-            // Store email
+            // Store email and send to webhook
             if (question.type === 'email') {
-                answers.email = document.getElementById('email-input').value;
+                answers.email = document.getElementById('email-input').value.trim();
+                
+                // Disable button and show loading state
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.disabled = true;
+                nextBtn.textContent = 'Processing...';
+                
+                // Send data to Make.com webhook
+                sendToWebhook().then(() => {
+                    currentQuestion++;
+                    showResults();
+                }).catch(error => {
+                    console.error('Webhook error:', error);
+                    // Still show results even if webhook fails
+                    currentQuestion++;
+                    showResults();
+                });
+                return; // Exit early, showResults will be called after webhook
             }
             
             currentQuestion++;
@@ -724,6 +752,45 @@
                 showQuestion(currentQuestion);
             } else {
                 showResults();
+            }
+        }
+        
+        // Send data to Make.com webhook
+        async function sendToWebhook() {
+            const results = calculateResults();
+            
+            const webhookData = {
+                email: answers.email,
+                dailySpend: answers.dailySpend,
+                profitMargin: answers.profitMargin,
+                riskPoints: answers.riskPoints,
+                downtimeDays: answers.downtimeDays,
+                riskPercent: results.riskPercent,
+                projectedBans: results.projectedBans,
+                annualLoss: results.annualLoss,
+                downtimeWeeks: results.downtimeWeeks,
+                tier: results.riskPercent >= 75 ? 'RED' : (results.riskPercent >= 45 ? 'ORANGE' : 'GREEN'),
+                timestamp: new Date().toISOString(),
+                source: 'Quiz Forecast'
+            };
+            
+            try {
+                const response = await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(webhookData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Webhook request failed');
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('Error sending to webhook:', error);
+                throw error;
             }
         }
 
