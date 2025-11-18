@@ -83,12 +83,12 @@
         }
         
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            margin-bottom: 2rem;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, white 0%, rgba(255,106,21,0.8) 100%);
+            background: linear-gradient(135deg, white 0%, rgba(255,106,21,0.9) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -96,12 +96,52 @@
         }
         
         .hero-subtitle {
-            font-size: 1.8rem;
-            color: rgba(255,255,255,0.7);
-            max-width: 800px;
+            font-size: 1.6rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 900px;
             margin: 0 auto 3rem;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-weight: 500;
             animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 4rem auto;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,106,21,0.1) 0%, rgba(255,106,21,0.05) 100%);
+            border: 1px solid rgba(255,106,21,0.2);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--orange);
+            box-shadow: 0 10px 30px rgba(255,106,21,0.3);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--orange);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
         .stats-grid {
@@ -146,7 +186,7 @@
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, var(--orange) 0%, #ff8a3d 100%);
-            padding: 4rem 5%;
+            padding: 5rem 5%;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -171,19 +211,41 @@
             z-index: 1;
         }
         
-        .cta-title {
-            font-size: 2.5rem;
-            font-weight: 900;
+        .cta-body {
+            font-size: 1.3rem;
             color: white;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
         
-        .cta-subtitle {
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 2.5rem;
+        .cta-body strong {
+            font-weight: 800;
+        }
+        
+        .cta-list {
+            list-style: none;
+            margin: 2rem auto 2rem auto;
+            padding: 0;
+            max-width: 600px;
+            text-align: left;
+        }
+        
+        .cta-list li {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
             line-height: 1.6;
+        }
+        
+        .cta-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: rgba(0,0,0,0.3);
         }
         
         .cta-button {
@@ -197,30 +259,15 @@
             font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-top: 2rem;
         }
         
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 50px rgba(0,0,0,0.6);
             background: #000;
-        }
-        
-        .time-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-        }
-        
-        .time-indicator svg {
-            width: 20px;
-            height: 20px;
-            stroke: white;
         }
         
         /* Features Section */
@@ -345,16 +392,13 @@
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
+            .hero-title { font-size: 2.2rem; }
             .hero-subtitle { font-size: 1.2rem; }
             .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .stat-number { font-size: 2.5rem; }
-            .cta-title { font-size: 1.8rem; }
-            .cta-subtitle { font-size: 1.1rem; }
+            .cta-body { font-size: 1.1rem; }
+            .cta-list li { font-size: 1rem; }
             .cta-button { padding: 1.2rem 2.5rem; font-size: 1rem; }
-            .features-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 2rem; }
-            .trust-stat { font-size: 3rem; }
         }
     </style>
     
@@ -392,84 +436,39 @@
     </nav>
 
     <section class="hero-section">
-        <div class="warning-badge">⚠️ 2026 FINANCIAL WARNING</div>
-        <h1 class="hero-title">Your 2026 Meta Ban<br>Financial Forecast</h1>
-        <p class="hero-subtitle">In 90 seconds see how much money you'll lose to bans and disables next year if nothing changes.</p>
+        <h1 class="hero-title">Most Meta advertisers will lose between $487k and $4.2M in profit next year because of the new AI review system.</h1>
+        <p class="hero-subtitle">In the next 90 seconds I'll show you exactly how much YOU will lose in 2026 if you keep running your accounts the same way.<br><br>Average result right now: $1,470,000 gone.</p>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">$2.4M</div>
-                <div class="stat-label">Avg. Loss per Advertiser</div>
+                <div class="stat-number">$487K</div>
+                <div class="stat-label">Minimum Loss</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">90 sec</div>
-                <div class="stat-label">To See Your Forecast</div>
+                <div class="stat-label">To Get Your Number</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">13</div>
-                <div class="stat-label">Questions</div>
+                <div class="stat-number">$4.2M</div>
+                <div class="stat-label">Maximum Loss</div>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <div class="cta-content">
-            <h2 class="cta-title">Get Your Personal Ban-Risk Score</h2>
-            <p class="cta-subtitle">Answer 13 questions about your current setup and we'll calculate exactly how much profit you're projected to lose in 2026.</p>
-            <a href="#" class="cta-button" onclick="startQuiz(event)">Start Your Forecast →</a>
-            <div class="time-indicator">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                <span>Takes 80-110 seconds</span>
-            </div>
+            <p class="cta-body">I run a company that keeps $20k–$100k+/day spenders alive when Meta's AI decides to kill accounts.</p>
+            <p class="cta-body">We've seen the new December AI update wipe out 7-figure campaigns in under 48 hours.</p>
+            <p class="cta-body">Before you spend another dollar, answer 13 quick questions.</p>
+            <p class="cta-body"><strong>I'll calculate:</strong></p>
+            <ul class="cta-list">
+                <li>How many times your accounts will die in 2026</li>
+                <li>How many days of revenue you'll lose each time</li>
+                <li>Exact dollar amount of profit that disappears</li>
+            </ul>
+            <p class="cta-body">Takes 90 seconds. Costs nothing.</p>
+            <a href="#" class="cta-button" onclick="startQuiz(event)">Show Me How Much I'll Lose →</a>
         </div>
-    </section>
-
-    <section class="features-section">
-        <div class="section-label">WHAT YOU'LL DISCOVER</div>
-        <h2 class="section-title">Your Complete 2026 Risk Profile</h2>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v20M2 12h20"></path>
-                    </svg>
-                </div>
-                <h3 class="feature-title">Ban Frequency Forecast</h3>
-                <p class="feature-description">How many times you'll get hit in 2026 based on your current setup and Meta's escalating ban patterns.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="1" x2="12" y2="23"></line>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                </div>
-                <h3 class="feature-title">Exact Dollar Loss</h3>
-                <p class="feature-description">Your projected profit loss calculated from daily spend, margins, downtime, and ban frequency.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                </div>
-                <h3 class="feature-title">Risk Score Breakdown</h3>
-                <p class="feature-description">Which parts of your setup are most vulnerable and what changes would drop your risk under 15%.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="trust-section">
-        <p class="trust-title">Trusted by advertisers spending</p>
-        <div class="trust-stat">$500M+</div>
-        <p class="trust-label">in combined annual Meta ad spend</p>
     </section>
 
     <footer>
@@ -491,3 +490,5 @@
     </script>
 </body>
 </html>
+
+
