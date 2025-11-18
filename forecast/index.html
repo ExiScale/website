@@ -99,10 +99,14 @@
             font-size: 1.6rem;
             color: rgba(255,255,255,0.85);
             max-width: 900px;
-            margin: 0 auto 3rem;
+            margin: 0 auto 2rem;
             line-height: 1.6;
             font-weight: 500;
             animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        
+        .hero-subtitle br {
+            display: block;
         }
         
         .stats-grid {
@@ -459,8 +463,18 @@
         @media (max-width: 768px) {
             .hero-section { padding: 3rem 5% 4rem; }
             .hero-title { font-size: 2.2rem; }
-            .hero-subtitle { font-size: 1.2rem; }
-            .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .hero-subtitle { 
+                font-size: 1.1rem; 
+                margin-bottom: 1.5rem;
+            }
+            .hero-subtitle br:last-of-type {
+                display: none;
+            }
+            .stats-grid { 
+                grid-template-columns: 1fr; 
+                gap: 1.5rem;
+                margin-top: 2rem;
+            }
             .stat-number { font-size: 2.5rem; }
             .cta-lead { font-size: 1.1rem; }
             .cta-action-box { padding: 2.5rem 1.5rem; }
