@@ -39,9 +39,9 @@
             width: 100%; 
             background: rgba(10,10,10,0.95); 
             backdrop-filter: blur(30px); 
-            padding: 1.25rem 5%; 
+            padding: 1.5rem 5%; 
             display: flex; 
-            justify-content: center; 
+            justify-content: space-between; 
             align-items: center; 
             z-index: 1000; 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
@@ -51,6 +51,10 @@
             height: 40px; 
             width: auto;
             display: block;
+            transition: transform 0.4s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
         }
         
         /* Hero Section */
@@ -383,7 +387,7 @@
 <body>
     <nav>
         <a href="/" class="logo">
-            <img src="https://www.exiscale.com/exiscale-logo-white.png" alt="ExiScale">
+            <img src="/exiscale-logo-white.png" alt="ExiScale">
         </a>
     </nav>
 
