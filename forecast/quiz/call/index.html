@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Call - ExiScale</title>
+    <link rel="icon" type="image/png" href="https://www.exiscale.com/exiscale-favicon.png">
+    <link rel="shortcut icon" href="https://www.exiscale.com/exiscale-favicon.png">
+    
+    <!-- Preconnect to Calendly for faster loading -->
+    <link rel="preconnect" href="https://assets.calendly.com">
+    <link rel="preconnect" href="https://calendly.com">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background: rgba(10,10,10,0.95); 
+            backdrop-filter: blur(30px); 
+            padding: 1.75rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+        }
+        .logo { 
+            cursor: pointer; 
+        }
+        .logo img { 
+            height: 52px; 
+            width: auto;
+            display: block;
+            transition: transform 0.4s ease; 
+        }
+        .logo img:hover { 
+            transform: scale(1.05); 
+        }
+        
+        /* Booking Section */
+        .booking-section { 
+            margin-top: 120px; 
+            padding: 4rem 5% 6rem; 
+            min-height: calc(100vh - 120px);
+        }
+        
+        .booking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease both;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #ff6a15;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        
+        .booking-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .booking-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        .calendly-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        
+        .calendly-inline-widget {
+            min-width: 320px;
+            height: 700px;
+            border-radius: 24px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav { 
+                padding: 1rem 5%; 
+            }
+            .logo img { 
+                height: 40px; 
+            }
+            .booking-section { 
+                padding: 3rem 5% 4rem; 
+                margin-top: 80px; 
+            }
+            .booking-title { 
+                font-size: 2rem; 
+            }
+            .booking-subtitle { 
+                font-size: 1rem; 
+            }
+            .calendly-inline-widget {
+                height: 650px;
+            }
+        }
+    </style>
+    
+    <!-- Hyros Tracking Script -->
+    <script>
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://t.exiscale.com/v1/lst/universal-script?ph=9eec468a397f9cc4dcd8de884d07b21f552c46ea0b48477082ad13e493113e40&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+    head.appendChild(script);
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="https://www.exiscale.com/exiscale-logo-white.png" alt="ExiScale">
+        </a>
+        <div></div>
+    </nav>
+
+    <section class="booking-section">
+        <div class="booking-header">
+            <div class="section-label">BOOK YOUR CALL</div>
+            <h1 class="booking-title">Get Me to Zero</h1>
+            <p class="booking-subtitle">
+                Schedule your 15-minute strategy call. We'll show you exactly how to eliminate downtime and keep your accounts running 24/7.
+            </p>
+        </div>
+        
+        <div class="calendly-container">
+            <!-- Calendly inline widget begin -->
+            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale/onboarding-call?hide_event_type_details=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            <!-- Calendly inline widget end -->
+        </div>
+    </section>
+    
+    <!-- Freshchat Widget -->
+    <script src='//fw-cdn.com/10686344/3499220.js' chat='true'></script>
+</body>
+</html>
+
+
+
+
+
+
