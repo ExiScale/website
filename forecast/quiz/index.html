@@ -857,19 +857,19 @@
                 tier = 'red';
                 badge = '🚨 CRITICAL RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You are ${results.riskPercent}% likely to have at least one full account death next year. Most advertisers in your position lose 4–6 accounts and never recover.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nClick below and I'll show you the 3 things that will kill your account next and exactly how we make them impossible.`;
+                message = `You are ${results.riskPercent}% likely to have at least one full account death next year. Most advertisers in your position lose 4–6 accounts and never recover.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you the 3 things that will kill your account next and exactly how we make them impossible.`;
                 ctaText = 'Get My Zero-Downtime Plan (15 min call)';
             } else if (results.riskPercent >= 40) {
                 tier = 'orange';
                 badge = '⚠️ HIGH RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're projected to lose 2–4 accounts next year. That's 6–10 weeks of zero revenue.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nClick below and I'll show you the one change that drops your risk under 12%.`;
-                ctaText = 'Show Me the One Change (15 min call)';
+                message = `You're projected to lose 2–4 accounts next year. That's 6–10 weeks of zero revenue.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you exactly how we keep clients at 99.8% uptime when everyone else is getting slaughtered.`;
+                ctaText = 'Get My 99.8% Uptime Plan (15 min call)';
             } else {
                 tier = 'green';
                 badge = '✅ LOW RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're in the top 8% — still on track to lose 1–2 accounts next year.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nWant to get to zero?`;
+                message = `You're in the top 8% — still on track to lose 1–2 accounts next year.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nWant to get to zero?`;
                 ctaText = 'Get Me to Zero (15 min call)';
             }
             
