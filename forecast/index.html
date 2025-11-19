@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta's New AI Review System: What Will It Cost You? | ExiScale</title>
+    <title>Meta's New AI Review System: What Will It Cost You? - ExiScale</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
@@ -31,6 +31,33 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
         @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes moneyFall { 
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1; 
+            } 
+            100% { 
+                transform: translateY(150px) rotate(180deg); 
+                opacity: 0; 
+            } 
+        }
+        
+        /* Money Rain Effect */
+        .money-sign {
+            position: absolute;
+            font-size: 24px;
+            font-weight: 900;
+            color: #10b981;
+            pointer-events: none;
+            z-index: 100;
+            text-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
+            animation: moneyFall 1.5s ease-in forwards;
+        }
+        
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+        }
         
         /* Navigation */
         nav { 
@@ -65,6 +92,8 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
         .warning-badge {
@@ -614,6 +643,56 @@
             // Redirect to quiz page
             window.location.href = '/forecast/quiz/';
         }
+        
+        // Money Rain Effect - Only in Hero Section
+        (function() {
+            const heroSection = document.querySelector('.hero-section');
+            let lastX = 0;
+            let lastY = 0;
+            let lastTime = 0;
+            const throttleDelay = 50; // Create dollar sign every 50ms max
+            
+            function createMoneySign(x, y) {
+                const money = document.createElement('div');
+                money.className = 'money-sign';
+                money.textContent = '$';
+                money.style.left = x + 'px';
+                money.style.top = y + 'px';
+                
+                heroSection.appendChild(money);
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    money.remove();
+                }, 1500);
+            }
+            
+            function handleMouseMove(e) {
+                const now = Date.now();
+                
+                // Throttle to prevent too many dollar signs
+                if (now - lastTime < throttleDelay) {
+                    return;
+                }
+                
+                // Get position relative to hero section
+                const rect = heroSection.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Only create if mouse actually moved
+                const distance = Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2));
+                if (distance > 20) {
+                    createMoneySign(x, y);
+                    lastX = x;
+                    lastY = y;
+                    lastTime = now;
+                }
+            }
+            
+            // Add mousemove listener to hero section only
+            heroSection.addEventListener('mousemove', handleMouseMove);
+        })();
     </script>
 </body>
 </html>
