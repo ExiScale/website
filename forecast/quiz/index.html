@@ -3,406 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your 2026 Meta Ban Financial Forecast | ExiScale</title>
+    <title>Book Your Call - ExiScale</title>
+    <link rel="icon" type="image/png" href="https://www.exiscale.com/exiscale-favicon.png">
+    <link rel="shortcut icon" href="https://www.exiscale.com/exiscale-favicon.png">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
-    <link rel="shortcut icon" href="https://exiscale.com/exiscale-favicon.png">
-    <link rel="apple-touch-icon" href="https://exiscale.com/exiscale-favicon.png">
-    
-    <!-- Facebook Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '580274074534097');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=580274074534097&ev=PageView&noscript=1"
-    /></noscript>
-    
-    <!-- Hyros Tracking -->
-    <script type="text/javascript">
-    !function(e,t,n,s,a,c,i,o,p){e.HyrosID=a,e[a]=e[a]||function(){(e[a].q=e[a].q||[]).push(arguments)},
-    e[a].l=1*new Date,i=t.getElementsByTagName("head")[0],(o=t.createElement("script")).async=1,
-    o.src="https://t.hyros.com/v4/lst/hyros.js",o.onload=function(){Hyros.init(s,{accountSlug:c})},
-    i.appendChild(o)}(window,document,0,0,"Hyros","exiscale","NTcwMTA=");
-    </script>
+    <!-- Preconnect to Calendly for faster loading -->
+    <link rel="preconnect" href="https://assets.calendly.com">
+    <link rel="preconnect" href="https://calendly.com">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
             background: #0a0a0a;
             color: #fff;
-            line-height: 1.6;
+            line-height: 1.6; 
             overflow-x: hidden;
         }
         
         /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(30px);
-            padding: 1.75rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        nav { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background: rgba(10,10,10,0.95); 
+            backdrop-filter: blur(30px); 
+            padding: 1.75rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
         }
-        nav .logo img {
-            height: 52px;
+        .logo { 
+            cursor: pointer; 
+        }
+        .logo img { 
+            height: 52px; 
             width: auto;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s ease; 
         }
-        nav .logo img:hover {
-            transform: scale(1.05);
-        }
-        
-        .quiz-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 20px 40px;
-            position: relative;
+        .logo img:hover { 
+            transform: scale(1.05); 
         }
         
-        .quiz-header {
+        /* Booking Section */
+        .booking-section { 
+            margin-top: 120px; 
+            padding: 4rem 5% 6rem; 
+            min-height: calc(100vh - 120px);
+        }
+        
+        .booking-header {
             text-align: center;
-            margin-bottom: 40px;
-            max-width: 800px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease both;
         }
         
-        .progress-bar-container {
-            width: 100%;
-            max-width: 600px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b35, #ff8c42);
-            border-radius: 10px;
-            transition: width 0.4s ease;
-            width: 0%;
-        }
-        
-        .progress-text {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 30px;
-        }
-        
-        .quiz-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 50px;
-            max-width: 700px;
-            width: 100%;
-            backdrop-filter: blur(10px);
-        }
-        
-        .question-number {
-            color: #ff6b35;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
+        .section-label {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .question-text {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 40px;
-            line-height: 1.3;
-        }
-        
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 20px 25px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-        
-        .option-btn:hover {
-            background: rgba(255, 107, 53, 0.1);
-            border-color: #ff6b35;
-            transform: translateX(5px);
-        }
-        
-        .option-btn.selected {
-            background: rgba(255, 107, 53, 0.15);
-            border-color: #ff6b35;
-        }
-        
-        .slider-container {
-            margin: 30px 0;
-        }
-        
-        .slider-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #ff6b35;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            outline: none;
-            -webkit-appearance: none;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #ff6b35;
-            cursor: pointer;
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #ff6b35;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .email-input {
-            width: 100%;
-            padding: 18px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        
-        .email-input:focus {
-            outline: none;
-            border-color: #ff6b35;
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        .next-btn {
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            color: #fff;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
-        }
-        
-        .next-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        /* Results Page Styles */
-        .results-container {
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-        .results-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .risk-badge {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 30px;
-        }
-        
-        .risk-badge.red {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 2px solid #ef4444;
-        }
-        
-        .risk-badge.orange {
-            background: rgba(249, 115, 22, 0.2);
-            color: #f97316;
-            border: 2px solid #f97316;
-        }
-        
-        .risk-badge.green {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
-            border: 2px solid #22c55e;
-        }
-        
-        .loss-amount {
-            font-size: 56px;
+            letter-spacing: 0.2em;
+            color: #ff6a15;
+            margin-bottom: 1rem;
             font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
-        .results-text {
-            font-size: 20px;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 50px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: #ff6b35;
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .cta-section {
-            background: rgba(255, 107, 53, 0.1);
-            border: 2px solid #ff6b35;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-        }
-        
-        .cta-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        
-        .calendly-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+        .booking-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
             color: #fff;
-            padding: 20px 50px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin-top: 20px;
         }
         
-        .calendly-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+        .booking-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
         
-        .hidden {
-            display: none;
+        .calendly-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
         
+        .calendly-inline-widget {
+            min-width: 320px;
+            height: 700px;
+            border-radius: 24px;
+        }
+        
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .quiz-card {
-                padding: 30px 25px;
+            nav { 
+                padding: 1rem 5%; 
             }
-            
-            .question-text {
-                font-size: 22px;
+            .logo img { 
+                height: 40px; 
             }
-            
-            .loss-amount {
-                font-size: 40px;
+            .booking-section { 
+                padding: 3rem 5% 4rem; 
+                margin-top: 80px; 
             }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .booking-title { 
+                font-size: 2rem; 
+            }
+            .booking-subtitle { 
+                font-size: 1rem; 
+            }
+            .calendly-inline-widget {
+                height: 650px;
             }
         }
     </style>
+    
+    <!-- Hyros Tracking Script -->
+    <script>
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://t.exiscale.com/v1/lst/universal-script?ph=9eec468a397f9cc4dcd8de884d07b21f552c46ea0b48477082ad13e493113e40&tag=!clicked&ref_url=" + encodeURI(document.URL) ;
+    head.appendChild(script);
+    </script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
         <a href="/" class="logo">
             <img src="https://www.exiscale.com/exiscale-logo-white.png" alt="ExiScale">
@@ -410,531 +152,24 @@
         <div></div>
     </nav>
 
-    <!-- Quiz Section -->
-    <div id="quiz-section" class="quiz-container">
-        <div class="quiz-header">
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-            <div class="progress-text" id="progress-text">Question 1 of 13</div>
+    <section class="booking-section">
+        <div class="booking-header">
+            <div class="section-label">BOOK YOUR CALL</div>
+            <h1 class="booking-title">Get Me to Zero</h1>
+            <p class="booking-subtitle">
+                Schedule your 15-minute strategy call. We'll show you exactly how to eliminate downtime and keep your accounts running 24/7.
+            </p>
         </div>
         
-        <div class="quiz-card">
-            <div class="question-number" id="question-number">QUESTION 1</div>
-            <h2 class="question-text" id="question-text"></h2>
-            
-            <!-- Options Container (for multiple choice) -->
-            <div class="options-container" id="options-container"></div>
-            
-            <!-- Slider Container (for slider questions) -->
-            <div class="slider-container hidden" id="slider-container">
-                <div class="slider-value" id="slider-value"></div>
-                <input type="range" id="slider" min="0" max="100" value="0">
-                <div class="slider-labels">
-                    <span id="slider-min"></span>
-                    <span id="slider-max"></span>
-                </div>
-            </div>
-            
-            <!-- Email Input (for final question) -->
-            <div class="hidden" id="email-container">
-                <input type="email" class="email-input" id="email-input" placeholder="Enter your email to get results">
-            </div>
-            
-            <button class="next-btn" id="next-btn" onclick="nextQuestion()">Continue</button>
-            <button class="skip-btn" id="skip-btn" onclick="skipToResults()" style="display: none; margin-top: 1rem; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); font-size: 0.9rem;">Skip to Results (Testing)</button>
+        <div class="calendly-container">
+            <!-- Calendly inline widget begin -->
+            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale/strategy-call?hide_event_type_details=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            <!-- Calendly inline widget end -->
         </div>
-    </div>
-    
-    <!-- Results Section -->
-    <div id="results-section" class="quiz-container hidden">
-        <div class="results-container">
-            <div class="results-header">
-                <div class="risk-badge" id="risk-badge"></div>
-                <h1 class="loss-amount" id="loss-amount"></h1>
-                <p class="results-text" id="results-text"></p>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="projected-bans"></div>
-                    <div class="stat-label">Projected Bans in 2026</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="risk-score"></div>
-                    <div class="stat-label">Ban Risk Score</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="downtime-weeks"></div>
-                    <div class="stat-label">Projected Downtime</div>
-                </div>
-            </div>
-            
-            <div class="cta-section">
-                <a href="https://exiscale.com/forecast/quiz/call" class="calendly-btn">Get My Zero-Downtime Plan (15 min call)</a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Make.com Webhook Configuration
-        const MAKE_WEBHOOK_URL = 'https://hook.us1.make.com/6alm8d6y96prclifwcmwwopu5o2vomgu';
-        
-        // Quiz Questions Data
-        const questions = [
-            {
-                id: 1,
-                type: 'slider',
-                question: "What's your daily Meta spend right now?",
-                min: 1000,
-                max: 250000,
-                step: 1000,
-                format: 'currency',
-                defaultValue: 10000
-            },
-            {
-                id: 2,
-                type: 'slider',
-                question: "What's your profit margin on that spend?",
-                min: 10,
-                max: 70,
-                step: 5,
-                format: 'percent',
-                defaultValue: 30
-            },
-            {
-                id: 3,
-                type: 'multiple',
-                question: "How many ad accounts or BMs have you lost in the last 12 months?",
-                options: [
-                    { text: '0', points: 0 },
-                    { text: '1-3', points: 30 },
-                    { text: '4-10', points: 60 },
-                    { text: '10+', points: 90 }
-                ]
-            },
-            {
-                id: 4,
-                type: 'multiple',
-                question: "How many days of revenue do you lose every time an account dies?",
-                options: [
-                    { text: 'Less than 1 day', points: 10, days: 0.5 },
-                    { text: '1-3 days', points: 25, days: 2 },
-                    { text: '4-14 days', points: 50, days: 9 },
-                    { text: '2+ weeks', points: 75, days: 21 }
-                ]
-            },
-            {
-                id: 5,
-                type: 'multiple',
-                question: "Do you reuse the same credit cards across ad accounts?",
-                options: [
-                    { text: 'Yes', points: 20 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 6,
-                type: 'multiple',
-                question: "Do you run ads directly out of your Host BM (the one with your pixel)?",
-                options: [
-                    { text: 'Yes', points: 25 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 7,
-                type: 'multiple',
-                question: "Are you launching with pages that have zero likes or reviews?",
-                options: [
-                    { text: 'Yes', points: 20 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 8,
-                type: 'multiple',
-                question: "Have you ever had a domain permanently blacklisted by Meta?",
-                options: [
-                    { text: 'Yes', points: 30 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 9,
-                type: 'multiple',
-                question: "Do you warm new accounts with engagement posts before conversion campaigns?",
-                options: [
-                    { text: 'Yes', points: -15 },
-                    { text: 'No', points: 0 },
-                    { text: 'Sometimes', points: -5 }
-                ]
-            },
-            {
-                id: 10,
-                type: 'multiple',
-                question: "Do you edit creatives (trim, overlay, brightness) to beat rejections?",
-                options: [
-                    { text: 'Yes', points: 20 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 11,
-                type: 'multiple',
-                question: "What's the age of the profiles you use to log in and run ads?",
-                options: [
-                    { text: 'Less than 6 months', points: 40 },
-                    { text: '6-18 months', points: 20 },
-                    { text: '18+ months', points: 0 }
-                ]
-            },
-            {
-                id: 12,
-                type: 'multiple',
-                question: 'Do you have a dedicated Host BM that only holds pixels and never runs ads?',
-                options: [
-                    { text: 'Yes', points: -30 },
-                    { text: 'No', points: 0 }
-                ]
-            },
-            {
-                id: 13,
-                type: 'email',
-                question: "What's your email? (We'll send your full 2026 loss report instantly)",
-                placeholder: "your@email.com"
-            }
-        ];
-
-        // Quiz State
-        let currentQuestion = 0;
-        let answers = {
-            dailySpend: 5000,
-            profitMargin: 30,
-            downtimeDays: 2,
-            riskPoints: 0,
-            email: ''
-        };
-
-        // Initialize Quiz
-        function initQuiz() {
-            showQuestion(0);
-        }
-
-        // Show Question
-        function showQuestion(index) {
-            const question = questions[index];
-            const questionNumber = document.getElementById('question-number');
-            const questionText = document.getElementById('question-text');
-            const optionsContainer = document.getElementById('options-container');
-            const sliderContainer = document.getElementById('slider-container');
-            const emailContainer = document.getElementById('email-container');
-            const nextBtn = document.getElementById('next-btn');
-            
-            // Update skip button visibility
-            updateSkipButton();
-            
-            // Update progress
-            const progress = ((index + 1) / questions.length) * 100;
-            document.getElementById('progress-bar').style.width = progress + '%';
-            document.getElementById('progress-text').textContent = `Question ${index + 1} of ${questions.length}`;
-            
-            // Update question text
-            questionNumber.textContent = `QUESTION ${index + 1}`;
-            questionText.textContent = question.question;
-            
-            // Hide all input types
-            optionsContainer.innerHTML = '';
-            optionsContainer.classList.add('hidden');
-            sliderContainer.classList.add('hidden');
-            emailContainer.classList.add('hidden');
-            
-            // Show appropriate input type
-            if (question.type === 'multiple') {
-                optionsContainer.classList.remove('hidden');
-                question.options.forEach((option, i) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.textContent = option.text;
-                    btn.onclick = () => selectOption(index, i);
-                    optionsContainer.appendChild(btn);
-                });
-                nextBtn.disabled = true;
-            } else if (question.type === 'slider') {
-                sliderContainer.classList.remove('hidden');
-                const slider = document.getElementById('slider');
-                slider.min = question.min;
-                slider.max = question.max;
-                slider.step = question.step;
-                slider.value = question.defaultValue;
-                
-                document.getElementById('slider-min').textContent = formatSliderValue(question.min, question.format);
-                document.getElementById('slider-max').textContent = formatSliderValue(question.max, question.format);
-                
-                updateSliderValue(question.defaultValue, question.format);
-                
-                slider.oninput = function() {
-                    updateSliderValue(this.value, question.format);
-                };
-                
-                nextBtn.disabled = false;
-            } else if (question.type === 'email') {
-                emailContainer.classList.remove('hidden');
-                const emailInput = document.getElementById('email-input');
-                emailInput.value = answers.email;
-                emailInput.oninput = function() {
-                    const isValid = validateEmail(this.value);
-                    nextBtn.disabled = !isValid;
-                    // Visual feedback
-                    if (this.value.length > 0) {
-                        emailInput.style.borderColor = isValid ? '#22c55e' : '#ef4444';
-                    } else {
-                        emailInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                    }
-                };
-                nextBtn.disabled = !validateEmail(emailInput.value);
-                nextBtn.textContent = 'Get My Results';
-            }
-        }
-
-        // Select Option
-        function selectOption(questionIndex, optionIndex) {
-            const question = questions[questionIndex];
-            const option = question.options[optionIndex];
-            
-            // Update UI
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(btn => btn.classList.remove('selected'));
-            buttons[optionIndex].classList.add('selected');
-            
-            // Store answer
-            if (question.id === 4) {
-                answers.downtimeDays = option.days;
-            }
-            answers.riskPoints += option.points;
-            
-            document.getElementById('next-btn').disabled = false;
-        }
-
-        // Update Slider Value
-        function updateSliderValue(value, format) {
-            document.getElementById('slider-value').textContent = formatSliderValue(value, format);
-        }
-
-        // Format Slider Value
-        function formatSliderValue(value, format) {
-            if (format === 'currency') {
-                return '$' + parseInt(value).toLocaleString();
-            } else if (format === 'percent') {
-                return value + '%';
-            }
-            return value;
-        }
-
-        // Validate Email
-        function validateEmail(email) {
-            // More strict email validation
-            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return re.test(String(email).toLowerCase().trim());
-        }
-
-        // Next Question
-        function nextQuestion() {
-            const question = questions[currentQuestion];
-            
-            // Store slider answers
-            if (question.type === 'slider') {
-                const value = parseInt(document.getElementById('slider').value);
-                if (question.id === 1) {
-                    answers.dailySpend = value;
-                } else if (question.id === 2) {
-                    answers.profitMargin = value;
-                }
-            }
-            
-            // Store email and send to webhook
-            if (question.type === 'email') {
-                answers.email = document.getElementById('email-input').value.trim();
-                
-                // Disable button and show loading state
-                const nextBtn = document.getElementById('next-btn');
-                nextBtn.disabled = true;
-                nextBtn.textContent = 'Processing...';
-                
-                // Send data to Make.com webhook
-                sendToWebhook().then(() => {
-                    currentQuestion++;
-                    showResults();
-                }).catch(error => {
-                    console.error('Webhook error:', error);
-                    // Still show results even if webhook fails
-                    currentQuestion++;
-                    showResults();
-                });
-                return; // Exit early, showResults will be called after webhook
-            }
-            
-            currentQuestion++;
-            
-            if (currentQuestion < questions.length) {
-                showQuestion(currentQuestion);
-            } else {
-                showResults();
-            }
-        }
-        
-        // Send data to Make.com webhook
-        async function sendToWebhook() {
-            const results = calculateResults();
-            
-            const webhookData = {
-                email: answers.email,
-                dailySpend: answers.dailySpend,
-                profitMargin: answers.profitMargin,
-                riskPoints: answers.riskPoints,
-                downtimeDays: answers.downtimeDays,
-                riskPercent: results.riskPercent,
-                projectedBans: results.projectedBans,
-                annualLoss: results.annualLoss,
-                downtimeWeeks: results.downtimeWeeks,
-                tier: results.riskPercent >= 75 ? 'RED' : (results.riskPercent >= 45 ? 'ORANGE' : 'GREEN'),
-                timestamp: new Date().toISOString(),
-                source: 'Quiz Forecast'
-            };
-            
-            try {
-                const response = await fetch(MAKE_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(webhookData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Webhook request failed');
-                }
-                
-                return await response.json();
-            } catch (error) {
-                console.error('Error sending to webhook:', error);
-                throw error;
-            }
-        }
-
-        // Calculate Results
-        function calculateResults() {
-            const maxRiskScore = 190;
-            const banRiskPercent = Math.min(100, (answers.riskPoints / maxRiskScore) * 100);
-            const projectedBans = Math.min(6, Math.round(banRiskPercent / 20));
-            
-            // Calculate annual lost profit
-            const dailyProfit = answers.dailySpend * (answers.profitMargin / 100);
-            const annualLoss = dailyProfit * answers.downtimeDays * projectedBans * (365 / 12);
-            
-            return {
-                riskPercent: Math.round(banRiskPercent),
-                projectedBans: projectedBans,
-                annualLoss: Math.round(annualLoss),
-                downtimeWeeks: Math.round((answers.downtimeDays * projectedBans) / 7)
-            };
-        }
-
-        // Show Results
-        function showResults() {
-            const results = calculateResults();
-            
-            // Hide quiz, show results
-            document.getElementById('quiz-section').classList.add('hidden');
-            document.getElementById('results-section').classList.remove('hidden');
-            
-            // Hide skip button
-            document.getElementById('skip-btn').style.display = 'none';
-            
-            // Determine tier
-            let tier, badge, mainHeadline, message, ctaText;
-            if (results.riskPercent >= 70) {
-                tier = 'red';
-                badge = '🚨 CRITICAL RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You are ${results.riskPercent}% likely to have at least one full account death next year. Most advertisers in your position lose 4–6 accounts and never recover.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you the 3 things that will kill your account next and exactly how we make them impossible.`;
-                ctaText = 'Get Me to Zero (15 min call)';
-            } else if (results.riskPercent >= 40) {
-                tier = 'orange';
-                badge = '⚠️ HIGH RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're projected to lose 2–4 accounts next year. That's 6–10 weeks of zero revenue.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you exactly how we keep clients at 99.8% uptime when everyone else is getting slaughtered.`;
-                ctaText = 'Get Me to Zero (15 min call)';
-            } else {
-                tier = 'green';
-                badge = '✅ LOW RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're in the top 8% — still on track to lose 1–2 accounts next year.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nWant to get to zero?`;
-                ctaText = 'Get Me to Zero (15 min call)';
-            }
-            
-            // Update results page
-            document.getElementById('risk-badge').className = 'risk-badge ' + tier;
-            document.getElementById('risk-badge').textContent = badge;
-            document.getElementById('loss-amount').textContent = mainHeadline;
-            document.getElementById('results-text').textContent = message;
-            document.getElementById('results-text').style.whiteSpace = 'pre-line'; // Preserve line breaks
-            document.getElementById('projected-bans').textContent = results.projectedBans;
-            document.getElementById('risk-score').textContent = results.riskPercent + '%';
-            document.getElementById('downtime-weeks').textContent = results.downtimeWeeks + ' weeks';
-            
-            // Update CTA button text
-            const ctaButton = document.querySelector('.calendly-btn');
-            if (ctaButton) {
-                ctaButton.textContent = ctaText;
-            }
-            
-            // Track conversion
-            fbq('track', 'Lead');
-            if (typeof Hyros !== 'undefined') {
-                Hyros.track('QuizComplete', {
-                    email: answers.email,
-                    riskScore: results.riskPercent,
-                    projectedLoss: results.annualLoss
-                });
-            }
-        }
-
-        // Initialize on page load
-        window.onload = initQuiz;
-        
-        // Skip to Results (for testing)
-        function skipToResults() {
-            // Set dummy data
-            answers.dailySpend = 10000;
-            answers.profitMargin = 30;
-            answers.riskPoints = 120;
-            answers.downtimeDays = 14;
-            answers.email = 'test@example.com';
-            
-            showResults();
-        }
-        
-        // Show skip button only on first question
-        function updateSkipButton() {
-            const skipBtn = document.getElementById('skip-btn');
-            if (currentQuestion === 0) {
-                skipBtn.style.display = 'block';
-            } else {
-                skipBtn.style.display = 'none';
-            }
-        }
-    </script>
+    </section>
     
     <!-- Freshchat Widget -->
-    <script>
-    function initFreshChat() {
-        window.fcWidget.init({
-            token: "5e3a9ce4-0852-4e3e-998f-fcdbc2c6f7c3",
-            host: "https://exiscale.freshchat.com"
-        });
-    }
-    function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://exiscale.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
-    </script>
+    <script src='//fw-cdn.com/10686344/3499220.js' chat='true'></script>
 </body>
 </html>
