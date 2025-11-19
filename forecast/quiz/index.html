@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Ban Loss Calculator | ExiScale</title>
+    <title>Your 2026 Meta Ban Financial Forecast | ExiScale</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
@@ -442,6 +442,7 @@
             </div>
             
             <button class="next-btn" id="next-btn" onclick="nextQuestion()">Continue</button>
+            <button class="skip-btn" id="skip-btn" onclick="skipToResults()" style="display: none; margin-top: 1rem; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); font-size: 0.9rem;">Skip to Results (Testing)</button>
         </div>
     </div>
     
@@ -470,9 +471,7 @@
             </div>
             
             <div class="cta-section">
-                <h2 class="cta-title">Get Your Custom 2026 Ban-Proof Plan</h2>
-                <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 10px;">15-minute strategy call • Zero obligation • Instant calendar access</p>
-                <a href="https://calendly.com/kyron-exiscale/exiscale-call" target="_blank" class="calendly-btn">Book Your Free Call Now</a>
+                <a href="https://calendly.com/kyron-exiscale/exiscale-call" target="_blank" class="calendly-btn">Get My Zero-Downtime Plan (15 min call)</a>
             </div>
         </div>
     </div>
@@ -631,6 +630,9 @@
             const sliderContainer = document.getElementById('slider-container');
             const emailContainer = document.getElementById('email-container');
             const nextBtn = document.getElementById('next-btn');
+            
+            // Update skip button visibility
+            updateSkipButton();
             
             // Update progress
             const progress = ((index + 1) / questions.length) * 100;
@@ -846,30 +848,46 @@
             document.getElementById('quiz-section').classList.add('hidden');
             document.getElementById('results-section').classList.remove('hidden');
             
+            // Hide skip button
+            document.getElementById('skip-btn').style.display = 'none';
+            
             // Determine tier
-            let tier, badge, message;
-            if (results.riskPercent >= 75) {
+            let tier, badge, mainHeadline, message, ctaText;
+            if (results.riskPercent >= 70) {
                 tier = 'red';
                 badge = '🚨 CRITICAL RISK';
-                message = `At your current spend and setup, we forecast ${results.projectedBans} full disables next year. Average downtime × daily profit = $${results.annualLoss.toLocaleString()} wiped out. Most advertisers in your position never recover.`;
-            } else if (results.riskPercent >= 45) {
+                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
+                message = `You are ${results.riskPercent}% likely to have at least one full account death next year. Most advertisers in your position lose 4–6 accounts and never recover.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nClick below and I'll show you the 3 things that will kill your account next and exactly how we make them impossible.`;
+                ctaText = 'Get My Zero-Downtime Plan (15 min call)';
+            } else if (results.riskPercent >= 40) {
                 tier = 'orange';
                 badge = '⚠️ HIGH RISK';
-                message = `You're better than most... but still projected for ${results.projectedBans} major bans. That's ${results.downtimeWeeks}+ weeks of zero revenue. The one structural change below drops your risk under 15%.`;
+                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
+                message = `You're projected to lose 2–4 accounts next year. That's 6–10 weeks of zero revenue.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nClick below and I'll show you the one change that drops your risk under 12%.`;
+                ctaText = 'Show Me the One Change (15 min call)';
             } else {
                 tier = 'green';
-                badge = '✅ MODERATE RISK';
-                message = `You're in the top 8% – but even "clean" setups die in 2026. We have clients with your exact numbers running 99.8% uptime. Want to see how?`;
+                badge = '✅ LOW RISK';
+                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
+                message = `You're in the top 8% — still on track to lose 1–2 accounts next year.\n\nExiScale clients averaged 8.2 hours of downtime in the last 12 months.\n\nWant to get to zero?`;
+                ctaText = 'Get Me to Zero (15 min call)';
             }
             
             // Update results page
             document.getElementById('risk-badge').className = 'risk-badge ' + tier;
             document.getElementById('risk-badge').textContent = badge;
-            document.getElementById('loss-amount').textContent = '$' + results.annualLoss.toLocaleString() + '+';
+            document.getElementById('loss-amount').textContent = mainHeadline;
             document.getElementById('results-text').textContent = message;
+            document.getElementById('results-text').style.whiteSpace = 'pre-line'; // Preserve line breaks
             document.getElementById('projected-bans').textContent = results.projectedBans;
             document.getElementById('risk-score').textContent = results.riskPercent + '%';
             document.getElementById('downtime-weeks').textContent = results.downtimeWeeks + ' weeks';
+            
+            // Update CTA button text
+            const ctaButton = document.querySelector('.calendly-btn');
+            if (ctaButton) {
+                ctaButton.textContent = ctaText;
+            }
             
             // Track conversion
             fbq('track', 'Lead');
@@ -884,6 +902,28 @@
 
         // Initialize on page load
         window.onload = initQuiz;
+        
+        // Skip to Results (for testing)
+        function skipToResults() {
+            // Set dummy data
+            answers.dailySpend = 10000;
+            answers.profitMargin = 30;
+            answers.riskPoints = 120;
+            answers.downtimeDays = 14;
+            answers.email = 'test@example.com';
+            
+            showResults();
+        }
+        
+        // Show skip button only on first question
+        function updateSkipButton() {
+            const skipBtn = document.getElementById('skip-btn');
+            if (currentQuestion === 0) {
+                skipBtn.style.display = 'block';
+            } else {
+                skipBtn.style.display = 'none';
+            }
+        }
     </script>
     
     <!-- Freshchat Widget -->
