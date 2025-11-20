@@ -442,7 +442,6 @@
             </div>
             
             <button class="next-btn" id="next-btn" onclick="nextQuestion()">Continue</button>
-            <button class="skip-btn" id="skip-btn" onclick="skipToResults()" style="display: none; margin-top: 1rem; background: transparent; border: 2px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); font-size: 0.9rem;">Skip to Results (Testing)</button>
         </div>
     </div>
     
@@ -630,9 +629,6 @@
             const sliderContainer = document.getElementById('slider-container');
             const emailContainer = document.getElementById('email-container');
             const nextBtn = document.getElementById('next-btn');
-            
-            // Update skip button visibility
-            updateSkipButton();
             
             // Update progress
             const progress = ((index + 1) / questions.length) * 100;
@@ -902,28 +898,6 @@
 
         // Initialize on page load
         window.onload = initQuiz;
-        
-        // Skip to Results (for testing)
-        function skipToResults() {
-            // Set dummy data
-            answers.dailySpend = 10000;
-            answers.profitMargin = 30;
-            answers.riskPoints = 120;
-            answers.downtimeDays = 14;
-            answers.email = 'test@example.com';
-            
-            showResults();
-        }
-        
-        // Show skip button only on first question
-        function updateSkipButton() {
-            const skipBtn = document.getElementById('skip-btn');
-            if (currentQuestion === 0) {
-                skipBtn.style.display = 'block';
-            } else {
-                skipBtn.style.display = 'none';
-            }
-        }
     </script>
     
 </body>
