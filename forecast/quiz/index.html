@@ -844,9 +844,6 @@
             document.getElementById('quiz-section').classList.add('hidden');
             document.getElementById('results-section').classList.remove('hidden');
             
-            // Hide skip button
-            document.getElementById('skip-btn').style.display = 'none';
-            
             // Determine tier
             let tier, badge, mainHeadline, message, ctaText;
             if (results.riskPercent >= 70) {
@@ -900,13 +897,7 @@
         window.onload = initQuiz;
     </script>
     
-    <!-- Version: v2.1.0 - 2025-01-17 -->
+    <!-- Version: v2.1.1 - 2025-01-17 - Fixed results page display -->
     
 </body>
 </html>
-
-
-
-
-
-
