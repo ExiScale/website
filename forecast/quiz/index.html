@@ -874,7 +874,7 @@
             document.getElementById('results-text').style.whiteSpace = 'pre-line'; // Preserve line breaks
             document.getElementById('projected-bans').textContent = results.projectedBans;
             document.getElementById('risk-score').textContent = results.riskPercent + '%';
-            document.getElementById('downtime-days').textContent = results.downtimeDays + ' days';
+            document.getElementById('downtime-days').textContent = results.downtimeDays;
             
             // Update CTA button text
             const ctaButton = document.querySelector('.calendly-btn');
@@ -897,7 +897,7 @@
         window.onload = initQuiz;
     </script>
     
-    <!-- Version: v2.2.1 - 2025-01-17 - Fixed 2+ weeks = 14 days (not 21) -->
+    <!-- Version: v2.2.2 - 2025-01-17 - Removed "days" from stat number (redundant with label) -->
     
 </body>
 </html>
