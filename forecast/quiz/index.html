@@ -1330,34 +1330,34 @@
                 tier = 'red';
                 badge = '🚨 CRITICAL RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()}`;
-                subheadline = `That's the profit you're about to burn in 2026 because your accounts are dying.`;
+                subheadline = `That's the profit you're about to burn in 2026 if you don't take action.`;
                 problemText = `You scored ${results.riskPercent}% risk. 4–6 accounts dead next year. ${results.downtimeDays} days of zero revenue.
 
 This is the "about to go to zero" zone. We pull people out every week.`;
-                solutionIntro = `You get unlimited, aged, high-trust Meta accounts inside fully isolated pods. One gets restricted → we replace it instantly. You never slow down.`;
-                ctaText = 'Start Spending With Zero Risk → Book Call';
+                solutionIntro = `You get unlimited, aged, high-trust Meta accounts with the infrastructure to scale.`;
+                ctaText = 'Spend With Zero Risk → Book A Call';
             } else if (results.riskPercent >= 40) {
                 tier = 'orange';
                 badge = '⚠️ HIGH RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()}`;
-                subheadline = `That's real money you're about to lose in 2026 because you still think "it won't happen to me."`;
+                subheadline = `That's the profit you're about to burn in 2026 if you don't take action.`;
                 problemText = `You're projected to lose 2–4 accounts next year. ${results.downtimeDays} days of zero revenue.
 
 Everyone else gets crushed. Our clients don't.`;
-                solutionIntro = `You get unlimited, aged, high-trust Meta accounts inside fully isolated pods. One gets restricted → we replace it instantly. You never slow down.`;
-                ctaText = 'Start Spending With Zero Risk → Book Call';
+                solutionIntro = `You get unlimited, aged, high-trust Meta accounts with the infrastructure to scale.`;
+                ctaText = 'Spend With Zero Risk → Book A Call';
             } else {
                 tier = 'green';
                 badge = '✅ LOW RISK';
                 mainHeadline = `$${results.annualLoss.toLocaleString()}`;
-                subheadline = `You're in the top 8%. Nice.`;
+                subheadline = `That's the profit you're about to burn in 2026 if you don't take action.`;
                 problemText = `You're still going to lose 1–2 accounts next year and bleed ${results.downtimeDays} days of profit.
 
 That's optional.
 
 Our clients forgot bans even exist.`;
-                solutionIntro = `You get the exact same unlimited, aged, high-trust accounts inside isolated pods. One gets restricted → replaced instantly. You keep printing.`;
-                ctaText = 'Start Spending With Zero Risk → Book Call';
+                solutionIntro = `You get unlimited, aged, high-trust Meta accounts with the infrastructure to scale.`;
+                ctaText = 'Spend With Zero Risk → Book A Call';
             }
             
             // Update results page
@@ -1397,5 +1397,3 @@ Our clients forgot bans even exist.`;
     
 </body>
 </html>
-
-
