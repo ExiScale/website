@@ -313,10 +313,284 @@
         }
         
         .results-text {
+            font-size: 18px;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .results-subheadline {
             font-size: 20px;
-            line-height: 1.8;
+            line-height: 1.7;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Problem Section */
+        .results-problem-section {
+            background: rgba(255, 106, 21, 0.05);
+            border: 1px solid rgba(255, 106, 21, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 3rem auto;
+            max-width: 900px;
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            max-width: 900px;
+            margin: 4rem auto;
+        }
+        
+        .trust-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .trust-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .trust-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+        
+        .trustpilot-star {
+            color: #00b67a;
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .review-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 106, 21, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .review-stars {
+            color: #00b67a;
+            font-size: 16px;
+            margin-bottom: 0.75rem;
+            letter-spacing: 2px;
+        }
+        
+        .review-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 1rem;
+        }
+        
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .review-date {
+            font-weight: 500;
+        }
+        
+        .review-rating {
+            font-weight: 600;
+            color: #00b67a;
+        }
+        
+        /* Solution Section */
+        .results-solution-section {
+            max-width: 900px;
+            margin: 4rem auto;
+        }
+        
+        .solution-proof-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            padding: 2rem 3rem;
+            background: linear-gradient(135deg, rgba(255, 106, 21, 0.08) 0%, rgba(255, 106, 21, 0.03) 100%);
+            border: 1px solid rgba(255, 106, 21, 0.2);
+            border-radius: 16px;
+            margin-bottom: 4rem;
+        }
+        
+        .proof-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .proof-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ff6b35;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .proof-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+        
+        .proof-divider {
+            width: 1px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .solution-headline {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: -0.02em;
+        }
+        
+        .solution-intro {
+            font-size: 18px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 106, 21, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.35rem;
+        }
+        
+        .feature-desc {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+        
+        /* CTA Section */
+        .results-cta-section {
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, rgba(255, 106, 21, 0.1) 0%, rgba(255, 106, 21, 0.05) 100%);
+            border: 2px solid rgba(255, 106, 21, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .cta-headline {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .cta-subtext {
+            font-size: 17px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-scarcity {
+            display: inline-block;
+            background: rgba(255, 106, 21, 0.2);
+            border: 1px solid rgba(255, 106, 21, 0.4);
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ff6b35;
+            margin-bottom: 2rem;
         }
         
         .stats-grid {
@@ -398,6 +672,38 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .solution-proof-bar {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .proof-divider {
+                width: 60%;
+                height: 1px;
+            }
+            
+            .solution-headline {
+                font-size: 26px;
+            }
+            
+            .features-grid {
+                gap: 1rem;
+            }
+            
+            .feature-item {
+                padding: 1.25rem;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .review-card {
+                padding: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -451,7 +757,7 @@
             <div class="results-header">
                 <div class="risk-badge" id="risk-badge"></div>
                 <h1 class="loss-amount" id="loss-amount"></h1>
-                <p class="results-text" id="results-text"></p>
+                <p class="results-subheadline" id="results-subheadline"></p>
             </div>
             
             <div class="stats-grid">
@@ -469,8 +775,119 @@
                 </div>
             </div>
             
-            <div class="cta-section">
-                <a href="https://exiscale.com/forecast/quiz/call" class="calendly-btn">Get My Zero-Downtime Plan (15 min call)</a>
+            <!-- Problem Section -->
+            <div class="results-problem-section" id="results-problem"></div>
+            
+            <!-- Solution Section -->
+            <div class="results-solution-section">
+                <div class="solution-proof-bar">
+                    <div class="proof-item">
+                        <span class="proof-number">Under 18 Hours</span>
+                        <span class="proof-label">Average client downtime in 12 months</span>
+                    </div>
+                    <div class="proof-divider"></div>
+                    <div class="proof-item">
+                        <span class="proof-number">300+ Brands</span>
+                        <span class="proof-label">Protected daily</span>
+                    </div>
+                </div>
+                
+                <!-- Trust Section -->
+                <div class="trust-section">
+                    <div class="trust-header">
+                        <h3 class="trust-title">Real Client Wins</h3>
+                        <p class="trust-subtitle">From Trustpilot – <span class="trustpilot-star">★</span> 4.6/5 Stars from 36 Reviews</p>
+                    </div>
+                    
+                    <div class="reviews-grid">
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"They have walked us through the process of multiple ad accounts and setting everything up. We have seen a significant increase in our ability to scale because of them. The entire team from sales to support has earned this 5-star review. Don't trust your business to anyone else!"</p>
+                            <div class="review-meta">
+                                <span class="review-date">September 25, 2025</span>
+                                <span class="review-rating">5/5 Stars</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"One word. Professionals. Exiscale is the most premium service for facebook accounts i've found. They really know their stuff when it comes to the whole account set up and even gave me pointers on setting up my campaigns."</p>
+                            <div class="review-meta">
+                                <span class="review-date">June 6, 2025</span>
+                                <span class="review-rating">5/5 Stars</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"These guys are the best I've used by far for accounts. Really responsive and helpful support. Basically changed the game for me."</p>
+                            <div class="review-meta">
+                                <span class="review-date">July 19, 2025</span>
+                                <span class="review-rating">5/5 Stars</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-card">
+                            <div class="review-stars">★★★★★</div>
+                            <p class="review-text">"Forget the days of reaching out and receiving no support. Kyron and his 24 hr team will go above and beyond to troubleshoot any issues you have. Signing up has been the best decision I've made, the perfect agency to work with that is genuinely there to help. 11/10"</p>
+                            <div class="review-meta">
+                                <span class="review-date">May 28, 2025</span>
+                                <span class="review-rating">5/5 Stars</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="solution-headline">Here's Exactly What You Get</h3>
+                <p class="solution-intro" id="solution-intro"></p>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <div class="feature-title">Unlimited Instant Replacements</div>
+                            <div class="feature-desc">Account down? New one live in hours, not weeks</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <div class="feature-title">Aged 10+ Year US Profiles</div>
+                            <div class="feature-desc">Real accounts with history, not fresh fake accounts</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <div class="feature-title">Zero Fingerprint Overlap</div>
+                            <div class="feature-desc">Isolated pods mean chain bans are impossible</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <div class="feature-title">24/7 Human Support</div>
+                            <div class="feature-desc">Under 2-minute response times, real experts</div>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <div class="feature-title">Fixed Monthly Price</div>
+                            <div class="feature-desc">We eat every extra cost, you never pay more</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Section -->
+            <div class="results-cta-section">
+                <div class="cta-box">
+                    <h3 class="cta-headline">Zero Risk. Zero Setup Fees. Zero Downtime.</h3>
+                    <p class="cta-subtext">We'll build your entire bulletproof infrastructure for free. You pay nothing until your first ad is live and spending.</p>
+                    <div class="cta-scarcity">⚡ Only 9 spots left this week</div>
+                    <a href="https://exiscale.com/forecast/quiz/call" class="calendly-btn" id="cta-button">Start Spending With Zero Risk → Book Call</a>
+                </div>
             </div>
         </div>
     </div>
@@ -788,7 +1205,7 @@
                 dailySpend: answers.dailySpend,
                 profitMargin: answers.profitMargin,
                 riskPoints: answers.riskPoints,
-                downtimeDays: answers.downtimeDays,
+                downtimePerBan: answers.downtimeDays,
                 riskPercent: results.riskPercent,
                 projectedBans: results.projectedBans,
                 annualLoss: results.annualLoss,
@@ -845,39 +1262,55 @@
             document.getElementById('results-section').classList.remove('hidden');
             
             // Determine tier
-            let tier, badge, mainHeadline, message, ctaText;
+            let tier, badge, mainHeadline, subheadline, problemText, solutionIntro, ctaText;
             if (results.riskPercent >= 70) {
                 tier = 'red';
                 badge = '🚨 CRITICAL RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You are ${results.riskPercent}% likely to have at least one full account death next year. Most advertisers in your position lose 4–6 accounts and never recover.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you the 3 things that will kill your account next and exactly how we make them impossible.`;
-                ctaText = 'Get Me to Zero (15 min call)';
+                mainHeadline = `$${results.annualLoss.toLocaleString()}`;
+                subheadline = `That's the profit you're about to burn in 2026 because your accounts are dying.`;
+                problemText = `You scored ${results.riskPercent}% risk. 4–6 accounts dead next year. ${results.downtimeDays} days of zero revenue.
+
+This is the "about to go to zero" zone. We pull people out every week.`;
+                solutionIntro = `You get unlimited, aged, high-trust Meta accounts inside fully isolated pods. One gets restricted → we replace it instantly. You never slow down.`;
+                ctaText = 'Start Spending With Zero Risk → Book Call';
             } else if (results.riskPercent >= 40) {
                 tier = 'orange';
                 badge = '⚠️ HIGH RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're projected to lose 2–4 accounts next year. That's 6–10 weeks of zero revenue.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nClick below and I'll show you exactly how we keep clients at 99.8% uptime when everyone else is getting slaughtered.`;
-                ctaText = 'Get Me to Zero (15 min call)';
+                mainHeadline = `$${results.annualLoss.toLocaleString()}`;
+                subheadline = `That's real money you're about to lose in 2026 because you still think "it won't happen to me."`;
+                problemText = `You're projected to lose 2–4 accounts next year. ${results.downtimeDays} days of zero revenue.
+
+Everyone else gets crushed. Our clients don't.`;
+                solutionIntro = `You get unlimited, aged, high-trust Meta accounts inside fully isolated pods. One gets restricted → we replace it instantly. You never slow down.`;
+                ctaText = 'Start Spending With Zero Risk → Book Call';
             } else {
                 tier = 'green';
                 badge = '✅ LOW RISK';
-                mainHeadline = `$${results.annualLoss.toLocaleString()} projected profit loss in 2026`;
-                message = `You're in the top 8% — still on track to lose 1–2 accounts next year.\n\nExiScale clients averaged under 18 hours of downtime in the last 12 months.\n\nWant to get to zero?`;
-                ctaText = 'Get Me to Zero (15 min call)';
+                mainHeadline = `$${results.annualLoss.toLocaleString()}`;
+                subheadline = `You're in the top 8%. Nice.`;
+                problemText = `You're still going to lose 1–2 accounts next year and bleed ${results.downtimeDays} days of profit.
+
+That's optional.
+
+Our clients forgot bans even exist.`;
+                solutionIntro = `You get the exact same unlimited, aged, high-trust accounts inside isolated pods. One gets restricted → replaced instantly. You keep printing.`;
+                ctaText = 'Start Spending With Zero Risk → Book Call';
             }
             
             // Update results page
             document.getElementById('risk-badge').className = 'risk-badge ' + tier;
             document.getElementById('risk-badge').textContent = badge;
             document.getElementById('loss-amount').textContent = mainHeadline;
-            document.getElementById('results-text').textContent = message;
-            document.getElementById('results-text').style.whiteSpace = 'pre-line'; // Preserve line breaks
+            document.getElementById('results-subheadline').textContent = subheadline;
+            document.getElementById('results-problem').textContent = problemText;
+            document.getElementById('results-problem').style.whiteSpace = 'pre-line';
+            document.getElementById('solution-intro').textContent = solutionIntro;
             document.getElementById('projected-bans').textContent = results.projectedBans;
             document.getElementById('risk-score').textContent = results.riskPercent + '%';
             document.getElementById('downtime-days').textContent = results.downtimeDays;
             
             // Update CTA button text
-            const ctaButton = document.querySelector('.calendly-btn');
+            const ctaButton = document.getElementById('cta-button');
             if (ctaButton) {
                 ctaButton.textContent = ctaText;
             }
@@ -897,7 +1330,7 @@
         window.onload = initQuiz;
     </script>
     
-    <!-- Version: v2.2.2 - 2025-01-17 - Removed "days" from stat number (redundant with label) -->
+    <!-- Version: v3.2.0 - 2025-01-17 - Redesigned middle section with elegant proof bar -->
     
 </body>
 </html>
