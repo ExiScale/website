@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Your Call - ExiScale</title>
+    <title>Spend With Zero Risk - ExiScale</title>
     <link rel="icon" type="image/png" href="https://www.exiscale.com/exiscale-favicon.png">
     <link rel="shortcut icon" href="https://www.exiscale.com/exiscale-favicon.png">
     
@@ -103,12 +103,15 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.1);
             animation: fadeInUp 0.8s ease 0.2s both;
+            -webkit-overflow-scrolling: touch;
         }
         
         .calendly-inline-widget {
             min-width: 320px;
             height: 700px;
             border-radius: 24px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         /* Mobile Responsive */
@@ -129,8 +132,14 @@
             .booking-subtitle { 
                 font-size: 1rem; 
             }
+            .calendly-container {
+                border-radius: 16px;
+                margin: 0 -5%;
+                width: calc(100% + 10%);
+            }
             .calendly-inline-widget {
-                height: 650px;
+                height: 800px;
+                border-radius: 0;
             }
         }
     </style>
@@ -155,7 +164,7 @@
     <section class="booking-section">
         <div class="booking-header">
             <div class="section-label">BOOK YOUR CALL</div>
-            <h1 class="booking-title">Get Me to Zero</h1>
+            <h1 class="booking-title">Spend With Zero Risk</h1>
             <p class="booking-subtitle">
                 Schedule your 15-minute strategy call. We'll show you exactly how to eliminate downtime and keep your accounts running 24/7.
             </p>
@@ -163,7 +172,7 @@
         
         <div class="calendly-container">
             <!-- Calendly inline widget begin -->
-            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale/onboarding-call?hide_event_type_details=1&primary_color=ff6a15" style="min-width:320px;height:700px;"></div>
+            <div class="calendly-inline-widget" data-url="https://calendly.com/exiscale/onboarding-call?hide_event_type_details=1&primary_color=ff6a15&embed_domain=exiscale.com&embed_type=Inline" style="min-width:320px;height:700px;"></div>
             <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
             <!-- Calendly inline widget end -->
         </div>
@@ -173,8 +182,6 @@
     <script src='//fw-cdn.com/10686344/3499220.js' chat='true'></script>
 </body>
 </html>
-
-
 
 
 
