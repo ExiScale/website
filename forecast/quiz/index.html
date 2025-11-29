@@ -1306,7 +1306,7 @@
             
             // Calculate annual lost profit
             const dailyProfit = answers.dailySpend * (answers.profitMargin / 100);
-            const annualLoss = dailyProfit * answers.downtimeDays * projectedBans * (365 / 12);
+            const annualLoss = dailyProfit * answers.downtimeDays * projectedBans;
             
             return {
                 riskPercent: Math.round(banRiskPercent),
