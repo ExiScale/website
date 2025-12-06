@@ -743,8 +743,8 @@
             
             let totalRemaining = 0, totalSpent = 0;
             userData.balances.forEach(b => {
-                totalRemaining += parseFloat(b.fields['Remaining...'] || b.fields['$ Remaining...'] || b.fields['Remaining'] || 0) || 0;
-                totalSpent += parseFloat(b.fields['Spent'] || b.fields['$ Spent'] || 0) || 0;
+                totalRemaining += parseFloat(b.fields['Remaining Balance'] || 0) || 0;
+                totalSpent += parseFloat(b.fields['Spent'] || 0) || 0;
             });
             
             document.getElementById('statBalance').textContent = formatCurrency(totalRemaining);
@@ -804,8 +804,8 @@
             let html = `<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent</th></tr></thead><tbody>`;
             userData.balances.forEach(bal => {
                 const f = bal.fields;
-                const remaining = f['Remaining...'] || f['$ Remaining...'] || f['Remaining'] || 0;
-                const spent = f['Spent'] || f['$ Spent'] || 0;
+                const remaining = f['Remaining Balance'] || 0;
+                const spent = f['Spent'] || 0;
                 html += `<tr><td><strong>${f['Virtual Account Name'] || '-'}</strong></td><td><span class="status-badge ${(f['Status'] || 'active').toLowerCase()}">${f['Status'] || 'Active'}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
