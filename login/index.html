@@ -26,41 +26,15 @@
             min-height: 100vh;
         }
 
-        /* ============================================
-           ANIMATIONS
-        ============================================ */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -30px); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ============================================
-           LOGIN SCREEN
-        ============================================ */
+        /* Login Screen */
         .login-screen {
             min-height: 100vh;
             display: flex;
@@ -109,9 +83,6 @@
         .login-logo {
             text-align: center;
             margin-bottom: 2.5rem;
-        }
-        .login-logo img {
-            height: 48px;
         }
         .login-logo-text {
             font-size: 1.8rem;
@@ -183,6 +154,14 @@
             position: relative;
             overflow: hidden;
             margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
         .login-btn::before {
             content: '';
@@ -194,13 +173,35 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.6s;
         }
-        .login-btn:hover::before {
+        .login-btn:not(:disabled):hover::before {
             left: 100%;
         }
-        .login-btn:hover {
+        .login-btn:not(:disabled):hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 40px rgba(255,106,21,0.4);
             background: #ff7a25;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .login-error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .login-error.show {
+            display: block;
         }
 
         .login-divider {
@@ -243,9 +244,7 @@
             background: var(--orange-light);
         }
 
-        /* ============================================
-           DASHBOARD LAYOUT
-        ============================================ */
+        /* Dashboard Layout */
         .dashboard {
             display: none;
             min-height: 100vh;
@@ -345,10 +344,6 @@
             padding: 0.75rem 1rem;
             border-radius: 12px;
             transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .user-info:hover {
-            background: var(--light-gray);
         }
         .user-avatar {
             width: 42px;
@@ -364,15 +359,22 @@
         }
         .user-details {
             flex: 1;
+            overflow: hidden;
         }
         .user-name {
             font-weight: 600;
             font-size: 0.95rem;
             color: var(--black);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .user-email {
             font-size: 0.8rem;
             color: var(--gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .logout-btn {
             background: none;
@@ -463,6 +465,13 @@
             stroke-width: 2;
             fill: none;
         }
+        .stat-icon.green { background: #dcfce7; }
+        .stat-icon.green svg { stroke: #16a34a; }
+        .stat-icon.blue { background: #dbeafe; }
+        .stat-icon.blue svg { stroke: #2563eb; }
+        .stat-icon.purple { background: #f3e8ff; }
+        .stat-icon.purple svg { stroke: #9333ea; }
+        
         .stat-label {
             font-size: 0.85rem;
             color: var(--gray);
@@ -480,12 +489,9 @@
             font-weight: 600;
             margin-top: 0.5rem;
         }
-        .stat-change.positive {
-            color: #16a34a;
-        }
-        .stat-change.negative {
-            color: #dc2626;
-        }
+        .stat-change.positive { color: #16a34a; }
+        .stat-change.negative { color: #dc2626; }
+        .stat-change.neutral { color: var(--gray); }
 
         /* Cards */
         .content-card {
@@ -508,7 +514,7 @@
             color: var(--black);
         }
         .card-body {
-            padding: 2rem;
+            padding: 0;
         }
 
         /* Table */
@@ -555,22 +561,29 @@
             border-radius: 50%;
             background: currentColor;
         }
-        .status-badge.active {
-            background: #dcfce7;
-            color: #16a34a;
+        .status-badge.active { background: #dcfce7; color: #16a34a; }
+        .status-badge.paying { background: #dcfce7; color: #16a34a; }
+        .status-badge.paid { background: #dbeafe; color: #2563eb; }
+        .status-badge.pending { background: #fef3c7; color: #d97706; }
+        .status-badge.overdue { background: #fef3c7; color: #d97706; }
+        .status-badge.pause { background: #fef3c7; color: #d97706; }
+        .status-badge.completed { background: #dbeafe; color: #2563eb; }
+        .status-badge.cancelled { background: #fee2e2; color: #dc2626; }
+        .status-badge.failed { background: #fee2e2; color: #dc2626; }
+        .status-badge.aborted { background: #fee2e2; color: #dc2626; }
+
+        /* Source Badges */
+        .source-badge {
+            display: inline-flex;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-        .status-badge.pending {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .status-badge.completed {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-        .status-badge.cancelled {
-            background: #fee2e2;
-            color: #dc2626;
-        }
+        .source-badge.whop { background: #dbeafe; color: #2563eb; }
+        .source-badge.digistore { background: #fed7aa; color: #c2410c; }
+        .source-badge.crypto { background: #fef3c7; color: #b45309; }
 
         /* Empty State */
         .empty-state {
@@ -603,6 +616,21 @@
         .empty-state-text {
             font-size: 0.95rem;
             color: var(--gray);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
         }
 
         /* Quick Actions */
@@ -655,45 +683,22 @@
             color: var(--gray);
         }
 
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
-
         /* Responsive */
         @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-            .login-card {
-                margin: 1rem;
-                padding: 2rem;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .quick-actions { grid-template-columns: 1fr; }
+            .login-card { margin: 1rem; padding: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================
-         LOGIN SCREEN
-    ============================================ -->
+    <!-- LOGIN SCREEN -->
     <div class="login-screen" id="loginScreen">
         <div class="login-card">
             <div class="login-logo">
@@ -702,6 +707,8 @@
             
             <h1 class="login-title">Welcome back</h1>
             <p class="login-subtitle">Sign in to access your client dashboard</p>
+            
+            <div class="login-error" id="loginError"></div>
             
             <form id="loginForm">
                 <div class="form-group">
@@ -714,23 +721,24 @@
                     <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
                 </div>
                 
-                <button type="submit" class="login-btn">Sign In</button>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="loginBtnText">Sign In</span>
+                    <div class="spinner" id="loginSpinner" style="display: none;"></div>
+                </button>
             </form>
             
             <div class="login-divider">
                 <span>Dev Access</span>
             </div>
             
-            <button class="dev-btn" onclick="skipTosDashboard()">
+            <button class="dev-btn" onclick="skipToDashboard()">
                 ⚡ Skip to Dashboard (Testing)
             </button>
         </div>
     </div>
 
 
-    <!-- ============================================
-         DASHBOARD
-    ============================================ -->
+    <!-- DASHBOARD -->
     <div class="dashboard" id="dashboard">
         
         <!-- Sidebar -->
@@ -776,10 +784,10 @@
             
             <div class="sidebar-footer">
                 <div class="user-info">
-                    <div class="user-avatar">JD</div>
+                    <div class="user-avatar" id="userAvatar">--</div>
                     <div class="user-details">
-                        <div class="user-name">John Doe</div>
-                        <div class="user-email">john@company.com</div>
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">...</div>
                     </div>
                     <button class="logout-btn" onclick="logout()" title="Sign out">
                         <svg viewBox="0 0 24 24">
@@ -798,7 +806,7 @@
             <!-- HOME TAB -->
             <div class="content-panel active" id="panel-home">
                 <div class="page-header">
-                    <h1 class="page-title">Welcome back, John 👋</h1>
+                    <h1 class="page-title" id="welcomeTitle">Welcome back 👋</h1>
                     <p class="page-subtitle">Here's what's happening with your account today.</p>
                 </div>
                 
@@ -811,51 +819,53 @@
                                 <path d="M16 10a4 4 0 0 1-8 0"></path>
                             </svg>
                         </div>
-                        <div class="stat-label">Active Orders</div>
-                        <div class="stat-value">3</div>
-                        <div class="stat-change positive">↑ 2 from last month</div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value" id="statOrders">-</div>
+                        <div class="stat-change neutral" id="statOrdersChange">Loading...</div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon">
+                        <div class="stat-icon green">
                             <svg viewBox="0 0 24 24">
-                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                                <line x1="2" y1="10" x2="22" y2="10"></line>
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
                         </div>
-                        <div class="stat-label">Account Balance</div>
-                        <div class="stat-value">$2,450</div>
-                        <div class="stat-change positive">Available credit</div>
+                        <div class="stat-label">Balance Remaining</div>
+                        <div class="stat-value" id="statBalance">-</div>
+                        <div class="stat-change positive" id="statBalanceChange">Available</div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon">
+                        <div class="stat-icon blue">
                             <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-label">Subscription Status</div>
-                        <div class="stat-value">Active</div>
-                        <div class="stat-change">Renews Jan 15, 2025</div>
+                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-value" id="statSpent">-</div>
+                        <div class="stat-change neutral" id="statSpentChange">Lifetime</div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon">
+                        <div class="stat-icon purple">
                             <svg viewBox="0 0 24 24">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                         </div>
-                        <div class="stat-label">Uptime</div>
-                        <div class="stat-value">99.9%</div>
-                        <div class="stat-change positive">Excellent</div>
+                        <div class="stat-label">Transactions</div>
+                        <div class="stat-value" id="statTransactions">-</div>
+                        <div class="stat-change neutral" id="statTransactionsChange">All time</div>
                     </div>
                 </div>
                 
                 <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--black);">Quick Actions</h2>
                 <div class="quick-actions">
-                    <div class="action-card">
+                    <div class="action-card" onclick="window.open('https://exiscale.com/#pricing', '_blank')">
                         <div class="action-icon">
                             <svg viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -865,11 +875,11 @@
                         </div>
                         <div class="action-content">
                             <h3>New Order</h3>
-                            <p>Request additional infrastructure pods</p>
+                            <p>Purchase additional infrastructure</p>
                         </div>
                     </div>
                     
-                    <div class="action-card">
+                    <div class="action-card" onclick="window.open('mailto:support@exiscale.com', '_blank')">
                         <div class="action-icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -878,35 +888,6 @@
                         <div class="action-content">
                             <h3>Contact Support</h3>
                             <p>Get help from our team</p>
-                        </div>
-                    </div>
-                    
-                    <div class="action-card">
-                        <div class="action-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
-                        </div>
-                        <div class="action-content">
-                            <h3>View Invoices</h3>
-                            <p>Download billing documents</p>
-                        </div>
-                    </div>
-                    
-                    <div class="action-card">
-                        <div class="action-icon">
-                            <svg viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                            </svg>
-                        </div>
-                        <div class="action-content">
-                            <h3>Account Settings</h3>
-                            <p>Manage your preferences</p>
                         </div>
                     </div>
                 </div>
@@ -923,40 +904,12 @@
                     <div class="card-header">
                         <h2 class="card-title">Order History</h2>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Plan</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>#ORD-2024-001</strong></td>
-                                <td>Invincible Plan</td>
-                                <td>Dec 1, 2024</td>
-                                <td>$10,000</td>
-                                <td><span class="status-badge active">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD-2023-089</strong></td>
-                                <td>Fortress Plan</td>
-                                <td>Jun 15, 2023</td>
-                                <td>$597</td>
-                                <td><span class="status-badge completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>#ORD-2023-042</strong></td>
-                                <td>Launch Plan</td>
-                                <td>Jan 8, 2023</td>
-                                <td>$297</td>
-                                <td><span class="status-badge completed">Completed</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="card-body" id="ordersTableContainer">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--gray);">Loading orders...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -969,49 +922,14 @@
                 
                 <div class="content-card">
                     <div class="card-header">
-                        <h2 class="card-title">Recent Transactions</h2>
+                        <h2 class="card-title">Transaction History</h2>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Transaction ID</th>
-                                <th>Description</th>
-                                <th>Date</th>
-                                <th>Method</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>#TXN-8842</strong></td>
-                                <td>Invincible Plan - Annual</td>
-                                <td>Dec 1, 2024</td>
-                                <td>Bank Transfer</td>
-                                <td style="color: #16a34a; font-weight: 600;">+$10,000</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#TXN-7721</strong></td>
-                                <td>Fortress Plan - Monthly</td>
-                                <td>Nov 1, 2024</td>
-                                <td>Credit Card</td>
-                                <td style="color: #16a34a; font-weight: 600;">+$597</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#TXN-6543</strong></td>
-                                <td>Account Credit</td>
-                                <td>Oct 15, 2024</td>
-                                <td>Adjustment</td>
-                                <td style="color: #16a34a; font-weight: 600;">+$250</td>
-                            </tr>
-                            <tr>
-                                <td><strong>#TXN-5421</strong></td>
-                                <td>Fortress Plan - Monthly</td>
-                                <td>Oct 1, 2024</td>
-                                <td>Credit Card</td>
-                                <td style="color: #16a34a; font-weight: 600;">+$597</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="card-body" id="transactionsTableContainer">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--gray);">Loading transactions...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1022,89 +940,42 @@
                     <p class="page-subtitle">Your account balance and credit information.</p>
                 </div>
                 
-                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);" id="balanceStats">
                     <div class="stat-card">
-                        <div class="stat-icon">
+                        <div class="stat-icon green">
                             <svg viewBox="0 0 24 24">
                                 <line x1="12" y1="1" x2="12" y2="23"></line>
                                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
                         </div>
-                        <div class="stat-label">Available Balance</div>
-                        <div class="stat-value">$2,450.00</div>
-                        <div class="stat-change positive">Ready to use</div>
+                        <div class="stat-label">Total Remaining</div>
+                        <div class="stat-value" id="balanceRemaining">-</div>
+                        <div class="stat-change positive">Available to use</div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: #dcfce7;">
-                            <svg viewBox="0 0 24 24" style="stroke: #16a34a;">
+                        <div class="stat-icon blue">
+                            <svg viewBox="0 0 24 24">
                                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                                 <polyline points="17 6 23 6 23 12"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-label">Total Deposited</div>
-                        <div class="stat-value">$24,500.00</div>
-                        <div class="stat-change">Lifetime</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #dbeafe;">
-                            <svg viewBox="0 0 24 24" style="stroke: #2563eb;">
-                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                                <line x1="2" y1="10" x2="22" y2="10"></line>
-                            </svg>
-                        </div>
-                        <div class="stat-label">Next Payment Due</div>
-                        <div class="stat-value">$0.00</div>
-                        <div class="stat-change">Paid in full</div>
+                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-value" id="balanceSpent">-</div>
+                        <div class="stat-change neutral">Lifetime</div>
                     </div>
                 </div>
                 
                 <div class="content-card">
                     <div class="card-header">
-                        <h2 class="card-title">Balance History</h2>
+                        <h2 class="card-title">Virtual Accounts</h2>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Credit</th>
-                                <th>Debit</th>
-                                <th>Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Dec 1, 2024</td>
-                                <td>Payment Received - Invincible Plan</td>
-                                <td style="color: #16a34a; font-weight: 600;">$10,000</td>
-                                <td>—</td>
-                                <td><strong>$12,450</strong></td>
-                            </tr>
-                            <tr>
-                                <td>Dec 1, 2024</td>
-                                <td>Invincible Plan - Annual Subscription</td>
-                                <td>—</td>
-                                <td style="color: #dc2626; font-weight: 600;">$10,000</td>
-                                <td><strong>$2,450</strong></td>
-                            </tr>
-                            <tr>
-                                <td>Oct 15, 2024</td>
-                                <td>Account Credit - Service Adjustment</td>
-                                <td style="color: #16a34a; font-weight: 600;">$250</td>
-                                <td>—</td>
-                                <td><strong>$2,450</strong></td>
-                            </tr>
-                            <tr>
-                                <td>Oct 1, 2024</td>
-                                <td>Fortress Plan - Monthly</td>
-                                <td>—</td>
-                                <td style="color: #dc2626; font-weight: 600;">$597</td>
-                                <td><strong>$2,200</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="card-body" id="balancesTableContainer">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--gray);">Loading balances...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1114,10 +985,455 @@
 
     <script>
         // ============================================
-        // NAVIGATION & TAB SWITCHING
+        // API CONFIGURATION
         // ============================================
+        // API calls go through serverless function - no exposed keys!
+        const API_ENDPOINT = '/.netlify/functions/airtable';
+
+        // Table names
+        const TABLES = {
+            users: '[ALL] Users',
+            clients: '[ALL] Clients',
+            orders: '[ALL] Orders',
+            transactions: '[ALL] Transactions',
+            balances: 'Balances'
+        };
+
+        // Current user data
+        let currentUser = null;
+        let userClients = [];
+        let userData = {
+            orders: [],
+            transactions: [],
+            balances: []
+        };
+
+        // ============================================
+        // API FUNCTIONS (via serverless proxy)
+        // ============================================
+        async function apiCall(table, filterFormula = null, params = {}) {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    table,
+                    filterFormula,
+                    params
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            return response.json();
+        }
+
+        async function authenticateUser(email, password) {
+            const filterFormula = `AND({Dashboard Email}="${email}", {Password}="${password}")`;
+            const result = await apiCall(TABLES.users, filterFormula);
+            
+            if (result.records && result.records.length > 0) {
+                return result.records[0];
+            }
+            return null;
+        }
+
+        async function getClientRecords(clientIds) {
+            if (!clientIds || clientIds.length === 0) return [];
+            
+            const conditions = clientIds.map(id => `RECORD_ID()="${id}"`).join(',');
+            const filterFormula = `OR(${conditions})`;
+            
+            const result = await apiCall(TABLES.clients, filterFormula);
+            return result.records || [];
+        }
+
+        async function getOrdersForClients(clientKeys) {
+            if (!clientKeys || clientKeys.length === 0) return [];
+            
+            const conditions = clientKeys.map(key => `FIND("${key}", {Linked Client})`).join(',');
+            const filterFormula = `OR(${conditions})`;
+            
+            const result = await apiCall(TABLES.orders, filterFormula);
+            return result.records || [];
+        }
+
+        async function getTransactionsForClients(clientKeys) {
+            if (!clientKeys || clientKeys.length === 0) return [];
+            
+            const conditions = clientKeys.map(key => `FIND("${key}", {Client})`).join(',');
+            const filterFormula = `OR(${conditions})`;
+            
+            const result = await apiCall(TABLES.transactions, filterFormula);
+            return result.records || [];
+        }
+
+        async function getBalancesForClients(clientIds) {
+            if (!clientIds || clientIds.length === 0) return [];
+            
+            const conditions = clientIds.map(id => `FIND("${id}", ARRAYJOIN({[ALL] Clients}))`).join(',');
+            const filterFormula = `OR(${conditions})`;
+            
+            const result = await apiCall(TABLES.balances, filterFormula);
+            return result.records || [];
+        }
+
+        // ============================================
+        // LOGIN / LOGOUT
+        // ============================================
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const loginError = document.getElementById('loginError');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Signing in...';
+            loginSpinner.style.display = 'block';
+            loginError.classList.remove('show');
+            
+            try {
+                const user = await authenticateUser(email, password);
+                
+                if (user) {
+                    currentUser = user;
+                    await loadDashboard();
+                } else {
+                    loginError.textContent = 'Invalid email or password. Please try again.';
+                    loginError.classList.add('show');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = 'Connection error. Please try again.';
+                loginError.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Sign In';
+                loginSpinner.style.display = 'none';
+            }
+        });
+
+        function skipToDashboard() {
+            // Create mock user for testing
+            currentUser = {
+                id: 'test',
+                fields: {
+                    'Stacker First Name': 'Test',
+                    'Stacker Last Name': 'User',
+                    'Dashboard Email': 'test@example.com',
+                    'Clients': []
+                }
+            };
+            
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Update UI with test data
+            updateUserUI();
+            showEmptyStates();
+        }
+
+        function logout() {
+            currentUser = null;
+            userClients = [];
+            userData = { orders: [], transactions: [], balances: [] };
+            
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            
+            // Reset to home tab
+            switchTab('home');
+        }
+
+        // ============================================
+        // DASHBOARD LOADING
+        // ============================================
+        async function loadDashboard() {
+            // Show dashboard
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Update user UI
+            updateUserUI();
+            
+            try {
+                // Get linked client IDs
+                const clientIds = currentUser.fields['Clients'] || [];
+                
+                if (clientIds.length > 0) {
+                    // Get client records to get their keys
+                    userClients = await getClientRecords(clientIds);
+                    const clientKeys = userClients.map(c => c.fields['Client Key']).filter(Boolean);
+                    
+                    // Load all data in parallel
+                    const [orders, transactions, balances] = await Promise.all([
+                        getOrdersForClients(clientKeys),
+                        getTransactionsForClients(clientKeys),
+                        getBalancesForClients(clientIds)
+                    ]);
+                    
+                    userData.orders = orders;
+                    userData.transactions = transactions;
+                    userData.balances = balances;
+                }
+                
+                // Render all data
+                renderDashboardStats();
+                renderOrdersTable();
+                renderTransactionsTable();
+                renderBalancesTable();
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showEmptyStates();
+            }
+        }
+
+        function updateUserUI() {
+            const firstName = currentUser.fields['Stacker First Name'] || '';
+            const lastName = currentUser.fields['Stacker Last Name'] || '';
+            const email = currentUser.fields['Dashboard Email'] || '';
+            const fullName = `${firstName} ${lastName}`.trim() || 'User';
+            const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
+            
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('userAvatar').textContent = initials.toUpperCase();
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName || 'there'} 👋`;
+        }
+
+        function showEmptyStates() {
+            document.getElementById('statOrders').textContent = '0';
+            document.getElementById('statOrdersChange').textContent = 'No orders yet';
+            document.getElementById('statBalance').textContent = '$0.00';
+            document.getElementById('statSpent').textContent = '$0.00';
+            document.getElementById('statTransactions').textContent = '0';
+            
+            document.getElementById('balanceRemaining').textContent = '$0.00';
+            document.getElementById('balanceSpent').textContent = '$0.00';
+            
+            const emptyHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                    </div>
+                    <div class="empty-state-title">No data yet</div>
+                    <div class="empty-state-text">Your data will appear here once available.</div>
+                </div>
+            `;
+            
+            document.getElementById('ordersTableContainer').innerHTML = emptyHTML;
+            document.getElementById('transactionsTableContainer').innerHTML = emptyHTML;
+            document.getElementById('balancesTableContainer').innerHTML = emptyHTML;
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        function renderDashboardStats() {
+            document.getElementById('statOrders').textContent = userData.orders.length;
+            document.getElementById('statOrdersChange').textContent = userData.orders.length > 0 ? 'All time' : 'No orders yet';
+            
+            let totalRemaining = 0;
+            let totalSpent = 0;
+            
+            userData.balances.forEach(b => {
+                totalRemaining += parseFloat(b.fields['Remaining...'] || b.fields['$ Remaining...'] || 0);
+                totalSpent += parseFloat(b.fields['Spent'] || b.fields['$ Spent'] || 0);
+            });
+            
+            document.getElementById('statBalance').textContent = formatCurrency(totalRemaining);
+            document.getElementById('statSpent').textContent = formatCurrency(totalSpent);
+            document.getElementById('statTransactions').textContent = userData.transactions.length;
+            document.getElementById('balanceRemaining').textContent = formatCurrency(totalRemaining);
+            document.getElementById('balanceSpent').textContent = formatCurrency(totalSpent);
+        }
+
+        function renderOrdersTable() {
+            const container = document.getElementById('ordersTableContainer');
+            
+            if (userData.orders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </div>
+                        <div class="empty-state-title">No orders yet</div>
+                        <div class="empty-state-text">Your orders will appear here once you make a purchase.</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Product</th>
+                            <th>Source</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            userData.orders.forEach(order => {
+                const f = order.fields;
+                const source = f['Source'] || 'Unknown';
+                const sourceLower = source.toLowerCase();
+                
+                let productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
+                let amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
+                let status = f['[D] Billing Status'] || 'active';
+                
+                if (!status && f['Order Name']) {
+                    const nameParts = f['Order Name'].split('-');
+                    status = nameParts[nameParts.length - 1] || 'active';
+                }
+                
+                html += `
+                    <tr>
+                        <td><strong>${f['Order Name'] || '-'}</strong></td>
+                        <td>${productName}</td>
+                        <td><span class="source-badge ${sourceLower}">${source}</span></td>
+                        <td>${formatCurrency(amount)}</td>
+                        <td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function renderTransactionsTable() {
+            const container = document.getElementById('transactionsTableContainer');
+            
+            if (userData.transactions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        </div>
+                        <div class="empty-state-title">No transactions yet</div>
+                        <div class="empty-state-text">Your transaction history will appear here.</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Source</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            userData.transactions.forEach(txn => {
+                const f = txn.fields;
+                const source = f['Source'] || 'Unknown';
+                const sourceLower = source.toLowerCase();
+                const type = f['[D] Type'] || '-';
+                const amount = f['[D] Amount'] || 0;
+                const status = f['[D] Transaction Type'] || 'payment';
+                
+                html += `
+                    <tr>
+                        <td><strong>${f['Transaction ID'] || '-'}</strong></td>
+                        <td><span class="source-badge ${sourceLower}">${source}</span></td>
+                        <td>${type}</td>
+                        <td>${formatCurrency(amount)}</td>
+                        <td><span class="status-badge ${status.toLowerCase()}">${status}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function renderBalancesTable() {
+            const container = document.getElementById('balancesTableContainer');
+            
+            if (userData.balances.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                        </div>
+                        <div class="empty-state-title">No balances yet</div>
+                        <div class="empty-state-text">Your virtual account balances will appear here.</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Account Name</th>
+                            <th>Status</th>
+                            <th>Remaining</th>
+                            <th>Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            userData.balances.forEach(bal => {
+                const f = bal.fields;
+                const name = f['Virtual Account Name'] || '-';
+                const status = f['Status'] || 'Active';
+                const remaining = f['Remaining...'] || f['$ Remaining...'] || 0;
+                const spent = f['Spent'] || f['$ Spent'] || 0;
+                
+                html += `
+                    <tr>
+                        <td><strong>${name}</strong></td>
+                        <td><span class="status-badge ${status.toLowerCase()}">${status}</span></td>
+                        <td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td>
+                        <td>${formatCurrency(spent)}</td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function formatCurrency(amount) {
+            const num = parseFloat(amount) || 0;
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(num);
+        }
+
         function switchTab(tabName) {
-            // Update nav items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
                 if (item.dataset.tab === tabName) {
@@ -1125,36 +1441,11 @@
                 }
             });
             
-            // Update content panels
             document.querySelectorAll('.content-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
             document.getElementById('panel-' + tabName).classList.add('active');
         }
-        
-        // ============================================
-        // LOGIN / LOGOUT
-        // ============================================
-        function skipTosDashboard() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-        }
-        
-        function logout() {
-            document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('loginScreen').style.display = 'flex';
-        }
-        
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // TODO: Add Airtable authentication here
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // For now, just skip to dashboard
-            skipTosDashboard();
-        });
     </script>
 
 </body>
