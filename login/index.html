@@ -600,15 +600,15 @@
             return result.records || [];
         }
 
-        async function getBalancesForUser(userId) {
-            if (!userId) return [];
-            const result = await apiCall(TABLES.balances, `FIND("${userId}", ARRAYJOIN({Users copy}))`);
+        async function getBalancesForUser(userName) {
+            if (!userName) return [];
+            const result = await apiCall(TABLES.balances, `FIND("${userName}", ARRAYJOIN({[ALL] Users}))`);
             return result.records || [];
         }
 
-        async function getTopupsForUser(userId) {
-            if (!userId) return [];
-            const result = await apiCall(TABLES.topups, `FIND("${userId}", ARRAYJOIN({Client Name (From Users)}))`);
+        async function getTopupsForUser(userName) {
+            if (!userName) return [];
+            const result = await apiCall(TABLES.topups, `FIND("${userName}", ARRAYJOIN({Client Name (From Users)}))`);
             return result.records || [];
         }
 
@@ -672,7 +672,9 @@
             updateUserUI();
             
             try {
-                const userId = currentUser.id;
+                const firstName = currentUser.fields['Stacker First Name'] || '';
+                const lastName = currentUser.fields['Stacker Last Name'] || '';
+                const userName = `${firstName} ${lastName}`.trim();
                 const clientIds = currentUser.fields['Clients'] || [];
                 
                 if (clientIds.length > 0) {
@@ -683,8 +685,8 @@
                 const [orders, transactions, balances, topups] = await Promise.all([
                     getOrdersForClients(clientKeys),
                     getTransactionsForClients(clientKeys),
-                    getBalancesForUser(userId),
-                    getTopupsForUser(userId)
+                    getBalancesForUser(userName),
+                    getTopupsForUser(userName)
                 ]);
                 
                 userData.orders = orders;
