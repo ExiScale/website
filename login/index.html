@@ -864,7 +864,7 @@
                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div><div class="empty-state-title">No balances yet</div><div class="empty-state-text">Your virtual account balances will appear here.</div></div>`;
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent</th></tr></thead><tbody>`;
+            let html = `<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent (Last 30 Days)</th></tr></thead><tbody>`;
             userData.balances.forEach(bal => {
                 const f = bal.fields;
                 const remaining = f['Remaining Balance'] || 0;
@@ -880,12 +880,22 @@
                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="empty-state-title">No top-ups yet</div><div class="empty-state-text">Your top-up history will appear here.</div></div>`;
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Payment Method</th><th>Amount</th><th>Top-Up</th><th>Fee</th></tr></thead><tbody>`;
+            let html = `<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>View Invoice</th></tr></thead><tbody>`;
             userData.topups.forEach(topup => {
                 const f = topup.fields;
                 let date = f['Invoice Date'] || f['Date (From Payments)'] || '-';
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
-                html += `<tr><td><strong>${f['Invoice'] || '-'}</strong></td><td>${date}</td><td><span class="method-badge">${f['Paid With'] || '-'}</span></td><td>${formatCurrency(f['Amount'] || 0)}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(f['Top-Up'] || 0)}</td><td style="color: #dc2626;">${formatCurrency(f['Top-Up Fee'] || 0)}</td></tr>`;
+                const amount = f['Amount'] || f['Top-Up'] || 0;
+                const invoiceAttachment = f['Invoice (PDF)'] || null;
+                let invoiceLink = '-';
+                if (invoiceAttachment) {
+                    if (Array.isArray(invoiceAttachment) && invoiceAttachment.length > 0) {
+                        invoiceLink = `<a href="${invoiceAttachment[0].url}" target="_blank" style="color: var(--orange); font-weight: 600;">View PDF</a>`;
+                    } else if (typeof invoiceAttachment === 'string') {
+                        invoiceLink = `<a href="${invoiceAttachment}" target="_blank" style="color: var(--orange); font-weight: 600;">View PDF</a>`;
+                    }
+                }
+                html += `<tr><td><strong>${f['Invoice'] || '-'}</strong></td><td>${date}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(amount)}</td><td>${invoiceLink}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
