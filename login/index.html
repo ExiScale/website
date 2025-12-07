@@ -288,9 +288,11 @@
         .status-badge.active { background: #dcfce7; color: #16a34a; }
         .status-badge.paying { background: #dcfce7; color: #16a34a; }
         .status-badge.paid { background: #dcfce7; color: #16a34a; }
+        .status-badge.completed { background: #dcfce7; color: #16a34a; }
         .status-badge.pending { background: #fef3c7; color: #d97706; }
         .status-badge.pause { background: #fef3c7; color: #d97706; }
         .status-badge.refund { background: #fef3c7; color: #d97706; }
+        .status-badge.failedpayment { background: #fee2e2; color: #dc2626; }
         .status-badge.cancelled { background: #fee2e2; color: #dc2626; }
         .status-badge.failed { background: #fee2e2; color: #dc2626; }
         .status-badge.aborted { background: #fee2e2; color: #dc2626; }
@@ -772,10 +774,21 @@
             userData.orders.forEach(order => {
                 const f = order.fields;
                 const source = f['Source'] || 'Unknown';
+                const sourceLower = source.toLowerCase();
                 let productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
                 let amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
-                let status = f['[D] Billing Status'] || f['[W] Billing Status'] || f['[C] Billing Status'] || 'Active';
-                html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
+                let status;
+                if (sourceLower === 'digistore') {
+                    status = f['[D] Billing Status'];
+                } else if (sourceLower === 'whop') {
+                    status = f['[W] Billing Status'];
+                } else if (sourceLower === 'crypto') {
+                    status = f['[C] Billing Status'];
+                }
+                status = status || 'Active';
+                // Capitalize first letter
+                status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+                html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -790,10 +803,28 @@
             userData.transactions.forEach(txn => {
                 const f = txn.fields;
                 const source = f['Source'] || 'Unknown';
-                const type = f['[D] Type'] || f['[W] Type'] || f['[C] Type'] || '-';
-                const amount = f['[D] Amount'] || f['[W] Amount'] || f['[C] Amount'] || 0;
-                const status = f['[D] Transaction Type'] || f['[W] Payment Status'] || f['[C] Payment Status'] || 'Paid';
-                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
+                const sourceLower = source.toLowerCase();
+                let type, amount, status;
+                if (sourceLower === 'digistore') {
+                    type = f['[D] Type'] || '-';
+                    amount = f['[D] Amount'] || 0;
+                    status = f['[D] Transaction Type'] || 'Paid';
+                } else if (sourceLower === 'whop') {
+                    type = f['[W] Type'] || '-';
+                    amount = f['[W] Amount'] || 0;
+                    status = f['[W] Payment Status'] || 'Paid';
+                } else if (sourceLower === 'crypto') {
+                    type = f['[C] Type'] || '-';
+                    amount = f['[C] Amount'] || 0;
+                    status = f['[C] Payment Status'] || 'Paid';
+                } else {
+                    type = '-';
+                    amount = 0;
+                    status = 'Paid';
+                }
+                // Capitalize first letter
+                status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
