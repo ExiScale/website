@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- ExiScale Dashboard v22 - Field ID Migration -->
+<!-- Now uses Airtable field IDs instead of field names for immunity to column renames -->
+<!-- Generated: December 2025 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -572,23 +575,110 @@
             topups: 'Top-Ups (Invoices)'
         };
 
+        // Field IDs - Immune to column renames in Airtable
+        const F = {
+            // [ALL] Users
+            users: {
+                dashboardEmail: 'fldu08L0Zaj11mKwm',
+                dashboardPassword: 'fldHGnldQkFMOYE36',
+                firstName: 'fld3aQ9OHGmHbWDOR',
+                lastName: 'fld057U2rfGEmb5Gh',
+                clients: 'fldsN8m2obYYjRYlK',
+                balances: 'fldfkjkMZ5wkWkNuY',
+                topupsInvoices: 'fld9AFSfFJ59zrPPq',
+                topupsPayments: 'fldAFQqOy5E7GnpwY'
+            },
+            // [ALL] Clients
+            clients: {
+                clientKey: 'fldsaPK9ggYFWBej2',
+                source: 'fldfoVDCAM9pEFiMA',
+                linkedOrders: 'fldUnnYW0PTWjKOt8',
+                balances: 'fldTH7aSxQ9viZSgs',
+                clientEmailD: 'fld437pllzrqcjbM5',
+                clientEmailW: 'fld7aPRO1NdTVhXkM',
+                clientEmailC: 'fldVdn4IF5AiDj421'
+            },
+            // [ALL] Orders
+            orders: {
+                orderName: 'fldYlJ1TUHzW3m0vB',
+                source: 'fldxHxNvx196VFZrq',
+                linkedClient: 'fldQFdsYNFCouBO7X',
+                linkedTRX: 'fldI6F3SSgk0V3T3W',
+                // DigiStore
+                orderIdD: 'fldqw6z68E8xLujRi',
+                productNameD: 'fldHhV2dZzM0VmEKm',
+                amountD: 'fldSKXGeRTu4W1a6B',
+                billingStatusD: 'fldlAGfbTs2ffSp3c',
+                latestTxnDateD: 'fldji0S4t4ChDPjFL',
+                // Whop
+                orderIdW: 'fldq7qqQdZQYLZF2s',
+                productNameW: 'fldWiqKUVvoc6jWMO',
+                amountW: 'fldh25l0sqfAvee19',
+                billingStatusW: 'fldRe1hQH21SC0NIo',
+                createdAtW: 'fld1In2f9dZpcqDD4',
+                // Crypto
+                orderIdC: 'fldyersTXhZq86UoO',
+                productNameC: 'fldtxNhUb35BZOFZl',
+                amountC: 'fldcH5lSNavtFZZY2',
+                billingStatusC: 'fld1o4PdCu1ULnP18',
+                createdAtC: 'fld1E9C9pvJ4K9Fyw'
+            },
+            // [ALL] Transactions
+            transactions: {
+                transactionId: 'fldMZkh9lukv1gyCk',
+                source: 'fldjn0H8Wf8hWQN4y',
+                orders: 'fldFuec3aYhNYkjta',
+                client: 'fldXrQTYP5AzVVThh',
+                // DigiStore
+                amountD: 'fldL9cUvxHjKC0Rcg',
+                txnTypeD: 'fldvA2AiQDgRM2v9v',
+                occurredAtD: 'fldCniq0qW7Vm8mYo',
+                // Whop
+                amountW: 'fldNDaIFstDpwkvC3',
+                txnStatusW: 'fldJPRTJ8IHWzfImp',
+                createdAtW: 'fldxdwykX4uIuGJrr',
+                // Crypto
+                amountC: 'fldNzQ9QDoRMqBraC',
+                txnStatusC: 'fldVAldeWVfDfoQ7I',
+                createdAtC: 'fldekCvIGnJ2AFhQ6'
+            },
+            // Balances
+            balances: {
+                virtualAccountName: 'fldY1uYxPKnkQpsgv',
+                allClients: 'fldGkm0EoJ14B3Mad',
+                status: 'fldT2mZ7IwYUrccr8',
+                accountNumber: 'fldV9MP84GxmJ3Zyz',
+                remainingBalance: 'fldDARbpnKeDMNQDg',
+                spent: 'fldJyZjFyiMSLxtl3',
+                allUsers: 'flduXoeZ1O5K5We90'
+            },
+            // Top-Ups (Invoices)
+            topupsInvoices: {
+                invoice: 'fldb200HeCH6c42mK',
+                clientName: 'fldOL9I3UVllV6OVa',
+                dateFromPayments: 'fldWR4s6bZSFKUj9j',
+                invoiceDate: 'fldRMPaLAbx5goiz1',
+                amount: 'fldbZw71ZvwhSJLTd',
+                invoicePDF: 'fldR6OnQU5Q6PBaus',
+                status: 'fldVqVAQFmdvrQaiu',
+                payments: 'flddag3VgM7FieIIJ'
+            },
+            // Top-Ups (Payments)
+            topupsPayments: {
+                name: 'fldFH2ScXH7A0uk8a',
+                clientName: 'fldd6kaq700fV5nHj',
+                date: 'fldQ7ocTddrbzezRk',
+                receivingBank: 'fldlrR2gjgXz4OAlr',
+                received: 'fldFEyZwIAWLG93FD',
+                paymentProof: 'fldlsTEsVCr38HXtv',
+                invoice: 'fldiiM4atBA0rUboZ',
+                notes: 'fld5HOZiTi6HG94ek'
+            }
+        };
+
         let currentUser = null;
         let userClients = [];
         let userData = { orders: [], transactions: [], balances: [], topups: [] };
-
-        // Check for existing session on page load
-        window.addEventListener('DOMContentLoaded', async () => {
-            const savedSession = localStorage.getItem('exiscale_session');
-            if (savedSession) {
-                try {
-                    currentUser = JSON.parse(savedSession);
-                    await loadDashboard();
-                } catch (e) {
-                    console.error('Session restore failed:', e);
-                    localStorage.removeItem('exiscale_session');
-                }
-            }
-        });
 
         async function apiCall(table, filterFormula = null, params = {}) {
             const response = await fetch(API_ENDPOINT, {
@@ -601,7 +691,11 @@
         }
 
         async function authenticateUser(email, password) {
-            const filterFormula = `AND({Dashboard Email}="${email}", {Password}="${password}")`;
+            // Escape special characters in email and password for Airtable formula
+            const escapedEmail = email.replace(/"/g, '\\"');
+            const escapedPassword = password.replace(/"/g, '\\"');
+            // Using field IDs instead of names for immunity to column renames
+            const filterFormula = `AND({${F.users.dashboardEmail}}="${escapedEmail}", {${F.users.dashboardPassword}}="${escapedPassword}")`;
             const result = await apiCall(TABLES.users, filterFormula);
             return (result.records && result.records.length > 0) ? result.records[0] : null;
         }
@@ -615,27 +709,27 @@
 
         async function getOrdersForClients(clientKeys) {
             if (!clientKeys || clientKeys.length === 0) return [];
-            const conditions = clientKeys.map(key => `FIND("${key}", {Linked Client})`).join(',');
+            const conditions = clientKeys.map(key => `FIND("${key}", {${F.orders.linkedClient}})`).join(',');
             const result = await apiCall(TABLES.orders, `OR(${conditions})`);
             return result.records || [];
         }
 
         async function getTransactionsForClients(clientKeys) {
             if (!clientKeys || clientKeys.length === 0) return [];
-            const conditions = clientKeys.map(key => `FIND("${key}", {Client})`).join(',');
+            const conditions = clientKeys.map(key => `FIND("${key}", {${F.transactions.client}})`).join(',');
             const result = await apiCall(TABLES.transactions, `OR(${conditions})`);
             return result.records || [];
         }
 
         async function getBalancesForUser(userName) {
             if (!userName) return [];
-            const result = await apiCall(TABLES.balances, `FIND("${userName}", ARRAYJOIN({[ALL] Users}))`);
+            const result = await apiCall(TABLES.balances, `FIND("${userName}", ARRAYJOIN({${F.balances.allUsers}}))`);
             return result.records || [];
         }
 
         async function getTopupsForUser(userName) {
             if (!userName) return [];
-            const result = await apiCall(TABLES.topups, `FIND("${userName}", ARRAYJOIN({Client Name (From Users)}))`);
+            const result = await apiCall(TABLES.topups, `FIND("${userName}", ARRAYJOIN({${F.topupsInvoices.clientName}}))`);
             return result.records || [];
         }
 
@@ -657,8 +751,6 @@
                 const user = await authenticateUser(email, password);
                 if (user) {
                     currentUser = user;
-                    // Save session to localStorage
-                    localStorage.setItem('exiscale_session', JSON.stringify(user));
                     await loadDashboard();
                 } else {
                     loginError.textContent = 'Invalid email or password. Please try again.';
@@ -676,8 +768,7 @@
         });
 
         function skipToDashboard() {
-            currentUser = { id: 'test', fields: { 'Stacker First Name': 'Test', 'Stacker Last Name': 'User', 'Dashboard Email': 'test@example.com', 'Clients': [] }};
-            localStorage.setItem('exiscale_session', JSON.stringify(currentUser));
+            currentUser = { id: 'test', fields: { [F.users.firstName]: 'Test', [F.users.lastName]: 'User', [F.users.dashboardEmail]: 'test@example.com', [F.users.clients]: [] }};
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
             updateUserUI();
@@ -688,8 +779,6 @@
             currentUser = null;
             userClients = [];
             userData = { orders: [], transactions: [], balances: [], topups: [] };
-            // Clear saved session
-            localStorage.removeItem('exiscale_session');
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('loginEmail').value = '';
@@ -704,15 +793,15 @@
             updateUserUI();
             
             try {
-                const firstName = currentUser.fields['Stacker First Name'] || '';
-                const lastName = currentUser.fields['Stacker Last Name'] || '';
+                const firstName = currentUser.fields[F.users.firstName] || '';
+                const lastName = currentUser.fields[F.users.lastName] || '';
                 const userName = `${firstName} ${lastName}`.trim();
-                const clientIds = currentUser.fields['Clients'] || [];
+                const clientIds = currentUser.fields[F.users.clients] || [];
                 
                 if (clientIds.length > 0) {
                     userClients = await getClientRecords(clientIds);
                 }
-                const clientKeys = userClients.map(c => c.fields['Client Key']).filter(Boolean);
+                const clientKeys = userClients.map(c => c.fields[F.clients.clientKey]).filter(Boolean);
                 
                 const [orders, transactions, balances, topups] = await Promise.all([
                     getOrdersForClients(clientKeys),
@@ -738,9 +827,9 @@
         }
 
         function updateUserUI() {
-            const firstName = currentUser.fields['Stacker First Name'] || '';
-            const lastName = currentUser.fields['Stacker Last Name'] || '';
-            const email = currentUser.fields['Dashboard Email'] || '';
+            const firstName = currentUser.fields[F.users.firstName] || '';
+            const lastName = currentUser.fields[F.users.lastName] || '';
+            const email = currentUser.fields[F.users.dashboardEmail] || '';
             const fullName = `${firstName} ${lastName}`.trim() || 'User';
             const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
             
@@ -775,15 +864,15 @@
             
             let totalRemaining = 0, totalSpent = 0;
             userData.balances.forEach(b => {
-                totalRemaining += parseFloat(b.fields['Remaining Balance'] || 0) || 0;
-                totalSpent += parseFloat(b.fields['Spent'] || 0) || 0;
+                totalRemaining += parseFloat(b.fields[F.balances.remainingBalance] || 0) || 0;
+                totalSpent += parseFloat(b.fields[F.balances.spent] || 0) || 0;
             });
             
             document.getElementById('statBalance').textContent = formatCurrency(totalRemaining);
             document.getElementById('statSpent').textContent = formatCurrency(totalSpent);
             
             let topupTotal = 0;
-            userData.topups.forEach(t => { topupTotal += parseFloat(t.fields['Top-Up'] || t.fields['Amount'] || 0) || 0; });
+            userData.topups.forEach(t => { topupTotal += parseFloat(t.fields[F.topupsInvoices.amount] || 0) || 0; });
             
             document.getElementById('statTopups').textContent = userData.topups.length;
             document.getElementById('statTopupsChange').textContent = formatCurrency(topupTotal) + ' total';
@@ -806,15 +895,15 @@
             
             userData.orders.forEach(order => {
                 const f = order.fields;
-                const source = f['Source'] || 'Unknown';
+                const source = f[F.orders.source] || 'Unknown';
                 const sourceLower = source.toLowerCase();
                 let status;
                 if (sourceLower === 'digistore') {
-                    status = f['[D] Billing Status'];
+                    status = f[F.orders.billingStatusD];
                 } else if (sourceLower === 'whop') {
-                    status = f['[W] Billing Status'];
+                    status = f[F.orders.billingStatusW];
                 } else if (sourceLower === 'crypto') {
-                    status = f['[C] Billing Status'];
+                    status = f[F.orders.billingStatusC];
                 }
                 status = (status || 'Active').toLowerCase();
                 
@@ -835,21 +924,21 @@
                 html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 activeOrders.forEach(order => {
                     const f = order.fields;
-                    const source = f['Source'] || 'Unknown';
+                    const source = f[F.orders.source] || 'Unknown';
                     const sourceLower = source.toLowerCase();
-                    let productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
-                    let amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
+                    let productName = f[F.orders.productNameD] || f[F.orders.productNameW] || f[F.orders.productNameC] || '-';
+                    let amount = f[F.orders.amountD] || f[F.orders.amountW] || f[F.orders.amountC] || 0;
                     let status;
                     if (sourceLower === 'digistore') {
-                        status = f['[D] Billing Status'];
+                        status = f[F.orders.billingStatusD];
                     } else if (sourceLower === 'whop') {
-                        status = f['[W] Billing Status'];
+                        status = f[F.orders.billingStatusW];
                     } else if (sourceLower === 'crypto') {
-                        status = f['[C] Billing Status'];
+                        status = f[F.orders.billingStatusC];
                     }
                     status = status || 'Active';
                     status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                    html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
+                    html += `<tr><td><strong>${f[F.orders.orderName] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
                 });
                 html += '</tbody></table>';
             }
@@ -860,11 +949,11 @@
                 html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 cancelledOrders.forEach(order => {
                     const f = order.fields;
-                    const source = f['Source'] || 'Unknown';
+                    const source = f[F.orders.source] || 'Unknown';
                     const sourceLower = source.toLowerCase();
-                    let productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
-                    let amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
-                    html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge cancelled">Cancelled</span></td></tr>`;
+                    let productName = f[F.orders.productNameD] || f[F.orders.productNameW] || f[F.orders.productNameC] || '-';
+                    let amount = f[F.orders.amountD] || f[F.orders.amountW] || f[F.orders.amountC] || 0;
+                    html += `<tr><td><strong>${f[F.orders.orderName] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge cancelled">Cancelled</span></td></tr>`;
                 });
                 html += '</tbody></table>';
             }
@@ -881,17 +970,17 @@
             
             // Sort transactions by date (most recent first)
             const sortedTransactions = [...userData.transactions].sort((a, b) => {
-                const aSource = (a.fields['Source'] || '').toLowerCase();
-                const bSource = (b.fields['Source'] || '').toLowerCase();
+                const aSource = (a.fields[F.transactions.source] || '').toLowerCase();
+                const bSource = (b.fields[F.transactions.source] || '').toLowerCase();
                 let aDate, bDate;
                 
-                if (aSource === 'digistore') aDate = a.fields['[D] Occured At'];
-                else if (aSource === 'whop') aDate = a.fields['[W] Created At'];
-                else if (aSource === 'crypto') aDate = a.fields['[C] Created At'];
+                if (aSource === 'digistore') aDate = a.fields[F.transactions.occurredAtD];
+                else if (aSource === 'whop') aDate = a.fields[F.transactions.createdAtW];
+                else if (aSource === 'crypto') aDate = a.fields[F.transactions.createdAtC];
                 
-                if (bSource === 'digistore') bDate = b.fields['[D] Occured At'];
-                else if (bSource === 'whop') bDate = b.fields['[W] Created At'];
-                else if (bSource === 'crypto') bDate = b.fields['[C] Created At'];
+                if (bSource === 'digistore') bDate = b.fields[F.transactions.occurredAtD];
+                else if (bSource === 'whop') bDate = b.fields[F.transactions.createdAtW];
+                else if (bSource === 'crypto') bDate = b.fields[F.transactions.createdAtC];
                 
                 return new Date(bDate || 0) - new Date(aDate || 0);
             });
@@ -899,24 +988,24 @@
             let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Date</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
             sortedTransactions.forEach(txn => {
                 const f = txn.fields;
-                const source = f['Source'] || 'Unknown';
+                const source = f[F.transactions.source] || 'Unknown';
                 const sourceLower = source.toLowerCase();
                 let type, amount, status, date;
                 if (sourceLower === 'digistore') {
-                    type = f['[D] Type'] || '-';
-                    amount = f['[D] Amount'] || 0;
-                    status = f['[D] Transaction Type'] || 'Paid';
-                    date = f['[D] Occured At'] || '-';
+                    type = '-';
+                    amount = f[F.transactions.amountD] || 0;
+                    status = f[F.transactions.txnTypeD] || 'Paid';
+                    date = f[F.transactions.occurredAtD] || '-';
                 } else if (sourceLower === 'whop') {
-                    type = f['[W] Type'] || '-';
-                    amount = f['[W] Amount'] || 0;
-                    status = f['[W] Payment Status'] || 'Paid';
-                    date = f['[W] Created At'] || '-';
+                    type = '-';
+                    amount = f[F.transactions.amountW] || 0;
+                    status = f[F.transactions.txnStatusW] || 'Paid';
+                    date = f[F.transactions.createdAtW] || '-';
                 } else if (sourceLower === 'crypto') {
-                    type = f['[C] Type'] || '-';
-                    amount = f['[C] Amount'] || 0;
-                    status = f['[C] Payment Status'] || 'Paid';
-                    date = f['[C] Created At'] || '-';
+                    type = '-';
+                    amount = f[F.transactions.amountC] || 0;
+                    status = f[F.transactions.txnStatusC] || 'Paid';
+                    date = f[F.transactions.createdAtC] || '-';
                 } else {
                     type = '-';
                     amount = 0;
@@ -927,7 +1016,7 @@
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
                 // Capitalize first letter
                 status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
+                html += `<tr><td><strong>${f[F.transactions.transactionId] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -941,9 +1030,10 @@
             let html = `<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent (Last 30 Days)</th></tr></thead><tbody>`;
             userData.balances.forEach(bal => {
                 const f = bal.fields;
-                const remaining = f['Remaining Balance'] || 0;
-                const spent = f['Spent'] || 0;
-                html += `<tr><td><strong>${f['Virtual Account Name'] || '-'}</strong></td><td><span class="status-badge ${(f['Status'] || 'active').toLowerCase()}">${f['Status'] || 'Active'}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
+                const remaining = f[F.balances.remainingBalance] || 0;
+                const spent = f[F.balances.spent] || 0;
+                const status = f[F.balances.status] || 'Active';
+                html += `<tr><td><strong>${f[F.balances.virtualAccountName] || '-'}</strong></td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -957,10 +1047,10 @@
             let html = `<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>View Invoice</th></tr></thead><tbody>`;
             userData.topups.forEach(topup => {
                 const f = topup.fields;
-                let date = f['Invoice Date'] || f['Date (From Payments)'] || '-';
+                let date = f[F.topupsInvoices.invoiceDate] || f[F.topupsInvoices.dateFromPayments] || '-';
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
-                const amount = f['Amount'] || f['Top-Up'] || 0;
-                const invoiceAttachment = f['Invoice (PDF)'] || null;
+                const amount = f[F.topupsInvoices.amount] || 0;
+                const invoiceAttachment = f[F.topupsInvoices.invoicePDF] || null;
                 let invoiceLink = '-';
                 if (invoiceAttachment) {
                     if (Array.isArray(invoiceAttachment) && invoiceAttachment.length > 0) {
@@ -969,7 +1059,7 @@
                         invoiceLink = `<a href="${invoiceAttachment}" target="_blank" style="color: var(--orange); font-weight: 600;">View PDF</a>`;
                     }
                 }
-                html += `<tr><td><strong>${f['Invoice'] || '-'}</strong></td><td>${date}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(amount)}</td><td>${invoiceLink}</td></tr>`;
+                html += `<tr><td><strong>${f[F.topupsInvoices.invoice] || '-'}</strong></td><td>${date}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(amount)}</td><td>${invoiceLink}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -996,3 +1086,9 @@ chat='true'>
 
 </body>
 </html>
+
+
+
+
+
+
