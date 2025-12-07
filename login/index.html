@@ -828,32 +828,38 @@
                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="empty-state-title">No transactions yet</div><div class="empty-state-text">Your transaction history will appear here.</div></div>`;
                 return;
             }
-            let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+            let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Date</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
             userData.transactions.forEach(txn => {
                 const f = txn.fields;
                 const source = f['Source'] || 'Unknown';
                 const sourceLower = source.toLowerCase();
-                let type, amount, status;
+                let type, amount, status, date;
                 if (sourceLower === 'digistore') {
                     type = f['[D] Type'] || '-';
                     amount = f['[D] Amount'] || 0;
                     status = f['[D] Transaction Type'] || 'Paid';
+                    date = f['[D] Occured At'] || '-';
                 } else if (sourceLower === 'whop') {
                     type = f['[W] Type'] || '-';
                     amount = f['[W] Amount'] || 0;
                     status = f['[W] Payment Status'] || 'Paid';
+                    date = f['[W] Occured At'] || '-';
                 } else if (sourceLower === 'crypto') {
                     type = f['[C] Type'] || '-';
                     amount = f['[C] Amount'] || 0;
                     status = f['[C] Payment Status'] || 'Paid';
+                    date = f['[C] Occured At'] || '-';
                 } else {
                     type = '-';
                     amount = 0;
                     status = 'Paid';
+                    date = '-';
                 }
+                // Format date
+                if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
                 // Capitalize first letter
                 status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
+                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
