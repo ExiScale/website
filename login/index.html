@@ -287,9 +287,10 @@
         .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
         .status-badge.active { background: #dcfce7; color: #16a34a; }
         .status-badge.paying { background: #dcfce7; color: #16a34a; }
-        .status-badge.paid { background: #dbeafe; color: #2563eb; }
+        .status-badge.paid { background: #dcfce7; color: #16a34a; }
         .status-badge.pending { background: #fef3c7; color: #d97706; }
         .status-badge.pause { background: #fef3c7; color: #d97706; }
+        .status-badge.refund { background: #fef3c7; color: #d97706; }
         .status-badge.cancelled { background: #fee2e2; color: #dc2626; }
         .status-badge.failed { background: #fee2e2; color: #dc2626; }
         .status-badge.aborted { background: #fee2e2; color: #dc2626; }
@@ -449,9 +450,9 @@
                     
                     <div class="stat-card">
                         <div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
-                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-label">Spent (Last 30 Days)</div>
                         <div class="stat-value" id="statSpent">-</div>
-                        <div class="stat-change neutral" id="statSpentChange">Lifetime</div>
+                        <div class="stat-change neutral" id="statSpentChange">Recent activity</div>
                     </div>
                     
                     <div class="stat-card">
@@ -507,9 +508,9 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
-                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-label">Spent (Last 30 Days)</div>
                         <div class="stat-value" id="balanceSpent">-</div>
-                        <div class="stat-change neutral">Lifetime</div>
+                        <div class="stat-change neutral">Recent activity</div>
                     </div>
                 </div>
                 
@@ -773,8 +774,7 @@
                 const source = f['Source'] || 'Unknown';
                 let productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
                 let amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
-                let status = f['[D] Billing Status'] || 'active';
-                if (!status && f['Order Name']) { status = f['Order Name'].split('-').pop() || 'active'; }
+                let status = f['[D] Billing Status'] || f['[W] Billing Status'] || f['[C] Billing Status'] || 'Active';
                 html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
@@ -790,7 +790,10 @@
             userData.transactions.forEach(txn => {
                 const f = txn.fields;
                 const source = f['Source'] || 'Unknown';
-                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${f['[D] Type'] || '-'}</td><td>${formatCurrency(f['[D] Amount'] || 0)}</td><td><span class="status-badge ${(f['[D] Transaction Type'] || 'payment').toLowerCase()}">${f['[D] Transaction Type'] || 'payment'}</span></td></tr>`;
+                const type = f['[D] Type'] || f['[W] Type'] || f['[C] Type'] || '-';
+                const amount = f['[D] Amount'] || f['[W] Amount'] || f['[C] Amount'] || 0;
+                const status = f['[D] Transaction Type'] || f['[W] Payment Status'] || f['[C] Payment Status'] || 'Paid';
+                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
