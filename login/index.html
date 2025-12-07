@@ -175,7 +175,7 @@
             z-index: 100;
         }
 
-        .sidebar-logo { padding: 0 2rem; margin-bottom: 2.5rem; }
+        .sidebar-logo { padding: 0 1rem; margin-bottom: 2.5rem; text-align: center; }
         .sidebar-logo-text {
             font-size: 1.5rem;
             font-weight: 800;
@@ -380,8 +380,8 @@
         
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-logo">
-                <img src="../logos/exiscale-logo.png" alt="ExiScale" style="height: 32px; width: auto;">
+            <div class="sidebar-logo" style="text-align: center; padding: 0 1rem;">
+                <img src="../logos/exiscale-logo.png" alt="ExiScale" style="height: 48px; width: auto;">
             </div>
             
             <nav class="sidebar-nav">
@@ -825,12 +825,14 @@
                 }
             });
             
+            const colWidths = 'style="width: 35%;" | style="width: 20%;" | style="width: 15%;" | style="width: 15%;" | style="width: 15%;"'.split(' | ');
+            
             let html = '';
             
             // Active Orders Section
             if (activeOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #dcfce7; border-bottom: 1px solid var(--border);"><h3 style="font-size: 0.9rem; font-weight: 700; color: #16a34a; margin: 0;">Active Orders (${activeOrders.length})</h3></div>`;
-                html += `<table class="data-table"><thead><tr><th>Order</th><th>Product</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 activeOrders.forEach(order => {
                     const f = order.fields;
                     const source = f['Source'] || 'Unknown';
@@ -855,7 +857,7 @@
             // Cancelled Orders Section
             if (cancelledOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #fee2e2; border-bottom: 1px solid var(--border); ${activeOrders.length > 0 ? 'border-top: 1px solid var(--border);' : ''}"><h3 style="font-size: 0.9rem; font-weight: 700; color: #dc2626; margin: 0;">Cancelled Orders (${cancelledOrders.length})</h3></div>`;
-                html += `<table class="data-table"><thead><tr><th>Order</th><th>Product</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 cancelledOrders.forEach(order => {
                     const f = order.fields;
                     const source = f['Source'] || 'Unknown';
@@ -876,8 +878,26 @@
                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="empty-state-title">No transactions yet</div><div class="empty-state-text">Your transaction history will appear here.</div></div>`;
                 return;
             }
+            
+            // Sort transactions by date (most recent first)
+            const sortedTransactions = [...userData.transactions].sort((a, b) => {
+                const aSource = (a.fields['Source'] || '').toLowerCase();
+                const bSource = (b.fields['Source'] || '').toLowerCase();
+                let aDate, bDate;
+                
+                if (aSource === 'digistore') aDate = a.fields['[D] Occured At'];
+                else if (aSource === 'whop') aDate = a.fields['[W] Created At'];
+                else if (aSource === 'crypto') aDate = a.fields['[C] Created At'];
+                
+                if (bSource === 'digistore') bDate = b.fields['[D] Occured At'];
+                else if (bSource === 'whop') bDate = b.fields['[W] Created At'];
+                else if (bSource === 'crypto') bDate = b.fields['[C] Created At'];
+                
+                return new Date(bDate || 0) - new Date(aDate || 0);
+            });
+            
             let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Date</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
-            userData.transactions.forEach(txn => {
+            sortedTransactions.forEach(txn => {
                 const f = txn.fields;
                 const source = f['Source'] || 'Unknown';
                 const sourceLower = source.toLowerCase();
