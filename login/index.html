@@ -681,6 +681,8 @@
         let userData = { orders: [], transactions: [], balances: [], topups: [] };
 
         async function apiCall(table, filterFormula = null, params = {}) {
+            // Always request field IDs in response to match our F constant mappings
+            params.returnFieldsByFieldId = true;
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1086,9 +1088,3 @@ chat='true'>
 
 </body>
 </html>
-
-
-
-
-
-
