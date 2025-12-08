@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- ExiScale Dashboard v22 - Field ID Migration -->
+<!-- Now uses Airtable field IDs instead of field names for immunity to column renames -->
+<!-- Generated: December 2025 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -634,6 +637,7 @@
                 // Whop
                 amountW: 'fldNDaIFstDpwkvC3',
                 txnStatusW: 'fldJPRTJ8IHWzfImp',
+                txnTypeW: 'fld69lXXSyMxAV8yA',
                 createdAtW: 'fldxdwykX4uIuGJrr',
                 // Crypto
                 amountC: 'fldNzQ9QDoRMqBraC',
@@ -889,6 +893,23 @@
                 return;
             }
             
+            // Helper: check if a Whop order has any successful (paid) transactions
+            function hasSuccessfulWhopTransaction(orderRecordId) {
+                return userData.transactions.some(txn => {
+                    const f = txn.fields;
+                    const source = (f[F.transactions.source] || '').toLowerCase();
+                    if (source !== 'whop') return false;
+                    
+                    // Check if this transaction is linked to the order
+                    const linkedOrders = f[F.transactions.orders] || [];
+                    if (!linkedOrders.includes(orderRecordId)) return false;
+                    
+                    // Check if status is paid
+                    const status = (f[F.transactions.txnStatusW] || '').toLowerCase();
+                    return status === 'paid';
+                });
+            }
+            
             // Separate orders into active and cancelled
             let activeOrders = [];
             let cancelledOrders = [];
@@ -908,7 +929,16 @@
                 status = (status || 'Active').toLowerCase();
                 
                 if (status === 'cancelled' || status === 'canceled') {
-                    cancelledOrders.push(order);
+                    // For Whop cancelled orders, only show if there's at least one paid transaction
+                    // Otherwise it was a failed payment attempt
+                    if (sourceLower === 'whop') {
+                        if (hasSuccessfulWhopTransaction(order.id)) {
+                            cancelledOrders.push(order);
+                        }
+                        // If no successful transactions, skip (failed payment)
+                    } else {
+                        cancelledOrders.push(order);
+                    }
                 } else {
                     activeOrders.push(order);
                 }
@@ -1010,6 +1040,8 @@
                     status = 'Paid';
                     date = '-';
                 }
+                // Skip transactions with Open status (payments that didn't go through)
+                if (status.toLowerCase() === 'open') return;
                 // Format date
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
                 // Capitalize first letter
