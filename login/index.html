@@ -1049,8 +1049,16 @@
                 container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="empty-state-title">No top-ups yet</div><div class="empty-state-text">Your top-up history will appear here.</div></div>`;
                 return;
             }
+            
+            // Sort topups by date (most recent first)
+            const sortedTopups = [...userData.topups].sort((a, b) => {
+                const aDate = a.fields[F.topupsInvoices.invoiceDate] || a.fields[F.topupsInvoices.dateFromPayments] || '';
+                const bDate = b.fields[F.topupsInvoices.invoiceDate] || b.fields[F.topupsInvoices.dateFromPayments] || '';
+                return new Date(bDate || 0) - new Date(aDate || 0);
+            });
+            
             let html = `<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>View Invoice</th></tr></thead><tbody>`;
-            userData.topups.forEach(topup => {
+            sortedTopups.forEach(topup => {
                 const f = topup.fields;
                 let date = f[F.topupsInvoices.invoiceDate] || f[F.topupsInvoices.dateFromPayments] || '-';
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
