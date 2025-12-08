@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!-- ExiScale Dashboard v22 - Field ID Migration -->
-<!-- Now uses Airtable field IDs instead of field names for immunity to column renames -->
-<!-- Generated: December 2025 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -990,29 +987,25 @@
                 return new Date(bDate || 0) - new Date(aDate || 0);
             });
             
-            let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Date</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+            let html = `<table class="data-table"><thead><tr><th>Transaction ID</th><th>Date</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
             sortedTransactions.forEach(txn => {
                 const f = txn.fields;
                 const source = f[F.transactions.source] || 'Unknown';
                 const sourceLower = source.toLowerCase();
-                let type, amount, status, date;
+                let amount, status, date;
                 if (sourceLower === 'digistore') {
-                    type = '-';
                     amount = f[F.transactions.amountD] || 0;
                     status = f[F.transactions.txnTypeD] || 'Paid';
                     date = f[F.transactions.occurredAtD] || '-';
                 } else if (sourceLower === 'whop') {
-                    type = '-';
                     amount = f[F.transactions.amountW] || 0;
                     status = f[F.transactions.txnStatusW] || 'Paid';
                     date = f[F.transactions.createdAtW] || '-';
                 } else if (sourceLower === 'crypto') {
-                    type = '-';
                     amount = f[F.transactions.amountC] || 0;
                     status = f[F.transactions.txnStatusC] || 'Paid';
                     date = f[F.transactions.createdAtC] || '-';
                 } else {
-                    type = '-';
                     amount = 0;
                     status = 'Paid';
                     date = '-';
@@ -1021,7 +1014,7 @@
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
                 // Capitalize first letter
                 status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                html += `<tr><td><strong>${f[F.transactions.transactionId] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${type}</td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
+                html += `<tr><td><strong>${f[F.transactions.transactionId] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
