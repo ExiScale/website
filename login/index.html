@@ -924,11 +924,12 @@
             // Active Orders Section
             if (activeOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #dcfce7; border-bottom: 1px solid var(--border);"><h3 style="font-size: 0.9rem; font-weight: 700; color: #16a34a; margin: 0;">Active Orders (${activeOrders.length})</h3></div>`;
-                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
+                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order ID</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 activeOrders.forEach(order => {
                     const f = order.fields;
                     const source = f[F.orders.source] || 'Unknown';
                     const sourceLower = source.toLowerCase();
+                    let orderId = f[F.orders.orderIdD] || f[F.orders.orderIdW] || f[F.orders.orderIdC] || '-';
                     let productName = f[F.orders.productNameD] || f[F.orders.productNameW] || f[F.orders.productNameC] || '-';
                     let amount = f[F.orders.amountD] || f[F.orders.amountW] || f[F.orders.amountC] || 0;
                     let status;
@@ -941,7 +942,7 @@
                     }
                     status = status || 'Active';
                     status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-                    html += `<tr><td><strong>${f[F.orders.orderName] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
+                    html += `<tr><td><strong>${orderId}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace('_', '')}">${status}</span></td></tr>`;
                 });
                 html += '</tbody></table>';
             }
@@ -949,14 +950,15 @@
             // Cancelled Orders Section
             if (cancelledOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #fee2e2; border-bottom: 1px solid var(--border); ${activeOrders.length > 0 ? 'border-top: 1px solid var(--border);' : ''}"><h3 style="font-size: 0.9rem; font-weight: 700; color: #dc2626; margin: 0;">Cancelled Orders (${cancelledOrders.length})</h3></div>`;
-                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
+                html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order ID</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
                 cancelledOrders.forEach(order => {
                     const f = order.fields;
                     const source = f[F.orders.source] || 'Unknown';
                     const sourceLower = source.toLowerCase();
+                    let orderId = f[F.orders.orderIdD] || f[F.orders.orderIdW] || f[F.orders.orderIdC] || '-';
                     let productName = f[F.orders.productNameD] || f[F.orders.productNameW] || f[F.orders.productNameC] || '-';
                     let amount = f[F.orders.amountD] || f[F.orders.amountW] || f[F.orders.amountC] || 0;
-                    html += `<tr><td><strong>${f[F.orders.orderName] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge cancelled">Cancelled</span></td></tr>`;
+                    html += `<tr><td><strong>${orderId}</strong></td><td>${productName}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge cancelled">Cancelled</span></td></tr>`;
                 });
                 html += '</tbody></table>';
             }
