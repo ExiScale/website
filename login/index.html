@@ -301,6 +301,89 @@
         .status-badge.aborted { background: #fee2e2; color: #dc2626; }
         .status-badge.overdue { background: #fee2e2; color: #dc2626; }
 
+        /* Top-Up Section Styles */
+        .topup-tabs { display: flex; gap: 0.5rem; }
+        .topup-tab {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .topup-tab:hover { border-color: var(--orange); color: var(--orange); }
+        .topup-tab.active { background: var(--orange); border-color: var(--orange); color: white; }
+        
+        .topup-content { display: none; }
+        .topup-content.active { display: block; }
+        
+        .topup-detail {
+            display: flex;
+            flex-direction: column;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .topup-detail:last-child { border-bottom: none; }
+        .topup-label { font-size: 0.8rem; color: var(--gray); margin-bottom: 0.25rem; }
+        .topup-value { font-size: 1rem; font-weight: 600; color: var(--black); }
+        
+        .crypto-address {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border);
+        }
+        .crypto-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        .crypto-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .crypto-value {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .crypto-value:hover { opacity: 0.8; }
+        .crypto-value code {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            color: var(--black);
+            word-break: break-all;
+        }
+        .copy-btn {
+            padding: 0.4rem 0.75rem;
+            background: var(--orange);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .copy-btn:hover { background: #ff7a25; }
+        .copy-btn.copied { background: #16a34a; }
+
         .source-badge { display: inline-flex; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
         .source-badge.whop { background: #dbeafe; color: #2563eb; }
         .source-badge.digistore { background: #fed7aa; color: #c2410c; }
@@ -534,6 +617,67 @@
                     <div class="card-header"><h2 class="card-title">Virtual Accounts</h2></div>
                     <div class="card-body" id="balancesTableContainer"><div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading balances...</p></div></div>
                 </div>
+
+                <!-- Top-Up Instructions -->
+                <div class="content-card" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <h2 class="card-title">Top-Up Your Account</h2>
+                        <div class="topup-tabs" style="display: flex; gap: 0.5rem;">
+                            <button class="topup-tab active" data-tab="bank" onclick="switchTopupTab('bank')">Bank Transfer</button>
+                            <button class="topup-tab" data-tab="crypto" onclick="switchTopupTab('crypto')">Crypto</button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 1.5rem 2rem;">
+                        <!-- Bank Transfer Tab -->
+                        <div class="topup-content active" id="topup-bank">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Beneficiary Details</h4>
+                                    <div class="topup-detail"><span class="topup-label">Beneficiary Name</span><span class="topup-value">ExiScale LLC</span></div>
+                                    <div class="topup-detail"><span class="topup-label">Account Number</span><span class="topup-value" id="userAccountNumber">-</span></div>
+                                    <div class="topup-detail"><span class="topup-label">Type of Account</span><span class="topup-value">Business Checking</span></div>
+                                    <div class="topup-detail"><span class="topup-label">Beneficiary Address</span><span class="topup-value" style="font-size: 0.85rem;">30 North Gould Street, Sheridan, Wyoming 82801, US</span></div>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">Receiving Bank Details</h4>
+                                    <div class="topup-detail"><span class="topup-label">ABA Routing Number</span><span class="topup-value">121145307</span></div>
+                                    <div class="topup-detail"><span class="topup-label">SWIFT</span><span class="topup-value">CLNOUS66XXX</span></div>
+                                    <div class="topup-detail"><span class="topup-label">Bank Name</span><span class="topup-value">Column Bank</span></div>
+                                    <div class="topup-detail"><span class="topup-label">Bank Address</span><span class="topup-value" style="font-size: 0.85rem;">1110 Gorgas Avenue, Suite A4-700, San Francisco, CA 94129, US</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Crypto Tab -->
+                        <div class="topup-content" id="topup-crypto">
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div class="crypto-address">
+                                    <div class="crypto-label"><span class="crypto-icon" style="background: #26A17B;">₮</span>USDT (TRC-20)</div>
+                                    <div class="crypto-value" onclick="copyToClipboard('TTNmGTnCV2W4Qq1dnd8r1RbKzLxBPcaBDK', this)">
+                                        <code>TTNmGTnCV2W4Qq1dnd8r1RbKzLxBPcaBDK</code>
+                                        <span class="copy-btn">Copy</span>
+                                    </div>
+                                </div>
+                                <div class="crypto-address">
+                                    <div class="crypto-label"><span class="crypto-icon" style="background: #F7931A;">₿</span>BTC (Bitcoin)</div>
+                                    <div class="crypto-value" onclick="copyToClipboard('3KqmTms1YCFvNtQPXLqes6XmkwjHyA7nCx', this)">
+                                        <code>3KqmTms1YCFvNtQPXLqes6XmkwjHyA7nCx</code>
+                                        <span class="copy-btn">Copy</span>
+                                    </div>
+                                </div>
+                                <div class="crypto-address">
+                                    <div class="crypto-label"><span class="crypto-icon" style="background: #627EEA;">Ξ</span>ETH (Ethereum)</div>
+                                    <div class="crypto-value" onclick="copyToClipboard('0xADF74a3a90d84417d990b77451E9A285BA7B6d18', this)">
+                                        <code>0xADF74a3a90d84417d990b77451E9A285BA7B6d18</code>
+                                        <span class="copy-btn">Copy</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border-radius: 8px; font-size: 0.85rem; color: #92400e;">
+                                <strong>Important:</strong> Only send the specified cryptocurrency to each address. Sending different tokens may result in permanent loss of funds.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- TOP-UPS TAB -->
@@ -587,7 +731,8 @@
                 clients: 'fldsN8m2obYYjRYlK',
                 balances: 'fldfkjkMZ5wkWkNuY',
                 topupsInvoices: 'fld9AFSfFJ59zrPPq',
-                topupsPayments: 'fldAFQqOy5E7GnpwY'
+                topupsPayments: 'fldAFQqOy5E7GnpwY',
+                accountNumberSlash: 'fldaCDSjXywkjSBui'
             },
             // [ALL] Clients
             clients: {
@@ -834,6 +979,7 @@
             const firstName = currentUser.fields[F.users.firstName] || '';
             const lastName = currentUser.fields[F.users.lastName] || '';
             const email = currentUser.fields[F.users.dashboardEmail] || '';
+            const accountNumber = currentUser.fields[F.users.accountNumberSlash] || 'Contact support';
             const fullName = `${firstName} ${lastName}`.trim() || 'User';
             const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
             
@@ -841,6 +987,7 @@
             document.getElementById('userEmail').textContent = email;
             document.getElementById('userAvatar').textContent = initials.toUpperCase();
             document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName || 'there'} 👋`;
+            document.getElementById('userAccountNumber').textContent = accountNumber;
         }
 
         function showEmptyStates() {
@@ -1113,6 +1260,30 @@
             });
             document.querySelectorAll('.content-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById('panel-' + tabName).classList.add('active');
+        }
+
+        function switchTopupTab(tabName) {
+            document.querySelectorAll('.topup-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.tab === tabName) tab.classList.add('active');
+            });
+            document.querySelectorAll('.topup-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('topup-' + tabName).classList.add('active');
+        }
+
+        function copyToClipboard(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = element.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
         }
     </script>
 
