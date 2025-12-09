@@ -1,7 +1,7 @@
 // netlify/functions/virustotal.js
 // VirusTotal API Proxy for URL Health Checker
 
-const VIRUSTOTAL_API_KEY = 'c8d91d9b50ff9a1e61131e7e723ca30a4e2e3157bee2ac805eecff137eb62907';
+const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
 const VT_API_BASE = 'https://www.virustotal.com/api/v3';
 
 exports.handler = async (event, context) => {
