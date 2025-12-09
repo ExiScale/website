@@ -867,6 +867,7 @@
     <script>
         // API & Auth Config
         const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
+        const VT_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/virustotal';
         
         // Field IDs (same as dashboard)
         const F = {
@@ -883,6 +884,7 @@
         let urls = [];
         let results = [];
         let currentFilter = 'all';
+        let isScanning = false;
 
         // ============ AUTHENTICATION ============
         
@@ -1046,14 +1048,135 @@
             document.getElementById('statMalicious').textContent = malicious;
         }
 
-        // ============ SCANNING ============
+        // ============ VIRUSTOTAL SCANNING ============
+
+        async function vtApiCall(action, url, analysisId = null) {
+            const body = { action, url };
+            if (analysisId) body.analysisId = analysisId;
+            
+            const response = await fetch(VT_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`VT API error: ${response.status}`);
+            }
+            
+            return response.json();
+        }
+
+        async function scanUrl(url) {
+            try {
+                // First try to get existing report
+                const reportResult = await vtApiCall('report', url);
+                
+                if (reportResult.success && !reportResult.notFound) {
+                    return {
+                        url: url,
+                        status: reportResult.status,
+                        detections: reportResult.detections,
+                        total: reportResult.stats.total,
+                        riskScore: reportResult.riskScore,
+                        stats: reportResult.stats
+                    };
+                }
+                
+                // If not found, submit for scanning
+                const scanResult = await vtApiCall('scan', url);
+                
+                if (scanResult.success && scanResult.analysisId) {
+                    // Wait for analysis to complete (poll every 3 seconds, max 30 seconds)
+                    let attempts = 0;
+                    const maxAttempts = 10;
+                    
+                    while (attempts < maxAttempts) {
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                        
+                        // Try to get the report again
+                        const checkResult = await vtApiCall('report', url);
+                        
+                        if (checkResult.success && !checkResult.notFound) {
+                            return {
+                                url: url,
+                                status: checkResult.status,
+                                detections: checkResult.detections,
+                                total: checkResult.stats.total,
+                                riskScore: checkResult.riskScore,
+                                stats: checkResult.stats
+                            };
+                        }
+                        
+                        attempts++;
+                    }
+                    
+                    // If still not ready, return pending
+                    return {
+                        url: url,
+                        status: 'pending',
+                        detections: 0,
+                        total: 0,
+                        riskScore: 0,
+                        message: 'Scan submitted, results pending'
+                    };
+                }
+                
+                throw new Error('Failed to scan URL');
+                
+            } catch (error) {
+                console.error('Scan error for', url, error);
+                return {
+                    url: url,
+                    status: 'error',
+                    detections: 0,
+                    total: 0,
+                    riskScore: 0,
+                    error: error.message
+                };
+            }
+        }
 
         async function runScan() {
-            if (urls.length === 0) return;
+            if (urls.length === 0 || isScanning) return;
             
-            // TODO: Implement backend proxy for VirusTotal API
-            showToast('Scanning feature coming soon! Backend integration needed.', 'error');
-            return;
+            isScanning = true;
+            results = [];
+            
+            const overlay = document.getElementById('scanningOverlay');
+            const progressBar = document.getElementById('scanningProgress');
+            const scanningUrl = document.getElementById('scanningUrl');
+            
+            overlay.classList.add('active');
+            
+            for (let i = 0; i < urls.length; i++) {
+                const url = urls[i];
+                const progress = ((i) / urls.length) * 100;
+                
+                progressBar.style.width = progress + '%';
+                scanningUrl.textContent = `Scanning: ${url}`;
+                
+                const result = await scanUrl(url);
+                results.push(result);
+                
+                // Rate limiting: wait 15 seconds between requests (VT free tier: 4/min)
+                if (i < urls.length - 1) {
+                    scanningUrl.textContent = `Waiting for rate limit... Next: ${urls[i + 1]}`;
+                    await new Promise(resolve => setTimeout(resolve, 15000));
+                }
+            }
+            
+            progressBar.style.width = '100%';
+            scanningUrl.textContent = 'Scan complete!';
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            overlay.classList.remove('active');
+            isScanning = false;
+            
+            renderResults();
+            updateStats();
+            showToast(`Scanned ${urls.length} URLs successfully`, 'success');
         }
 
         // ============ RESULTS ============
@@ -1120,7 +1243,7 @@
                                 </td>
                                 <td>
                                     <div class="risk-bar">
-                                        <div class="risk-bar-fill ${r.riskScore < 5 ? 'low' : r.riskScore < 20 ? 'medium' : 'high'}" style="width: ${r.riskScore}%"></div>
+                                        <div class="risk-bar-fill ${r.riskScore < 5 ? 'low' : r.riskScore < 20 ? 'medium' : 'high'}" style="width: ${Math.min(r.riskScore, 100)}%"></div>
                                     </div>
                                 </td>
                                 <td>
@@ -1143,7 +1266,8 @@
         }
 
         function viewDetails(url) {
-            window.open(`https://www.virustotal.com/gui/url/${btoa('http://' + url).replace(/=/g, '')}`, '_blank');
+            const urlId = btoa('http://' + url).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+            window.open(`https://www.virustotal.com/gui/url/${urlId}`, '_blank');
         }
 
         // ============ TOAST ============
