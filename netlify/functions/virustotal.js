@@ -26,8 +26,17 @@ exports.handler = async (event, context) => {
         };
     }
 
+    // Check API key is configured
+    if (!VIRUSTOTAL_API_KEY) {
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'VirusTotal API key not configured' })
+        };
+    }
+
     try {
-        const { action, url } = JSON.parse(event.body);
+        const { action, url, analysisId } = JSON.parse(event.body);
 
         if (!action || !url) {
             return {
@@ -73,15 +82,12 @@ exports.handler = async (event, context) => {
 
             const scanData = await scanResponse.json();
             
-            // Extract the analysis ID
-            const analysisId = scanData.data?.id;
-            
             return {
                 statusCode: 200,
                 headers,
                 body: JSON.stringify({
                     success: true,
-                    analysisId: analysisId,
+                    analysisId: scanData.data?.id,
                     data: scanData
                 })
             };
@@ -98,7 +104,6 @@ exports.handler = async (event, context) => {
             });
 
             if (reportResponse.status === 404) {
-                // URL not in database, needs to be scanned first
                 return {
                     statusCode: 200,
                     headers,
@@ -127,7 +132,6 @@ exports.handler = async (event, context) => {
             
             // Extract relevant stats
             const stats = reportData.data?.attributes?.last_analysis_stats || {};
-            const results = reportData.data?.attributes?.last_analysis_results || {};
             
             const malicious = stats.malicious || 0;
             const suspicious = stats.suspicious || 0;
@@ -135,7 +139,7 @@ exports.handler = async (event, context) => {
             const undetected = stats.undetected || 0;
             const total = malicious + suspicious + harmless + undetected;
             
-            // Calculate risk score (percentage of bad detections)
+            // Calculate risk score
             const riskScore = total > 0 ? Math.round(((malicious + suspicious) / total) * 100) : 0;
             
             // Determine status
@@ -153,13 +157,7 @@ exports.handler = async (event, context) => {
                     success: true,
                     url: url,
                     status: status,
-                    stats: {
-                        malicious,
-                        suspicious,
-                        harmless,
-                        undetected,
-                        total
-                    },
+                    stats: { malicious, suspicious, harmless, undetected, total },
                     riskScore: riskScore,
                     detections: malicious + suspicious,
                     lastAnalysisDate: reportData.data?.attributes?.last_analysis_date,
@@ -168,9 +166,7 @@ exports.handler = async (event, context) => {
             };
 
         } else if (action === 'analysis') {
-            // Check analysis status (for recently submitted URLs)
-            const { analysisId } = JSON.parse(event.body);
-            
+            // Check analysis status
             if (!analysisId) {
                 return {
                     statusCode: 400,
@@ -195,16 +191,14 @@ exports.handler = async (event, context) => {
             }
 
             const analysisData = await analysisResponse.json();
-            const status = analysisData.data?.attributes?.status;
-            const stats = analysisData.data?.attributes?.stats || {};
 
             return {
                 statusCode: 200,
                 headers,
                 body: JSON.stringify({
                     success: true,
-                    status: status, // 'queued', 'completed', etc.
-                    stats: stats
+                    status: analysisData.data?.attributes?.status,
+                    stats: analysisData.data?.attributes?.stats || {}
                 })
             };
 
