@@ -36,87 +36,244 @@
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        @keyframes scanLine { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
 
-        /* Header */
-        .header {
-            background: white;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-        }
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
-            border-radius: 10px;
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .logo-icon svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: var(--black);
+        .login-screen::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -400px;
+            right: -200px;
+            animation: float 20s ease-in-out infinite;
         }
-        .logo-text span { color: var(--orange); }
-        
-        .header-badge {
-            padding: 0.4rem 0.75rem;
+        .login-screen::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -300px;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            padding: 3.5rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
+            animation: fadeInScale 0.6s ease;
+            border: 1px solid var(--border);
+        }
+
+        .login-logo { text-align: center; margin-bottom: 2rem; }
+        .login-logo img { height: 48px; margin-bottom: 1rem; }
+        .login-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.4rem 1rem;
             background: var(--orange-light);
             color: var(--orange);
-            border-radius: 6px;
+            border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            border: 1px solid rgba(255,106,21,0.2);
         }
 
-        .header-right {
+        .login-title { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--black); }
+        .login-subtitle { font-size: 0.9rem; color: var(--gray); text-align: center; margin-bottom: 2rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--black); margin-bottom: 0.5rem; }
+        .form-input {
+            width: 100%;
+            padding: 0.9rem 1.1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+        }
+        .form-input:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--orange);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 30px rgba(255,106,21,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .login-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,106,21,0.4); }
+
+        .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+
+        .login-error { background: var(--red-light); color: var(--red); padding: 0.9rem; border-radius: 10px; font-size: 0.9rem; margin-bottom: 1.25rem; display: none; }
+        .login-error.show { display: block; }
+
+        .login-footer { margin-top: 2rem; text-align: center; }
+        .login-footer a { color: var(--orange); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .login-footer a:hover { text-decoration: underline; }
+
+        /* Main App (hidden until logged in) */
+        .app { display: none; }
+        .app.active { display: block; }
+
+        /* Nav - Matching Main Website */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(30px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo img {
+            height: 48px;
+            transition: transform 0.4s ease;
+        }
+        .logo img:hover { transform: scale(1.05); }
+        
+        .nav-badge {
+            padding: 0.5rem 1rem;
+            background: var(--orange-light);
+            color: var(--orange);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(255,106,21,0.2);
+        }
+
+        .nav-right {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-        .back-link {
+        .user-pill {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--gray);
-            text-decoration: none;
+            gap: 0.75rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--light-gray);
+            border-radius: 50px;
             font-size: 0.9rem;
             font-weight: 500;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .nav-cta {
+            background: var(--black);
+            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        .nav-cta:hover::before { left: 100%; }
+        .nav-cta:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,106,21,0.4);
+        }
+        .nav-cta svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+        .nav-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .back-link:hover { background: var(--light-gray); color: var(--black); }
-        .back-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .nav-link:hover { color: var(--black); background: var(--light-gray); }
+        .nav-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
 
         /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .main-content {
+            margin-top: 90px;
+            padding: 3rem 5%;
         }
 
         /* Page Header */
@@ -143,6 +300,9 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
             margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
             animation: fadeInUp 0.5s ease 0.1s both;
         }
         .stat-card {
@@ -175,26 +335,33 @@
         .stat-value { font-size: 2rem; font-weight: 800; color: var(--black); }
         .stat-label { font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem; }
 
-        /* URL Input Section */
-        .url-input-section {
+        /* Content Cards */
+        .content-card {
             background: white;
             border-radius: 20px;
-            padding: 2rem;
             border: 1px solid var(--border);
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.5s ease 0.2s both;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            overflow: hidden;
         }
-        .section-title {
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title {
             font-size: 1.25rem;
             font-weight: 700;
-            color: var(--black);
-            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .section-title svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
+        .card-title svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
+        .card-body { padding: 2rem; }
 
+        /* URL Input */
         .url-input-wrapper {
             display: flex;
             gap: 1rem;
@@ -234,13 +401,6 @@
         }
         .btn-primary:hover { background: #ff7a25; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        
-        .btn-secondary {
-            background: var(--light-gray);
-            color: var(--black);
-            border: 2px solid var(--border);
-        }
-        .btn-secondary:hover { background: white; border-color: var(--orange); color: var(--orange); }
 
         /* URL List */
         .url-list {
@@ -284,7 +444,7 @@
         }
         .url-empty svg { width: 48px; height: 48px; stroke: #ccc; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
 
-        /* Scan Button */
+        /* Scan Section */
         .scan-section {
             display: flex;
             align-items: center;
@@ -296,36 +456,9 @@
         .url-count { font-size: 0.9rem; color: var(--gray); }
         .url-count strong { color: var(--black); }
 
-        .btn-scan {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
-        .btn-scan.scanning { animation: pulse 1s ease infinite; }
+        .btn-scan { padding: 1rem 2rem; font-size: 1.1rem; }
 
-        /* Results Section */
-        .results-section {
-            background: white;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            animation: fadeInUp 0.5s ease 0.3s both;
-        }
-        .results-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .results-header h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .results-header h2 svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
-
+        /* Filter Tabs */
         .filter-tabs {
             display: flex;
             gap: 0.5rem;
@@ -406,9 +539,7 @@
         .status-badge.malicious { background: var(--red-light); color: var(--red); }
         .status-badge.pending { background: var(--light-gray); color: var(--gray); }
 
-        .detection-count {
-            font-weight: 700;
-        }
+        .detection-count { font-weight: 700; }
         .detection-count.zero { color: var(--green); }
         .detection-count.low { color: var(--yellow); }
         .detection-count.high { color: var(--red); }
@@ -451,7 +582,7 @@
         .results-empty svg { width: 64px; height: 64px; stroke: #ddd; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
         .results-empty h3 { font-size: 1.1rem; color: var(--black); margin-bottom: 0.5rem; }
 
-        /* Scanning State */
+        /* Scanning Overlay */
         .scanning-overlay {
             position: fixed;
             top: 0;
@@ -536,132 +667,180 @@
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .url-input-wrapper { flex-direction: column; }
             .scan-section { flex-direction: column; gap: 1rem; }
-            .results-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .card-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .nav-badge { display: none; }
         }
-        @media (max-width: 600px) {
-            .container { padding: 1rem; }
+        @media (max-width: 768px) {
+            nav { padding: 1rem 5%; }
+            .logo img { height: 40px; }
+            .main-content { margin-top: 70px; padding: 2rem 5%; }
             .page-title { font-size: 1.75rem; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .stats-grid { gap: 1rem; }
             .stat-card { padding: 1rem; }
             .stat-value { font-size: 1.5rem; }
-            .results-table { font-size: 0.8rem; }
-            .results-table th, .results-table td { padding: 0.75rem 1rem; }
+            .user-pill span { display: none; }
+            .nav-cta { padding: 0.7rem 1.25rem; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-left">
-            <a href="https://exiscale.com" class="logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                </div>
-                <span class="logo-text">Exi<span>Scale</span></span>
-            </a>
-            <span class="header-badge">URL Health Checker</span>
-        </div>
-        <div class="header-right">
-            <a href="https://exiscale.com/login" class="back-link">
-                <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Back to Dashboard
-            </a>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">URL Health Checker</h1>
-            <p class="page-subtitle">Scan your domains against 70+ security vendors to check for flags and threats</p>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon orange">
-                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                </div>
-                <div class="stat-value" id="statUrls">0</div>
-                <div class="stat-label">URLs Added</div>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="https://exiscale.com/logos/exiscale-logo.png" alt="ExiScale">
+                <div class="login-badge">URL Health Checker</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon green">
-                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                </div>
-                <div class="stat-value" id="statClean">0</div>
-                <div class="stat-label">Clean</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon yellow">
-                    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                </div>
-                <div class="stat-value" id="statSuspicious">0</div>
-                <div class="stat-label">Suspicious</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon red">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                </div>
-                <div class="stat-value" id="statMalicious">0</div>
-                <div class="stat-label">Malicious</div>
-            </div>
-        </div>
-
-        <!-- URL Input Section -->
-        <div class="url-input-section">
-            <h2 class="section-title">
-                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                Add URLs to Scan
-            </h2>
             
-            <div class="url-input-wrapper">
-                <input type="text" class="url-input" id="urlInput" placeholder="Enter URL (e.g., example.com or https://example.com)" onkeypress="if(event.key==='Enter')addUrl()">
-                <button class="btn btn-primary" onclick="addUrl()">
-                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    Add URL
-                </button>
-            </div>
-
-            <div class="url-list" id="urlList">
-                <div class="url-empty" id="urlEmpty">
-                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    <p>No URLs added yet. Enter a domain above to get started.</p>
+            <h2 class="login-title">Sign in to continue</h2>
+            <p class="login-subtitle">Use your ExiScale dashboard credentials</p>
+            
+            <div class="login-error" id="loginError">Invalid email or password</div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" required>
                 </div>
-            </div>
-
-            <div class="scan-section">
-                <div class="url-count">
-                    <strong id="urlCountNum">0</strong> URLs ready to scan
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
                 </div>
-                <button class="btn btn-primary btn-scan" id="scanBtn" onclick="runScan()" disabled>
-                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    Run Health Check
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="loginBtnText">Sign In</span>
+                    <div class="spinner" id="loginSpinner"></div>
                 </button>
+            </form>
+            
+            <div class="login-footer">
+                <a href="https://exiscale.com/login">← Back to Dashboard</a>
             </div>
         </div>
+    </div>
 
-        <!-- Results Section -->
-        <div class="results-section">
-            <div class="results-header">
-                <h2>
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                    Scan Results
-                </h2>
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-filter="all" onclick="filterResults('all')">All</button>
-                    <button class="filter-tab" data-filter="clean" onclick="filterResults('clean')">Clean</button>
-                    <button class="filter-tab" data-filter="suspicious" onclick="filterResults('suspicious')">Suspicious</button>
-                    <button class="filter-tab" data-filter="malicious" onclick="filterResults('malicious')">Malicious</button>
+    <!-- Main App -->
+    <div class="app" id="app">
+        <!-- Nav - Matching Main Website -->
+        <nav>
+            <div class="nav-left">
+                <a href="https://exiscale.com" class="logo">
+                    <img src="https://exiscale.com/logos/exiscale-logo.png" alt="ExiScale">
+                </a>
+                <span class="nav-badge">URL Health Checker</span>
+            </div>
+            <div class="nav-right">
+                <div class="user-pill">
+                    <div class="user-avatar" id="userAvatar">--</div>
+                    <span id="userName">User</span>
+                </div>
+                <a href="https://exiscale.com/login" class="nav-cta">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-link" onclick="logout()">
+                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    Logout
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">URL Health Checker</h1>
+                <p class="page-subtitle">Scan your domains against 70+ security vendors to check for flags and threats</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <div class="stat-value" id="statUrls">0</div>
+                    <div class="stat-label">URLs Added</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <div class="stat-value" id="statClean">0</div>
+                    <div class="stat-label">Clean</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <div class="stat-value" id="statSuspicious">0</div>
+                    <div class="stat-label">Suspicious</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    </div>
+                    <div class="stat-value" id="statMalicious">0</div>
+                    <div class="stat-label">Malicious</div>
                 </div>
             </div>
 
-            <div id="resultsContainer">
-                <div class="results-empty">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <h3>No scan results yet</h3>
-                    <p>Add URLs above and click "Run Health Check" to scan them</p>
+            <!-- URL Input Section -->
+            <div class="content-card" style="animation: fadeInUp 0.5s ease 0.2s both;">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        Add URLs to Scan
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="url-input-wrapper">
+                        <input type="text" class="url-input" id="urlInput" placeholder="Enter URL (e.g., example.com or https://example.com)" onkeypress="if(event.key==='Enter')addUrl()">
+                        <button class="btn btn-primary" onclick="addUrl()">
+                            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Add URL
+                        </button>
+                    </div>
+
+                    <div class="url-list" id="urlList">
+                        <div class="url-empty" id="urlEmpty">
+                            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            <p>No URLs added yet. Enter a domain above to get started.</p>
+                        </div>
+                    </div>
+
+                    <div class="scan-section">
+                        <div class="url-count">
+                            <strong id="urlCountNum">0</strong> URLs ready to scan
+                        </div>
+                        <button class="btn btn-primary btn-scan" id="scanBtn" onclick="runScan()" disabled>
+                            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Run Health Check
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="content-card" style="animation: fadeInUp 0.5s ease 0.3s both;">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        Scan Results
+                    </h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all" onclick="filterResults('all')">All</button>
+                        <button class="filter-tab" data-filter="clean" onclick="filterResults('clean')">Clean</button>
+                        <button class="filter-tab" data-filter="suspicious" onclick="filterResults('suspicious')">Suspicious</button>
+                        <button class="filter-tab" data-filter="malicious" onclick="filterResults('malicious')">Malicious</button>
+                    </div>
+                </div>
+
+                <div id="resultsContainer">
+                    <div class="results-empty">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <h3>No scan results yet</h3>
+                        <p>Add URLs above and click "Run Health Check" to scan them</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -686,15 +865,110 @@
     </div>
 
     <script>
+        // API & Auth Config
+        const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
+        
+        // Field IDs (same as dashboard)
+        const F = {
+            users: {
+                dashboardEmail: 'fldu08L0Zaj11mKwm',
+                dashboardPassword: 'fldHGnldQkFMOYE36',
+                firstName: 'fld3aQ9OHGmHbWDOR',
+                lastName: 'fld057U2rfGEmb5Gh'
+            }
+        };
+
         // State
+        let currentUser = null;
         let urls = [];
         let results = [];
         let currentFilter = 'all';
 
-        // VirusTotal API (will need your key)
-        const VIRUSTOTAL_API_KEY = ''; // TODO: Add your VirusTotal API key
+        // ============ AUTHENTICATION ============
+        
+        async function apiCall(table, filterFormula = null, params = {}) {
+            params.returnFieldsByFieldId = true;
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ table, filterFormula, params })
+            });
+            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            return response.json();
+        }
 
-        // Add URL
+        async function authenticateUser(email, password) {
+            const escapedEmail = email.replace(/"/g, '\\"');
+            const escapedPassword = password.replace(/"/g, '\\"');
+            const filterFormula = `AND({${F.users.dashboardEmail}}="${escapedEmail}", {${F.users.dashboardPassword}}="${escapedPassword}")`;
+            const result = await apiCall('[ALL] Users', filterFormula);
+            return (result.records && result.records.length > 0) ? result.records[0] : null;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const loginError = document.getElementById('loginError');
+            
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Signing in...';
+            loginSpinner.style.display = 'block';
+            loginError.classList.remove('show');
+            
+            try {
+                const user = await authenticateUser(email, password);
+                if (user) {
+                    currentUser = user;
+                    showApp();
+                } else {
+                    loginError.textContent = 'Invalid email or password. Please try again.';
+                    loginError.classList.add('show');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = 'Connection error. Please try again.';
+                loginError.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Sign In';
+                loginSpinner.style.display = 'none';
+            }
+        });
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').classList.add('active');
+            updateUserUI();
+        }
+
+        function updateUserUI() {
+            const firstName = currentUser.fields[F.users.firstName] || '';
+            const lastName = currentUser.fields[F.users.lastName] || '';
+            const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
+            
+            document.getElementById('userName').textContent = firstName || 'User';
+            document.getElementById('userAvatar').textContent = initials.toUpperCase();
+        }
+
+        function logout() {
+            currentUser = null;
+            urls = [];
+            results = [];
+            document.getElementById('app').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            renderUrlList();
+            renderResults();
+            updateStats();
+        }
+
+        // ============ URL MANAGEMENT ============
+
         function addUrl() {
             const input = document.getElementById('urlInput');
             let url = input.value.trim();
@@ -772,138 +1046,18 @@
             document.getElementById('statMalicious').textContent = malicious;
         }
 
-        // Run Scan
+        // ============ SCANNING ============
+
         async function runScan() {
             if (urls.length === 0) return;
             
-            if (!VIRUSTOTAL_API_KEY) {
-                showToast('VirusTotal API key not configured', 'error');
-                return;
-            }
-            
-            const overlay = document.getElementById('scanningOverlay');
-            const progressBar = document.getElementById('scanningProgress');
-            const scanningUrl = document.getElementById('scanningUrl');
-            
-            overlay.classList.add('active');
-            results = [];
-            
-            for (let i = 0; i < urls.length; i++) {
-                const url = urls[i];
-                const progress = ((i + 1) / urls.length) * 100;
-                
-                scanningUrl.textContent = `Scanning: ${url}`;
-                progressBar.style.width = progress + '%';
-                
-                try {
-                    const result = await scanUrl(url);
-                    results.push(result);
-                } catch (error) {
-                    console.error('Scan error:', error);
-                    results.push({
-                        url: url,
-                        status: 'error',
-                        detections: 0,
-                        total: 0,
-                        riskScore: 0,
-                        error: error.message
-                    });
-                }
-                
-                // Rate limiting - VirusTotal free tier is 4 requests/minute
-                if (i < urls.length - 1) {
-                    await sleep(15000); // 15 second delay between requests
-                }
-            }
-            
-            overlay.classList.remove('active');
-            renderResults();
-            updateStats();
-            showToast(`Scan complete! ${results.length} URLs checked.`, 'success');
+            // TODO: Implement backend proxy for VirusTotal API
+            showToast('Scanning feature coming soon! Backend integration needed.', 'error');
+            return;
         }
 
-        async function scanUrl(url) {
-            // First, get the URL ID
-            const urlId = btoa(url.includes('://') ? url : 'http://' + url).replace(/=/g, '');
-            
-            // Try to get existing analysis
-            const response = await fetch(`https://www.virustotal.com/api/v3/urls/${urlId}`, {
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY
-                }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                return parseVirusTotalResult(url, data);
-            }
-            
-            // If not found, submit for analysis
-            const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
-                method: 'POST',
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `url=${encodeURIComponent(url.includes('://') ? url : 'http://' + url)}`
-            });
-            
-            if (!submitResponse.ok) {
-                throw new Error('Failed to submit URL for scanning');
-            }
-            
-            const submitData = await submitResponse.json();
-            
-            // Wait and fetch results
-            await sleep(5000);
-            
-            const analysisResponse = await fetch(submitData.data.links.self, {
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY
-                }
-            });
-            
-            if (analysisResponse.ok) {
-                const analysisData = await analysisResponse.json();
-                return parseVirusTotalResult(url, analysisData);
-            }
-            
-            throw new Error('Failed to get scan results');
-        }
+        // ============ RESULTS ============
 
-        function parseVirusTotalResult(url, data) {
-            const stats = data.data?.attributes?.last_analysis_stats || {};
-            const malicious = stats.malicious || 0;
-            const suspicious = stats.suspicious || 0;
-            const harmless = stats.harmless || 0;
-            const undetected = stats.undetected || 0;
-            const total = malicious + suspicious + harmless + undetected;
-            
-            const detections = malicious + suspicious;
-            const riskScore = total > 0 ? Math.round((detections / total) * 100) : 0;
-            
-            let status = 'clean';
-            if (malicious > 0) status = 'malicious';
-            else if (suspicious > 0) status = 'suspicious';
-            
-            return {
-                url: url,
-                status: status,
-                detections: detections,
-                total: total,
-                riskScore: riskScore,
-                malicious: malicious,
-                suspicious: suspicious,
-                harmless: harmless,
-                scanDate: new Date().toISOString()
-            };
-        }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        // Render Results
         function renderResults() {
             const container = document.getElementById('resultsContainer');
             
@@ -992,7 +1146,8 @@
             window.open(`https://www.virustotal.com/gui/url/${btoa('http://' + url).replace(/=/g, '')}`, '_blank');
         }
 
-        // Toast
+        // ============ TOAST ============
+
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
