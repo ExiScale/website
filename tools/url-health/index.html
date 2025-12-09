@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ExiScale URL Health Checker v1.0 -->
+<!-- ExiScale URL Health Checker v2.0 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,22 +13,26 @@
             --orange-light: rgba(255, 106, 21, 0.1);
             --black: #0a0a0a; 
             --gray: #666; 
-            --light-gray: #fafafa;
+            --gray-light: #999;
+            --light-gray: #f5f5f7;
+            --white: #ffffff;
             --border: rgba(0,0,0,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.08);
             --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
-            --green: #16a34a;
-            --green-light: #dcfce7;
-            --yellow: #d97706;
-            --yellow-light: #fef3c7;
-            --red: #dc2626;
-            --red-light: #fee2e2;
+            --green: #10b981;
+            --green-light: rgba(16, 185, 129, 0.1);
+            --yellow: #f59e0b;
+            --yellow-light: rgba(245, 158, 11, 0.1);
+            --red: #ef4444;
+            --red-light: rgba(239, 68, 68, 0.1);
+            --blue: #3b82f6;
+            --blue-light: rgba(59, 130, 246, 0.1);
         }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
             line-height: 1.6; 
             color: var(--black); 
-            background: #f5f5f7; 
+            background: var(--light-gray); 
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
         }
@@ -39,6 +43,7 @@
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 500px; } }
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
 
         /* Login Screen */
@@ -62,24 +67,13 @@
             right: -200px;
             animation: float 20s ease-in-out infinite;
         }
-        .login-screen::after {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%);
-            border-radius: 50%;
-            bottom: -300px;
-            left: -100px;
-            animation: float 25s ease-in-out infinite reverse;
-        }
 
         .login-card {
             background: white;
             border-radius: 24px;
-            padding: 3.5rem;
+            padding: 3rem;
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             box-shadow: var(--shadow-lg);
             position: relative;
             z-index: 1;
@@ -88,37 +82,35 @@
         }
 
         .login-logo { text-align: center; margin-bottom: 2rem; }
-        .login-logo img { height: 48px; margin-bottom: 1rem; }
+        .login-logo img { height: 44px; margin-bottom: 1rem; }
         .login-badge {
             display: inline-block;
-            margin-top: 0.5rem;
             padding: 0.4rem 1rem;
             background: var(--orange-light);
             color: var(--orange);
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border: 1px solid rgba(255,106,21,0.2);
         }
 
-        .login-title { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; color: var(--black); }
+        .login-title { font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; }
         .login-subtitle { font-size: 0.9rem; color: var(--gray); text-align: center; margin-bottom: 2rem; }
 
         .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--black); margin-bottom: 0.5rem; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
         .form-input {
             width: 100%;
-            padding: 0.9rem 1.1rem;
+            padding: 0.85rem 1rem;
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 1rem;
             font-family: inherit;
             transition: all 0.3s ease;
             background: var(--light-gray);
         }
-        .form-input:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+        .form-input:focus { outline: none; border-color: var(--orange); background: white; }
 
         .login-btn {
             width: 100%;
@@ -126,21 +118,18 @@
             background: var(--orange);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 1rem;
             font-weight: 700;
-            font-family: inherit;
             cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 30px rgba(255,106,21,0.3);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 0.5rem;
         }
-        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-        .login-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,106,21,0.4); }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,106,21,0.3); }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
         .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
 
@@ -149,431 +138,301 @@
 
         .login-footer { margin-top: 2rem; text-align: center; }
         .login-footer a { color: var(--orange); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .login-footer a:hover { text-decoration: underline; }
 
-        /* Main App (hidden until logged in) */
+        /* Main App */
         .app { display: none; }
         .app.active { display: block; }
 
-        /* Nav - Matching Main Website */
+        /* Nav */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
             background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(30px);
-            padding: 1.5rem 5%;
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border);
         }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        .logo img {
-            height: 48px;
-            transition: transform 0.4s ease;
-        }
-        .logo img:hover { transform: scale(1.05); }
-        
+        .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+        .logo img { height: 44px; }
         .nav-badge {
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.85rem;
             background: var(--orange-light);
             color: var(--orange);
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border: 1px solid rgba(255,106,21,0.2);
         }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
         .user-pill {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1.25rem;
+            gap: 0.6rem;
+            padding: 0.4rem 1rem;
             background: var(--light-gray);
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
-            border: 1px solid rgba(0,0,0,0.06);
         }
         .user-avatar {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
         }
         .nav-cta {
             background: var(--black);
             color: white;
-            padding: 0.85rem 2rem;
+            padding: 0.7rem 1.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-            display: inline-flex;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
-        .nav-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-        .nav-cta:hover::before { left: 100%; }
-        .nav-cta:hover {
-            background: var(--orange);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255,106,21,0.4);
-        }
+        .nav-cta:hover { background: var(--orange); }
         .nav-cta svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
-
         .nav-link {
             color: var(--gray);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-flex;
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
-        .nav-link:hover { color: var(--black); background: var(--light-gray); }
-        .nav-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .nav-link:hover { color: var(--black); }
+        .nav-link svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-        /* Main Container */
+        /* Main Content */
         .main-content {
-            margin-top: 90px;
-            padding: 3rem 5%;
+            margin-top: 76px;
+            padding: 2rem 5%;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Page Header */
         .page-header {
             text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInUp 0.5s ease;
+            margin-bottom: 2rem;
         }
         .page-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--black);
             letter-spacing: -0.03em;
             margin-bottom: 0.5rem;
         }
-        .page-subtitle {
-            font-size: 1.1rem;
-            color: var(--gray);
-        }
+        .page-subtitle { font-size: 1rem; color: var(--gray); }
 
-        /* Stats Grid */
-        .stats-grid {
+        /* Two Column Layout */
+        .two-col {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 0.5s ease 0.1s both;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+            align-items: start;
         }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 1rem;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .stat-icon svg { width: 24px; height: 24px; stroke-width: 2; fill: none; }
-        .stat-icon.orange { background: var(--orange-light); }
-        .stat-icon.orange svg { stroke: var(--orange); }
-        .stat-icon.green { background: var(--green-light); }
-        .stat-icon.green svg { stroke: var(--green); }
-        .stat-icon.yellow { background: var(--yellow-light); }
-        .stat-icon.yellow svg { stroke: var(--yellow); }
-        .stat-icon.red { background: var(--red-light); }
-        .stat-icon.red svg { stroke: var(--red); }
-        .stat-value { font-size: 2rem; font-weight: 800; color: var(--black); }
-        .stat-label { font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem; }
 
-        /* Content Cards */
-        .content-card {
-            background: white;
+        /* Card */
+        .card {
+            background: var(--white);
             border-radius: 20px;
             border: 1px solid var(--border);
-            max-width: 1200px;
-            margin: 0 auto 2rem;
             overflow: hidden;
         }
         .card-header {
-            padding: 1.5rem 2rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .card-title svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
-        .card-body { padding: 2rem; }
+        .card-title svg { width: 20px; height: 20px; stroke: var(--orange); stroke-width: 2; fill: none; }
+        .card-body { padding: 1.5rem; }
 
         /* URL Input */
-        .url-input-wrapper {
+        .url-input-row {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 1.5rem;
         }
         .url-input {
             flex: 1;
-            padding: 1rem 1.25rem;
+            padding: 0.85rem 1rem;
             border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: var(--light-gray);
         }
-        .url-input:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
-        .url-input::placeholder { color: #999; }
-
-        .btn {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            font-family: inherit;
+        .url-input:focus { outline: none; border-color: var(--orange); }
+        .btn-add {
+            padding: 0.85rem 1.5rem;
+            background: var(--black);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
+            white-space: nowrap;
         }
-        .btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
-        .btn-primary {
-            background: var(--orange);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255,106,21,0.3);
-        }
-        .btn-primary:hover { background: #ff7a25; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-add:hover { background: var(--orange); }
 
         /* URL List */
         .url-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
         }
-        .url-tag {
-            display: inline-flex;
+        .url-item {
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1rem;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
             background: var(--light-gray);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--black);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
             transition: all 0.2s ease;
         }
-        .url-tag:hover { border-color: var(--orange); }
-        .url-tag .remove-btn {
+        .url-item:hover { background: #eee; }
+        .url-item.selected { background: var(--orange-light); border: 1px solid rgba(255,106,21,0.3); }
+        
+        .url-checkbox {
             width: 18px;
             height: 18px;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
+            accent-color: var(--orange);
             cursor: pointer;
+        }
+        .url-info { flex: 1; min-width: 0; }
+        .url-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--black);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .url-meta {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+        .url-date {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--green-light);
+            color: var(--green);
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .url-date.never {
+            background: var(--light-gray);
             color: var(--gray);
+        }
+        .url-status {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .url-status.clean { background: var(--green-light); color: var(--green); }
+        .url-status.suspicious { background: var(--yellow-light); color: var(--yellow); }
+        .url-status.malicious { background: var(--red-light); color: var(--red); }
+        
+        .btn-delete {
+            padding: 0.4rem 0.75rem;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .url-tag .remove-btn:hover { background: var(--red-light); color: var(--red); }
-        .url-tag .remove-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .btn-delete:hover { background: #dc2626; }
 
         .url-empty {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 1rem;
             color: var(--gray);
         }
         .url-empty svg { width: 48px; height: 48px; stroke: #ccc; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
 
-        /* Scan Section */
-        .scan-section {
+        /* Select All & Scan */
+        .select-all-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
             border-top: 1px solid var(--border);
+            margin-bottom: 1rem;
         }
-        .url-count { font-size: 0.9rem; color: var(--gray); }
-        .url-count strong { color: var(--black); }
-
-        .btn-scan { padding: 1rem 2rem; font-size: 1.1rem; }
-
-        /* Filter Tabs */
-        .filter-tabs {
+        .select-all-row label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
             display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
-        .filter-tab {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+        .selected-count {
+            margin-left: auto;
             font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: transparent;
-            border: none;
             color: var(--gray);
         }
-        .filter-tab:hover { background: var(--light-gray); }
-        .filter-tab.active { background: var(--orange); color: white; }
+        .selected-count strong { color: var(--orange); }
 
-        /* Results Table */
-        .results-table {
+        .btn-scan {
             width: 100%;
-            border-collapse: collapse;
-        }
-        .results-table th {
-            text-align: left;
-            padding: 1rem 1.5rem;
-            font-size: 0.75rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--gray);
-            background: var(--light-gray);
-            border-bottom: 1px solid var(--border);
-        }
-        .results-table td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-        .results-table tr:last-child td { border-bottom: none; }
-        .results-table tr:hover td { background: var(--light-gray); }
-
-        .url-cell {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .url-favicon {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(255,106,21,0.3);
         }
-        .url-favicon img { width: 16px; height: 16px; }
-        .url-text { font-weight: 600; color: var(--black); }
+        .btn-scan:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,106,21,0.4); }
+        .btn-scan:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-scan svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-        .status-badge.clean { background: var(--green-light); color: var(--green); }
-        .status-badge.suspicious { background: var(--yellow-light); color: var(--yellow); }
-        .status-badge.malicious { background: var(--red-light); color: var(--red); }
-        .status-badge.pending { background: var(--light-gray); color: var(--gray); }
-
-        .detection-count { font-weight: 700; }
-        .detection-count.zero { color: var(--green); }
-        .detection-count.low { color: var(--yellow); }
-        .detection-count.high { color: var(--red); }
-
-        .risk-bar {
-            width: 100px;
-            height: 8px;
-            background: var(--light-gray);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .risk-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-        .risk-bar-fill.low { background: var(--green); }
-        .risk-bar-fill.medium { background: var(--yellow); }
-        .risk-bar-fill.high { background: var(--red); }
-
-        .action-btn {
-            padding: 0.4rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: var(--light-gray);
-            border: 1px solid var(--border);
-            color: var(--gray);
-        }
-        .action-btn:hover { border-color: var(--orange); color: var(--orange); }
-
-        /* Empty State */
+        /* Results Section */
         .results-empty {
             text-align: center;
             padding: 4rem 2rem;
@@ -581,6 +440,228 @@
         }
         .results-empty svg { width: 64px; height: 64px; stroke: #ddd; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
         .results-empty h3 { font-size: 1.1rem; color: var(--black); margin-bottom: 0.5rem; }
+
+        /* Results List */
+        .results-list { max-height: 600px; overflow-y: auto; }
+        
+        .result-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .result-item:hover { box-shadow: var(--shadow); }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .result-header:hover { background: var(--light-gray); }
+        
+        .result-favicon {
+            width: 40px;
+            height: 40px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .result-favicon img { width: 24px; height: 24px; }
+        
+        .result-info { flex: 1; min-width: 0; }
+        .result-url {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .result-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        .result-stats span { display: flex; align-items: center; gap: 0.25rem; }
+        
+        .result-status {
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .result-status.clean { background: var(--green-light); color: var(--green); }
+        .result-status.suspicious { background: var(--yellow-light); color: var(--yellow); }
+        .result-status.malicious { background: var(--red-light); color: var(--red); }
+        
+        .result-expand {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .result-expand svg { width: 16px; height: 16px; stroke: var(--gray); stroke-width: 2; fill: none; transition: transform 0.3s ease; }
+        .result-item.expanded .result-expand svg { transform: rotate(180deg); }
+        .result-item.expanded .result-expand { background: var(--orange-light); }
+        .result-item.expanded .result-expand svg { stroke: var(--orange); }
+        
+        /* Result Details */
+        .result-details {
+            display: none;
+            padding: 0 1.25rem 1.25rem;
+            border-top: 1px solid var(--border);
+            animation: slideDown 0.3s ease;
+        }
+        .result-item.expanded .result-details { display: block; }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+        .detail-stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+        .detail-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        .detail-stat-value.red { color: var(--red); }
+        .detail-stat-value.yellow { color: var(--yellow); }
+        .detail-stat-value.green { color: var(--green); }
+        .detail-stat-value.gray { color: var(--gray); }
+        .detail-stat-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+        
+        .risk-bar-container { margin: 1.25rem 0; }
+        .risk-bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .risk-bar-label { font-size: 0.85rem; font-weight: 600; }
+        .risk-bar-value { font-size: 0.85rem; font-weight: 700; }
+        .risk-bar-value.low { color: var(--green); }
+        .risk-bar-value.medium { color: var(--yellow); }
+        .risk-bar-value.high { color: var(--red); }
+        .risk-bar {
+            height: 10px;
+            background: var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        .risk-bar-fill.low { background: var(--green); }
+        .risk-bar-fill.medium { background: var(--yellow); }
+        .risk-bar-fill.high { background: var(--red); }
+        
+        /* Vendor Detections */
+        .vendors-section { margin-top: 1.25rem; }
+        .vendors-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .vendors-title svg { width: 16px; height: 16px; stroke: var(--orange); stroke-width: 2; fill: none; }
+        
+        .vendors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .vendor-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            background: var(--light-gray);
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+        .vendor-name {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .vendor-result {
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+        .vendor-result.clean { color: var(--green); }
+        .vendor-result.malicious { color: var(--red); }
+        .vendor-result.suspicious { color: var(--yellow); }
+        .vendor-result.undetected { color: var(--gray); }
+        
+        /* Action Buttons */
+        .detail-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+        .detail-btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            text-decoration: none;
+        }
+        .detail-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .detail-btn-secondary {
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            color: var(--gray);
+        }
+        .detail-btn-secondary:hover { background: #eee; color: var(--black); }
+        .detail-btn-primary {
+            background: var(--orange);
+            border: none;
+            color: white;
+        }
+        .detail-btn-primary:hover { background: #ff7a25; }
 
         /* Scanning Overlay */
         .scanning-overlay {
@@ -593,34 +674,19 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
             flex-direction: column;
             gap: 1.5rem;
         }
         .scanning-overlay.active { display: flex; }
-        
-        .scanning-animation {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--orange-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .scanning-animation::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 3px solid transparent;
+        .scanning-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid var(--light-gray);
             border-top-color: var(--orange);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        .scanning-animation svg { width: 48px; height: 48px; stroke: var(--orange); stroke-width: 2; fill: none; }
-        
         .scanning-text { font-size: 1.25rem; font-weight: 700; color: var(--black); }
         .scanning-url { font-size: 0.9rem; color: var(--gray); max-width: 400px; text-align: center; }
         .scanning-progress {
@@ -650,293 +716,27 @@
             font-size: 0.9rem;
             font-weight: 500;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            z-index: 1001;
+            z-index: 3000;
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .toast.success { background: var(--green); }
         .toast.error { background: var(--red); }
-        .toast svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
-
-        /* Details Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        
-        .modal {
-            background: white;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-            animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        .modal-header {
-            padding: 2rem 2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        .modal-url {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .modal-favicon {
-            width: 48px;
-            height: 48px;
-            background: var(--light-gray);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .modal-favicon img { width: 32px; height: 32px; }
-        .modal-url-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--black);
-            word-break: break-all;
-        }
-        .modal-close {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--light-gray);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-        .modal-close:hover { background: var(--red-light); color: var(--red); }
-        .modal-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
-        
-        .modal-body { padding: 2rem; }
-        
-        /* Status Hero */
-        .status-hero {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-        }
-        .status-hero.clean { background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%); }
-        .status-hero.suspicious { background: linear-gradient(135deg, rgba(217, 119, 6, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%); }
-        .status-hero.malicious { background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); }
-        
-        .status-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .status-hero.clean .status-icon { background: var(--green); }
-        .status-hero.suspicious .status-icon { background: var(--yellow); }
-        .status-hero.malicious .status-icon { background: var(--red); }
-        .status-icon svg { width: 40px; height: 40px; stroke: white; stroke-width: 2; fill: none; }
-        
-        .status-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-        .status-hero.clean .status-title { color: var(--green); }
-        .status-hero.suspicious .status-title { color: var(--yellow); }
-        .status-hero.malicious .status-title { color: var(--red); }
-        
-        .status-subtitle {
-            font-size: 0.95rem;
-            color: var(--gray);
-        }
-        
-        /* Stats Grid */
-        .stats-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stat-detail-card {
-            text-align: center;
-            padding: 1rem;
-            background: var(--light-gray);
-            border-radius: 12px;
-        }
-        .stat-detail-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-        .stat-detail-value.red { color: var(--red); }
-        .stat-detail-value.yellow { color: var(--yellow); }
-        .stat-detail-value.green { color: var(--green); }
-        .stat-detail-value.gray { color: var(--gray); }
-        .stat-detail-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-        
-        /* Risk Score Bar */
-        .risk-detail {
-            margin-bottom: 2rem;
-        }
-        .risk-detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-        .risk-detail-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--black);
-        }
-        .risk-detail-value {
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
-        .risk-detail-value.low { color: var(--green); }
-        .risk-detail-value.medium { color: var(--yellow); }
-        .risk-detail-value.high { color: var(--red); }
-        
-        .risk-detail-bar {
-            height: 12px;
-            background: var(--light-gray);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .risk-detail-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .risk-detail-fill.low { background: linear-gradient(90deg, var(--green) 0%, #34d399 100%); }
-        .risk-detail-fill.medium { background: linear-gradient(90deg, var(--yellow) 0%, #fbbf24 100%); }
-        .risk-detail-fill.high { background: linear-gradient(90deg, var(--red) 0%, #f87171 100%); }
-        
-        /* Scan Info */
-        .scan-info {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--light-gray);
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-        .scan-info-item {
-            flex: 1;
-        }
-        .scan-info-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--gray);
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-        }
-        .scan-info-value {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--black);
-        }
-        
-        /* Modal Actions */
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-        }
-        .modal-btn {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        .modal-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
-        .modal-btn-secondary {
-            background: var(--light-gray);
-            border: 1px solid var(--border);
-            color: var(--gray);
-        }
-        .modal-btn-secondary:hover { background: #eee; color: var(--black); }
-        .modal-btn-primary {
-            background: var(--orange);
-            border: none;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255,106,21,0.3);
-        }
-        .modal-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
 
         /* Responsive */
-        @media (max-width: 900px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .url-input-wrapper { flex-direction: column; }
-            .scan-section { flex-direction: column; gap: 1rem; }
-            .card-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
-            .nav-badge { display: none; }
-            .stats-detail-grid { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: 1024px) {
+            .two-col { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
-            nav { padding: 1rem 5%; }
-            .logo img { height: 40px; }
-            .main-content { margin-top: 70px; padding: 2rem 5%; }
-            .page-title { font-size: 1.75rem; }
-            .stats-grid { gap: 1rem; }
-            .stat-card { padding: 1rem; }
-            .stat-value { font-size: 1.5rem; }
+            nav { padding: 0.75rem 5%; }
+            .logo img { height: 36px; }
+            .nav-badge { display: none; }
+            .main-content { margin-top: 64px; padding: 1.5rem 5%; }
+            .page-title { font-size: 1.5rem; }
+            .detail-grid { grid-template-columns: repeat(2, 1fr); }
+            .vendors-grid { grid-template-columns: 1fr; }
             .user-pill span { display: none; }
-            .nav-cta { padding: 0.7rem 1.25rem; font-size: 0.85rem; }
-            .modal-overlay { padding: 1rem; }
-            .modal { border-radius: 20px; }
-            .modal-header { padding: 1.5rem; }
-            .modal-body { padding: 1.5rem; }
-            .modal-url-text { font-size: 1rem; }
-            .modal-actions { flex-direction: column; }
-            .scan-info { flex-direction: column; gap: 0.75rem; }
         }
     </style>
 </head>
@@ -948,12 +748,9 @@
                 <img src="https://exiscale.com/logos/exiscale-logo.png" alt="ExiScale">
                 <div class="login-badge">URL Health Checker</div>
             </div>
-            
             <h2 class="login-title">Sign in to continue</h2>
             <p class="login-subtitle">Use your ExiScale dashboard credentials</p>
-            
             <div class="login-error" id="loginError">Invalid email or password</div>
-            
             <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Email</label>
@@ -968,7 +765,6 @@
                     <div class="spinner" id="loginSpinner"></div>
                 </button>
             </form>
-            
             <div class="login-footer">
                 <a href="https://exiscale.com/login">← Back to Dashboard</a>
             </div>
@@ -977,7 +773,6 @@
 
     <!-- Main App -->
     <div class="app" id="app">
-        <!-- Nav - Matching Main Website -->
         <nav>
             <div class="nav-left">
                 <a href="https://exiscale.com" class="logo">
@@ -1001,102 +796,65 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Page Header -->
             <div class="page-header">
                 <h1 class="page-title">URL Health Checker</h1>
                 <p class="page-subtitle">Scan your domains against 70+ security vendors to check for flags and threats</p>
             </div>
 
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon orange">
-                        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    </div>
-                    <div class="stat-value" id="statUrls">0</div>
-                    <div class="stat-label">URLs Added</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green">
-                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    </div>
-                    <div class="stat-value" id="statClean">0</div>
-                    <div class="stat-label">Clean</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon yellow">
-                        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    </div>
-                    <div class="stat-value" id="statSuspicious">0</div>
-                    <div class="stat-label">Suspicious</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon red">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                    </div>
-                    <div class="stat-value" id="statMalicious">0</div>
-                    <div class="stat-label">Malicious</div>
-                </div>
-            </div>
-
-            <!-- URL Input Section -->
-            <div class="content-card" style="animation: fadeInUp 0.5s ease 0.2s both;">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                        Add URLs to Scan
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="url-input-wrapper">
-                        <input type="text" class="url-input" id="urlInput" placeholder="Enter URL (e.g., example.com or https://example.com)" onkeypress="if(event.key==='Enter')addUrl()">
-                        <button class="btn btn-primary" onclick="addUrl()">
-                            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            Add URL
-                        </button>
-                    </div>
-
-                    <div class="url-list" id="urlList">
-                        <div class="url-empty" id="urlEmpty">
+            <div class="two-col">
+                <!-- URL Management -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
                             <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                            <p>No URLs added yet. Enter a domain above to get started.</p>
-                        </div>
+                            URL Management
+                        </h2>
                     </div>
-
-                    <div class="scan-section">
-                        <div class="url-count">
-                            <strong id="urlCountNum">0</strong> URLs ready to scan
+                    <div class="card-body">
+                        <div class="url-input-row">
+                            <input type="text" class="url-input" id="urlInput" placeholder="https://example.com" onkeypress="if(event.key==='Enter')addUrl()">
+                            <button class="btn-add" onclick="addUrl()">Add</button>
                         </div>
-                        <button class="btn btn-primary btn-scan" id="scanBtn" onclick="runScan()" disabled>
+
+                        <div class="url-list" id="urlList">
+                            <div class="url-empty" id="urlEmpty">
+                                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                <p>No URLs added yet.<br>Add a domain above to get started.</p>
+                            </div>
+                        </div>
+
+                        <div class="select-all-row" id="selectAllRow" style="display: none;">
+                            <label>
+                                <input type="checkbox" class="url-checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                                Select All URLs
+                            </label>
+                            <div class="selected-count"><strong id="selectedCount">0</strong> selected</div>
+                        </div>
+
+                        <button class="btn-scan" id="scanBtn" onclick="runScan()" disabled>
                             <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            Run Health Check
+                            Run Scan
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Results Section -->
-            <div class="content-card" style="animation: fadeInUp 0.5s ease 0.3s both;">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        Scan Results
-                    </h2>
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" data-filter="all" onclick="filterResults('all')">All</button>
-                        <button class="filter-tab" data-filter="clean" onclick="filterResults('clean')">Clean</button>
-                        <button class="filter-tab" data-filter="suspicious" onclick="filterResults('suspicious')">Suspicious</button>
-                        <button class="filter-tab" data-filter="malicious" onclick="filterResults('malicious')">Malicious</button>
+                <!-- Scan Results -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                            Scan Results
+                        </h2>
                     </div>
-                </div>
-
-                <div id="resultsContainer">
-                    <div class="results-empty">
-                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <h3>No scan results yet</h3>
-                        <p>Add URLs above and click "Run Health Check" to scan them</p>
+                    <div class="card-body">
+                        <div id="resultsContainer">
+                            <div class="results-empty">
+                                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <h3>No scan results yet</h3>
+                                <p>Select URLs and click "Run Scan" to check them</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1105,9 +863,7 @@
 
     <!-- Scanning Overlay -->
     <div class="scanning-overlay" id="scanningOverlay">
-        <div class="scanning-animation">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        </div>
+        <div class="scanning-spinner"></div>
         <div class="scanning-text">Scanning URLs...</div>
         <div class="scanning-url" id="scanningUrl">Initializing...</div>
         <div class="scanning-progress">
@@ -1116,103 +872,13 @@
     </div>
 
     <!-- Toast -->
-    <div class="toast" id="toast">
-        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <span id="toastMessage">Success!</span>
-    </div>
-
-    <!-- Details Modal -->
-    <div class="modal-overlay" id="detailsModal" onclick="if(event.target === this) closeModal()">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-url">
-                    <div class="modal-favicon" id="modalFavicon">
-                        <img src="" alt="" id="modalFaviconImg">
-                    </div>
-                    <div class="modal-url-text" id="modalUrl">example.com</div>
-                </div>
-                <button class="modal-close" onclick="closeModal()">
-                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Status Hero -->
-                <div class="status-hero" id="statusHero">
-                    <div class="status-icon" id="statusIcon">
-                        <svg viewBox="0 0 24 24" id="statusIconSvg"></svg>
-                    </div>
-                    <div class="status-title" id="statusTitle">Clean</div>
-                    <div class="status-subtitle" id="statusSubtitle">No security vendors flagged this URL</div>
-                </div>
-                
-                <!-- Stats Grid -->
-                <div class="stats-detail-grid">
-                    <div class="stat-detail-card">
-                        <div class="stat-detail-value red" id="detailMalicious">0</div>
-                        <div class="stat-detail-label">Malicious</div>
-                    </div>
-                    <div class="stat-detail-card">
-                        <div class="stat-detail-value yellow" id="detailSuspicious">0</div>
-                        <div class="stat-detail-label">Suspicious</div>
-                    </div>
-                    <div class="stat-detail-card">
-                        <div class="stat-detail-value green" id="detailHarmless">0</div>
-                        <div class="stat-detail-label">Harmless</div>
-                    </div>
-                    <div class="stat-detail-card">
-                        <div class="stat-detail-value gray" id="detailUndetected">0</div>
-                        <div class="stat-detail-label">Undetected</div>
-                    </div>
-                </div>
-                
-                <!-- Risk Score -->
-                <div class="risk-detail">
-                    <div class="risk-detail-header">
-                        <span class="risk-detail-label">Risk Score</span>
-                        <span class="risk-detail-value" id="detailRiskValue">0%</span>
-                    </div>
-                    <div class="risk-detail-bar">
-                        <div class="risk-detail-fill" id="detailRiskFill" style="width: 0%"></div>
-                    </div>
-                </div>
-                
-                <!-- Scan Info -->
-                <div class="scan-info">
-                    <div class="scan-info-item">
-                        <div class="scan-info-label">Total Vendors</div>
-                        <div class="scan-info-value" id="detailTotal">0</div>
-                    </div>
-                    <div class="scan-info-item">
-                        <div class="scan-info-label">Detection Rate</div>
-                        <div class="scan-info-value" id="detailRate">0/0</div>
-                    </div>
-                    <div class="scan-info-item">
-                        <div class="scan-info-label">Last Scanned</div>
-                        <div class="scan-info-value" id="detailDate">-</div>
-                    </div>
-                </div>
-                
-                <!-- Actions -->
-                <div class="modal-actions">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        Close
-                    </button>
-                    <a href="#" class="modal-btn modal-btn-primary" id="modalVtLink" target="_blank">
-                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                        View on VirusTotal
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="toast" id="toast"></div>
 
     <script>
-        // API & Auth Config
+        // Config
         const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
         const VT_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/virustotal';
         
-        // Field IDs (same as dashboard)
         const F = {
             users: {
                 dashboardEmail: 'fldu08L0Zaj11mKwm',
@@ -1224,13 +890,10 @@
 
         // State
         let currentUser = null;
-        let urls = [];
-        let results = [];
-        let currentFilter = 'all';
+        let urls = []; // { id, url, lastScanned, status, result }
         let isScanning = false;
 
-        // ============ AUTHENTICATION ============
-        
+        // ============ AUTH ============
         async function apiCall(table, filterFormula = null, params = {}) {
             params.returnFieldsByFieldId = true;
             const response = await fetch(API_ENDPOINT, {
@@ -1270,11 +933,10 @@
                     currentUser = user;
                     showApp();
                 } else {
-                    loginError.textContent = 'Invalid email or password. Please try again.';
+                    loginError.textContent = 'Invalid email or password.';
                     loginError.classList.add('show');
                 }
             } catch (error) {
-                console.error('Login error:', error);
                 loginError.textContent = 'Connection error. Please try again.';
                 loginError.classList.add('show');
             } finally {
@@ -1287,112 +949,118 @@
         function showApp() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('app').classList.add('active');
-            updateUserUI();
-        }
-
-        function updateUserUI() {
             const firstName = currentUser.fields[F.users.firstName] || '';
             const lastName = currentUser.fields[F.users.lastName] || '';
-            const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
-            
             document.getElementById('userName').textContent = firstName || 'User';
-            document.getElementById('userAvatar').textContent = initials.toUpperCase();
+            document.getElementById('userAvatar').textContent = ((firstName[0] || '') + (lastName[0] || '')).toUpperCase() || '--';
         }
 
         function logout() {
             currentUser = null;
             urls = [];
-            results = [];
             document.getElementById('app').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('loginEmail').value = '';
             document.getElementById('loginPassword').value = '';
             renderUrlList();
             renderResults();
-            updateStats();
         }
 
         // ============ URL MANAGEMENT ============
-
         function addUrl() {
             const input = document.getElementById('urlInput');
             let url = input.value.trim();
-            
             if (!url) return;
             
-            // Clean up URL
-            url = url.replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\/$/, '');
-            
-            // Validate
-            if (!isValidUrl(url)) {
-                showToast('Please enter a valid URL', 'error');
-                return;
+            // Normalize URL
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
             }
+            url = url.replace(/\/$/, '');
             
-            // Check duplicates
-            if (urls.includes(url)) {
+            // Check duplicate
+            if (urls.find(u => u.url === url)) {
                 showToast('URL already added', 'error');
                 return;
             }
             
-            urls.push(url);
+            urls.push({
+                id: Date.now(),
+                url: url,
+                selected: false,
+                lastScanned: null,
+                status: null,
+                result: null
+            });
+            
             input.value = '';
             renderUrlList();
-            updateStats();
-            showToast('URL added successfully', 'success');
+            showToast('URL added');
         }
 
-        function isValidUrl(url) {
-            const pattern = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(\/.*)?$/;
-            return pattern.test(url);
-        }
-
-        function removeUrl(index) {
-            urls.splice(index, 1);
+        function deleteUrl(id) {
+            urls = urls.filter(u => u.id !== id);
             renderUrlList();
-            updateStats();
+            renderResults();
+        }
+
+        function toggleUrl(id) {
+            const url = urls.find(u => u.id === id);
+            if (url) url.selected = !url.selected;
+            renderUrlList();
+        }
+
+        function toggleSelectAll() {
+            const allSelected = urls.every(u => u.selected);
+            urls.forEach(u => u.selected = !allSelected);
+            renderUrlList();
         }
 
         function renderUrlList() {
             const container = document.getElementById('urlList');
             const empty = document.getElementById('urlEmpty');
+            const selectAllRow = document.getElementById('selectAllRow');
+            const scanBtn = document.getElementById('scanBtn');
             
             if (urls.length === 0) {
                 container.innerHTML = '';
                 container.appendChild(empty);
                 empty.style.display = 'block';
-                document.getElementById('scanBtn').disabled = true;
+                selectAllRow.style.display = 'none';
+                scanBtn.disabled = true;
                 return;
             }
             
             empty.style.display = 'none';
-            container.innerHTML = urls.map((url, i) => `
-                <div class="url-tag">
-                    <span>${url}</span>
-                    <button class="remove-btn" onclick="removeUrl(${i})">
-                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
+            selectAllRow.style.display = 'flex';
+            
+            const selectedCount = urls.filter(u => u.selected).length;
+            document.getElementById('selectedCount').textContent = selectedCount;
+            document.getElementById('selectAllCheckbox').checked = selectedCount === urls.length;
+            scanBtn.disabled = selectedCount === 0;
+            
+            container.innerHTML = urls.map(u => `
+                <div class="url-item ${u.selected ? 'selected' : ''}" onclick="toggleUrl(${u.id})">
+                    <input type="checkbox" class="url-checkbox" ${u.selected ? 'checked' : ''} onclick="event.stopPropagation(); toggleUrl(${u.id})">
+                    <div class="url-info">
+                        <div class="url-text">${u.url}</div>
+                        <div class="url-meta">
+                            ${u.lastScanned 
+                                ? `<span class="url-date">${formatDate(u.lastScanned)}</span>` 
+                                : `<span class="url-date never">never scanned</span>`}
+                            ${u.status ? `<span class="url-status ${u.status}">${u.status}</span>` : ''}
+                        </div>
+                    </div>
+                    <button class="btn-delete" onclick="event.stopPropagation(); deleteUrl(${u.id})">Delete</button>
                 </div>
             `).join('');
-            
-            document.getElementById('scanBtn').disabled = false;
         }
 
-        function updateStats() {
-            document.getElementById('statUrls').textContent = urls.length;
-            document.getElementById('urlCountNum').textContent = urls.length;
-            
-            const clean = results.filter(r => r.status === 'clean').length;
-            const suspicious = results.filter(r => r.status === 'suspicious').length;
-            const malicious = results.filter(r => r.status === 'malicious').length;
-            
-            document.getElementById('statClean').textContent = clean;
-            document.getElementById('statSuspicious').textContent = suspicious;
-            document.getElementById('statMalicious').textContent = malicious;
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        // ============ VIRUSTOTAL SCANNING ============
-
+        // ============ SCANNING ============
         async function vtApiCall(action, url, analysisId = null) {
             const body = { action, url };
             if (analysisId) body.analysisId = analysisId;
@@ -1403,16 +1071,12 @@
                 body: JSON.stringify(body)
             });
             
-            if (!response.ok) {
-                throw new Error(`VT API error: ${response.status}`);
-            }
-            
             return response.json();
         }
 
-        async function scanUrl(url) {
+        async function scanSingleUrl(url) {
             try {
-                // First try to get existing report
+                // Get report
                 const reportResult = await vtApiCall('report', url);
                 
                 if (reportResult.success && !reportResult.notFound) {
@@ -1420,304 +1084,190 @@
                         url: url,
                         status: reportResult.status,
                         detections: reportResult.detections,
-                        total: reportResult.stats.total,
+                        total: reportResult.stats?.total || 0,
                         riskScore: reportResult.riskScore,
                         stats: reportResult.stats,
-                        lastAnalysisDate: reportResult.lastAnalysisDate
+                        lastAnalysisDate: reportResult.lastAnalysisDate,
+                        vendors: reportResult.vendors || {}
                     };
                 }
                 
-                // If not found, submit for scanning
+                // Submit for scan
                 const scanResult = await vtApiCall('scan', url);
-                
-                if (scanResult.success && scanResult.analysisId) {
-                    // Wait for analysis to complete (poll every 3 seconds, max 30 seconds)
-                    let attempts = 0;
-                    const maxAttempts = 10;
-                    
-                    while (attempts < maxAttempts) {
-                        await new Promise(resolve => setTimeout(resolve, 3000));
-                        
-                        // Try to get the report again
-                        const checkResult = await vtApiCall('report', url);
-                        
-                        if (checkResult.success && !checkResult.notFound) {
-                            return {
-                                url: url,
-                                status: checkResult.status,
-                                detections: checkResult.detections,
-                                total: checkResult.stats.total,
-                                riskScore: checkResult.riskScore,
-                                stats: checkResult.stats,
-                                lastAnalysisDate: checkResult.lastAnalysisDate
-                            };
-                        }
-                        
-                        attempts++;
+                if (scanResult.success) {
+                    // Wait and retry
+                    await new Promise(r => setTimeout(r, 5000));
+                    const checkResult = await vtApiCall('report', url);
+                    if (checkResult.success && !checkResult.notFound) {
+                        return {
+                            url: url,
+                            status: checkResult.status,
+                            detections: checkResult.detections,
+                            total: checkResult.stats?.total || 0,
+                            riskScore: checkResult.riskScore,
+                            stats: checkResult.stats,
+                            lastAnalysisDate: checkResult.lastAnalysisDate,
+                            vendors: checkResult.vendors || {}
+                        };
                     }
-                    
-                    // If still not ready, return pending
-                    return {
-                        url: url,
-                        status: 'pending',
-                        detections: 0,
-                        total: 0,
-                        riskScore: 0,
-                        message: 'Scan submitted, results pending'
-                    };
                 }
                 
-                throw new Error('Failed to scan URL');
-                
+                return { url, status: 'pending', detections: 0, total: 0, riskScore: 0 };
             } catch (error) {
-                console.error('Scan error for', url, error);
-                return {
-                    url: url,
-                    status: 'error',
-                    detections: 0,
-                    total: 0,
-                    riskScore: 0,
-                    error: error.message
-                };
+                return { url, status: 'error', detections: 0, total: 0, riskScore: 0, error: error.message };
             }
         }
 
         async function runScan() {
-            if (urls.length === 0 || isScanning) return;
+            const selected = urls.filter(u => u.selected);
+            if (selected.length === 0 || isScanning) return;
             
             isScanning = true;
-            results = [];
-            
             const overlay = document.getElementById('scanningOverlay');
             const progressBar = document.getElementById('scanningProgress');
             const scanningUrl = document.getElementById('scanningUrl');
             
             overlay.classList.add('active');
             
-            for (let i = 0; i < urls.length; i++) {
-                const url = urls[i];
-                const progress = ((i) / urls.length) * 100;
+            for (let i = 0; i < selected.length; i++) {
+                const urlObj = selected[i];
+                progressBar.style.width = ((i / selected.length) * 100) + '%';
+                scanningUrl.textContent = `Scanning: ${urlObj.url}`;
                 
-                progressBar.style.width = progress + '%';
-                scanningUrl.textContent = `Scanning: ${url}`;
+                const result = await scanSingleUrl(urlObj.url);
                 
-                const result = await scanUrl(url);
-                results.push(result);
+                // Update URL object
+                urlObj.lastScanned = new Date().toISOString();
+                urlObj.status = result.status;
+                urlObj.result = result;
+                urlObj.selected = false;
                 
-                // Rate limiting: wait 15 seconds between requests (VT free tier: 4/min)
-                if (i < urls.length - 1) {
-                    scanningUrl.textContent = `Waiting for rate limit... Next: ${urls[i + 1]}`;
-                    await new Promise(resolve => setTimeout(resolve, 15000));
+                // Rate limit
+                if (i < selected.length - 1) {
+                    scanningUrl.textContent = `Waiting for rate limit...`;
+                    await new Promise(r => setTimeout(r, 15000));
                 }
             }
             
             progressBar.style.width = '100%';
-            scanningUrl.textContent = 'Scan complete!';
+            scanningUrl.textContent = 'Complete!';
             
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
+            await new Promise(r => setTimeout(r, 500));
             overlay.classList.remove('active');
             isScanning = false;
             
+            renderUrlList();
             renderResults();
-            updateStats();
-            showToast(`Scanned ${urls.length} URLs successfully`, 'success');
+            showToast(`Scanned ${selected.length} URL(s)`);
         }
 
         // ============ RESULTS ============
-
         function renderResults() {
             const container = document.getElementById('resultsContainer');
+            const scanned = urls.filter(u => u.result);
             
-            if (results.length === 0) {
+            if (scanned.length === 0) {
                 container.innerHTML = `
                     <div class="results-empty">
                         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         <h3>No scan results yet</h3>
-                        <p>Add URLs above and click "Run Health Check" to scan them</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            let filteredResults = results;
-            if (currentFilter !== 'all') {
-                filteredResults = results.filter(r => r.status === currentFilter);
-            }
-            
-            if (filteredResults.length === 0) {
-                container.innerHTML = `
-                    <div class="results-empty">
-                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <h3>No ${currentFilter} results</h3>
-                        <p>No URLs match this filter</p>
+                        <p>Select URLs and click "Run Scan" to check them</p>
                     </div>
                 `;
                 return;
             }
             
             container.innerHTML = `
-                <table class="results-table">
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Status</th>
-                            <th>Detections</th>
-                            <th>Risk Score</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${filteredResults.map(r => `
-                            <tr data-status="${r.status}">
-                                <td>
-                                    <div class="url-cell">
-                                        <div class="url-favicon">
-                                            <img src="https://www.google.com/s2/favicons?domain=${r.url}&sz=32" onerror="this.style.display='none'">
-                                        </div>
-                                        <span class="url-text">${r.url}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="status-badge ${r.status}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span>
-                                </td>
-                                <td>
-                                    <span class="detection-count ${r.detections === 0 ? 'zero' : r.detections < 3 ? 'low' : 'high'}">
-                                        ${r.detections}/${r.total}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="risk-bar">
-                                        <div class="risk-bar-fill ${r.riskScore < 5 ? 'low' : r.riskScore < 20 ? 'medium' : 'high'}" style="width: ${Math.min(r.riskScore, 100)}%"></div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button class="action-btn" onclick="viewDetails('${r.url}')">Details</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                <div class="results-list">
+                    ${scanned.map(u => renderResultItem(u)).join('')}
+                </div>
             `;
         }
 
-        function filterResults(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.dataset.filter === filter) tab.classList.add('active');
-            });
-            renderResults();
+        function renderResultItem(urlObj) {
+            const r = urlObj.result;
+            const stats = r.stats || { malicious: 0, suspicious: 0, harmless: 0, undetected: 0 };
+            const riskClass = r.riskScore < 5 ? 'low' : r.riskScore < 20 ? 'medium' : 'high';
+            
+            return `
+                <div class="result-item" id="result-${urlObj.id}">
+                    <div class="result-header" onclick="toggleResult(${urlObj.id})">
+                        <div class="result-favicon">
+                            <img src="https://www.google.com/s2/favicons?domain=${urlObj.url}&sz=48" onerror="this.style.display='none'">
+                        </div>
+                        <div class="result-info">
+                            <div class="result-url">${urlObj.url}</div>
+                            <div class="result-stats">
+                                <span>${r.detections || 0}/${r.total || 0} detections</span>
+                                <span>Risk: ${r.riskScore || 0}%</span>
+                            </div>
+                        </div>
+                        <span class="result-status ${r.status}">${r.status}</span>
+                        <div class="result-expand">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="result-details">
+                        <div class="detail-grid">
+                            <div class="detail-stat">
+                                <div class="detail-stat-value red">${stats.malicious || 0}</div>
+                                <div class="detail-stat-label">Malicious</div>
+                            </div>
+                            <div class="detail-stat">
+                                <div class="detail-stat-value yellow">${stats.suspicious || 0}</div>
+                                <div class="detail-stat-label">Suspicious</div>
+                            </div>
+                            <div class="detail-stat">
+                                <div class="detail-stat-value green">${stats.harmless || 0}</div>
+                                <div class="detail-stat-label">Harmless</div>
+                            </div>
+                            <div class="detail-stat">
+                                <div class="detail-stat-value gray">${stats.undetected || 0}</div>
+                                <div class="detail-stat-label">Undetected</div>
+                            </div>
+                        </div>
+                        
+                        <div class="risk-bar-container">
+                            <div class="risk-bar-header">
+                                <span class="risk-bar-label">Risk Score</span>
+                                <span class="risk-bar-value ${riskClass}">${r.riskScore || 0}%</span>
+                            </div>
+                            <div class="risk-bar">
+                                <div class="risk-bar-fill ${riskClass}" style="width: ${Math.min(r.riskScore || 0, 100)}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-actions">
+                            <a href="https://developers.facebook.com/tools/debug/?q=${encodeURIComponent(urlObj.url)}" target="_blank" class="detail-btn detail-btn-secondary">
+                                <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                                Facebook Debug
+                            </a>
+                            <a href="https://www.virustotal.com/gui/url/${btoa(urlObj.url).replace(/=/g, '')}" target="_blank" class="detail-btn detail-btn-primary">
+                                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                Full Report
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
-        function viewDetails(url) {
-            // Find the result for this URL
-            const result = results.find(r => r.url === url);
-            if (!result) return;
-            
-            // Populate modal
-            document.getElementById('modalUrl').textContent = url;
-            document.getElementById('modalFaviconImg').src = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
-            
-            // Status hero
-            const statusHero = document.getElementById('statusHero');
-            const statusIcon = document.getElementById('statusIconSvg');
-            const statusTitle = document.getElementById('statusTitle');
-            const statusSubtitle = document.getElementById('statusSubtitle');
-            
-            statusHero.className = 'status-hero ' + result.status;
-            
-            if (result.status === 'clean') {
-                statusIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
-                statusTitle.textContent = 'Clean';
-                statusSubtitle.textContent = 'No security vendors flagged this URL as malicious';
-            } else if (result.status === 'suspicious') {
-                statusIcon.innerHTML = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>';
-                statusTitle.textContent = 'Suspicious';
-                statusSubtitle.textContent = `${result.detections} security vendor(s) flagged this URL`;
-            } else if (result.status === 'malicious') {
-                statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
-                statusTitle.textContent = 'Malicious';
-                statusSubtitle.textContent = `${result.detections} security vendor(s) flagged this URL as dangerous`;
-            } else {
-                statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>';
-                statusTitle.textContent = 'Pending';
-                statusSubtitle.textContent = 'Scan results are still being processed';
-            }
-            
-            // Stats
-            const stats = result.stats || { malicious: 0, suspicious: 0, harmless: 0, undetected: 0 };
-            document.getElementById('detailMalicious').textContent = stats.malicious || 0;
-            document.getElementById('detailSuspicious').textContent = stats.suspicious || 0;
-            document.getElementById('detailHarmless').textContent = stats.harmless || 0;
-            document.getElementById('detailUndetected').textContent = stats.undetected || 0;
-            
-            // Risk score
-            const riskValue = document.getElementById('detailRiskValue');
-            const riskFill = document.getElementById('detailRiskFill');
-            const riskScore = result.riskScore || 0;
-            
-            riskValue.textContent = riskScore + '%';
-            riskValue.className = 'risk-detail-value ' + (riskScore < 5 ? 'low' : riskScore < 20 ? 'medium' : 'high');
-            riskFill.className = 'risk-detail-fill ' + (riskScore < 5 ? 'low' : riskScore < 20 ? 'medium' : 'high');
-            
-            // Animate the risk bar
-            setTimeout(() => {
-                riskFill.style.width = Math.min(riskScore, 100) + '%';
-            }, 100);
-            
-            // Scan info
-            document.getElementById('detailTotal').textContent = result.total || 0;
-            document.getElementById('detailRate').textContent = `${result.detections || 0}/${result.total || 0}`;
-            document.getElementById('detailDate').textContent = result.lastAnalysisDate 
-                ? new Date(result.lastAnalysisDate * 1000).toLocaleDateString() 
-                : 'Just now';
-            
-            // VirusTotal link
-            const urlId = btoa('http://' + url).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-            document.getElementById('modalVtLink').href = `https://www.virustotal.com/gui/url/${urlId}`;
-            
-            // Show modal
-            const modal = document.getElementById('detailsModal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Reset risk bar for animation
-            riskFill.style.width = '0%';
-            setTimeout(() => {
-                riskFill.style.width = Math.min(riskScore, 100) + '%';
-            }, 100);
+        function toggleResult(id) {
+            const el = document.getElementById(`result-${id}`);
+            if (el) el.classList.toggle('expanded');
         }
-
-        function closeModal() {
-            const modal = document.getElementById('detailsModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
 
         // ============ TOAST ============
-
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toastMessage.textContent = message;
-            toast.className = 'toast ' + type;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Initialize
+        // Init
         renderUrlList();
-        updateStats();
+        renderResults();
     </script>
 </body>
 </html>
