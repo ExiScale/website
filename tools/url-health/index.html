@@ -662,6 +662,255 @@
         .toast.error { background: var(--red); }
         .toast svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
 
+        /* Details Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .modal-header {
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .modal-url {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .modal-favicon {
+            width: 48px;
+            height: 48px;
+            background: var(--light-gray);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .modal-favicon img { width: 32px; height: 32px; }
+        .modal-url-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--black);
+            word-break: break-all;
+        }
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .modal-close:hover { background: var(--red-light); color: var(--red); }
+        .modal-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        
+        .modal-body { padding: 2rem; }
+        
+        /* Status Hero */
+        .status-hero {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+        .status-hero.clean { background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%); }
+        .status-hero.suspicious { background: linear-gradient(135deg, rgba(217, 119, 6, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%); }
+        .status-hero.malicious { background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); }
+        
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-hero.clean .status-icon { background: var(--green); }
+        .status-hero.suspicious .status-icon { background: var(--yellow); }
+        .status-hero.malicious .status-icon { background: var(--red); }
+        .status-icon svg { width: 40px; height: 40px; stroke: white; stroke-width: 2; fill: none; }
+        
+        .status-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .status-hero.clean .status-title { color: var(--green); }
+        .status-hero.suspicious .status-title { color: var(--yellow); }
+        .status-hero.malicious .status-title { color: var(--red); }
+        
+        .status-subtitle {
+            font-size: 0.95rem;
+            color: var(--gray);
+        }
+        
+        /* Stats Grid */
+        .stats-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-detail-card {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 12px;
+        }
+        .stat-detail-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .stat-detail-value.red { color: var(--red); }
+        .stat-detail-value.yellow { color: var(--yellow); }
+        .stat-detail-value.green { color: var(--green); }
+        .stat-detail-value.gray { color: var(--gray); }
+        .stat-detail-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        /* Risk Score Bar */
+        .risk-detail {
+            margin-bottom: 2rem;
+        }
+        .risk-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .risk-detail-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+        .risk-detail-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+        .risk-detail-value.low { color: var(--green); }
+        .risk-detail-value.medium { color: var(--yellow); }
+        .risk-detail-value.high { color: var(--red); }
+        
+        .risk-detail-bar {
+            height: 12px;
+            background: var(--light-gray);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .risk-detail-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .risk-detail-fill.low { background: linear-gradient(90deg, var(--green) 0%, #34d399 100%); }
+        .risk-detail-fill.medium { background: linear-gradient(90deg, var(--yellow) 0%, #fbbf24 100%); }
+        .risk-detail-fill.high { background: linear-gradient(90deg, var(--red) 0%, #f87171 100%); }
+        
+        /* Scan Info */
+        .scan-info {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .scan-info-item {
+            flex: 1;
+        }
+        .scan-info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+        .scan-info-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+        
+        /* Modal Actions */
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .modal-btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .modal-btn-secondary {
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            color: var(--gray);
+        }
+        .modal-btn-secondary:hover { background: #eee; color: var(--black); }
+        .modal-btn-primary {
+            background: var(--orange);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,106,21,0.3);
+        }
+        .modal-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
+
         /* Responsive */
         @media (max-width: 900px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -669,6 +918,7 @@
             .scan-section { flex-direction: column; gap: 1rem; }
             .card-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
             .nav-badge { display: none; }
+            .stats-detail-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             nav { padding: 1rem 5%; }
@@ -680,6 +930,13 @@
             .stat-value { font-size: 1.5rem; }
             .user-pill span { display: none; }
             .nav-cta { padding: 0.7rem 1.25rem; font-size: 0.85rem; }
+            .modal-overlay { padding: 1rem; }
+            .modal { border-radius: 20px; }
+            .modal-header { padding: 1.5rem; }
+            .modal-body { padding: 1.5rem; }
+            .modal-url-text { font-size: 1rem; }
+            .modal-actions { flex-direction: column; }
+            .scan-info { flex-direction: column; gap: 0.75rem; }
         }
     </style>
 </head>
@@ -862,6 +1119,92 @@
     <div class="toast" id="toast">
         <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal-overlay" id="detailsModal" onclick="if(event.target === this) closeModal()">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-url">
+                    <div class="modal-favicon" id="modalFavicon">
+                        <img src="" alt="" id="modalFaviconImg">
+                    </div>
+                    <div class="modal-url-text" id="modalUrl">example.com</div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Status Hero -->
+                <div class="status-hero" id="statusHero">
+                    <div class="status-icon" id="statusIcon">
+                        <svg viewBox="0 0 24 24" id="statusIconSvg"></svg>
+                    </div>
+                    <div class="status-title" id="statusTitle">Clean</div>
+                    <div class="status-subtitle" id="statusSubtitle">No security vendors flagged this URL</div>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-detail-grid">
+                    <div class="stat-detail-card">
+                        <div class="stat-detail-value red" id="detailMalicious">0</div>
+                        <div class="stat-detail-label">Malicious</div>
+                    </div>
+                    <div class="stat-detail-card">
+                        <div class="stat-detail-value yellow" id="detailSuspicious">0</div>
+                        <div class="stat-detail-label">Suspicious</div>
+                    </div>
+                    <div class="stat-detail-card">
+                        <div class="stat-detail-value green" id="detailHarmless">0</div>
+                        <div class="stat-detail-label">Harmless</div>
+                    </div>
+                    <div class="stat-detail-card">
+                        <div class="stat-detail-value gray" id="detailUndetected">0</div>
+                        <div class="stat-detail-label">Undetected</div>
+                    </div>
+                </div>
+                
+                <!-- Risk Score -->
+                <div class="risk-detail">
+                    <div class="risk-detail-header">
+                        <span class="risk-detail-label">Risk Score</span>
+                        <span class="risk-detail-value" id="detailRiskValue">0%</span>
+                    </div>
+                    <div class="risk-detail-bar">
+                        <div class="risk-detail-fill" id="detailRiskFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Scan Info -->
+                <div class="scan-info">
+                    <div class="scan-info-item">
+                        <div class="scan-info-label">Total Vendors</div>
+                        <div class="scan-info-value" id="detailTotal">0</div>
+                    </div>
+                    <div class="scan-info-item">
+                        <div class="scan-info-label">Detection Rate</div>
+                        <div class="scan-info-value" id="detailRate">0/0</div>
+                    </div>
+                    <div class="scan-info-item">
+                        <div class="scan-info-label">Last Scanned</div>
+                        <div class="scan-info-value" id="detailDate">-</div>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        Close
+                    </button>
+                    <a href="#" class="modal-btn modal-btn-primary" id="modalVtLink" target="_blank">
+                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        View on VirusTotal
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1079,7 +1422,8 @@
                         detections: reportResult.detections,
                         total: reportResult.stats.total,
                         riskScore: reportResult.riskScore,
-                        stats: reportResult.stats
+                        stats: reportResult.stats,
+                        lastAnalysisDate: reportResult.lastAnalysisDate
                     };
                 }
                 
@@ -1104,7 +1448,8 @@
                                 detections: checkResult.detections,
                                 total: checkResult.stats.total,
                                 riskScore: checkResult.riskScore,
-                                stats: checkResult.stats
+                                stats: checkResult.stats,
+                                lastAnalysisDate: checkResult.lastAnalysisDate
                             };
                         }
                         
@@ -1266,9 +1611,94 @@
         }
 
         function viewDetails(url) {
+            // Find the result for this URL
+            const result = results.find(r => r.url === url);
+            if (!result) return;
+            
+            // Populate modal
+            document.getElementById('modalUrl').textContent = url;
+            document.getElementById('modalFaviconImg').src = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
+            
+            // Status hero
+            const statusHero = document.getElementById('statusHero');
+            const statusIcon = document.getElementById('statusIconSvg');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusSubtitle = document.getElementById('statusSubtitle');
+            
+            statusHero.className = 'status-hero ' + result.status;
+            
+            if (result.status === 'clean') {
+                statusIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+                statusTitle.textContent = 'Clean';
+                statusSubtitle.textContent = 'No security vendors flagged this URL as malicious';
+            } else if (result.status === 'suspicious') {
+                statusIcon.innerHTML = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>';
+                statusTitle.textContent = 'Suspicious';
+                statusSubtitle.textContent = `${result.detections} security vendor(s) flagged this URL`;
+            } else if (result.status === 'malicious') {
+                statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
+                statusTitle.textContent = 'Malicious';
+                statusSubtitle.textContent = `${result.detections} security vendor(s) flagged this URL as dangerous`;
+            } else {
+                statusIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line>';
+                statusTitle.textContent = 'Pending';
+                statusSubtitle.textContent = 'Scan results are still being processed';
+            }
+            
+            // Stats
+            const stats = result.stats || { malicious: 0, suspicious: 0, harmless: 0, undetected: 0 };
+            document.getElementById('detailMalicious').textContent = stats.malicious || 0;
+            document.getElementById('detailSuspicious').textContent = stats.suspicious || 0;
+            document.getElementById('detailHarmless').textContent = stats.harmless || 0;
+            document.getElementById('detailUndetected').textContent = stats.undetected || 0;
+            
+            // Risk score
+            const riskValue = document.getElementById('detailRiskValue');
+            const riskFill = document.getElementById('detailRiskFill');
+            const riskScore = result.riskScore || 0;
+            
+            riskValue.textContent = riskScore + '%';
+            riskValue.className = 'risk-detail-value ' + (riskScore < 5 ? 'low' : riskScore < 20 ? 'medium' : 'high');
+            riskFill.className = 'risk-detail-fill ' + (riskScore < 5 ? 'low' : riskScore < 20 ? 'medium' : 'high');
+            
+            // Animate the risk bar
+            setTimeout(() => {
+                riskFill.style.width = Math.min(riskScore, 100) + '%';
+            }, 100);
+            
+            // Scan info
+            document.getElementById('detailTotal').textContent = result.total || 0;
+            document.getElementById('detailRate').textContent = `${result.detections || 0}/${result.total || 0}`;
+            document.getElementById('detailDate').textContent = result.lastAnalysisDate 
+                ? new Date(result.lastAnalysisDate * 1000).toLocaleDateString() 
+                : 'Just now';
+            
+            // VirusTotal link
             const urlId = btoa('http://' + url).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-            window.open(`https://www.virustotal.com/gui/url/${urlId}`, '_blank');
+            document.getElementById('modalVtLink').href = `https://www.virustotal.com/gui/url/${urlId}`;
+            
+            // Show modal
+            const modal = document.getElementById('detailsModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset risk bar for animation
+            riskFill.style.width = '0%';
+            setTimeout(() => {
+                riskFill.style.width = Math.min(riskScore, 100) + '%';
+            }, 100);
         }
+
+        function closeModal() {
+            const modal = document.getElementById('detailsModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
 
         // ============ TOAST ============
 
