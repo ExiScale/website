@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<!-- ExiScale URL Health Checker v1.0 -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Health Checker | ExiScale</title>
+    <link rel="icon" type="image/png" href="https://exiscale.com/exiscale-favicon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { 
+            --orange: #ff6a15; 
+            --orange-light: rgba(255, 106, 21, 0.1);
+            --black: #0a0a0a; 
+            --gray: #666; 
+            --light-gray: #fafafa;
+            --border: rgba(0,0,0,0.08);
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+            --green: #16a34a;
+            --green-light: #dcfce7;
+            --yellow: #d97706;
+            --yellow-light: #fef3c7;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            line-height: 1.6; 
+            color: var(--black); 
+            background: #f5f5f7; 
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes scanLine { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-icon svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--black);
+        }
+        .logo-text span { color: var(--orange); }
+        
+        .header-badge {
+            padding: 0.4rem 0.75rem;
+            background: var(--orange-light);
+            color: var(--orange);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .back-link:hover { background: var(--light-gray); color: var(--black); }
+        .back-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.5s ease;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--black);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease 0.1s both;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stat-icon svg { width: 24px; height: 24px; stroke-width: 2; fill: none; }
+        .stat-icon.orange { background: var(--orange-light); }
+        .stat-icon.orange svg { stroke: var(--orange); }
+        .stat-icon.green { background: var(--green-light); }
+        .stat-icon.green svg { stroke: var(--green); }
+        .stat-icon.yellow { background: var(--yellow-light); }
+        .stat-icon.yellow svg { stroke: var(--yellow); }
+        .stat-icon.red { background: var(--red-light); }
+        .stat-icon.red svg { stroke: var(--red); }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--black); }
+        .stat-label { font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem; }
+
+        /* URL Input Section */
+        .url-input-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.5s ease 0.2s both;
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
+
+        .url-input-wrapper {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .url-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+        }
+        .url-input:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
+        .url-input::placeholder { color: #999; }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+        .btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,106,21,0.3);
+        }
+        .btn-primary:hover { background: #ff7a25; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--black);
+            border: 2px solid var(--border);
+        }
+        .btn-secondary:hover { background: white; border-color: var(--orange); color: var(--orange); }
+
+        /* URL List */
+        .url-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .url-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--black);
+            transition: all 0.2s ease;
+        }
+        .url-tag:hover { border-color: var(--orange); }
+        .url-tag .remove-btn {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.2s ease;
+        }
+        .url-tag .remove-btn:hover { background: var(--red-light); color: var(--red); }
+        .url-tag .remove-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+        .url-empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray);
+        }
+        .url-empty svg { width: 48px; height: 48px; stroke: #ccc; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
+
+        /* Scan Button */
+        .scan-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .url-count { font-size: 0.9rem; color: var(--gray); }
+        .url-count strong { color: var(--black); }
+
+        .btn-scan {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        .btn-scan.scanning { animation: pulse 1s ease infinite; }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease 0.3s both;
+        }
+        .results-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .results-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .results-header h2 svg { width: 24px; height: 24px; stroke: var(--orange); stroke-width: 2; fill: none; }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+        }
+        .filter-tab:hover { background: var(--light-gray); }
+        .filter-tab.active { background: var(--orange); color: white; }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .results-table th {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            background: var(--light-gray);
+            border-bottom: 1px solid var(--border);
+        }
+        .results-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .results-table tr:last-child td { border-bottom: none; }
+        .results-table tr:hover td { background: var(--light-gray); }
+
+        .url-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .url-favicon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .url-favicon img { width: 16px; height: 16px; }
+        .url-text { font-weight: 600; color: var(--black); }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        .status-badge.clean { background: var(--green-light); color: var(--green); }
+        .status-badge.suspicious { background: var(--yellow-light); color: var(--yellow); }
+        .status-badge.malicious { background: var(--red-light); color: var(--red); }
+        .status-badge.pending { background: var(--light-gray); color: var(--gray); }
+
+        .detection-count {
+            font-weight: 700;
+        }
+        .detection-count.zero { color: var(--green); }
+        .detection-count.low { color: var(--yellow); }
+        .detection-count.high { color: var(--red); }
+
+        .risk-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .risk-bar-fill.low { background: var(--green); }
+        .risk-bar-fill.medium { background: var(--yellow); }
+        .risk-bar-fill.high { background: var(--red); }
+
+        .action-btn {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            color: var(--gray);
+        }
+        .action-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+        /* Empty State */
+        .results-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+        .results-empty svg { width: 64px; height: 64px; stroke: #ddd; stroke-width: 1.5; fill: none; margin-bottom: 1rem; }
+        .results-empty h3 { font-size: 1.1rem; color: var(--black); margin-bottom: 0.5rem; }
+
+        /* Scanning State */
+        .scanning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .scanning-overlay.active { display: flex; }
+        
+        .scanning-animation {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--orange-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .scanning-animation::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--orange);
+            animation: spin 1s linear infinite;
+        }
+        .scanning-animation svg { width: 48px; height: 48px; stroke: var(--orange); stroke-width: 2; fill: none; }
+        
+        .scanning-text { font-size: 1.25rem; font-weight: 700; color: var(--black); }
+        .scanning-url { font-size: 0.9rem; color: var(--gray); max-width: 400px; text-align: center; }
+        .scanning-progress {
+            width: 300px;
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .scanning-progress-bar {
+            height: 100%;
+            background: var(--orange);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--black);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 1001;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { background: var(--green); }
+        .toast.error { background: var(--red); }
+        .toast svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .url-input-wrapper { flex-direction: column; }
+            .scan-section { flex-direction: column; gap: 1rem; }
+            .results-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .page-title { font-size: 1.75rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .stat-card { padding: 1rem; }
+            .stat-value { font-size: 1.5rem; }
+            .results-table { font-size: 0.8rem; }
+            .results-table th, .results-table td { padding: 0.75rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="https://exiscale.com" class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <span class="logo-text">Exi<span>Scale</span></span>
+            </a>
+            <span class="header-badge">URL Health Checker</span>
+        </div>
+        <div class="header-right">
+            <a href="https://exiscale.com/login" class="back-link">
+                <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Dashboard
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">URL Health Checker</h1>
+            <p class="page-subtitle">Scan your domains against 70+ security vendors to check for flags and threats</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </div>
+                <div class="stat-value" id="statUrls">0</div>
+                <div class="stat-label">URLs Added</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div class="stat-value" id="statClean">0</div>
+                <div class="stat-label">Clean</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="stat-value" id="statSuspicious">0</div>
+                <div class="stat-label">Suspicious</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <div class="stat-value" id="statMalicious">0</div>
+                <div class="stat-label">Malicious</div>
+            </div>
+        </div>
+
+        <!-- URL Input Section -->
+        <div class="url-input-section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                Add URLs to Scan
+            </h2>
+            
+            <div class="url-input-wrapper">
+                <input type="text" class="url-input" id="urlInput" placeholder="Enter URL (e.g., example.com or https://example.com)" onkeypress="if(event.key==='Enter')addUrl()">
+                <button class="btn btn-primary" onclick="addUrl()">
+                    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add URL
+                </button>
+            </div>
+
+            <div class="url-list" id="urlList">
+                <div class="url-empty" id="urlEmpty">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    <p>No URLs added yet. Enter a domain above to get started.</p>
+                </div>
+            </div>
+
+            <div class="scan-section">
+                <div class="url-count">
+                    <strong id="urlCountNum">0</strong> URLs ready to scan
+                </div>
+                <button class="btn btn-primary btn-scan" id="scanBtn" onclick="runScan()" disabled>
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Run Health Check
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="results-header">
+                <h2>
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    Scan Results
+                </h2>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all" onclick="filterResults('all')">All</button>
+                    <button class="filter-tab" data-filter="clean" onclick="filterResults('clean')">Clean</button>
+                    <button class="filter-tab" data-filter="suspicious" onclick="filterResults('suspicious')">Suspicious</button>
+                    <button class="filter-tab" data-filter="malicious" onclick="filterResults('malicious')">Malicious</button>
+                </div>
+            </div>
+
+            <div id="resultsContainer">
+                <div class="results-empty">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <h3>No scan results yet</h3>
+                    <p>Add URLs above and click "Run Health Check" to scan them</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scanning Overlay -->
+    <div class="scanning-overlay" id="scanningOverlay">
+        <div class="scanning-animation">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div class="scanning-text">Scanning URLs...</div>
+        <div class="scanning-url" id="scanningUrl">Initializing...</div>
+        <div class="scanning-progress">
+            <div class="scanning-progress-bar" id="scanningProgress" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <script>
+        // State
+        let urls = [];
+        let results = [];
+        let currentFilter = 'all';
+
+        // VirusTotal API (will need your key)
+        const VIRUSTOTAL_API_KEY = ''; // TODO: Add your VirusTotal API key
+
+        // Add URL
+        function addUrl() {
+            const input = document.getElementById('urlInput');
+            let url = input.value.trim();
+            
+            if (!url) return;
+            
+            // Clean up URL
+            url = url.replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\/$/, '');
+            
+            // Validate
+            if (!isValidUrl(url)) {
+                showToast('Please enter a valid URL', 'error');
+                return;
+            }
+            
+            // Check duplicates
+            if (urls.includes(url)) {
+                showToast('URL already added', 'error');
+                return;
+            }
+            
+            urls.push(url);
+            input.value = '';
+            renderUrlList();
+            updateStats();
+            showToast('URL added successfully', 'success');
+        }
+
+        function isValidUrl(url) {
+            const pattern = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(\/.*)?$/;
+            return pattern.test(url);
+        }
+
+        function removeUrl(index) {
+            urls.splice(index, 1);
+            renderUrlList();
+            updateStats();
+        }
+
+        function renderUrlList() {
+            const container = document.getElementById('urlList');
+            const empty = document.getElementById('urlEmpty');
+            
+            if (urls.length === 0) {
+                container.innerHTML = '';
+                container.appendChild(empty);
+                empty.style.display = 'block';
+                document.getElementById('scanBtn').disabled = true;
+                return;
+            }
+            
+            empty.style.display = 'none';
+            container.innerHTML = urls.map((url, i) => `
+                <div class="url-tag">
+                    <span>${url}</span>
+                    <button class="remove-btn" onclick="removeUrl(${i})">
+                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            `).join('');
+            
+            document.getElementById('scanBtn').disabled = false;
+        }
+
+        function updateStats() {
+            document.getElementById('statUrls').textContent = urls.length;
+            document.getElementById('urlCountNum').textContent = urls.length;
+            
+            const clean = results.filter(r => r.status === 'clean').length;
+            const suspicious = results.filter(r => r.status === 'suspicious').length;
+            const malicious = results.filter(r => r.status === 'malicious').length;
+            
+            document.getElementById('statClean').textContent = clean;
+            document.getElementById('statSuspicious').textContent = suspicious;
+            document.getElementById('statMalicious').textContent = malicious;
+        }
+
+        // Run Scan
+        async function runScan() {
+            if (urls.length === 0) return;
+            
+            if (!VIRUSTOTAL_API_KEY) {
+                showToast('VirusTotal API key not configured', 'error');
+                return;
+            }
+            
+            const overlay = document.getElementById('scanningOverlay');
+            const progressBar = document.getElementById('scanningProgress');
+            const scanningUrl = document.getElementById('scanningUrl');
+            
+            overlay.classList.add('active');
+            results = [];
+            
+            for (let i = 0; i < urls.length; i++) {
+                const url = urls[i];
+                const progress = ((i + 1) / urls.length) * 100;
+                
+                scanningUrl.textContent = `Scanning: ${url}`;
+                progressBar.style.width = progress + '%';
+                
+                try {
+                    const result = await scanUrl(url);
+                    results.push(result);
+                } catch (error) {
+                    console.error('Scan error:', error);
+                    results.push({
+                        url: url,
+                        status: 'error',
+                        detections: 0,
+                        total: 0,
+                        riskScore: 0,
+                        error: error.message
+                    });
+                }
+                
+                // Rate limiting - VirusTotal free tier is 4 requests/minute
+                if (i < urls.length - 1) {
+                    await sleep(15000); // 15 second delay between requests
+                }
+            }
+            
+            overlay.classList.remove('active');
+            renderResults();
+            updateStats();
+            showToast(`Scan complete! ${results.length} URLs checked.`, 'success');
+        }
+
+        async function scanUrl(url) {
+            // First, get the URL ID
+            const urlId = btoa(url.includes('://') ? url : 'http://' + url).replace(/=/g, '');
+            
+            // Try to get existing analysis
+            const response = await fetch(`https://www.virustotal.com/api/v3/urls/${urlId}`, {
+                headers: {
+                    'x-apikey': VIRUSTOTAL_API_KEY
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                return parseVirusTotalResult(url, data);
+            }
+            
+            // If not found, submit for analysis
+            const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
+                method: 'POST',
+                headers: {
+                    'x-apikey': VIRUSTOTAL_API_KEY,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `url=${encodeURIComponent(url.includes('://') ? url : 'http://' + url)}`
+            });
+            
+            if (!submitResponse.ok) {
+                throw new Error('Failed to submit URL for scanning');
+            }
+            
+            const submitData = await submitResponse.json();
+            
+            // Wait and fetch results
+            await sleep(5000);
+            
+            const analysisResponse = await fetch(submitData.data.links.self, {
+                headers: {
+                    'x-apikey': VIRUSTOTAL_API_KEY
+                }
+            });
+            
+            if (analysisResponse.ok) {
+                const analysisData = await analysisResponse.json();
+                return parseVirusTotalResult(url, analysisData);
+            }
+            
+            throw new Error('Failed to get scan results');
+        }
+
+        function parseVirusTotalResult(url, data) {
+            const stats = data.data?.attributes?.last_analysis_stats || {};
+            const malicious = stats.malicious || 0;
+            const suspicious = stats.suspicious || 0;
+            const harmless = stats.harmless || 0;
+            const undetected = stats.undetected || 0;
+            const total = malicious + suspicious + harmless + undetected;
+            
+            const detections = malicious + suspicious;
+            const riskScore = total > 0 ? Math.round((detections / total) * 100) : 0;
+            
+            let status = 'clean';
+            if (malicious > 0) status = 'malicious';
+            else if (suspicious > 0) status = 'suspicious';
+            
+            return {
+                url: url,
+                status: status,
+                detections: detections,
+                total: total,
+                riskScore: riskScore,
+                malicious: malicious,
+                suspicious: suspicious,
+                harmless: harmless,
+                scanDate: new Date().toISOString()
+            };
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Render Results
+        function renderResults() {
+            const container = document.getElementById('resultsContainer');
+            
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div class="results-empty">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <h3>No scan results yet</h3>
+                        <p>Add URLs above and click "Run Health Check" to scan them</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let filteredResults = results;
+            if (currentFilter !== 'all') {
+                filteredResults = results.filter(r => r.status === currentFilter);
+            }
+            
+            if (filteredResults.length === 0) {
+                container.innerHTML = `
+                    <div class="results-empty">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <h3>No ${currentFilter} results</h3>
+                        <p>No URLs match this filter</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Detections</th>
+                            <th>Risk Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredResults.map(r => `
+                            <tr data-status="${r.status}">
+                                <td>
+                                    <div class="url-cell">
+                                        <div class="url-favicon">
+                                            <img src="https://www.google.com/s2/favicons?domain=${r.url}&sz=32" onerror="this.style.display='none'">
+                                        </div>
+                                        <span class="url-text">${r.url}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge ${r.status}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span>
+                                </td>
+                                <td>
+                                    <span class="detection-count ${r.detections === 0 ? 'zero' : r.detections < 3 ? 'low' : 'high'}">
+                                        ${r.detections}/${r.total}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="risk-bar">
+                                        <div class="risk-bar-fill ${r.riskScore < 5 ? 'low' : r.riskScore < 20 ? 'medium' : 'high'}" style="width: ${r.riskScore}%"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="action-btn" onclick="viewDetails('${r.url}')">Details</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function filterResults(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.filter === filter) tab.classList.add('active');
+            });
+            renderResults();
+        }
+
+        function viewDetails(url) {
+            window.open(`https://www.virustotal.com/gui/url/${btoa('http://' + url).replace(/=/g, '')}`, '_blank');
+        }
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        renderUrlList();
+        updateStats();
+    </script>
+</body>
+</html>
