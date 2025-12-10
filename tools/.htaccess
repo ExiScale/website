@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Proxy API requests to Node.js backend
+RewriteCond %{REQUEST_URI} ^/api/(.*)$ [NC]
+RewriteRule ^api/(.*)$ http://127.0.0.1:3000/$1 [P,L]
+
+# Ensure proxy module is enabled
+<IfModule mod_proxy.c>
+    ProxyPreserveHost On
+    ProxyPass /api/ http://127.0.0.1:3000/
+    ProxyPassReverse /api/ http://127.0.0.1:3000/
+</IfModule>
