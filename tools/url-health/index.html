@@ -1365,15 +1365,12 @@
         const urlInput = document.getElementById('newUrlInput');
         const labelInput = document.getElementById('newUrlLabel');
         let url = urlInput.value.trim();
-        const label = labelInput.value.trim();
         if (!url) { alert('Please enter a URL'); return; }
         if (!url.startsWith('http')) url = 'https://' + url;
 
         try {
-            const fields = { url, last_status: 'pending' };
-            // Only add label if the field exists in your Airtable - remove this line if it doesn't
-            // if (label) fields.label = label;
-            await airtableRequest('URLs', 'POST', { fields });
+            // Only send the url field - that's all the URLs table has
+            await airtableRequest('URLs', 'POST', { fields: { url } });
             urlInput.value = ''; labelInput.value = '';
             await loadUrls();
             showToast('URL added!');
