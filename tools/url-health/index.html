@@ -804,6 +804,7 @@
         const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
         const VT_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/virustotal';
         
+        // Field IDs for reading response data (when returnFieldsByFieldId=true)
         const F = {
             users: {
                 dashboardEmail: 'fldu08L0Zaj11mKwm',
@@ -823,19 +824,33 @@
         // ============ AUTH ============
         async function apiCall(table, filterFormula = null, params = {}) {
             params.returnFieldsByFieldId = true;
-            const response = await fetch(API_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ table, filterFormula, params })
-            });
-            if (!response.ok) throw new Error(`API error: ${response.status}`);
-            return response.json();
+            console.log('API Call:', { table, filterFormula, params });
+            try {
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ table, filterFormula, params })
+                });
+                console.log('API Response status:', response.status);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error:', errorText);
+                    throw new Error(`API error: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('API Data:', data);
+                return data;
+            } catch (err) {
+                console.error('Fetch error:', err);
+                throw err;
+            }
         }
 
         async function authenticateUser(email, password) {
             const escapedEmail = email.replace(/"/g, '\\"');
             const escapedPassword = password.replace(/"/g, '\\"');
-            const filterFormula = `AND({${F.users.dashboardEmail}}="${escapedEmail}", {${F.users.dashboardPassword}}="${escapedPassword}")`;
+            // IMPORTANT: Filter formulas must use FIELD NAMES, not field IDs
+            const filterFormula = `AND({Dashboard Email}="${escapedEmail}", {Password}="${escapedPassword}")`;
             const result = await apiCall('[ALL] Users', filterFormula);
             return (result.records && result.records.length > 0) ? result.records[0] : null;
         }
@@ -864,7 +879,8 @@
                     loginError.classList.add('show');
                 }
             } catch (error) {
-                loginError.textContent = 'Connection error. Please try again.';
+                console.error('Login error:', error);
+                loginError.textContent = 'Connection error: ' + error.message;
                 loginError.classList.add('show');
             } finally {
                 loginBtn.disabled = false;
