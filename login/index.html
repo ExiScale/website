@@ -13,6 +13,8 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Login Screen */
         .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%); position: relative; overflow: hidden; }
         .login-screen::before { content: ''; position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,106,21,0.08) 0%, transparent 70%); border-radius: 50%; top: -400px; right: -200px; animation: float 20s ease-in-out infinite; }
         .login-screen::after { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,106,21,0.05) 0%, transparent 70%); border-radius: 50%; bottom: -300px; left: -100px; animation: float 25s ease-in-out infinite reverse; }
@@ -32,8 +34,12 @@
         .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
         .login-error { background: #fee2e2; color: #dc2626; padding: 1rem; border-radius: 10px; font-size: 0.9rem; margin-bottom: 1.5rem; display: none; }
         .login-error.show { display: block; }
+
+        /* Dashboard */
         .dashboard { display: none; min-height: 100vh; }
         .dashboard.active { display: flex; }
+
+        /* Sidebar */
         .sidebar { width: 280px; background: white; border-right: 1px solid var(--border); padding: 2rem 0; display: flex; flex-direction: column; position: fixed; height: 100vh; left: 0; top: 0; z-index: 100; }
         .sidebar-logo { padding: 0 2rem; margin-bottom: 2.5rem; }
         .sidebar-logo img { height: 40px; }
@@ -54,12 +60,16 @@
         .logout-btn { background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease; color: var(--gray); }
         .logout-btn:hover { background: #fee2e2; color: #dc2626; }
         .logout-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+        /* Main Content */
         .main-content { flex: 1; margin-left: 280px; padding: 2.5rem; min-height: 100vh; }
         .page-header { margin-bottom: 2.5rem; animation: fadeInUp 0.5s ease; }
         .page-title { font-size: 2rem; font-weight: 800; color: var(--black); letter-spacing: -0.03em; }
         .page-subtitle { font-size: 1rem; color: var(--gray); margin-top: 0.5rem; }
         .content-panel { display: none; animation: fadeInUp 0.5s ease; }
         .content-panel.active { display: block; }
+
+        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; }
         .stat-card { background: white; padding: 1.75rem; border-radius: 16px; border: 1px solid var(--border); transition: all 0.4s ease; }
         .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
@@ -77,15 +87,21 @@
         .stat-change.positive { color: #16a34a; }
         .stat-change.negative { color: #dc2626; }
         .stat-change.neutral { color: var(--gray); }
+
+        /* Content Card */
         .content-card { background: white; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.5rem; }
         .card-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
         .card-title { font-size: 1.1rem; font-weight: 700; color: var(--black); }
         .card-body { padding: 0; }
+
+        /* Data Table */
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th { text-align: left; padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; background: var(--light-gray); }
         .data-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
         .data-table tr:last-child td { border-bottom: none; }
         .data-table tr:hover td { background: rgba(255,106,21,0.02); }
+
+        /* Badges */
         .status-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
         .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
         .status-badge.active, .status-badge.paying, .status-badge.paid, .status-badge.completed { background: #dcfce7; color: #16a34a; }
@@ -96,13 +112,19 @@
         .source-badge.digistore { background: #fed7aa; color: #c2410c; }
         .source-badge.crypto { background: #fef3c7; color: #b45309; }
         .method-badge { display: inline-flex; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; background: #e5e7eb; color: #374151; }
+
+        /* Empty State */
         .empty-state { text-align: center; padding: 4rem 2rem; }
         .empty-state-icon { width: 80px; height: 80px; background: var(--light-gray); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
         .empty-state-icon svg { width: 40px; height: 40px; stroke: #ccc; stroke-width: 1.5; fill: none; }
         .empty-state-title { font-size: 1.25rem; font-weight: 700; color: var(--black); margin-bottom: 0.5rem; }
         .empty-state-text { font-size: 0.95rem; color: var(--gray); }
+
+        /* Loading State */
         .loading-state { text-align: center; padding: 4rem 2rem; }
         .loading-spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.5rem; }
+
+        /* Quick Actions */
         .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
         .action-card { background: white; padding: 2rem; border-radius: 16px; border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 1.25rem; cursor: pointer; transition: all 0.4s ease; text-decoration: none; color: inherit; }
         .action-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--orange); }
@@ -110,11 +132,20 @@
         .action-icon svg { width: 26px; height: 26px; stroke: var(--orange); stroke-width: 2; fill: none; }
         .action-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--black); margin-bottom: 0.35rem; }
         .action-content p { font-size: 0.9rem; color: var(--gray); }
+
+        /* Responsive */
         @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } .quick-actions { grid-template-columns: 1fr; } .login-card { margin: 1rem; padding: 2rem; } }
+        @media (max-width: 768px) { 
+            .sidebar { transform: translateX(-100%); } 
+            .main-content { margin-left: 0; } 
+            .stats-grid { grid-template-columns: 1fr; } 
+            .quick-actions { grid-template-columns: 1fr; } 
+            .login-card { margin: 1rem; padding: 2rem; } 
+        }
     </style>
 </head>
 <body>
+    <!-- LOGIN SCREEN -->
     <div class="login-screen" id="loginScreen">
         <div class="login-card">
             <div class="login-logo"><img src="/logos/exiscale-logo.png" alt="ExiScale"></div>
@@ -122,128 +153,307 @@
             <p class="login-subtitle">Sign in to access your client dashboard</p>
             <div class="login-error" id="loginError"></div>
             <form id="loginForm">
-                <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="loginEmail" placeholder="you@company.com" required></div>
-                <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required></div>
-                <button type="submit" class="login-btn" id="loginBtn"><span id="loginBtnText">Sign In</span><div class="spinner" id="loginSpinner" style="display: none;"></div></button>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="you@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="loginBtnText">Sign In</span>
+                    <div class="spinner" id="loginSpinner" style="display: none;"></div>
+                </button>
             </form>
         </div>
     </div>
+
+    <!-- DASHBOARD -->
     <div class="dashboard" id="dashboard">
         <aside class="sidebar">
             <div class="sidebar-logo"><img src="/logos/exiscale-logo.png" alt="ExiScale"></div>
             <nav class="sidebar-nav">
-                <div class="nav-item active" data-tab="home" onclick="switchTab('home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Home</div>
-                <div class="nav-item" data-tab="orders" onclick="switchTab('orders')"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>Orders</div>
-                <div class="nav-item" data-tab="transactions" onclick="switchTab('transactions')"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>Transactions</div>
-                <div class="nav-item" data-tab="balances" onclick="switchTab('balances')"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>Balances</div>
-                <div class="nav-item" data-tab="topups" onclick="switchTab('topups')"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>Top-Up History</div>
+                <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Home
+                </div>
+                <div class="nav-item" data-tab="orders" onclick="switchTab('orders')">
+                    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    Orders
+                </div>
+                <div class="nav-item" data-tab="transactions" onclick="switchTab('transactions')">
+                    <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    Transactions
+                </div>
+                <div class="nav-item" data-tab="balances" onclick="switchTab('balances')">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                    Balances
+                </div>
+                <div class="nav-item" data-tab="topups" onclick="switchTab('topups')">
+                    <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    Top-Up History
+                </div>
                 <div class="nav-divider">Tools</div>
-                <a class="nav-item" href="/tools/url-health/"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>URL Health Checker</a>
+                <div class="nav-item" style="opacity: 0.5; cursor: not-allowed;">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    URL Health Checker
+                    <span style="margin-left: auto; font-size: 0.65rem; background: var(--orange-light); color: var(--orange); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">SOON</span>
+                </div>
             </nav>
             <div class="sidebar-footer">
                 <div class="user-info">
                     <div class="user-avatar" id="userAvatar">--</div>
-                    <div class="user-details"><div class="user-name" id="userName">Loading...</div><div class="user-email" id="userEmail">...</div></div>
-                    <button class="logout-btn" onclick="logout()" title="Sign out"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">...</div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()" title="Sign out">
+                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
                 </div>
             </div>
         </aside>
+
         <main class="main-content">
+            <!-- HOME PANEL -->
             <div class="content-panel active" id="panel-home">
-                <div class="page-header"><h1 class="page-title" id="welcomeTitle">Welcome back 👋</h1><p class="page-subtitle">Here's what's happening with your account today.</p></div>
+                <div class="page-header">
+                    <h1 class="page-title" id="welcomeTitle">Welcome back 👋</h1>
+                    <p class="page-subtitle">Here's what's happening with your account today.</p>
+                </div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div><div class="stat-label">Total Orders</div><div class="stat-value" id="statOrders">-</div><div class="stat-change neutral" id="statOrdersChange">Loading...</div></div>
-                    <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="stat-label">Balance Remaining</div><div class="stat-value" id="statBalance">-</div><div class="stat-change positive" id="statBalanceChange">Available</div></div>
-                    <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="stat-label">Total Spent</div><div class="stat-value" id="statSpent">-</div><div class="stat-change neutral" id="statSpentChange">Lifetime</div></div>
-                    <div class="stat-card"><div class="stat-icon purple"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><div class="stat-label">Top-Ups</div><div class="stat-value" id="statTopups">-</div><div class="stat-change neutral" id="statTopupsChange">All time</div></div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value" id="statOrders">-</div>
+                        <div class="stat-change neutral" id="statOrdersChange">Loading...</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                        <div class="stat-label">Balance Remaining</div>
+                        <div class="stat-value" id="statBalance">-</div>
+                        <div class="stat-change positive" id="statBalanceChange">Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-value" id="statSpent">-</div>
+                        <div class="stat-change neutral" id="statSpentChange">Lifetime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+                        <div class="stat-label">Top-Ups</div>
+                        <div class="stat-value" id="statTopups">-</div>
+                        <div class="stat-change neutral" id="statTopupsChange">All time</div>
+                    </div>
                 </div>
                 <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--black);">Quick Actions</h2>
                 <div class="quick-actions">
-                    <a class="action-card" href="https://exiscale.com/#pricing" target="_blank"><div class="action-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></div><div class="action-content"><h3>New Order</h3><p>Purchase additional infrastructure</p></div></a>
-                    <a class="action-card" href="mailto:support@exiscale.com"><div class="action-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div><div class="action-content"><h3>Contact Support</h3><p>Get help from our team</p></div></a>
+                    <a class="action-card" href="https://exiscale.com/#pricing" target="_blank">
+                        <div class="action-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></div>
+                        <div class="action-content"><h3>New Order</h3><p>Purchase additional infrastructure</p></div>
+                    </a>
+                    <a class="action-card" href="mailto:support@exiscale.com">
+                        <div class="action-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                        <div class="action-content"><h3>Contact Support</h3><p>Get help from our team</p></div>
+                    </a>
                 </div>
             </div>
-            <div class="content-panel" id="panel-orders"><div class="page-header"><h1 class="page-title">Orders</h1><p class="page-subtitle">View and manage your infrastructure orders.</p></div><div class="content-card"><div class="card-header"><h2 class="card-title">Order History</h2></div><div class="card-body" id="ordersTableContainer"><div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading orders...</p></div></div></div></div>
-            <div class="content-panel" id="panel-transactions"><div class="page-header"><h1 class="page-title">Transactions</h1><p class="page-subtitle">Your complete payment and transaction history.</p></div><div class="content-card"><div class="card-header"><h2 class="card-title">Transaction History</h2></div><div class="card-body" id="transactionsTableContainer"><div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading transactions...</p></div></div></div></div>
-            <div class="content-panel" id="panel-balances"><div class="page-header"><h1 class="page-title">Balances</h1><p class="page-subtitle">Your account balance and credit information.</p></div><div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="stat-label">Total Remaining</div><div class="stat-value" id="balanceRemaining">-</div><div class="stat-change positive">Available to use</div></div><div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="stat-label">Total Spent</div><div class="stat-value" id="balanceSpent">-</div><div class="stat-change neutral">Lifetime</div></div></div><div class="content-card"><div class="card-header"><h2 class="card-title">Virtual Accounts</h2></div><div class="card-body" id="balancesTableContainer"><div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading balances...</p></div></div></div></div>
-            <div class="content-panel" id="panel-topups"><div class="page-header"><h1 class="page-title">Top-Up History</h1><p class="page-subtitle">Your account top-up and invoice history.</p></div><div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="stat-label">Total Top-Ups</div><div class="stat-value" id="topupTotal">-</div><div class="stat-change positive">Lifetime</div></div><div class="stat-card"><div class="stat-icon purple"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div><div class="stat-label">Invoices</div><div class="stat-value" id="topupCount">-</div><div class="stat-change neutral">All time</div></div></div><div class="content-card"><div class="card-header"><h2 class="card-title">Invoice History</h2></div><div class="card-body" id="topupsTableContainer"><div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading top-ups...</p></div></div></div></div>
+
+            <!-- ORDERS PANEL -->
+            <div class="content-panel" id="panel-orders">
+                <div class="page-header">
+                    <h1 class="page-title">Orders</h1>
+                    <p class="page-subtitle">View and manage your infrastructure orders.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Order History</h2></div>
+                    <div class="card-body" id="ordersTableContainer">
+                        <div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading orders...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSACTIONS PANEL -->
+            <div class="content-panel" id="panel-transactions">
+                <div class="page-header">
+                    <h1 class="page-title">Transactions</h1>
+                    <p class="page-subtitle">Your complete payment and transaction history.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Transaction History</h2></div>
+                    <div class="card-body" id="transactionsTableContainer">
+                        <div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading transactions...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BALANCES PANEL -->
+            <div class="content-panel" id="panel-balances">
+                <div class="page-header">
+                    <h1 class="page-title">Balances</h1>
+                    <p class="page-subtitle">Your account balance and credit information.</p>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-card">
+                        <div class="stat-icon green"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                        <div class="stat-label">Total Remaining</div>
+                        <div class="stat-value" id="balanceRemaining">-</div>
+                        <div class="stat-change positive">Available to use</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-value" id="balanceSpent">-</div>
+                        <div class="stat-change neutral">Lifetime</div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Virtual Accounts</h2></div>
+                    <div class="card-body" id="balancesTableContainer">
+                        <div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading balances...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP-UPS PANEL -->
+            <div class="content-panel" id="panel-topups">
+                <div class="page-header">
+                    <h1 class="page-title">Top-Up History</h1>
+                    <p class="page-subtitle">Your account top-up and invoice history.</p>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-card">
+                        <div class="stat-icon green"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                        <div class="stat-label">Total Top-Ups</div>
+                        <div class="stat-value" id="topupTotal">-</div>
+                        <div class="stat-change positive">Lifetime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+                        <div class="stat-label">Invoices</div>
+                        <div class="stat-value" id="topupCount">-</div>
+                        <div class="stat-change neutral">All time</div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Invoice History</h2></div>
+                    <div class="card-body" id="topupsTableContainer">
+                        <div class="loading-state"><div class="loading-spinner"></div><p style="color: var(--gray);">Loading top-ups...</p></div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-    <script>
-        const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
-        const TABLES = { users: '[ALL] Users', clients: '[ALL] Clients', orders: '[ALL] Orders', transactions: '[ALL] Transactions', balances: 'Balances', topups: 'Top-Ups (Invoices)' };
-        let currentUser = null, userClients = [], userData = { orders: [], transactions: [], balances: [], topups: [] };
 
-        async function apiCall(table, filterFormula, params) {
-            params = params || {};
-            const response = await fetch(API_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ table: table, filterFormula: filterFormula, params: params }) });
+    <script>
+        // ============ CONFIG ============
+        const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
+        const TABLES = {
+            users: '[ALL] Users',
+            clients: '[ALL] Clients',
+            orders: '[ALL] Orders',
+            transactions: '[ALL] Transactions',
+            balances: 'Balances',
+            topups: 'Top-Ups (Invoices)'
+        };
+
+        let currentUser = null;
+        let userClients = [];
+        let userData = { orders: [], transactions: [], balances: [], topups: [] };
+
+        // ============ API CALLS ============
+        async function apiCall(table, filterFormula, params = {}) {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ table, filterFormula, params })
+            });
             if (!response.ok) throw new Error('API error: ' + response.status);
             return response.json();
         }
 
         async function authenticateUser(email, password) {
-            var escapedEmail = email.replace(/"/g, '\\"');
-            var escapedPassword = password.replace(/"/g, '\\"');
-            var filterFormula = 'AND({Dashboard Email}="' + escapedEmail + '", {Dashboard Password}="' + escapedPassword + '")';
-            var result = await apiCall(TABLES.users, filterFormula);
+            const escapedEmail = email.replace(/"/g, '\\"');
+            const escapedPassword = password.replace(/"/g, '\\"');
+            const filterFormula = `AND({Dashboard Email}="${escapedEmail}", {Dashboard Password}="${escapedPassword}")`;
+            const result = await apiCall(TABLES.users, filterFormula);
             return (result.records && result.records.length > 0) ? result.records[0] : null;
         }
 
         async function getClientRecords(clientIds) {
             if (!clientIds || clientIds.length === 0) return [];
-            var conditions = clientIds.map(function(id) { return 'RECORD_ID()="' + id + '"'; }).join(',');
-            var result = await apiCall(TABLES.clients, 'OR(' + conditions + ')');
+            const conditions = clientIds.map(id => `RECORD_ID()="${id}"`).join(',');
+            const result = await apiCall(TABLES.clients, `OR(${conditions})`);
             return result.records || [];
         }
 
         async function getOrdersForClients(clientKeys) {
             if (!clientKeys || clientKeys.length === 0) return [];
-            var conditions = clientKeys.map(function(key) { return 'FIND("' + key + '", {Linked Client})'; }).join(',');
-            var result = await apiCall(TABLES.orders, 'OR(' + conditions + ')');
+            const conditions = clientKeys.map(key => `FIND("${key}", {Linked Client})`).join(',');
+            const result = await apiCall(TABLES.orders, `OR(${conditions})`);
             return result.records || [];
         }
 
         async function getTransactionsForClients(clientKeys) {
             if (!clientKeys || clientKeys.length === 0) return [];
-            var conditions = clientKeys.map(function(key) { return 'FIND("' + key + '", {Client})'; }).join(',');
-            var result = await apiCall(TABLES.transactions, 'OR(' + conditions + ')');
+            const conditions = clientKeys.map(key => `FIND("${key}", {Client})`).join(',');
+            const result = await apiCall(TABLES.transactions, `OR(${conditions})`);
             return result.records || [];
         }
 
         async function getBalancesForUser(userName) {
             if (!userName) return [];
-            var result = await apiCall(TABLES.balances, 'FIND("' + userName + '", ARRAYJOIN({[ALL] Users}))');
+            const result = await apiCall(TABLES.balances, `FIND("${userName}", ARRAYJOIN({[ALL] Users}))`);
             return result.records || [];
         }
 
         async function getTopupsForUser(userName) {
             if (!userName) return [];
-            var result = await apiCall(TABLES.topups, 'FIND("' + userName + '", ARRAYJOIN({Client Name (From Users)}))');
+            const result = await apiCall(TABLES.topups, `FIND("${userName}", ARRAYJOIN({Client Name (From Users)}))`);
             return result.records || [];
         }
 
+        // ============ LOGIN ============
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            var email = document.getElementById('loginEmail').value.trim();
-            var password = document.getElementById('loginPassword').value;
-            var loginBtn = document.getElementById('loginBtn');
-            var loginBtnText = document.getElementById('loginBtnText');
-            var loginSpinner = document.getElementById('loginSpinner');
-            var loginError = document.getElementById('loginError');
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const loginError = document.getElementById('loginError');
+
             loginBtn.disabled = true;
             loginBtnText.textContent = 'Signing in...';
             loginSpinner.style.display = 'block';
             loginError.classList.remove('show');
+
             try {
-                var user = await authenticateUser(email, password);
-                if (user) { currentUser = user; await loadDashboard(); }
-                else { loginError.textContent = 'Invalid email or password.'; loginError.classList.add('show'); }
-            } catch (error) { console.error('Login error:', error); loginError.textContent = 'Connection error. Please try again.'; loginError.classList.add('show'); }
-            finally { loginBtn.disabled = false; loginBtnText.textContent = 'Sign In'; loginSpinner.style.display = 'none'; }
+                const user = await authenticateUser(email, password);
+                if (user) {
+                    currentUser = user;
+                    await loadDashboard();
+                } else {
+                    loginError.textContent = 'Invalid email or password.';
+                    loginError.classList.add('show');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = 'Connection error. Please try again.';
+                loginError.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Sign In';
+                loginSpinner.style.display = 'none';
+            }
         });
 
         function logout() {
-            currentUser = null; userClients = []; userData = { orders: [], transactions: [], balances: [], topups: [] };
+            currentUser = null;
+            userClients = [];
+            userData = { orders: [], transactions: [], balances: [], topups: [] };
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('loginEmail').value = '';
@@ -252,33 +462,58 @@
             switchTab('home');
         }
 
+        // ============ DASHBOARD ============
         async function loadDashboard() {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
             updateUserUI();
+
             try {
-                var firstName = currentUser.fields['Stacker First Name'] || '';
-                var lastName = currentUser.fields['Stacker Last Name'] || '';
-                var userName = (firstName + ' ' + lastName).trim();
-                var clientIds = currentUser.fields['Clients'] || [];
-                if (clientIds.length > 0) { userClients = await getClientRecords(clientIds); }
-                var clientKeys = userClients.map(function(c) { return c.fields['Client Key']; }).filter(Boolean);
-                var results = await Promise.all([getOrdersForClients(clientKeys), getTransactionsForClients(clientKeys), getBalancesForUser(userName), getTopupsForUser(userName)]);
-                userData.orders = results[0]; userData.transactions = results[1]; userData.balances = results[2]; userData.topups = results[3];
-                renderDashboardStats(); renderOrdersTable(); renderTransactionsTable(); renderBalancesTable(); renderTopupsTable();
-            } catch (error) { console.error('Error loading dashboard data:', error); showEmptyStates(); }
+                const firstName = currentUser.fields['Stacker First Name'] || '';
+                const lastName = currentUser.fields['Stacker Last Name'] || '';
+                const userName = (firstName + ' ' + lastName).trim();
+                const clientIds = currentUser.fields['Clients'] || [];
+
+                if (clientIds.length > 0) {
+                    userClients = await getClientRecords(clientIds);
+                }
+
+                const clientKeys = userClients.map(c => c.fields['Client Key']).filter(Boolean);
+
+                const [orders, transactions, balances, topups] = await Promise.all([
+                    getOrdersForClients(clientKeys),
+                    getTransactionsForClients(clientKeys),
+                    getBalancesForUser(userName),
+                    getTopupsForUser(userName)
+                ]);
+
+                userData.orders = orders;
+                userData.transactions = transactions;
+                userData.balances = balances;
+                userData.topups = topups;
+
+                renderDashboardStats();
+                renderOrdersTable();
+                renderTransactionsTable();
+                renderBalancesTable();
+                renderTopupsTable();
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showEmptyStates();
+            }
         }
 
         function updateUserUI() {
-            var firstName = currentUser.fields['Stacker First Name'] || '';
-            var lastName = currentUser.fields['Stacker Last Name'] || '';
-            var email = currentUser.fields['Dashboard Email'] || '';
-            var fullName = (firstName + ' ' + lastName).trim() || 'User';
-            var initials = (firstName[0] || '') + (lastName[0] || '') || '--';
+            const firstName = currentUser.fields['Stacker First Name'] || '';
+            const lastName = currentUser.fields['Stacker Last Name'] || '';
+            const email = currentUser.fields['Dashboard Email'] || '';
+            const fullName = (firstName + ' ' + lastName).trim() || 'User';
+            const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
+
             document.getElementById('userName').textContent = fullName;
             document.getElementById('userEmail').textContent = email;
             document.getElementById('userAvatar').textContent = initials.toUpperCase();
-            document.getElementById('welcomeTitle').textContent = 'Welcome back, ' + (firstName || 'there') + ' 👋';
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName || 'there'} 👋`;
         }
 
         function showEmptyStates() {
@@ -291,24 +526,34 @@
             document.getElementById('balanceSpent').textContent = '$0.00';
             document.getElementById('topupTotal').textContent = '$0.00';
             document.getElementById('topupCount').textContent = '0';
-            var emptyHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div><div class="empty-state-title">No data yet</div><div class="empty-state-text">Your data will appear here once available.</div></div>';
+
+            const emptyHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div><div class="empty-state-title">No data yet</div><div class="empty-state-text">Your data will appear here once available.</div></div>';
             document.getElementById('ordersTableContainer').innerHTML = emptyHTML;
             document.getElementById('transactionsTableContainer').innerHTML = emptyHTML;
             document.getElementById('balancesTableContainer').innerHTML = emptyHTML;
             document.getElementById('topupsTableContainer').innerHTML = emptyHTML;
         }
 
+        // ============ RENDER FUNCTIONS ============
         function renderDashboardStats() {
             document.getElementById('statOrders').textContent = userData.orders.length;
             document.getElementById('statOrdersChange').textContent = userData.orders.length > 0 ? 'All time' : 'No orders yet';
-            var totalRemaining = 0, totalSpent = 0;
-            userData.balances.forEach(function(b) { totalRemaining += parseFloat(b.fields['Remaining Balance'] || 0) || 0; totalSpent += parseFloat(b.fields['Spent'] || 0) || 0; });
+
+            let totalRemaining = 0, totalSpent = 0;
+            userData.balances.forEach(b => {
+                totalRemaining += parseFloat(b.fields['Remaining Balance'] || 0) || 0;
+                totalSpent += parseFloat(b.fields['Spent'] || 0) || 0;
+            });
             document.getElementById('statBalance').textContent = formatCurrency(totalRemaining);
             document.getElementById('statSpent').textContent = formatCurrency(totalSpent);
-            var topupTotal = 0;
-            userData.topups.forEach(function(t) { topupTotal += parseFloat(t.fields['Top-Up'] || t.fields['Amount'] || 0) || 0; });
+
+            let topupTotal = 0;
+            userData.topups.forEach(t => {
+                topupTotal += parseFloat(t.fields['Top-Up'] || t.fields['Amount'] || 0) || 0;
+            });
             document.getElementById('statTopups').textContent = userData.topups.length;
             document.getElementById('statTopupsChange').textContent = formatCurrency(topupTotal) + ' total';
+
             document.getElementById('balanceRemaining').textContent = formatCurrency(totalRemaining);
             document.getElementById('balanceSpent').textContent = formatCurrency(totalSpent);
             document.getElementById('topupTotal').textContent = formatCurrency(topupTotal);
@@ -316,42 +561,85 @@
         }
 
         function renderOrdersTable() {
-            var container = document.getElementById('ordersTableContainer');
-            if (userData.orders.length === 0) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div><div class="empty-state-title">No orders yet</div><div class="empty-state-text">Your orders will appear here once you make a purchase.</div></div>'; return; }
-            var html = '<table class="data-table"><thead><tr><th>Order</th><th>Product</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
-            userData.orders.forEach(function(order) { var f = order.fields; var source = f['Source'] || 'Unknown'; var productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-'; var amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0; var status = f['[D] Billing Status'] || 'active'; html += '<tr><td><strong>' + (f['Order Name'] || '-') + '</strong></td><td>' + productName + '</td><td><span class="source-badge ' + source.toLowerCase() + '">' + source + '</span></td><td>' + formatCurrency(amount) + '</td><td><span class="status-badge ' + status.toLowerCase().replace(/[_\s]/g, '') + '">' + status + '</span></td></tr>'; });
+            const container = document.getElementById('ordersTableContainer');
+            if (userData.orders.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg></div><div class="empty-state-title">No orders yet</div><div class="empty-state-text">Your orders will appear here once you make a purchase.</div></div>';
+                return;
+            }
+            let html = '<table class="data-table"><thead><tr><th>Order</th><th>Product</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+            userData.orders.forEach(order => {
+                const f = order.fields;
+                const source = f['Source'] || 'Unknown';
+                const productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
+                const amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
+                const status = f['[D] Billing Status'] || 'active';
+                html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace(/[_\s]/g, '')}">${status}</span></td></tr>`;
+            });
             container.innerHTML = html + '</tbody></table>';
         }
 
         function renderTransactionsTable() {
-            var container = document.getElementById('transactionsTableContainer');
-            if (userData.transactions.length === 0) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="empty-state-title">No transactions yet</div><div class="empty-state-text">Your transaction history will appear here.</div></div>'; return; }
-            var html = '<table class="data-table"><thead><tr><th>Transaction ID</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
-            userData.transactions.forEach(function(txn) { var f = txn.fields; var source = f['Source'] || 'Unknown'; html += '<tr><td><strong>' + (f['Transaction ID'] || '-') + '</strong></td><td><span class="source-badge ' + source.toLowerCase() + '">' + source + '</span></td><td>' + (f['[D] Type'] || '-') + '</td><td>' + formatCurrency(f['[D] Amount'] || 0) + '</td><td><span class="status-badge ' + (f['[D] Transaction Type'] || 'payment').toLowerCase() + '">' + (f['[D] Transaction Type'] || 'payment') + '</span></td></tr>'; });
+            const container = document.getElementById('transactionsTableContainer');
+            if (userData.transactions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="empty-state-title">No transactions yet</div><div class="empty-state-text">Your transaction history will appear here.</div></div>';
+                return;
+            }
+            let html = '<table class="data-table"><thead><tr><th>Transaction ID</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+            userData.transactions.forEach(txn => {
+                const f = txn.fields;
+                const source = f['Source'] || 'Unknown';
+                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${f['[D] Type'] || '-'}</td><td>${formatCurrency(f['[D] Amount'] || 0)}</td><td><span class="status-badge ${(f['[D] Transaction Type'] || 'payment').toLowerCase()}">${f['[D] Transaction Type'] || 'payment'}</span></td></tr>`;
+            });
             container.innerHTML = html + '</tbody></table>';
         }
 
         function renderBalancesTable() {
-            var container = document.getElementById('balancesTableContainer');
-            if (userData.balances.length === 0) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div><div class="empty-state-title">No balances yet</div><div class="empty-state-text">Your virtual account balances will appear here.</div></div>'; return; }
-            var html = '<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent</th></tr></thead><tbody>';
-            userData.balances.forEach(function(bal) { var f = bal.fields; var remaining = f['Remaining Balance'] || 0; var spent = f['Spent'] || 0; html += '<tr><td><strong>' + (f['Virtual Account Name'] || '-') + '</strong></td><td><span class="status-badge ' + (f['Status'] || 'active').toLowerCase() + '">' + (f['Status'] || 'Active') + '</span></td><td style="color: #16a34a; font-weight: 600;">' + formatCurrency(remaining) + '</td><td>' + formatCurrency(spent) + '</td></tr>'; });
+            const container = document.getElementById('balancesTableContainer');
+            if (userData.balances.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div><div class="empty-state-title">No balances yet</div><div class="empty-state-text">Your virtual account balances will appear here.</div></div>';
+                return;
+            }
+            let html = '<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent</th></tr></thead><tbody>';
+            userData.balances.forEach(bal => {
+                const f = bal.fields;
+                const remaining = f['Remaining Balance'] || 0;
+                const spent = f['Spent'] || 0;
+                html += `<tr><td><strong>${f['Virtual Account Name'] || '-'}</strong></td><td><span class="status-badge ${(f['Status'] || 'active').toLowerCase()}">${f['Status'] || 'Active'}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
+            });
             container.innerHTML = html + '</tbody></table>';
         }
 
         function renderTopupsTable() {
-            var container = document.getElementById('topupsTableContainer');
-            if (userData.topups.length === 0) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="empty-state-title">No top-ups yet</div><div class="empty-state-text">Your top-up history will appear here.</div></div>'; return; }
-            var html = '<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Payment Method</th><th>Amount</th><th>Top-Up</th><th>Fee</th></tr></thead><tbody>';
-            userData.topups.forEach(function(topup) { var f = topup.fields; var date = f['Invoice Date'] || f['Date (From Payments)'] || '-'; if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} } html += '<tr><td><strong>' + (f['Invoice'] || '-') + '</strong></td><td>' + date + '</td><td><span class="method-badge">' + (f['Paid With'] || '-') + '</span></td><td>' + formatCurrency(f['Amount'] || 0) + '</td><td style="color: #16a34a; font-weight: 600;">' + formatCurrency(f['Top-Up'] || 0) + '</td><td style="color: #dc2626;">' + formatCurrency(f['Top-Up Fee'] || 0) + '</td></tr>'; });
+            const container = document.getElementById('topupsTableContainer');
+            if (userData.topups.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div><div class="empty-state-title">No top-ups yet</div><div class="empty-state-text">Your top-up history will appear here.</div></div>';
+                return;
+            }
+            let html = '<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Payment Method</th><th>Amount</th><th>Top-Up</th><th>Fee</th></tr></thead><tbody>';
+            userData.topups.forEach(topup => {
+                const f = topup.fields;
+                let date = f['Invoice Date'] || f['Date (From Payments)'] || '-';
+                if (date && date !== '-') {
+                    try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {}
+                }
+                html += `<tr><td><strong>${f['Invoice'] || '-'}</strong></td><td>${date}</td><td><span class="method-badge">${f['Paid With'] || '-'}</span></td><td>${formatCurrency(f['Amount'] || 0)}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(f['Top-Up'] || 0)}</td><td style="color: #dc2626;">${formatCurrency(f['Top-Up Fee'] || 0)}</td></tr>`;
+            });
             container.innerHTML = html + '</tbody></table>';
         }
 
-        function formatCurrency(amount) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseFloat(amount) || 0); }
+        // ============ UTILITIES ============
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseFloat(amount) || 0);
+        }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.nav-item').forEach(function(item) { item.classList.remove('active'); if (item.dataset.tab === tabName) item.classList.add('active'); });
-            document.querySelectorAll('.content-panel').forEach(function(panel) { panel.classList.remove('active'); });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tabName) item.classList.add('active');
+            });
+            document.querySelectorAll('.content-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
             document.getElementById('panel-' + tabName).classList.add('active');
         }
     </script>
