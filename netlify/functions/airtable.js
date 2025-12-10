@@ -20,7 +20,12 @@ exports.handler = async (event, context) => {
 
     try {
         // Parse the request body
-        const body = JSON.parse(event.body || '{}');
+        let body;
+        if (event.isBase64Encoded) {
+            body = JSON.parse(Buffer.from(event.body, 'base64').toString('utf-8'));
+        } else {
+            body = JSON.parse(event.body || '{}');
+        }
         const { action, table, params, filterFormula } = body;
 
         if (!table) {
