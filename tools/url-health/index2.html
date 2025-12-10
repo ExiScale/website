@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: Minimal Theme + Sidebar Layout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Minimal Theme Variables */
+        :root {
+            /* Minimal Clean Dark (Default) */
+            --bg-primary: #0D0D0D;
+            --bg-secondary: #1A1A1A;
+            --bg-tertiary: #262626;
+            --card-bg: #1A1A1A;
+            --border: #2A2A2A;
+            --border-hover: #3A3A3A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A3A3A3;
+            --text-muted: #666666;
+            --primary: #FFFFFF;
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            /* Minimal Clean Light */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #FAFAFA;
+            --bg-tertiary: #F5F5F5;
+            --card-bg: #FFFFFF;
+            --border: #E5E5E5;
+            --border-hover: #D4D4D4;
+            --text-primary: #0A0A0A;
+            --text-secondary: #737373;
+            --text-muted: #A3A3A3;
+            --primary: #0A0A0A;
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            transition: transform 0.3s ease, background 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-260px);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--bg-tertiary);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .content-wrapper {
+            padding: 24px;
+            max-width: 1400px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-hover);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--bg-primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-icon {
+            padding: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-change {
+            font-size: 13px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive { color: var(--success); }
+        .stat-change.negative { color: var(--danger); }
+
+        /* Data Table */
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover td {
+            background: var(--bg-tertiary);
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        /* Toggle Button */
+        .toggle {
+            padding: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .toggle-option {
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-option.active {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Demo Banner */
+        .demo-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--text-secondary) 100%);
+            color: var(--bg-primary);
+            padding: 12px 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-banner">
+        🎨 PREVIEW: Minimal Theme + Original Sidebar Layout
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Health Monitor</h2>
+                <button class="btn btn-icon" onclick="toggleSidebar()">☰</button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="switchPage('dashboard')">📊 Dashboard</a>
+                <a class="nav-item" onclick="switchPage('scans')">🔍 Scan Logs</a>
+                <a class="nav-item" onclick="switchPage('alerts')">🔔 Alerts</a>
+                <a class="nav-item" onclick="switchPage('setup')">⚙️ Setup</a>
+                <a class="nav-item" onclick="switchPage('profile')">👤 Profile</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn" style="width: 100%;" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <div class="header">
+                <div class="header-left">
+                    <button class="btn btn-icon" onclick="toggleSidebar()">☰</button>
+                    <span style="font-weight: 600;">Welcome, Admin</span>
+                </div>
+                <div class="header-right">
+                    <div class="toggle">
+                        <button class="toggle-option active" onclick="setTheme('dark')">Dark</button>
+                        <button class="toggle-option" onclick="setTheme('light')">Light</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-wrapper">
+                <!-- Dashboard Page -->
+                <div id="dashboardPage">
+                    <h1 class="page-title">Dashboard</h1>
+
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total URLs</div>
+                            <div class="stat-value">24</div>
+                            <div class="stat-change positive">↑ 3 this week</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Active Scans</div>
+                            <div class="stat-value">156</div>
+                            <div class="stat-change positive">↑ 12 today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Active Alerts</div>
+                            <div class="stat-value">3</div>
+                            <div class="stat-change negative">2 unresolved</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Clean Status</div>
+                            <div class="stat-value">87%</div>
+                            <div class="stat-change positive">↑ 2%</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Scans Table -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2 class="table-title">Recent Scans</h2>
+                            <button class="btn btn-primary">Run New Scan</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>Detections</th>
+                                    <th>Last Scan</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>https://example.com</td>
+                                    <td><span class="badge success">Clean</span></td>
+                                    <td>0/89</td>
+                                    <td>2 hours ago</td>
+                                    <td><button class="btn">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>https://test-site.com</td>
+                                    <td><span class="badge warning">Suspicious</span></td>
+                                    <td>2/89</td>
+                                    <td>5 hours ago</td>
+                                    <td><button class="btn">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>https://another-domain.org</td>
+                                    <td><span class="badge success">Clean</span></td>
+                                    <td>0/89</td>
+                                    <td>1 day ago</td>
+                                    <td><button class="btn">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>https://flagged-site.net</td>
+                                    <td><span class="badge danger">Malicious</span></td>
+                                    <td>15/89</td>
+                                    <td>2 days ago</td>
+                                    <td><button class="btn">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Setup Form Example -->
+                    <div style="margin-top: 24px;">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h2 class="table-title">Add New URL</h2>
+                            </div>
+                            <div style="padding: 24px;">
+                                <div class="form-group">
+                                    <label class="form-label">URL to Monitor</label>
+                                    <input type="text" class="form-input" placeholder="https://example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Scan Frequency</label>
+                                    <select class="form-input">
+                                        <option>Hourly</option>
+                                        <option>Daily</option>
+                                        <option>Weekly</option>
+                                        <option>Monthly</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary">Add URL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+
+        // Page Navigation
+        function switchPage(page) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            alert(`Switching to ${page} page (demo only)`);
+        }
+
+        function logout() {
+            alert('Logout (demo only)');
+        }
+    </script>
+</body>
+</html>
