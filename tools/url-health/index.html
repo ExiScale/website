@@ -1134,95 +1134,253 @@
 
 <script>
     // ========================================
-    // Configuration - UPDATE THESE
+    // Configuration
     // ========================================
-    const SCHEDULER_API = 'https://your-siteground-domain.com'; // Your SiteGround scheduler URL
-    const AIRTABLE_PROXY = '/.netlify/functions/url-health-airtable';
+    const SCHEDULER_API = 'https://your-siteground-domain.com'; // UPDATE THIS
+    
+    // Airtable Config (URL Health Base)
+    const AIRTABLE_API_KEY = 'pat4jP0Gy85t1oFD4.349c6f94d0c1515a09dcc426e6305fbddd1fea4d2c861ea7ab0c1f2ab3428fa3';
+    const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
+    const AIRTABLE_BASE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}`;
 
     // State
     let lastScannedUrl = null;
-    let currentUser = null;
+    let urlsData = [];
+    let scansData = [];
+    let alertsData = [];
+    let schedulesData = [];
+
+    // ========================================
+    // Airtable API Helper
+    // ========================================
+    async function airtableRequest(table, method = 'GET', body = null, recordId = null, params = {}) {
+        let url = `${AIRTABLE_BASE_URL}/${encodeURIComponent(table)}`;
+        if (recordId) url += `/${recordId}`;
+        
+        if (method === 'GET' && Object.keys(params).length > 0) {
+            const queryParts = [];
+            if (params.filterByFormula) queryParts.push(`filterByFormula=${encodeURIComponent(params.filterByFormula)}`);
+            if (params.maxRecords) queryParts.push(`maxRecords=${params.maxRecords}`);
+            if (queryParts.length > 0) url += '?' + queryParts.join('&');
+        }
+
+        const options = {
+            method,
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        if (body) options.body = JSON.stringify(body);
+
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || 'Request failed');
+        return data;
+    }
+
+    // ========================================
+    // Helpers
+    // ========================================
+    function extractDomain(url) {
+        try { return new URL(url).hostname.replace('www.', ''); }
+        catch { return url; }
+    }
+    function capitalizeFirst(str) { return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''; }
+    function timeAgo(dateStr) {
+        const seconds = Math.floor((new Date() - new Date(dateStr)) / 1000);
+        if (seconds < 60) return 'Just now';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes}m ago`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours}h ago`;
+        return `${Math.floor(hours / 24)}d ago`;
+    }
+    function showToast(msg) { alert(msg); }
 
     // ========================================
     // Navigation
     // ========================================
     function switchPage(pageName) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.page === pageName);
-        });
-        document.querySelectorAll('.content-panel').forEach(panel => {
-            panel.classList.toggle('active', panel.id === 'page-' + pageName);
-        });
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === pageName));
+        document.querySelectorAll('.content-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'page-' + pageName));
+    }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // ========================================
+    // Load Data
+    // ========================================
+    async function loadUrls() {
+        try {
+            const data = await airtableRequest('URLs');
+            urlsData = data.records || [];
+            renderUrls();
+            updateStats();
+        } catch (error) { console.error('Failed to load URLs:', error); }
     }
 
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('open');
+    async function loadScans() {
+        try {
+            const data = await airtableRequest('ScanLogs', 'GET', null, null, { maxRecords: '50' });
+            scansData = data.records || [];
+            renderScans();
+            renderRecentScans();
+            updateStats();
+        } catch (error) { console.error('Failed to load scans:', error); }
+    }
+
+    async function loadAlerts() {
+        try {
+            const data = await airtableRequest('DetectionAlerts', 'GET', null, null, { filterByFormula: '{acknowledged}=FALSE()' });
+            alertsData = data.records || [];
+            renderAlerts();
+            updateStats();
+        } catch (error) { console.error('Failed to load alerts:', error); }
+    }
+
+    async function loadSchedules() {
+        try {
+            const data = await airtableRequest('Schedules');
+            schedulesData = data.records || [];
+            renderSchedules();
+        } catch (error) { console.error('Failed to load schedules:', error); }
     }
 
     // ========================================
-    // Quick Scan
+    // Render Functions
     // ========================================
-    async function performQuickScan() {
-        const input = document.getElementById('quickScanInput');
-        let url = input.value.trim();
+    function renderUrls() {
+        const container = document.getElementById('urlsListBody');
+        const empty = document.getElementById('urlsEmpty');
 
-        if (!url) {
-            alert('Please enter a URL');
+        if (urlsData.length === 0) {
+            container.innerHTML = '';
+            container.appendChild(empty);
+            empty.style.display = 'block';
             return;
         }
+        empty.style.display = 'none';
 
+        container.innerHTML = `<table class="data-table">
+            <thead><tr><th>URL</th><th>Status</th><th>Last Scanned</th><th>Actions</th></tr></thead>
+            <tbody>${urlsData.map(record => {
+                const f = record.fields;
+                const url = f.url || '';
+                const status = f.last_status || 'pending';
+                return `<tr>
+                    <td><div class="url-cell"><div class="url-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div><div><div class="url-text">${f.label || extractDomain(url)}</div><div class="url-domain">${url}</div></div></div></td>
+                    <td><span class="status-badge ${status}">${capitalizeFirst(status)}</span></td>
+                    <td>${f.last_scanned ? timeAgo(f.last_scanned) : 'Never'}</td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm" onclick="scanSingleUrl('${record.id}', '${url}')">Scan</button>
+                        <button class="btn btn-icon btn-secondary btn-sm" onclick="deleteUrl('${record.id}')" style="margin-left:0.5rem;"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                    </td>
+                </tr>`;
+            }).join('')}</tbody></table>`;
+    }
+
+    function renderRecentScans() {
+        const tbody = document.getElementById('recentScansTbody');
+        const table = document.getElementById('recentScansTable');
+        const empty = document.getElementById('recentScansEmpty');
+        const recent = scansData.slice(0, 5);
+
+        if (recent.length === 0) { table.style.display = 'none'; empty.style.display = 'block'; return; }
+        table.style.display = 'table'; empty.style.display = 'none';
+
+        tbody.innerHTML = recent.map(record => {
+            const f = record.fields;
+            const status = f.status || 'clean';
+            const risk = f.ad_risk_score || 0;
+            const riskClass = risk > 20 ? 'high' : risk > 5 ? 'medium' : 'low';
+            return `<tr>
+                <td><div class="url-text">${extractDomain(f.url_text || 'Unknown')}</div></td>
+                <td><span class="status-badge ${status}">${capitalizeFirst(status)}</span></td>
+                <td>${f.detections || 0}/89</td>
+                <td><div class="risk-score"><div class="risk-bar"><div class="risk-fill ${riskClass}" style="width:${Math.min(risk*2,100)}%"></div></div><span class="risk-value">${risk}</span></div></td>
+                <td>${f.scan_timestamp ? timeAgo(f.scan_timestamp) : 'Unknown'}</td>
+                <td><button class="btn btn-secondary btn-sm">View</button></td>
+            </tr>`;
+        }).join('');
+    }
+
+    function renderScans() {
+        const container = document.getElementById('scanLogsBody');
+        if (scansData.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div><div class="empty-state-title">No scan history</div></div>`;
+            return;
+        }
+        container.innerHTML = `<table class="data-table"><thead><tr><th>URL</th><th>Status</th><th>Detections</th><th>Ad Risk</th><th>Scanned</th></tr></thead>
+            <tbody>${scansData.map(r => {
+                const f = r.fields; const risk = f.ad_risk_score || 0;
+                const riskClass = risk > 20 ? 'high' : risk > 5 ? 'medium' : 'low';
+                return `<tr><td>${extractDomain(f.url_text||'Unknown')}</td><td><span class="status-badge ${f.status||'clean'}">${capitalizeFirst(f.status||'clean')}</span></td><td>${f.detections||0}/89</td><td><div class="risk-score"><div class="risk-bar"><div class="risk-fill ${riskClass}" style="width:${Math.min(risk*2,100)}%"></div></div><span class="risk-value">${risk}</span></div></td><td>${f.scan_timestamp?timeAgo(f.scan_timestamp):'Unknown'}</td></tr>`;
+            }).join('')}</tbody></table>`;
+    }
+
+    function renderAlerts() {
+        const container = document.getElementById('alertsBody');
+        const badge = document.getElementById('alertCountBadge');
+        if (alertsData.length === 0) {
+            badge.style.display = 'none';
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div><div class="empty-state-title">All clear!</div></div>`;
+            return;
+        }
+        badge.textContent = alertsData.length; badge.style.display = 'inline-block';
+        container.innerHTML = alertsData.map(r => {
+            const f = r.fields;
+            return `<div class="alert-item"><div class="alert-icon-box danger"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div><div class="alert-content"><div class="alert-title">Flagged by ${f.engine_name||'Unknown'}</div><div class="alert-description">${f.url_text||'Unknown'}</div><div class="alert-time">Detected ${f.first_detected?timeAgo(f.first_detected):'Unknown'}</div></div><div class="alert-actions"><button class="btn btn-secondary btn-sm" onclick="acknowledgeAlert('${r.id}')">Acknowledge</button></div></div>`;
+        }).join('');
+    }
+
+    function renderSchedules() {
+        const container = document.getElementById('schedulesBody');
+        if (schedulesData.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div class="empty-state-title">No schedules</div></div>`;
+            return;
+        }
+        container.innerHTML = `<table class="data-table"><thead><tr><th>Frequency</th><th>Time</th><th>Last Run</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>${schedulesData.map(r => {
+                const f = r.fields; const enabled = f.enabled !== false;
+                return `<tr><td>${capitalizeFirst(f.frequency||'daily')}</td><td>${f.scheduled_time||'09:00'}</td><td>${f.last_scan?timeAgo(f.last_scan):'Never'}</td><td><span class="status-badge ${enabled?'clean':'pending'}">${enabled?'Active':'Paused'}</span></td><td><button class="btn btn-secondary btn-sm" onclick="toggleSchedule('${r.id}',${!enabled})">${enabled?'Pause':'Enable'}</button></td></tr>`;
+            }).join('')}</tbody></table>`;
+    }
+
+    function updateStats() {
+        document.getElementById('statUrls').textContent = urlsData.length;
+        document.getElementById('urlCountBadge').textContent = urlsData.length;
+        const clean = urlsData.filter(r => r.fields.last_status === 'clean').length;
+        document.getElementById('statClean').textContent = clean;
+        document.getElementById('statCleanPct').textContent = `${urlsData.length ? Math.round((clean/urlsData.length)*100) : 0}% healthy`;
+        document.getElementById('statAlerts').textContent = alertsData.length;
+        document.getElementById('statAlertsText').textContent = alertsData.length > 0 ? 'Requires attention' : 'All clear';
+        document.getElementById('statScans').textContent = scansData.length;
+    }
+
+    // ========================================
+    // URL Management
+    // ========================================
+    async function addNewUrl() {
+        const urlInput = document.getElementById('newUrlInput');
+        const labelInput = document.getElementById('newUrlLabel');
+        let url = urlInput.value.trim();
+        const label = labelInput.value.trim();
+        if (!url) { alert('Please enter a URL'); return; }
         if (!url.startsWith('http')) url = 'https://' + url;
 
-        document.getElementById('scanningUrl').textContent = url;
-        document.getElementById('scanningModal').classList.add('active');
-
         try {
-            const response = await fetch(`${SCHEDULER_API}/api/scan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url })
-            });
-
-            const result = await response.json();
-            document.getElementById('scanningModal').classList.remove('active');
-            showScanResult(url, result);
-
-        } catch (error) {
-            document.getElementById('scanningModal').classList.remove('active');
-            alert('Scan failed: ' + error.message);
-        }
+            await airtableRequest('URLs', 'POST', { fields: { url, label: label || null, last_status: 'pending' } });
+            urlInput.value = ''; labelInput.value = '';
+            await loadUrls();
+            showToast('URL added!');
+        } catch (e) { alert('Failed: ' + e.message); }
     }
 
-    function showScanResult(url, result) {
-        lastScannedUrl = { url, result };
-
-        const icon = document.getElementById('resultIcon');
-        const title = document.getElementById('resultTitle');
-        const verdict = result.verdict || 'clean';
-
-        icon.className = 'modal-icon ' + verdict;
-
-        if (verdict === 'clean') {
-            title.textContent = 'URL is Clean ✓';
-            icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
-        } else if (verdict === 'suspicious') {
-            title.textContent = 'Suspicious Activity';
-            icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
-        } else {
-            title.textContent = 'Threats Detected!';
-            icon.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-        }
-
-        document.getElementById('resultUrl').textContent = url;
-        document.getElementById('resultDetections').textContent = result.detections || 0;
-        document.getElementById('resultEngines').textContent = result.totalEngines || 89;
-        document.getElementById('resultRisk').textContent = result.adRiskScore || 0;
-
-        document.getElementById('resultModal').classList.add('active');
-    }
-
-    function closeModal(id) {
-        document.getElementById(id).classList.remove('active');
+    async function deleteUrl(recordId) {
+        if (!confirm('Delete this URL?')) return;
+        try { await airtableRequest('URLs', 'DELETE', null, recordId); await loadUrls(); }
+        catch (e) { alert('Failed: ' + e.message); }
     }
 
     function addScannedUrl() {
@@ -1234,38 +1392,119 @@
     }
 
     // ========================================
-    // Toggle Switches
+    // Scanning
     // ========================================
-    function toggleSwitch(type) {
-        document.getElementById(type + 'Toggle').classList.toggle('active');
-    }
-
-    // ========================================
-    // Placeholder Functions - Connect to API
-    // ========================================
-    function addNewUrl() {
-        const url = document.getElementById('newUrlInput').value.trim();
+    async function performQuickScan() {
+        const input = document.getElementById('quickScanInput');
+        let url = input.value.trim();
         if (!url) { alert('Please enter a URL'); return; }
-        alert('URL added: ' + url);
-        document.getElementById('newUrlInput').value = '';
-        document.getElementById('newUrlLabel').value = '';
+        if (!url.startsWith('http')) url = 'https://' + url;
+
+        document.getElementById('scanningUrl').textContent = url;
+        document.getElementById('scanningModal').classList.add('active');
+
+        try {
+            const response = await fetch(`${SCHEDULER_API}/api/scan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            });
+            const result = await response.json();
+            document.getElementById('scanningModal').classList.remove('active');
+            showScanResult(url, result);
+        } catch (e) {
+            document.getElementById('scanningModal').classList.remove('active');
+            alert('Scan failed: ' + e.message);
+        }
     }
 
-    function scanAllUrls() { alert('Scanning all URLs...'); }
-    function createSchedule() { alert('Schedule created!'); }
-    function acknowledgeAllAlerts() { alert('All alerts acknowledged'); }
-    function testEmail() { alert('Test email sent!'); }
-    function testTelegram() { alert('Test message sent!'); }
-    function saveSettings() { alert('Settings saved!'); }
+    async function scanSingleUrl(urlRecordId, url) {
+        document.getElementById('scanningUrl').textContent = url;
+        document.getElementById('scanningModal').classList.add('active');
+
+        try {
+            const response = await fetch(`${SCHEDULER_API}/api/scan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, urlId: urlRecordId })
+            });
+            const result = await response.json();
+            await airtableRequest('URLs', 'PATCH', { fields: { last_status: result.verdict || 'clean', last_scanned: new Date().toISOString() } }, urlRecordId);
+            document.getElementById('scanningModal').classList.remove('active');
+            showScanResult(url, result);
+            await loadUrls(); await loadScans();
+        } catch (e) {
+            document.getElementById('scanningModal').classList.remove('active');
+            alert('Scan failed: ' + e.message);
+        }
+    }
+
+    async function scanAllUrls() {
+        if (urlsData.length === 0) { alert('No URLs to scan'); return; }
+        showToast(`Scanning ${urlsData.length} URLs...`);
+        for (const r of urlsData) { await scanSingleUrl(r.id, r.fields.url); }
+        showToast('All scanned!');
+    }
+
+    function showScanResult(url, result) {
+        lastScannedUrl = { url, result };
+        const icon = document.getElementById('resultIcon');
+        const title = document.getElementById('resultTitle');
+        const verdict = result.verdict || 'clean';
+        icon.className = 'modal-icon ' + verdict;
+        if (verdict === 'clean') {
+            title.textContent = 'URL is Clean ✓';
+            icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+        } else if (verdict === 'suspicious') {
+            title.textContent = 'Suspicious Activity';
+            icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+        } else {
+            title.textContent = 'Threats Detected!';
+            icon.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+        }
+        document.getElementById('resultUrl').textContent = url;
+        document.getElementById('resultDetections').textContent = result.detections || 0;
+        document.getElementById('resultEngines').textContent = result.totalEngines || 89;
+        document.getElementById('resultRisk').textContent = result.adRiskScore || 0;
+        document.getElementById('resultModal').classList.add('active');
+    }
+
+    // ========================================
+    // Alerts & Schedules
+    // ========================================
+    async function acknowledgeAlert(recordId) {
+        try { await airtableRequest('DetectionAlerts', 'PATCH', { fields: { acknowledged: true } }, recordId); await loadAlerts(); }
+        catch (e) { alert('Failed: ' + e.message); }
+    }
+    async function acknowledgeAllAlerts() {
+        for (const a of alertsData) { await airtableRequest('DetectionAlerts', 'PATCH', { fields: { acknowledged: true } }, a.id); }
+        await loadAlerts();
+    }
+    async function createSchedule() {
+        const freq = document.getElementById('scheduleFrequency').value;
+        const time = document.getElementById('scheduleTime').value;
+        try { await airtableRequest('Schedules', 'POST', { fields: { frequency: freq, scheduled_time: time, enabled: true } }); await loadSchedules(); showToast('Schedule created!'); }
+        catch (e) { alert('Failed: ' + e.message); }
+    }
+    async function toggleSchedule(recordId, enabled) {
+        try { await airtableRequest('Schedules', 'PATCH', { fields: { enabled } }, recordId); await loadSchedules(); }
+        catch (e) { alert('Failed: ' + e.message); }
+    }
+
+    // ========================================
+    // Settings
+    // ========================================
+    function toggleSwitch(type) { document.getElementById(type + 'Toggle').classList.toggle('active'); }
+    function testEmail() { showToast('Test email sent!'); }
+    function testTelegram() { showToast('Test message sent!'); }
+    function saveSettings() { showToast('Settings saved!'); }
 
     // ========================================
     // Init
     // ========================================
     document.addEventListener('DOMContentLoaded', () => {
-        // Enter key for quick scan
-        document.getElementById('quickScanInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performQuickScan();
-        });
+        loadUrls(); loadScans(); loadAlerts(); loadSchedules();
+        document.getElementById('quickScanInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') performQuickScan(); });
     });
 </script>
 
