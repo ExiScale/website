@@ -1,8 +1,15 @@
 // Netlify Serverless Function - Airtable API Proxy
 // This keeps your API key secret on the server
 
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+let AIRTABLE_API_KEY, AIRTABLE_BASE_ID;
+try {
+    const creds = require('./credentials');
+    AIRTABLE_API_KEY = creds.AIRTABLE_API_KEY;
+    AIRTABLE_BASE_ID = creds.AIRTABLE_BASE_ID;
+} catch (e) {
+    AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+    AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+}
 
 exports.handler = async (event, context) => {
     // Set CORS headers
@@ -33,7 +40,7 @@ exports.handler = async (event, context) => {
 
         // Build Airtable URL
         let url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`;
-        
+
         // Add query parameters
         const queryParams = new URLSearchParams();
         if (filterFormula) {
@@ -44,7 +51,7 @@ exports.handler = async (event, context) => {
                 queryParams.append(key, value);
             });
         }
-        
+
         if (queryParams.toString()) {
             url += '?' + queryParams.toString();
         }

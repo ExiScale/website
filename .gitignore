@@ -4,3 +4,4 @@ node_modules/
 dist/
 build/
 .netlify/
+netlify/functions/credentials.js
