@@ -611,7 +611,7 @@
                     <div class="user-avatar" id="userAvatar">--</div>
                     <div class="user-details">
                         <div class="user-name" id="userName">User</div>
-                        <div class="user-email" id="userEmail">user@example.com</div>
+                        <div class="user-email" id="userEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="641117011624011c05091408014a070b09">[email&#160;protected]</a></div>
                     </div>
                     <button class="logout-btn" onclick="logout()" title="Logout">
                         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -799,7 +799,7 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Config
         const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
         const VT_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/virustotal';
@@ -810,8 +810,7 @@
                 dashboardEmail: 'fldu08L0Zaj11mKwm',
                 dashboardPassword: 'fldHGnldQkFMOYE36',
                 firstName: 'fld3aQ9OHGmHbWDOR',
-                lastName: 'fld057U2rfGEmb5Gh',
-                email: 'fld8bSZrfhPsHpL7N'
+                lastName: 'fld057U2rfGEmb5Gh'
             }
         };
 
@@ -894,10 +893,11 @@
             document.getElementById('dashboard').classList.add('active');
             const firstName = currentUser.fields[F.users.firstName] || '';
             const lastName = currentUser.fields[F.users.lastName] || '';
-            const email = currentUser.fields[F.users.email] || currentUser.fields[F.users.dashboardEmail] || '';
-            document.getElementById('userName').textContent = firstName || 'User';
+            const email = currentUser.fields[F.users.dashboardEmail] || '';
+            const displayName = firstName || email.split('@')[0] || 'User';
+            document.getElementById('userName').textContent = displayName;
             document.getElementById('userEmail').textContent = email;
-            document.getElementById('userAvatar').textContent = ((firstName[0] || '') + (lastName[0] || '')).toUpperCase() || '--';
+            document.getElementById('userAvatar').textContent = ((firstName[0] || displayName[0] || '') + (lastName[0] || '')).toUpperCase() || '--';
             updateStats();
         }
 
