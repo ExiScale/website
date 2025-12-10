@@ -254,7 +254,7 @@
                         <div class="action-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></div>
                         <div class="action-content"><h3>New Order</h3><p>Purchase additional infrastructure</p></div>
                     </a>
-                    <a class="action-card" href="mailto:support@exiscale.com">
+                    <a class="action-card" href="/cdn-cgi/l/email-protection#92e1e7e2e2fde0e6d2f7eafbe1f1f3fef7bcf1fdff">
                         <div class="action-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                         <div class="action-content"><h3>Contact Support</h3><p>Get help from our team</p></div>
                     </a>
@@ -347,7 +347,7 @@
         </main>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // ============ CONFIG ============
         const API_ENDPOINT = 'https://whimsical-halva-08252d.netlify.app/.netlify/functions/airtable';
         const TABLES = {
@@ -357,6 +357,71 @@
             transactions: '[ALL] Transactions',
             balances: 'Balances',
             topups: 'Top-Ups (Invoices)'
+        };
+
+        // Field IDs for response parsing (when returnFieldsByFieldId: true)
+        const FIELDS = {
+            // [ALL] Users
+            users: {
+                firstName: 'fld3aQ9OHGmHbWDOR',
+                lastName: 'fld057U2rfGEmb5Gh',
+                fullName: 'fldsD2xamWMBQZGkC',
+                dashboardEmail: 'fldu08L0Zaj11mKwm',
+                clients: 'fldsN8m2obYYjRYlK'
+            },
+            // [ALL] Clients
+            clients: {
+                clientKey: 'fldsaPK9ggYFWBej2',
+                source: 'fldfoVDCAM9pEFiMA',
+                dClientName: 'fldZcKyubDP8domoL',
+                wClientName: 'fldLiZRx0yiy4TGy2',
+                cClientName: 'fldcEEOeD7QXll6wb'
+            },
+            // [ALL] Orders
+            orders: {
+                orderName: 'fldYlJ1TUHzW3m0vB',
+                source: 'fldxHxNvx196VFZrq',
+                dProductName: 'fldHhV2dZzM0VmEKm',
+                dAmount: 'fldSKXGeRTu4W1a6B',
+                dBillingStatus: 'fldlAGfbTs2ffSp3c',
+                wProductName: 'fldWiqKUVvoc6jWMO',
+                wAmount: 'fldh25l0sqfAvee19',
+                wBillingStatus: 'fldRe1hQH21SC0NIo',
+                cProductName: 'fldtxNhUb35BZOFZl',
+                cAmount: 'fldcH5lSNavtFZZY2',
+                cBillingStatus: 'fld1o4PdCu1ULnP18'
+            },
+            // [ALL] Transactions
+            transactions: {
+                transactionId: 'fldMZkh9lukv1gyCk',
+                source: 'fldjn0H8Wf8hWQN4y',
+                dType: 'fld5I9Anc2ZZJglDX',
+                dAmount: 'fldL9cUvxHjKC0Rcg',
+                dTransactionType: 'fldvA2AiQDgRM2v9v',
+                dOccuredAt: 'fldCniq0qW7Vm8mYo',
+                wType: 'fld69lXXSyMxAV8yA',
+                wAmount: 'fldNDaIFstDpwkvC3',
+                wTransactionStatus: 'fldJPRTJ8IHWzfImp',
+                cType: 'fld5f6gJEsRhXjKRb',
+                cAmount: 'fldNzQ9QDoRMqBraC',
+                cTransactionStatus: 'fldVAldeWVfDfoQ7I'
+            },
+            // Balances
+            balances: {
+                virtualAccountName: 'fldY1uYxPKnkQpsgv',
+                status: 'fldT2mZ7IwYUrccr8',
+                remainingBalance: 'fldDARbpnKeDMNQDg',
+                spent: 'fldJyZjFyiMSLxtl3'
+            },
+            // Top-Ups (Invoices)
+            topups: {
+                invoice: 'fldInvoiceID', // Need this ID
+                invoiceDate: 'fldInvoiceDate', // Need this ID
+                amount: 'fldAmount', // Need this ID
+                topUp: 'fldTopUp', // Need this ID
+                topUpFee: 'fldTopUpFee', // Need this ID
+                paidWith: 'fldPaidWith' // Need this ID
+            }
         };
 
         let currentUser = null;
@@ -469,16 +534,17 @@
             updateUserUI();
 
             try {
-                const firstName = currentUser.fields['Stacker First Name'] || '';
-                const lastName = currentUser.fields['Stacker Last Name'] || '';
+                const f = currentUser.fields;
+                const firstName = f[FIELDS.users.firstName] || '';
+                const lastName = f[FIELDS.users.lastName] || '';
                 const userName = (firstName + ' ' + lastName).trim();
-                const clientIds = currentUser.fields['Clients'] || [];
+                const clientIds = f[FIELDS.users.clients] || [];
 
                 if (clientIds.length > 0) {
                     userClients = await getClientRecords(clientIds);
                 }
 
-                const clientKeys = userClients.map(c => c.fields['Client Key']).filter(Boolean);
+                const clientKeys = userClients.map(c => c.fields[FIELDS.clients.clientKey]).filter(Boolean);
 
                 const [orders, transactions, balances, topups] = await Promise.all([
                     getOrdersForClients(clientKeys),
@@ -504,16 +570,31 @@
         }
 
         function updateUserUI() {
-            const firstName = currentUser.fields['Stacker First Name'] || '';
-            const lastName = currentUser.fields['Stacker Last Name'] || '';
-            const email = currentUser.fields['Dashboard Email'] || '';
-            const fullName = (firstName + ' ' + lastName).trim() || 'User';
-            const initials = (firstName[0] || '') + (lastName[0] || '') || '--';
+            const f = currentUser.fields;
+            const firstName = f[FIELDS.users.firstName] || '';
+            const lastName = f[FIELDS.users.lastName] || '';
+            const email = f[FIELDS.users.dashboardEmail] || '';
+            
+            // Try to get name from various fields, fallback to email username
+            let displayName = (firstName + ' ' + lastName).trim();
+            if (!displayName && email) {
+                displayName = email.split('@')[0]; // Use email username as fallback
+            }
+            displayName = displayName || 'User';
+            
+            // Get first name for welcome message
+            let welcomeName = firstName || displayName.split(' ')[0] || 'there';
+            
+            // Generate initials
+            const nameParts = displayName.split(' ').filter(p => p);
+            const initials = nameParts.length >= 2 
+                ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+                : (displayName.substring(0, 2) || '--').toUpperCase();
 
-            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userName').textContent = displayName;
             document.getElementById('userEmail').textContent = email;
-            document.getElementById('userAvatar').textContent = initials.toUpperCase();
-            document.getElementById('welcomeTitle').textContent = `Welcome back, ${firstName || 'there'} 👋`;
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${welcomeName} 👋`;
         }
 
         function showEmptyStates() {
@@ -541,8 +622,8 @@
 
             let totalRemaining = 0, totalSpent = 0;
             userData.balances.forEach(b => {
-                totalRemaining += parseFloat(b.fields['Remaining Balance'] || 0) || 0;
-                totalSpent += parseFloat(b.fields['Spent'] || 0) || 0;
+                totalRemaining += parseFloat(b.fields[FIELDS.balances.remainingBalance] || 0) || 0;
+                totalSpent += parseFloat(b.fields[FIELDS.balances.spent] || 0) || 0;
             });
             document.getElementById('statBalance').textContent = formatCurrency(totalRemaining);
             document.getElementById('statSpent').textContent = formatCurrency(totalSpent);
@@ -569,11 +650,11 @@
             let html = '<table class="data-table"><thead><tr><th>Order</th><th>Product</th><th>Source</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
             userData.orders.forEach(order => {
                 const f = order.fields;
-                const source = f['Source'] || 'Unknown';
-                const productName = f['[D] Product Name'] || f['[W] Product Name'] || f['[C] Product Name'] || '-';
-                const amount = f['[D] Amount ($)'] || f['[W] Amount ($)'] || f['[C] Amount ($)'] || 0;
-                const status = f['[D] Billing Status'] || 'active';
-                html += `<tr><td><strong>${f['Order Name'] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace(/[_\s]/g, '')}">${status}</span></td></tr>`;
+                const source = f[FIELDS.orders.source] || 'Unknown';
+                const productName = f[FIELDS.orders.dProductName] || f[FIELDS.orders.wProductName] || f[FIELDS.orders.cProductName] || '-';
+                const amount = f[FIELDS.orders.dAmount] || f[FIELDS.orders.wAmount] || f[FIELDS.orders.cAmount] || 0;
+                const status = f[FIELDS.orders.dBillingStatus] || f[FIELDS.orders.wBillingStatus] || f[FIELDS.orders.cBillingStatus] || 'active';
+                html += `<tr><td><strong>${f[FIELDS.orders.orderName] || '-'}</strong></td><td>${productName}</td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase().replace(/[_\s]/g, '')}">${status}</span></td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -584,11 +665,18 @@
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><div class="empty-state-title">No transactions yet</div><div class="empty-state-text">Your transaction history will appear here.</div></div>';
                 return;
             }
-            let html = '<table class="data-table"><thead><tr><th>Transaction ID</th><th>Source</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>';
+            let html = '<table class="data-table"><thead><tr><th>Transaction ID</th><th>Source</th><th>Type</th><th>Amount</th><th>Date</th></tr></thead><tbody>';
             userData.transactions.forEach(txn => {
                 const f = txn.fields;
-                const source = f['Source'] || 'Unknown';
-                html += `<tr><td><strong>${f['Transaction ID'] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${f['[D] Type'] || '-'}</td><td>${formatCurrency(f['[D] Amount'] || 0)}</td><td><span class="status-badge ${(f['[D] Transaction Type'] || 'payment').toLowerCase()}">${f['[D] Transaction Type'] || 'payment'}</span></td></tr>`;
+                const source = f[FIELDS.transactions.source] || 'Unknown';
+                const type = f[FIELDS.transactions.dType] || f[FIELDS.transactions.wType] || f[FIELDS.transactions.cType] || '-';
+                const amount = f[FIELDS.transactions.dAmount] || f[FIELDS.transactions.wAmount] || f[FIELDS.transactions.cAmount] || 0;
+                const date = f[FIELDS.transactions.dOccuredAt] || '-';
+                let formattedDate = date;
+                if (date && date !== '-') {
+                    try { formattedDate = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {}
+                }
+                html += `<tr><td><strong>${f[FIELDS.transactions.transactionId] || '-'}</strong></td><td><span class="source-badge ${source.toLowerCase()}">${source}</span></td><td>${type}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(amount)}</td><td>${formattedDate}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
@@ -602,9 +690,11 @@
             let html = '<table class="data-table"><thead><tr><th>Account Name</th><th>Status</th><th>Remaining</th><th>Spent</th></tr></thead><tbody>';
             userData.balances.forEach(bal => {
                 const f = bal.fields;
-                const remaining = f['Remaining Balance'] || 0;
-                const spent = f['Spent'] || 0;
-                html += `<tr><td><strong>${f['Virtual Account Name'] || '-'}</strong></td><td><span class="status-badge ${(f['Status'] || 'active').toLowerCase()}">${f['Status'] || 'Active'}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
+                const name = f[FIELDS.balances.virtualAccountName] || '-';
+                const status = f[FIELDS.balances.status] || 'Active';
+                const remaining = f[FIELDS.balances.remainingBalance] || 0;
+                const spent = f[FIELDS.balances.spent] || 0;
+                html += `<tr><td><strong>${name}</strong></td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(remaining)}</td><td>${formatCurrency(spent)}</td></tr>`;
             });
             container.innerHTML = html + '</tbody></table>';
         }
