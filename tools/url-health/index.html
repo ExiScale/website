@@ -850,7 +850,7 @@
             const escapedEmail = email.replace(/"/g, '\\"');
             const escapedPassword = password.replace(/"/g, '\\"');
             // IMPORTANT: Filter formulas must use FIELD NAMES, not field IDs
-            const filterFormula = `AND({Dashboard Email}="${escapedEmail}", {Password}="${escapedPassword}")`;
+            const filterFormula = `AND({Dashboard Email}="${escapedEmail}", {Dashboard Password}="${escapedPassword}")`;
             const result = await apiCall('[ALL] Users', filterFormula);
             return (result.records && result.records.length > 0) ? result.records[0] : null;
         }
