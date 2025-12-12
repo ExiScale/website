@@ -939,8 +939,21 @@
                     </div>
 
                     <div class="form-group full-width conditional-field" id="chargebackProviderField">
-                        <label>Who is your chargeback provider?</label>
-                        <input type="text" name="chargeback_provider_name" placeholder="Enter provider name">
+                        <label style="margin-bottom: 1rem; display: block;">Chargeback Provider Details</label>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Provider Name</label>
+                                <input type="text" name="chargeback_provider_name" placeholder="Enter provider name">
+                            </div>
+                            <div class="form-group">
+                                <label>Provider Website</label>
+                                <input type="url" name="chargeback_provider_website" placeholder="https://example.com">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Provider Contact Email</label>
+                                <input type="email" name="chargeback_provider_email" placeholder="contact@provider.com">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
