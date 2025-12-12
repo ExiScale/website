@@ -31,16 +31,15 @@ exports.handler = async (event, context) => {
     try {
         const data = JSON.parse(event.body);
         
-        // Map form fields to Airtable field names
+        // Map form fields to Airtable field names (exactly matching Airtable columns)
         const fields = {
             // Screening
             "US Citizen": data.us_citizen || null,
             "Has ITIN": data.itin || null,
             "US Presence": data.us_presence || null,
-            "Has Chargeback Provider": data.chargeback_provider || null,
-            "Chargeback Provider Name": data.chargeback_provider_name || null,
-            "Chargeback Provider Website": data.chargeback_provider_website || null,
-            "Chargeback Provider Email": data.chargeback_provider_email || null,
+            "Has CB Provider": data.chargeback_provider || null,
+            "CB Provider Name": data.chargeback_provider_name || null,
+            "CB Provider Website": data.chargeback_provider_website || null,
             
             // Business Information
             "Legal Business Name": data.legal_business_name || null,
@@ -49,23 +48,19 @@ exports.handler = async (event, context) => {
             "Legal City": data.legal_city || null,
             "Legal State": data.legal_state || null,
             "Legal Zip": data.legal_zip || null,
-            "DBA Address": data.dba_address || null,
-            "DBA City": data.dba_city || null,
-            "DBA State": data.dba_state || null,
-            "DBA Zip": data.dba_zip || null,
             "Business Phone": data.business_phone || null,
             "Customer Service Phone": data.customer_service_phone || null,
-            "Fax": data.fax || null,
+            "Fax Number": data.fax || null,
             "Contact Email": data.contact_email || null,
             "Contact Name": data.contact_name || null,
             "EIN": data.ein || null,
             "Website": data.website || null,
-            "Number of Locations": data.locations ? parseInt(data.locations) : null,
-            "Average Ticket": data.avg_ticket ? parseFloat(data.avg_ticket.replace(/[^0-9.]/g, '')) : null,
-            "Monthly Volume": data.monthly_volume ? parseFloat(data.monthly_volume.replace(/[^0-9.]/g, '')) : null,
-            "Products Services": data.products_services || null,
-            "Percent Keyed": data.percent_keyed ? parseFloat(data.percent_keyed) : null,
-            "Percent Swiped": data.percent_swiped ? parseFloat(data.percent_swiped) : null,
+            "Number Of Locations": data.locations ? parseInt(data.locations) : null,
+            "Average Ticket": data.avg_ticket ? parseFloat(data.avg_ticket.toString().replace(/[^0-9.]/g, '')) : null,
+            "Monthly Volume": data.monthly_volume ? parseFloat(data.monthly_volume.toString().replace(/[^0-9.]/g, '')) : null,
+            "Procucts / Services": data.products_services || null,
+            "Keyed": data.percent_keyed ? parseFloat(data.percent_keyed) : null,
+            "Swiped": data.percent_swiped ? parseFloat(data.percent_swiped) : null,
             "Equipment Software": data.equipment || null,
             "Business Type": data.business_type || null,
             "Business Start Date": data.business_start_date || null,
@@ -79,13 +74,13 @@ exports.handler = async (event, context) => {
             "Principle City": data.principal_city || null,
             "Principle State": data.principal_state || null,
             "Principle Zip": data.principal_zip || null,
-            "Principle Phone": data.principal_phone || null,
+            "Principle Phone Number": data.principal_phone || null,
             "Principle Email": data.principal_email || null,
             "Principle DOB": data.principal_dob || null,
-            "Principle License": data.principal_license || null,
+            "Principle Licence": data.principal_license || null,
             "Ownership Percent": data.ownership_percent ? parseFloat(data.ownership_percent) : null,
             "Controlling Individual": data.controlling_individual || null,
-            "Country of Origin": data.country_origin || null,
+            "Country Of Origin": data.country_origin || null,
             
             // Bank Information
             "Bank Account Name": data.bank_account_name || null,
@@ -98,11 +93,11 @@ exports.handler = async (event, context) => {
             // MOTO Questionnaire
             "Product Description": data.product_description || null,
             "Purchase Method": data.purchase_method || null,
-            "Has Storefront": data.has_storefront || null,
+            "Has Store Front": data.has_storefront || null,
             "Delivery Timeframe": data.delivery_timeframe || null,
             "Refund Policy": data.refund_policy || null,
-            "Percent Deposits Future Service": data.percent_deposits ? parseFloat(data.percent_deposits) : null,
-            "Percent Cash and Carry": data.percent_cash_carry ? parseFloat(data.percent_cash_carry) : null,
+            "Percent Deposits For Future Service": data.percent_deposits ? parseFloat(data.percent_deposits) : null,
+            "Percent Cash & Carry": data.percent_cash_carry ? parseFloat(data.percent_cash_carry) : null,
             "Geographic Area": data.geographic_area || null,
             "Percent International Sales": data.percent_international ? parseFloat(data.percent_international) : null,
             "Product Owner": data.product_owner || null,
@@ -110,23 +105,20 @@ exports.handler = async (event, context) => {
             "Percent Sales Business": data.percent_business ? parseFloat(data.percent_business) : null,
             "Fulfillment House Name": data.fulfillment_name || null,
             "Fulfillment House Address": data.fulfillment_address || null,
-            "Fulfillment House Phone": data.fulfillment_phone || null,
+            "Fulfillment House Number": data.fulfillment_phone || null,
             "Payment Point": data.payment_point || null,
             "Ship Time After Authorization": data.ship_time || null,
             "Shipping Service": data.shipping_service || null,
-            "Delivery Receipt Required": data.delivery_receipt || null,
+            "Delivery Reciept Required": data.delivery_receipt || null,
             "Advertising Method": data.advertising || null,
             "Requires Deposit": data.requires_deposit || null,
-            "Deposit Amount": data.deposit_amount ? parseFloat(data.deposit_amount.replace(/[^0-9.]/g, '')) : null,
-            "Warranty Guarantee": data.warranty || null,
+            "Deposit Amount": data.deposit_amount ? parseFloat(data.deposit_amount.toString().replace(/[^0-9.]/g, '')) : null,
+            "Warranty Guarentee": data.warranty || null,
             "Previous Processing": data.previous_processing || null,
             "Business Seasonal": data.seasonal || null,
             "Recurring Transactions": data.recurring || null,
-            "Product Stored at Business": data.product_stored || null,
-            "Order Processor": data.order_processor || null,
-            
-            // Status
-            "Status": "New"
+            "Product Stored At Business": data.product_stored || null,
+            "Order Processor": data.order_processor || null
         };
 
         // Remove null values
