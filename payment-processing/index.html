@@ -365,6 +365,14 @@
             border: 1px solid #ef4444;
         }
 
+        .error-message {
+            display: block;
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.35rem;
+            font-weight: 500;
+        }
+
         /* Dev Toolbar */
         .dev-toolbar {
             position: fixed;
@@ -424,6 +432,53 @@
         .form-group select option {
             background: white;
             color: var(--text);
+        }
+
+        /* Custom Date Input Styling */
+        .form-group input[type="date"] {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: var(--primary);
+            opacity: 1;
+            filter: invert(1);
+        }
+
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Style the date picker popup (Chrome/Edge) */
+        ::-webkit-datetime-edit {
+            padding: 0;
+        }
+
+        ::-webkit-datetime-edit-fields-wrapper {
+            background: transparent;
+        }
+
+        ::-webkit-datetime-edit-text {
+            color: var(--text-light);
+            padding: 0 0.2em;
+        }
+
+        ::-webkit-datetime-edit-month-field,
+        ::-webkit-datetime-edit-day-field,
+        ::-webkit-datetime-edit-year-field {
+            color: var(--text);
+        }
+
+        ::-webkit-datetime-edit-month-field:focus,
+        ::-webkit-datetime-edit-day-field:focus,
+        ::-webkit-datetime-edit-year-field:focus {
+            background: var(--primary-glow);
+            border-radius: 2px;
+            outline: none;
         }
 
         .form-group textarea {
@@ -1918,8 +1973,11 @@
                 'principal_state': 'NY',
                 'principal_zip': '10002',
                 'principal_email': 'john@example.com',
+                'principal_dob': '1985-06-15',
+                'principal_license': 'DL123456789',
                 'ownership_percent': '100',
-                'country_origin': 'USA'
+                'country_origin': 'USA',
+                'business_start_date': '2020-01-01'
             };
             
             Object.keys(fields).forEach(name => {
@@ -2146,6 +2204,77 @@
         document.head.appendChild(style);
 
         updateProgress();
+
+        // Real-time validation on blur
+        document.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+            
+            // Also validate on input for fields that were already marked as error
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        function validateField(input) {
+            const formGroup = input.closest('.form-group');
+            const isRequired = input.hasAttribute('required') || formGroup?.querySelector('.required');
+            const hasValue = input.value.trim() !== '';
+            
+            // Skip hidden inputs or inputs in inactive steps
+            const step = input.closest('.form-step');
+            if (step && !step.classList.contains('active')) return;
+            
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Check if required and empty
+            if (isRequired && !hasValue) {
+                isValid = false;
+                errorMessage = 'This field is required';
+            }
+            // Check format validity (email, url, pattern) if field has a value
+            else if (hasValue && !input.checkValidity()) {
+                isValid = false;
+                if (input.type === 'url') {
+                    errorMessage = 'Please enter a valid URL (e.g., https://example.com)';
+                } else if (input.type === 'email') {
+                    errorMessage = 'Please enter a valid email address';
+                } else if (input.validity.patternMismatch) {
+                    errorMessage = 'Please match the requested format';
+                } else {
+                    errorMessage = 'Please enter a valid value';
+                }
+            }
+            
+            if (!isValid) {
+                input.classList.add('error');
+                
+                // Add or update error message
+                let errorEl = formGroup?.querySelector('.error-message');
+                if (!errorEl && formGroup) {
+                    errorEl = document.createElement('span');
+                    errorEl.className = 'error-message';
+                    formGroup.appendChild(errorEl);
+                }
+                if (errorEl) {
+                    errorEl.textContent = errorMessage;
+                }
+            } else {
+                input.classList.remove('error');
+                
+                // Remove error message
+                const errorEl = formGroup?.querySelector('.error-message');
+                if (errorEl) {
+                    errorEl.remove();
+                }
+            }
+            
+            return isValid;
+        }
     </script>
 
     <!-- Dev Toolbar - Remove for production -->
