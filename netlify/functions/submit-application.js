@@ -138,11 +138,11 @@ exports.handler = async (event, context) => {
 
         // Submit to Airtable
         const response = await fetch(
-            `https://api.airtable.com/v0/${process.env.AIRTABLE_PAYMENT_PROCESSING_BASE_ID}/${process.env.AIRTABLE_PAYMENT_PROCESSING_TABLE_ID}`,
+            `https://api.airtable.com/v0/${process.env.AIRTABLE_PP_BASE_ID}/${process.env.AIRTABLE_PP_TABLE_ID}`,
             {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${process.env.AIRTABLE_PAYMENT_PROCESSING_KEY}`,
+                    'Authorization': `Bearer ${process.env.AIRTABLE_PP_KEY}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ fields })
@@ -179,5 +179,3 @@ exports.handler = async (event, context) => {
         };
     }
 };
-
-
