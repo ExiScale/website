@@ -156,8 +156,8 @@
             content: '';
             position: absolute;
             top: 15px;
-            left: 0;
-            right: 0;
+            left: 16px;
+            right: 16px;
             height: 2px;
             background: var(--border);
             z-index: 0;
@@ -166,9 +166,9 @@
         .progress-line {
             position: absolute;
             top: 15px;
-            left: 0;
+            left: 16px;
             height: 2px;
-            background: var(--primary);
+            background: var(--success);
             z-index: 1;
             transition: width 0.5s ease;
         }
@@ -207,10 +207,6 @@
             border-color: var(--success);
             background: var(--success);
             color: white;
-        }
-
-        .step-item.completed .step-circle::after {
-            content: '✓';
         }
 
         .step-label {
@@ -1627,7 +1623,9 @@
                 }
             });
             const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progressLine').style.width = progressPercent + '%';
+            // Adjust width to account for 16px offset on each end (32px total)
+            const offsetAdjustment = (progressPercent / 100) * 32;
+            document.getElementById('progressLine').style.width = `calc(${progressPercent}% - ${offsetAdjustment}px)`;
         }
 
         function showStep(step) {
