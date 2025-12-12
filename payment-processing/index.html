@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Payment Processing | ExiScale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6a15;
+            --primary-dark: #e55a0a;
+            --primary-light: #fff4ed;
+            --primary-glow: rgba(255, 106, 21, 0.15);
+            --bg: #f8f9fa;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --border-light: #f0f0f0;
+            --text: #1a1a1a;
+            --text-muted: #6b7280;
+            --success: #22c55e;
+            --success-light: #f0fdf4;
+            --secure-bg: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Background Pattern */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.4;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--success-light);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #15803d;
+        }
+
+        .header-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 1.5rem 3rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            height: 2px;
+            background: var(--primary);
+            z-index: 1;
+            transition: width 0.5s ease;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .step-item.active .step-circle {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .step-item.completed .step-circle {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .step-item.completed .step-circle::after {
+            content: '✓';
+        }
+
+        .step-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 80px;
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Form Sections */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+        }
+
+        .section-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .form-group label .required {
+            color: var(--primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.875rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .form-group select option {
+            background: white;
+            color: var(--text);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Radio/Checkbox Groups */
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .radio-option.selected,
+        .checkbox-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .radio-option input,
+        .checkbox-option input {
+            display: none;
+        }
+
+        .radio-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option.selected .radio-dot {
+            border-color: var(--primary);
+        }
+
+        .radio-option.selected .radio-dot::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .checkbox-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-option.selected .checkbox-box {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        .checkbox-option.selected .checkbox-box::after {
+            content: '✓';
+            font-size: 12px;
+            color: white;
+        }
+
+        /* Secure Section Styling */
+        .secure-section {
+            background: var(--secure-bg);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secure-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2322c55e' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .secure-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .secure-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .secure-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #15803d;
+        }
+
+        .secure-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #15803d;
+        }
+
+        .secure-subtitle {
+            font-size: 0.8rem;
+            color: #16a34a;
+        }
+
+        .secure-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .secure-badge {
+            padding: 0.35rem 0.75rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 100px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #15803d;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .secure-badge svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .secure-section .form-group input {
+            background: white;
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .secure-section .form-group input:focus {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+        }
+
+        .secure-section .form-group label {
+            color: #15803d;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: var(--secure-bg);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .upload-box {
+            border: 2px dashed rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: white;
+        }
+
+        .upload-box:hover {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.02);
+        }
+
+        .upload-box.has-file {
+            border-color: var(--success);
+            border-style: solid;
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .upload-box input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #15803d;
+        }
+
+        .upload-title {
+            font-weight: 600;
+            color: #15803d;
+            margin-bottom: 0.25rem;
+        }
+
+        .upload-subtitle {
+            font-size: 0.75rem;
+            color: #16a34a;
+        }
+
+        .upload-file-name {
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #15803d;
+            display: none;
+        }
+
+        .upload-box.has-file .upload-file-name {
+            display: block;
+        }
+
+        /* Buttons */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            background: var(--bg);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 106, 21, 0.3);
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Conditional Field */
+        .conditional-field {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .conditional-field.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--primary-light);
+            border: 1px solid rgba(255, 106, 21, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .info-box svg {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .info-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Success Screen */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .success-screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--success-light);
+            border: 2px solid var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--success);
+        }
+
+        .success-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .success-message {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            .progress-steps {
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+            .step-label {
+                display: none;
+            }
+            .secure-badges {
+                display: none;
+            }
+            .form-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">ExiScale</div>
+        <div class="header-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Secure Application
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line" id="progressLine"></div>
+                <div class="step-item active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Screening</span>
+                </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Pre-Application</span>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Bank Info</span>
+                </div>
+                <div class="step-item" data-step="4">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Questionnaire</span>
+                </div>
+                <div class="step-item" data-step="5">
+                    <div class="step-circle">5</div>
+                    <span class="step-label">Documents</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <!-- Step 1: Screening Questions -->
+            <div class="form-step active" id="step1">
+                <h2 class="form-title">Screening Questions</h2>
+                <p class="form-subtitle">Please answer these preliminary questions to proceed.</p>
+
+                <div class="info-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <p>These questions help us determine your eligibility for payment processing services. All information is kept confidential.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Are you a US Citizen? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="us_citizen" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="us_citizen" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Do you have an ITIN? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="itin" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="itin" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Do you have US Physical Presence? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="us_presence" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="us_presence" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Working with a chargeback provider? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this); toggleChargebackField(true)">
+                                <input type="radio" name="chargeback_provider" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this); toggleChargebackField(false)">
+                                <input type="radio" name="chargeback_provider" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width conditional-field" id="chargebackProviderField">
+                        <label>Who is your chargeback provider?</label>
+                        <input type="text" name="chargeback_provider_name" placeholder="Enter provider name">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continue
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Pre-Application -->
+            <div class="form-step" id="step2">
+                <h2 class="form-title">Pre-Application</h2>
+                <p class="form-subtitle">Tell us about your business and principal owner.</p>
+
+                <!-- Business Information -->
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7H3l2-4h14l2 4"/>
+                        <path d="M5 21V10.85M19 21V10.85"/>
+                    </svg>
+                    Business Information
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Legal Business Name <span class="required">*</span></label>
+                        <input type="text" name="legal_business_name" placeholder="Enter legal business name">
+                    </div>
+                    <div class="form-group">
+                        <label>DBA Name</label>
+                        <input type="text" name="dba_name" placeholder="Doing business as (if different)">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Legal Address <span class="required">*</span></label>
+                        <input type="text" name="legal_address" placeholder="Street address">
+                    </div>
+                    <div class="form-group">
+                        <label>City <span class="required">*</span></label>
+                        <input type="text" name="legal_city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label>State <span class="required">*</span></label>
+                        <input type="text" name="legal_state" placeholder="State">
+                    </div>
+                    <div class="form-group">
+                        <label>Zip Code <span class="required">*</span></label>
+                        <input type="text" name="legal_zip" placeholder="Zip code">
+                    </div>
+                    <div class="form-group">
+                        <label>DBA Address</label>
+                        <input type="text" name="dba_address" placeholder="DBA street address (if different)">
+                    </div>
+                    <div class="form-group">
+                        <label>DBA City</label>
+                        <input type="text" name="dba_city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label>DBA State</label>
+                        <input type="text" name="dba_state" placeholder="State">
+                    </div>
+                    <div class="form-group">
+                        <label>DBA Zip</label>
+                        <input type="text" name="dba_zip" placeholder="Zip">
+                    </div>
+                    <div class="form-group">
+                        <label>Business Phone # <span class="required">*</span></label>
+                        <input type="tel" name="business_phone" placeholder="(xxx) xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Service Phone #</label>
+                        <input type="tel" name="customer_service_phone" placeholder="(xxx) xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Fax Number</label>
+                        <input type="tel" name="fax" placeholder="(xxx) xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email <span class="required">*</span></label>
+                        <input type="email" name="contact_email" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Name <span class="required">*</span></label>
+                        <input type="text" name="contact_name" placeholder="Primary contact name">
+                    </div>
+                    <div class="form-group">
+                        <label>Federal Tax ID (EIN) <span class="required">*</span></label>
+                        <input type="text" name="ein" placeholder="XX-XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>Website URL</label>
+                        <input type="url" name="website" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Locations</label>
+                        <input type="number" name="locations" placeholder="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Average Ticket <span class="required">*</span></label>
+                        <input type="text" name="avg_ticket" placeholder="$0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Monthly Volume <span class="required">*</span></label>
+                        <input type="text" name="monthly_volume" placeholder="$0.00">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Products/Services Being Sold <span class="required">*</span></label>
+                        <textarea name="products_services" placeholder="Describe your products or services"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>% Keyed</label>
+                        <input type="number" name="percent_keyed" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>% Swiped</label>
+                        <input type="number" name="percent_swiped" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Equipment/Software Used</label>
+                        <input type="text" name="equipment" placeholder="e.g., Square, Stripe, Clover">
+                    </div>
+                    <div class="form-group">
+                        <label>Type of Business <span class="required">*</span></label>
+                        <select name="business_type">
+                            <option value="">Select type</option>
+                            <option value="sole_proprietor">Sole Proprietor</option>
+                            <option value="llc">LLC</option>
+                            <option value="corporation">Corporation</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="nonprofit">Non-Profit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Start Date <span class="required">*</span></label>
+                        <input type="date" name="business_start_date">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Sale Method <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-option" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" name="sale_method" value="store_front">
+                                <div class="checkbox-box"></div>
+                                <span>Store Front</span>
+                            </label>
+                            <label class="checkbox-option" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" name="sale_method" value="moto">
+                                <div class="checkbox-box"></div>
+                                <span>MOTO</span>
+                            </label>
+                            <label class="checkbox-option" onclick="toggleCheckbox(this)">
+                                <input type="checkbox" name="sale_method" value="ecommerce">
+                                <div class="checkbox-box"></div>
+                                <span>E-Commerce</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Principal Information -->
+                <div class="section-title" style="margin-top: 2rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Principal Information
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" name="principal_first_name" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name <span class="required">*</span></label>
+                        <input type="text" name="principal_last_name" placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <label>Middle Initial</label>
+                        <input type="text" name="principal_middle" placeholder="M.I." maxlength="1">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Home Address <span class="required">*</span></label>
+                        <input type="text" name="principal_address" placeholder="Street address">
+                    </div>
+                    <div class="form-group">
+                        <label>City <span class="required">*</span></label>
+                        <input type="text" name="principal_city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label>State <span class="required">*</span></label>
+                        <input type="text" name="principal_state" placeholder="State">
+                    </div>
+                    <div class="form-group">
+                        <label>Zip <span class="required">*</span></label>
+                        <input type="text" name="principal_zip" placeholder="Zip">
+                    </div>
+                    <div class="form-group">
+                        <label>Home Phone #</label>
+                        <input type="tel" name="principal_phone" placeholder="(xxx) xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Principal Email <span class="required">*</span></label>
+                        <input type="email" name="principal_email" placeholder="email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required">*</span></label>
+                        <input type="date" name="principal_dob">
+                    </div>
+                    <div class="form-group">
+                        <label>Driver's License or Passport # <span class="required">*</span></label>
+                        <input type="text" name="principal_license" placeholder="License/Passport number">
+                    </div>
+                    <div class="form-group">
+                        <label>Ownership % <span class="required">*</span></label>
+                        <input type="number" name="ownership_percent" placeholder="100" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Controlling Individual <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="controlling_individual" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="controlling_individual" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Country of Origin <span class="required">*</span></label>
+                        <input type="text" name="country_origin" placeholder="Country">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continue
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Bank Information (Secure) -->
+            <div class="form-step" id="step3">
+                <h2 class="form-title">Bank Information</h2>
+                <p class="form-subtitle">Provide your business banking details for settlements.</p>
+
+                <div class="secure-section">
+                    <div class="secure-header">
+                        <div class="secure-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="secure-title">Secure Bank Details</div>
+                            <div class="secure-subtitle">Your information is protected with bank-level security</div>
+                        </div>
+                        <div class="secure-badges">
+                            <div class="secure-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                256-bit SSL
+                            </div>
+                            <div class="secure-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                PCI Compliant
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Name on Bank Account <span class="required">*</span></label>
+                            <input type="text" name="bank_account_name" placeholder="Name as it appears on account">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Name <span class="required">*</span></label>
+                            <input type="text" name="bank_name" placeholder="Bank name">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Phone #</label>
+                            <input type="tel" name="bank_phone" placeholder="(xxx) xxx-xxxx">
+                        </div>
+                        <div class="form-group">
+                            <label>Routing/Transit # <span class="required">*</span></label>
+                            <input type="text" name="routing_number" placeholder="9-digit routing number" maxlength="9">
+                        </div>
+                        <div class="form-group">
+                            <label>Account # <span class="required">*</span></label>
+                            <input type="text" name="account_number" placeholder="Account number">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SSN Section -->
+                <div class="secure-section" style="margin-top: 1.5rem;">
+                    <div class="secure-header">
+                        <div class="secure-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="secure-title">Identity Verification</div>
+                            <div class="secure-subtitle">Required for compliance and fraud prevention</div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Social Security # <span class="required">*</span></label>
+                            <input type="text" name="ssn" placeholder="XXX-XX-XXXX" maxlength="11">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continue
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: MOTO/Internet Questionnaire -->
+            <div class="form-step" id="step4">
+                <h2 class="form-title">MOTO/Internet Questionnaire</h2>
+                <p class="form-subtitle">Help us understand your business operations.</p>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Description of Product Sold <span class="required">*</span></label>
+                        <textarea name="product_description" placeholder="Describe the products or services you sell"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>How does the customer purchase the product? <span class="required">*</span></label>
+                        <input type="text" name="purchase_method" placeholder="e.g., Website, phone order, email">
+                    </div>
+                    <div class="form-group">
+                        <label>Does your company have a storefront?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="has_storefront" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="has_storefront" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>What is the delivery time frame?</label>
+                        <input type="text" name="delivery_timeframe" placeholder="e.g., 3-5 business days">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>What is your return, cancellation, or refund policy? <span class="required">*</span></label>
+                        <textarea name="refund_policy" placeholder="Describe your return and refund policy"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>% of business Deposits/Future Service</label>
+                        <input type="number" name="percent_deposits" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>% of business Cash & Carry</label>
+                        <input type="number" name="percent_cash_carry" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Geographic area product will be marketed</label>
+                        <input type="text" name="geographic_area" placeholder="e.g., United States">
+                    </div>
+                    <div class="form-group">
+                        <label>% of international sales</label>
+                        <input type="number" name="percent_international" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Who owns the product?</label>
+                        <input type="text" name="product_owner" placeholder="Company name or self">
+                    </div>
+                    <div class="form-group">
+                        <label>% Sales to Consumer</label>
+                        <input type="number" name="percent_consumer" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>% Sales to Business</label>
+                        <input type="number" name="percent_business" placeholder="0" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Fulfillment House Name (if any)</label>
+                        <input type="text" name="fulfillment_name" placeholder="Fulfillment company name">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Fulfillment House Address</label>
+                        <input type="text" name="fulfillment_address" placeholder="Full address">
+                    </div>
+                    <div class="form-group">
+                        <label>Fulfillment House Phone #</label>
+                        <input type="tel" name="fulfillment_phone" placeholder="(xxx) xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>At what point is consumer paid in full?</label>
+                        <input type="text" name="payment_point" placeholder="e.g., At time of order">
+                    </div>
+                    <div class="form-group">
+                        <label>How long before merchandise shipped?</label>
+                        <input type="text" name="ship_time" placeholder="e.g., 24-48 hours">
+                    </div>
+                    <div class="form-group">
+                        <label>What shipping service is used?</label>
+                        <input type="text" name="shipping_service" placeholder="e.g., USPS, UPS, FedEx">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery receipt required?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="delivery_receipt" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="delivery_receipt" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>How do you advertise?</label>
+                        <input type="text" name="advertising" placeholder="e.g., Social media, Google Ads, SEO">
+                    </div>
+                    <div class="form-group">
+                        <label>Consumer deposit required?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="requires_deposit" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="requires_deposit" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Deposit % or Increment</label>
+                        <input type="text" name="deposit_amount" placeholder="e.g., 50% or $100">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>What is your warranty/guarantee?</label>
+                        <textarea name="warranty" placeholder="Describe any warranties or guarantees"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Previous Processing?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="previous_processing" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="previous_processing" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Seasonal?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="seasonal" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="seasonal" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Recurring Transactions or Automatic Renewal?</label>
+                        <input type="text" name="recurring" placeholder="Describe any recurring billing">
+                    </div>
+                    <div class="form-group">
+                        <label>Product stored at business?</label>
+                        <div class="radio-group">
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="product_stored" value="yes">
+                                <div class="radio-dot"></div>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option" onclick="selectRadio(this)">
+                                <input type="radio" name="product_stored" value="no">
+                                <div class="radio-dot"></div>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Who processes the order?</label>
+                        <input type="text" name="order_processor" placeholder="e.g., In-house, Third-party">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Continue
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Document Upload -->
+            <div class="form-step" id="step5">
+                <h2 class="form-title">Document Upload</h2>
+                <p class="form-subtitle">Upload the required documents to complete your application.</p>
+
+                <div class="upload-section">
+                    <div class="secure-header">
+                        <div class="secure-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="secure-title">Secure Document Vault</div>
+                            <div class="secure-subtitle">Files are encrypted during transfer and storage</div>
+                        </div>
+                        <div class="secure-badges">
+                            <div class="secure-badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                </svg>
+                                End-to-End Encrypted
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upload-grid">
+                        <div class="upload-box" id="bankStatementsBox">
+                            <input type="file" name="bank_statements" accept=".pdf,.png,.jpg,.jpeg" multiple onchange="handleFileUpload(this, 'bankStatementsBox')">
+                            <div class="upload-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                </svg>
+                            </div>
+                            <div class="upload-title">3 Months Bank Statements</div>
+                            <div class="upload-subtitle">PDF or images • Max 10MB each</div>
+                            <div class="upload-file-name" id="bankStatementsName"></div>
+                        </div>
+
+                        <div class="upload-box" id="processingHistoryBox">
+                            <input type="file" name="processing_history" accept=".pdf,.png,.jpg,.jpeg" multiple onchange="handleFileUpload(this, 'processingHistoryBox')">
+                            <div class="upload-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                    <line x1="1" y1="10" x2="23" y2="10"/>
+                                </svg>
+                            </div>
+                            <div class="upload-title">3 Months Processing History</div>
+                            <div class="upload-subtitle">PDF or images • Max 10MB each</div>
+                            <div class="upload-file-name" id="processingHistoryName"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-primary" onclick="submitForm()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        Submit Application
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success Screen -->
+            <div class="success-screen" id="successScreen">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <h2 class="success-title">Application Submitted!</h2>
+                <p class="success-message">Thank you for applying. Our team will review your application and contact you within 1-2 business days.</p>
+                <button class="btn btn-primary" onclick="window.location.href='/'">
+                    Return to Homepage
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function updateProgress() {
+            document.querySelectorAll('.step-item').forEach((item, index) => {
+                const stepNum = index + 1;
+                item.classList.remove('active', 'completed');
+                if (stepNum < currentStep) {
+                    item.classList.add('completed');
+                } else if (stepNum === currentStep) {
+                    item.classList.add('active');
+                }
+            });
+            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressLine').style.width = progressPercent + '%';
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function selectRadio(element) {
+            const name = element.querySelector('input').name;
+            document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                radio.closest('.radio-option').classList.remove('selected');
+            });
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        function toggleCheckbox(element) {
+            element.classList.toggle('selected');
+            const checkbox = element.querySelector('input');
+            checkbox.checked = !checkbox.checked;
+        }
+
+        function toggleChargebackField(show) {
+            const field = document.getElementById('chargebackProviderField');
+            if (show) {
+                field.classList.add('visible');
+            } else {
+                field.classList.remove('visible');
+            }
+        }
+
+        function handleFileUpload(input, boxId) {
+            const box = document.getElementById(boxId);
+            const nameDisplay = box.querySelector('.upload-file-name');
+            
+            if (input.files.length > 0) {
+                box.classList.add('has-file');
+                const fileNames = Array.from(input.files).map(f => f.name).join(', ');
+                nameDisplay.textContent = fileNames;
+            } else {
+                box.classList.remove('has-file');
+                nameDisplay.textContent = '';
+            }
+        }
+
+        function submitForm() {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('successScreen').classList.add('active');
+            document.querySelector('.progress-container').style.display = 'none';
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
