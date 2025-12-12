@@ -1068,7 +1068,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Provider Website</label>
-                                <input type="url" name="chargeback_provider_website" placeholder="https://example.com">
+                                <input type="url" name="chargeback_provider_website" placeholder="https://example.com" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{2,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)">
                             </div>
                             <div class="form-group full-width">
                                 <label>Provider Contact Email</label>
@@ -1170,7 +1170,7 @@
                     </div>
                     <div class="form-group">
                         <label>Website URL</label>
-                        <input type="url" name="website" placeholder="https://example.com">
+                        <input type="url" name="website" placeholder="https://example.com" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{2,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)">
                     </div>
                     <div class="form-group">
                         <label>Number of Locations</label>
@@ -1824,20 +1824,39 @@
                 }
             });
 
-            // Check required text inputs
-            stepElement.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
-                if (!input.value.trim()) {
+            // Check all inputs - required fields must have value, and all fields must be valid format
+            stepElement.querySelectorAll('input, select, textarea').forEach(input => {
+                const isRequired = input.hasAttribute('required') || input.closest('.form-group')?.querySelector('.required');
+                const hasValue = input.value.trim() !== '';
+                
+                // Check if required and empty
+                if (isRequired && !hasValue) {
                     isValid = false;
                     input.classList.add('error');
                     if (!firstInvalid) firstInvalid = input;
-                } else {
+                }
+                // Check format validity (email, url, etc.) if field has a value
+                else if (hasValue && !input.checkValidity()) {
+                    isValid = false;
+                    input.classList.add('error');
+                    if (!firstInvalid) firstInvalid = input;
+                }
+                else {
                     input.classList.remove('error');
                 }
             });
 
             if (!isValid && firstInvalid) {
                 firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alert('Please fill in all required fields before continuing.');
+                
+                // More specific error message
+                if (firstInvalid.type === 'url' && firstInvalid.value) {
+                    alert('Please enter a valid URL (e.g., https://example.com)');
+                } else if (firstInvalid.type === 'email' && firstInvalid.value) {
+                    alert('Please enter a valid email address');
+                } else {
+                    alert('Please fill in all required fields correctly before continuing.');
+                }
             }
 
             return isValid;
@@ -2093,10 +2112,16 @@
                     body: JSON.stringify(data)
                 });
 
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error(`Function not found (${response.status}). Make sure netlify/functions/submit-application.js is deployed.`);
+                }
+
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error || 'Submission failed');
+                    throw new Error(result.error || result.details?.error?.message || 'Submission failed');
                 }
 
                 // Success - show success screen
@@ -2107,7 +2132,7 @@
 
             } catch (error) {
                 console.error('Submission error:', error);
-                alert('There was an error submitting your application. Please try again or contact support.');
+                alert(`Submission Error: ${error.message}\n\nCheck the console for more details.`);
                 
                 // Reset button
                 submitBtn.innerHTML = originalText;
