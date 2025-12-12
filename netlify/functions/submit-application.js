@@ -138,7 +138,7 @@ exports.handler = async (event, context) => {
 
         // Submit to Airtable
         const response = await fetch(
-            `https://api.airtable.com/v0/${process.env.AIRTABLE_PP_BASE_ID}/${process.env.AIRTABLE_PP_TABLE_ID}`,
+            `https://api.airtable.com/v0/${process.env.AIRTABLE_PP_BASE_ID}/Merchant%20Applications`,
             {
                 method: 'POST',
                 headers: {
