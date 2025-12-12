@@ -506,20 +506,23 @@
 
         .upload-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
             position: relative;
         }
 
         .upload-box {
             border: 2px dashed rgba(34, 197, 94, 0.3);
             border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
+            padding: 1.5rem 2rem;
+            text-align: left;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             background: white;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
         }
 
         .upload-box:hover {
@@ -543,7 +546,7 @@
         .upload-icon {
             width: 56px;
             height: 56px;
-            margin: 0 auto 1rem;
+            min-width: 56px;
             background: rgba(34, 197, 94, 0.1);
             border: 1px solid rgba(34, 197, 94, 0.2);
             border-radius: 50%;
@@ -558,6 +561,10 @@
             color: #15803d;
         }
 
+        .upload-content {
+            flex: 1;
+        }
+
         .upload-title {
             font-weight: 600;
             color: #15803d;
@@ -570,7 +577,7 @@
         }
 
         .upload-file-name {
-            margin-top: 0.75rem;
+            margin-top: 0.5rem;
             padding: 0.5rem 1rem;
             background: rgba(34, 197, 94, 0.1);
             border-radius: 8px;
@@ -580,7 +587,7 @@
         }
 
         .upload-box.has-file .upload-file-name {
-            display: block;
+            display: inline-block;
         }
 
         /* Buttons */
@@ -730,9 +737,6 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
             .progress-steps {
                 overflow-x: auto;
                 padding-bottom: 1rem;
@@ -745,6 +749,13 @@
             }
             .form-card {
                 padding: 1.5rem;
+            }
+            .upload-box {
+                flex-direction: column;
+                text-align: center;
+            }
+            .upload-icon {
+                margin: 0;
             }
         }
     </style>
@@ -1471,9 +1482,11 @@
                                     <line x1="16" y1="17" x2="8" y2="17"/>
                                 </svg>
                             </div>
-                            <div class="upload-title">3 Months Bank Statements</div>
-                            <div class="upload-subtitle">PDF or images • Max 10MB each</div>
-                            <div class="upload-file-name" id="bankStatementsName"></div>
+                            <div class="upload-content">
+                                <div class="upload-title">3 Months Bank Statements</div>
+                                <div class="upload-subtitle">PDF or images • Max 10MB each</div>
+                                <div class="upload-file-name" id="bankStatementsName"></div>
+                            </div>
                         </div>
 
                         <div class="upload-box" id="processingHistoryBox">
@@ -1484,9 +1497,27 @@
                                     <line x1="1" y1="10" x2="23" y2="10"/>
                                 </svg>
                             </div>
-                            <div class="upload-title">3 Months Processing History</div>
-                            <div class="upload-subtitle">PDF or images • Max 10MB each</div>
-                            <div class="upload-file-name" id="processingHistoryName"></div>
+                            <div class="upload-content">
+                                <div class="upload-title">3 Months Processing History</div>
+                                <div class="upload-subtitle">PDF or images • Max 10MB each</div>
+                                <div class="upload-file-name" id="processingHistoryName"></div>
+                            </div>
+                        </div>
+
+                        <div class="upload-box" id="idPassportBox">
+                            <input type="file" name="id_passport" accept=".pdf,.png,.jpg,.jpeg" onchange="handleFileUpload(this, 'idPassportBox')">
+                            <div class="upload-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="16" rx="2"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                    <path d="M7 16h10"/>
+                                </svg>
+                            </div>
+                            <div class="upload-content">
+                                <div class="upload-title">ID or Passport</div>
+                                <div class="upload-subtitle">Clear photo or scan • Max 10MB</div>
+                                <div class="upload-file-name" id="idPassportName"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
