@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
             "Number Of Locations": data.locations ? parseInt(data.locations) : null,
             "Average Ticket": data.avg_ticket ? parseFloat(data.avg_ticket.toString().replace(/[^0-9.]/g, '')) : null,
             "Monthly Volume": data.monthly_volume ? parseFloat(data.monthly_volume.toString().replace(/[^0-9.]/g, '')) : null,
-            "Procucts / Services": data.products_services || null,
+            "Products / Services": data.products_services || null,
             "Keyed": data.percent_keyed ? parseFloat(data.percent_keyed) : null,
             "Swiped": data.percent_swiped ? parseFloat(data.percent_swiped) : null,
             "Equipment Software": data.equipment || null,
@@ -68,8 +68,8 @@ exports.handler = async (event, context) => {
             
             // Principal Information
             "Principle First Name": data.principal_first_name || null,
-            "Principle Last Name": data.principal_last_name || null,
             "Principle Middle Initial": data.principal_middle || null,
+            "Principle Last Name": data.principal_last_name || null,
             "Principle Address": data.principal_address || null,
             "Principle City": data.principal_city || null,
             "Principle State": data.principal_state || null,
@@ -96,7 +96,7 @@ exports.handler = async (event, context) => {
             "Has Store Front": data.has_storefront || null,
             "Delivery Timeframe": data.delivery_timeframe || null,
             "Refund Policy": data.refund_policy || null,
-            "Percent Deposits For Future Service": data.percent_deposits ? parseFloat(data.percent_deposits) : null,
+            "Percent Deposits Future Services": data.percent_deposits ? parseFloat(data.percent_deposits) : null,
             "Percent Cash & Carry": data.percent_cash_carry ? parseFloat(data.percent_cash_carry) : null,
             "Geographic Area": data.geographic_area || null,
             "Percent International Sales": data.percent_international ? parseFloat(data.percent_international) : null,
@@ -109,16 +109,19 @@ exports.handler = async (event, context) => {
             "Payment Point": data.payment_point || null,
             "Ship Time After Authorization": data.ship_time || null,
             "Shipping Service": data.shipping_service || null,
-            "Delivery Reciept Required": data.delivery_receipt || null,
+            "Delivery Receipt Required": data.delivery_receipt || null,
             "Advertising Method": data.advertising || null,
             "Requires Deposit": data.requires_deposit || null,
             "Deposit Amount": data.deposit_amount ? parseFloat(data.deposit_amount.toString().replace(/[^0-9.]/g, '')) : null,
-            "Warranty Guarentee": data.warranty || null,
+            "Warranty Guarantee": data.warranty || null,
             "Previous Processing": data.previous_processing || null,
             "Business Seasonal": data.seasonal || null,
             "Recurring Transactions": data.recurring || null,
             "Product Stored At Business": data.product_stored || null,
             "Order Processor": data.order_processor || null
+            
+            // Note: Document fields (Bank Statements, Processing Statements, ID / Passport) 
+            // require file upload handling which is not implemented yet
         };
 
         // Remove null values
