@@ -344,6 +344,70 @@
             box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .form-group input.error:focus,
+        .form-group select.error:focus,
+        .form-group textarea.error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+        }
+
+        .form-group.error .radio-group,
+        .form-group.error .checkbox-group {
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+        }
+
+        /* Dev Toolbar */
+        .dev-toolbar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .dev-toolbar button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .dev-toolbar button:hover {
+            background: var(--primary-dark);
+        }
+
+        .dev-toolbar label {
+            color: white;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dev-toolbar .close-dev {
+            background: #333;
+            padding: 0.3rem 0.6rem;
+        }
+
         .form-group input::placeholder {
             color: #9ca3af;
         }
@@ -1731,7 +1795,62 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function validateStep(step) {
+            const stepElement = document.getElementById('step' + step);
+            let isValid = true;
+            let firstInvalid = null;
+
+            // Check required radio buttons
+            const radioGroups = {};
+            stepElement.querySelectorAll('.radio-option input[type="radio"]').forEach(radio => {
+                if (!radioGroups[radio.name]) {
+                    radioGroups[radio.name] = false;
+                }
+                if (radio.checked) {
+                    radioGroups[radio.name] = true;
+                }
+            });
+
+            // Check if any required radio group is not selected
+            Object.keys(radioGroups).forEach(name => {
+                if (!radioGroups[name]) {
+                    isValid = false;
+                    const container = stepElement.querySelector(`input[name="${name}"]`).closest('.form-group');
+                    if (!firstInvalid) firstInvalid = container;
+                    container.classList.add('error');
+                } else {
+                    const container = stepElement.querySelector(`input[name="${name}"]`).closest('.form-group');
+                    container.classList.remove('error');
+                }
+            });
+
+            // Check required text inputs
+            stepElement.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('error');
+                    if (!firstInvalid) firstInvalid = input;
+                } else {
+                    input.classList.remove('error');
+                }
+            });
+
+            if (!isValid && firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert('Please fill in all required fields before continuing.');
+            }
+
+            return isValid;
+        }
+
         function nextStep() {
+            // Skip validation if in dev mode
+            const skipValidation = document.getElementById('devMode')?.checked;
+            
+            if (!skipValidation && !validateStep(currentStep)) {
+                return;
+            }
+            
             if (currentStep < totalSteps) {
                 currentStep++;
                 showStep(currentStep);
@@ -1742,6 +1861,139 @@
             if (currentStep > 1) {
                 currentStep--;
                 showStep(currentStep);
+            }
+        }
+
+        // DEV MODE: Prefill functions for testing
+        function prefillStep1() {
+            selectRadioByValue('us_citizen', 'yes');
+            selectRadioByValue('itin', 'no');
+            selectRadioByValue('us_presence', 'yes');
+            selectRadioByValue('chargeback_provider', 'no');
+        }
+
+        function prefillStep2() {
+            const fields = {
+                'legal_business_name': 'Test Company LLC',
+                'dba_name': 'Test Co',
+                'legal_address': '123 Main Street',
+                'legal_city': 'New York',
+                'legal_state': 'NY',
+                'legal_zip': '10001',
+                'business_phone': '555-123-4567',
+                'contact_email': 'test@example.com',
+                'contact_name': 'John Doe',
+                'ein': '12-3456789',
+                'website': 'https://example.com',
+                'locations': '1',
+                'avg_ticket': '100',
+                'monthly_volume': '50000',
+                'products_services': 'Test products and services',
+                'percent_keyed': '50',
+                'percent_swiped': '50',
+                'equipment': 'Square Terminal',
+                'principal_first_name': 'John',
+                'principal_last_name': 'Doe',
+                'principal_address': '456 Oak Ave',
+                'principal_city': 'New York',
+                'principal_state': 'NY',
+                'principal_zip': '10002',
+                'principal_email': 'john@example.com',
+                'ownership_percent': '100',
+                'country_origin': 'USA'
+            };
+            
+            Object.keys(fields).forEach(name => {
+                const input = document.querySelector(`[name="${name}"]`);
+                if (input) input.value = fields[name];
+            });
+            
+            // Select business type
+            const businessType = document.querySelector('[name="business_type"]');
+            if (businessType) businessType.value = 'LLC';
+            
+            // Select sale method
+            document.querySelectorAll('.checkbox-option').forEach(opt => {
+                if (opt.querySelector('input[value="ecommerce"]')) {
+                    opt.classList.add('selected');
+                    opt.querySelector('input').checked = true;
+                }
+            });
+            
+            selectRadioByValue('controlling_individual', 'yes');
+        }
+
+        function prefillStep3() {
+            const fields = {
+                'bank_account_name': 'Test Company LLC',
+                'bank_name': 'Chase Bank',
+                'bank_phone': '555-987-6543',
+                'routing_number': '021000021',
+                'account_number': '123456789',
+                'ssn': '123-45-6789'
+            };
+            
+            Object.keys(fields).forEach(name => {
+                const input = document.querySelector(`[name="${name}"]`);
+                if (input) input.value = fields[name];
+            });
+        }
+
+        function prefillStep4() {
+            const fields = {
+                'product_description': 'Digital products and services',
+                'purchase_method': 'Online checkout',
+                'delivery_timeframe': 'Immediate digital delivery',
+                'refund_policy': '30 day money back guarantee',
+                'percent_deposits': '0',
+                'percent_cash_carry': '100',
+                'geographic_area': 'United States',
+                'percent_international': '10',
+                'product_owner': 'Test Company LLC',
+                'percent_consumer': '90',
+                'percent_business': '10',
+                'payment_point': 'At time of purchase',
+                'ship_time': 'Immediate',
+                'shipping_service': 'Digital delivery',
+                'advertising': 'Social media, Google Ads',
+                'warranty': '30 day satisfaction guarantee',
+                'recurring': 'Monthly subscriptions available',
+                'order_processor': 'Internal team'
+            };
+            
+            Object.keys(fields).forEach(name => {
+                const input = document.querySelector(`[name="${name}"]`);
+                if (input) input.value = fields[name];
+            });
+            
+            selectRadioByValue('has_storefront', 'no');
+            selectRadioByValue('delivery_receipt', 'no');
+            selectRadioByValue('requires_deposit', 'no');
+            selectRadioByValue('previous_processing', 'yes');
+            selectRadioByValue('seasonal', 'no');
+            selectRadioByValue('product_stored', 'yes');
+        }
+
+        function selectRadioByValue(name, value) {
+            const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if (radio) {
+                const option = radio.closest('.radio-option');
+                if (option) {
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                        r.closest('.radio-option').classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    radio.checked = true;
+                }
+            }
+        }
+
+        function prefillCurrentStep() {
+            switch(currentStep) {
+                case 1: prefillStep1(); break;
+                case 2: prefillStep2(); break;
+                case 3: prefillStep3(); break;
+                case 4: prefillStep4(); break;
             }
         }
 
@@ -1870,5 +2122,14 @@
 
         updateProgress();
     </script>
+
+    <!-- Dev Toolbar - Remove for production -->
+    <div class="dev-toolbar" id="devToolbar">
+        <button onclick="prefillCurrentStep()">Prefill Step</button>
+        <label>
+            <input type="checkbox" id="devMode"> Skip Validation
+        </label>
+        <button class="close-dev" onclick="document.getElementById('devToolbar').style.display='none'">×</button>
+    </div>
 </body>
 </html>
