@@ -68,13 +68,44 @@
             justify-content: space-between;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 32px;
+            width: auto;
+        }
+
+        .partner-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .partner-badge span:first-child {
+            color: var(--text-muted);
+        }
+
+        .partner-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .partner-logo {
+            height: 24px;
+            width: auto;
         }
 
         .header-badge {
@@ -757,6 +788,16 @@
             .upload-icon {
                 margin: 0;
             }
+            .header {
+                padding: 0.75rem 1rem;
+            }
+            .partner-badge {
+                display: none;
+            }
+            .header-badge {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
@@ -766,7 +807,15 @@
 
     <!-- Header -->
     <header class="header">
-        <div class="logo">ExiScale</div>
+        <div class="header-left">
+            <a href="/" class="logo">
+                <img src="../logos/exiscale-logo.png" alt="ExiScale" class="logo-img">
+            </a>
+            <div class="partner-badge">
+                <span>in partnership with</span>
+                <img src="../goat-payments-logo.png" alt="GOAT Payments" class="partner-logo">
+            </div>
+        </div>
         <div class="header-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
