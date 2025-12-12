@@ -915,6 +915,7 @@
 
         <!-- Form Card -->
         <div class="form-card">
+            <form id="applicationForm" onsubmit="return false;">
             <!-- Step 1: Screening Questions -->
             <div class="form-step active" id="step1">
                 <h2 class="form-title">Screening Questions</h2>
@@ -1660,6 +1661,7 @@
                     </button>
                 </div>
             </div>
+            </form>
 
             <!-- Success Screen -->
             <div class="success-screen" id="successScreen">
@@ -1782,11 +1784,89 @@
             }
         }
 
-        function submitForm() {
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-            document.getElementById('successScreen').classList.add('active');
-            document.querySelector('.progress-container').style.display = 'none';
+        async function submitForm() {
+            const submitBtn = document.querySelector('#step5 .btn-primary');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = `
+                <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite; width: 20px; height: 20px;">
+                    <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
+                </svg>
+                Submitting...
+            `;
+            submitBtn.disabled = true;
+
+            try {
+                // Collect all form data
+                const form = document.getElementById('applicationForm');
+                const formData = new FormData(form);
+                const data = {};
+
+                // Convert FormData to object
+                formData.forEach((value, key) => {
+                    // Handle multiple values (like checkboxes)
+                    if (data[key]) {
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                });
+
+                // Get selected radio values
+                document.querySelectorAll('.radio-option.selected input').forEach(input => {
+                    data[input.name] = input.value;
+                });
+
+                // Get selected checkbox values
+                const saleMethodValues = [];
+                document.querySelectorAll('.checkbox-option.selected input[name="sale_method"]').forEach(input => {
+                    saleMethodValues.push(input.value);
+                });
+                if (saleMethodValues.length > 0) {
+                    data.sale_method = saleMethodValues;
+                }
+
+                // Submit to Netlify function
+                const response = await fetch('/.netlify/functions/submit-application', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Submission failed');
+                }
+
+                // Success - show success screen
+                document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+                document.getElementById('successScreen').classList.add('active');
+                document.querySelector('.progress-container').style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('There was an error submitting your application. Please try again or contact support.');
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         }
+
+        // Add spinner animation
+        const style = document.createElement('style');
+        style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
 
         updateProgress();
     </script>
