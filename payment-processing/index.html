@@ -2130,7 +2130,7 @@
                 }
 
                 // Submit to Netlify function
-                const response = await fetch('/.netlify/functions/submit-application', {
+                const response = await fetch('https://whimsical-halva-08252d.netlify.app/.netlify/functions/submit-application', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
