@@ -1,1345 +1,689 @@
 <!DOCTYPE html>
+<!-- ExiScale URL Health Tool - Matching Dashboard Styling -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Health - ExiScale</title>
-    <link rel="icon" type="image/png" href="/assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>URL Health | ExiScale</title>
+    <link rel="icon" type="image/png" href="../exiscale-favicon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F8F9FA;
-            --bg-tertiary: #F1F3F4;
-            --card-bg: #FFFFFF;
-            --border: #E8EAED;
-            --text-primary: #1A1A1A;
-            --text-secondary: #5F6368;
-            --text-muted: #9AA0A6;
-            --primary: #F97316;
-            --primary-dark: #EA580C;
-            --primary-light: rgba(249, 115, 22, 0.1);
-            --success: #22C55E;
-            --success-light: rgba(34, 197, 94, 0.1);
-            --warning: #F59E0B;
-            --warning-light: rgba(245, 158, 11, 0.1);
-            --danger: #EF4444;
-            --danger-light: rgba(239, 68, 68, 0.1);
-            --purple: #8B5CF6;
-            --purple-light: rgba(139, 92, 246, 0.1);
-            --blue: #3B82F6;
-            --blue-light: rgba(59, 130, 246, 0.1);
-            --cyan: #06B6D4;
-            --cyan-light: rgba(6, 182, 212, 0.1);
-            --sidebar-width: 240px;
+        :root { 
+            --orange: #ff6a15; 
+            --orange-light: rgba(255, 106, 21, 0.1);
+            --black: #0a0a0a; 
+            --gray: #666; 
+            --light-gray: #fafafa;
+            --border: rgba(0,0,0,0.08);
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            line-height: 1.6; 
+            color: var(--black); 
+            background: #f5f5f7; 
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
 
-        [data-theme="dark"] {
-            --bg-primary: #0D0D0D;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1A1A1A;
-            --card-bg: #161616;
-            --border: #262626;
-            --text-primary: #FAFAFA;
-            --text-secondary: #A1A1A1;
-            --text-muted: #6B6B6B;
-            --primary-light: rgba(249, 115, 22, 0.15);
-            --success-light: rgba(34, 197, 94, 0.15);
-            --warning-light: rgba(245, 158, 11, 0.15);
-            --danger-light: rgba(239, 68, 68, 0.15);
-            --purple-light: rgba(139, 92, 246, 0.15);
-            --blue-light: rgba(59, 130, 246, 0.15);
-            --cyan-light: rgba(6, 182, 212, 0.15);
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            line-height: 1.5;
-        }
-
-        /* Loading Screen */
         .loading-screen {
             position: fixed;
             inset: 0;
-            background: var(--bg-secondary);
+            background: #f5f5f7;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 16px;
+            gap: 1rem;
             z-index: 9999;
         }
-
         .loading-screen.hidden { display: none; }
-
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--orange);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .dashboard { display: none; min-height: 100vh; }
+        .dashboard.active { display: flex; }
 
-        /* Layout */
-        .app-layout {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .app-layout.active { display: flex; }
-
-        /* Sidebar */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-primary);
+            width: 280px;
+            background: white;
             border-right: 1px solid var(--border);
+            padding: 2rem 0;
             display: flex;
             flex-direction: column;
             position: fixed;
-            top: 0;
+            height: 100vh;
             left: 0;
-            bottom: 0;
+            top: 0;
             z-index: 100;
         }
 
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
+        .sidebar-logo { padding: 0 1rem; margin-bottom: 2.5rem; text-align: center; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-        }
-
-        .logo-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .logo-text {
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .logo-text span { color: var(--primary); }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            overflow-y: auto;
-        }
-
-        .nav-section { margin-bottom: 24px; }
-
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 0 12px;
-            margin-bottom: 8px;
-        }
+        .sidebar-nav { flex: 1; padding: 0 1rem; }
 
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-weight: 500;
+            position: relative;
+            text-decoration: none;
         }
-
-        .nav-item:hover {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .nav-item.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-item.active::before {
+        .nav-item::before {
             content: '';
             position: absolute;
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 3px;
-            height: 20px;
-            background: var(--primary);
-            border-radius: 0 3px 3px 0;
+            width: 4px;
+            height: 0;
+            background: var(--orange);
+            border-radius: 0 4px 4px 0;
+            transition: height 0.3s ease;
         }
+        .nav-item:hover { background: var(--light-gray); color: var(--black); }
+        .nav-item.active { background: var(--orange-light); color: var(--orange); font-weight: 600; }
+        .nav-item.active::before { height: 60%; }
+        .nav-item svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            opacity: 0.7;
-        }
-
-        .nav-item:hover svg,
-        .nav-item.active svg { opacity: 1; }
-
-        .sidebar-bottom {
-            padding: 12px;
-            border-top: 1px solid var(--border);
-        }
-
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            background: var(--bg-tertiary);
-            transition: all 0.15s;
-            width: 100%;
-        }
-
-        .back-btn:hover {
-            background: var(--border);
-            color: var(--text-primary);
-        }
-
-        .back-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .sidebar-footer {
-            padding: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .user-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .nav-divider {
+            padding: 1.25rem 1.5rem 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
         }
 
-        .user-info { flex: 1; min-width: 0; }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .user-email {
-            font-size: 11px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .theme-toggle {
-            padding: 8px;
-            background: var(--bg-tertiary);
-            border: none;
-            border-radius: 6px;
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
             cursor: pointer;
-            color: var(--text-secondary);
-            transition: all 0.15s;
+            transition: all 0.3s ease;
+            margin: 0 1rem 0.5rem;
+            color: var(--gray);
+            font-weight: 500;
+            text-decoration: none;
+            background: var(--light-gray);
         }
+        .back-link:hover { background: #eee; color: var(--black); }
+        .back-link svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-        .theme-toggle:hover {
-            background: var(--border);
-            color: var(--text-primary);
-        }
-
-        .theme-toggle svg {
-            width: 16px;
-            height: 16px;
-            display: block;
-        }
-
-        /* Main Content */
-        .main-wrapper {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-        }
-
-        .main-header {
-            padding: 28px 32px 0;
-        }
-
-        .page-title {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .main-content {
-            padding: 24px 32px 40px;
-        }
-
-        /* Page Sections */
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 28px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+        .sidebar-footer { padding: 1.5rem 1rem; border-top: 1px solid var(--border); margin-top: auto; }
+        .user-info { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-radius: 12px; }
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--orange) 0%, #ff8f4d 100%);
             border-radius: 12px;
-            padding: 20px;
-            transition: all 0.2s;
-        }
-
-        .stat-card:hover {
-            border-color: var(--text-muted);
-        }
-
-        .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 14px;
-        }
-
-        .stat-icon svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .stat-icon.orange { background: var(--primary-light); color: var(--primary); }
-        .stat-icon.green { background: var(--success-light); color: var(--success); }
-        .stat-icon.purple { background: var(--purple-light); color: var(--purple); }
-        .stat-icon.blue { background: var(--blue-light); color: var(--blue); }
-        .stat-icon.cyan { background: var(--cyan-light); color: var(--cyan); }
-        .stat-icon.red { background: var(--danger-light); color: var(--danger); }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-size: 28px;
+            color: white;
             font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
+            font-size: 1rem;
         }
+        .user-details { flex: 1; overflow: hidden; }
+        .user-name { font-weight: 600; font-size: 0.95rem; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-email { font-size: 0.8rem; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .stat-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
+        .main-content { flex: 1; margin-left: 280px; padding: 2.5rem; min-height: 100vh; }
 
-        /* Panel */
-        .panel {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
+        .page-header { margin-bottom: 2.5rem; animation: fadeInUp 0.5s ease; }
+        .page-title { font-size: 2rem; font-weight: 800; color: var(--black); letter-spacing: -0.03em; }
+        .page-subtitle { font-size: 1rem; color: var(--gray); margin-top: 0.5rem; }
 
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
-        }
+        .content-panel { display: none; animation: fadeInUp 0.5s ease; }
+        .content-panel.active { display: block; }
 
-        .panel-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: white; padding: 1.75rem; border-radius: 16px; border: 1px solid var(--border); transition: all 0.4s ease; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
+        .stat-icon svg { width: 24px; height: 24px; stroke-width: 2; fill: none; }
+        .stat-icon.orange { background: var(--orange-light); }
+        .stat-icon.orange svg { stroke: var(--orange); }
+        .stat-icon.green { background: #dcfce7; }
+        .stat-icon.green svg { stroke: #16a34a; }
+        .stat-icon.blue { background: #dbeafe; }
+        .stat-icon.blue svg { stroke: #2563eb; }
+        .stat-icon.purple { background: #f3e8ff; }
+        .stat-icon.purple svg { stroke: #9333ea; }
+        .stat-icon.red { background: #fee2e2; }
+        .stat-icon.red svg { stroke: #dc2626; }
+        
+        .stat-label { font-size: 0.85rem; color: var(--gray); font-weight: 500; margin-bottom: 0.5rem; }
+        .stat-value { font-size: 1.75rem; font-weight: 800; color: var(--black); letter-spacing: -0.03em; }
+        .stat-change { font-size: 0.8rem; font-weight: 600; margin-top: 0.5rem; }
+        .stat-change.positive { color: #16a34a; }
+        .stat-change.negative { color: #dc2626; }
+        .stat-change.neutral { color: var(--gray); }
 
-        .panel-body {
-            padding: 20px;
-        }
+        .content-card { background: white; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.5rem; }
+        .card-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 1.1rem; font-weight: 700; color: var(--black); }
 
-        /* Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 20px;
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
-        /* Forms */
-        .form-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { text-align: left; padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; background: var(--light-gray); }
+        .data-table td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: rgba(255,106,21,0.02); }
 
+        .status-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+        .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .status-badge.clean { background: #dcfce7; color: #16a34a; }
+        .status-badge.suspicious { background: #fef3c7; color: #d97706; }
+        .status-badge.malicious { background: #fee2e2; color: #dc2626; }
+        .status-badge.error { background: #f3f4f6; color: #6b7280; }
+
+        .risk-badge { display: inline-flex; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .risk-badge.safe { background: #dcfce7; color: #16a34a; }
+        .risk-badge.low { background: #dbeafe; color: #2563eb; }
+        .risk-badge.medium { background: #fef3c7; color: #d97706; }
+        .risk-badge.high { background: #fee2e2; color: #dc2626; }
+
+        .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
         .form-input {
             flex: 1;
-            padding: 11px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
             font-family: inherit;
-            transition: all 0.15s;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
         }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-
+        .form-input:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 4px rgba(255,106,21,0.1); }
         .form-select {
-            padding: 11px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
             font-family: inherit;
+            background: var(--light-gray);
             cursor: pointer;
         }
 
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 14px;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
             font-family: inherit;
             cursor: pointer;
-            transition: all 0.15s;
-            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            border: none;
         }
+        .btn svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .btn-primary { background: var(--orange); color: white; box-shadow: 0 4px 15px rgba(255,106,21,0.3); }
+        .btn-primary:hover { background: #ff7a25; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,106,21,0.4); }
+        .btn-secondary { background: var(--light-gray); color: var(--black); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: #eee; }
+        .btn-danger { background: #dc2626; color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.85rem; }
+        .btn-sm svg { width: 16px; height: 16px; }
+        .btn-block { width: 100%; }
 
-        .btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border-color: var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--border);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #DC2626;
-        }
-
-        .btn-sm {
-            padding: 7px 12px;
-            font-size: 13px;
-        }
-
-        .btn-sm svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .btn-block {
-            width: 100%;
-        }
-
-        /* URL List */
-        .url-list {
-            max-height: 360px;
-            overflow-y: auto;
-        }
-
+        .url-list { max-height: 320px; overflow-y: auto; }
         .url-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            background: var(--bg-primary);
-            transition: all 0.15s;
-        }
-
-        .url-item:hover {
-            border-color: var(--text-muted);
-        }
-
-        .url-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .url-text {
-            flex: 1;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            word-break: break-all;
-        }
-
-        .url-status {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .url-status.fresh { background: var(--success-light); color: var(--success); }
-        .url-status.aging { background: var(--warning-light); color: var(--warning); }
-        .url-status.old { background: var(--danger-light); color: var(--danger); }
-        .url-status.never { background: var(--bg-tertiary); color: var(--text-muted); }
-
-        /* Status Badges */
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .status-badge.clean { background: var(--success-light); color: var(--success); }
-        .status-badge.suspicious { background: var(--warning-light); color: var(--warning); }
-        .status-badge.malicious { background: var(--danger-light); color: var(--danger); }
-        .status-badge.error { background: var(--bg-tertiary); color: var(--text-muted); }
-
-        .risk-badge {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .risk-badge.safe { background: var(--success-light); color: var(--success); }
-        .risk-badge.review { background: var(--blue-light); color: var(--blue); }
-        .risk-badge.moderate { background: var(--warning-light); color: var(--warning); }
-        .risk-badge.block-risk { background: var(--danger-light); color: var(--danger); }
-
-        /* Scan Results */
-        .scan-results {
-            max-height: 420px;
-            overflow-y: auto;
-        }
-
-        .scan-result-item {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .scan-result-header {
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            background: var(--bg-primary);
-            transition: background 0.15s;
-        }
-
-        .scan-result-header:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .scan-result-url {
-            font-weight: 500;
-            font-size: 13px;
-            word-break: break-all;
-            flex: 1;
-            margin-right: 12px;
-        }
-
-        .scan-result-details {
-            display: none;
-            padding: 16px;
-            border-top: 1px solid var(--border);
-            background: var(--bg-secondary);
-        }
-
-        .scan-result-item.expanded .scan-result-details {
-            display: block;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .detail-item {
-            background: var(--bg-primary);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .detail-item label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .detail-item .value {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .engines-list {
-            background: var(--danger-light);
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .engines-list h4 {
-            font-size: 12px;
-            color: var(--danger);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .engine-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .engine-tag {
-            padding: 4px 10px;
-            background: var(--danger);
-            color: white;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* Table */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px 16px;
-            text-align: left;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
         }
+        .url-item:last-child { border-bottom: none; }
+        .url-item:hover { background: rgba(255,106,21,0.02); }
+        .url-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--orange); cursor: pointer; }
+        .url-text { flex: 1; font-size: 0.9rem; font-weight: 500; color: var(--black); word-break: break-all; }
+        .url-status { padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .url-status.fresh { background: #dcfce7; color: #16a34a; }
+        .url-status.stale { background: #fef3c7; color: #d97706; }
+        .url-status.never { background: #f3f4f6; color: #6b7280; }
 
-        .data-table th {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: var(--bg-secondary);
-        }
-
-        .data-table td {
-            font-size: 13px;
-        }
-
-        .data-table tbody tr:hover {
-            background: var(--bg-tertiary);
-        }
-
-        /* Filter Pills */
-        .filter-pills {
-            display: flex;
-            gap: 6px;
-        }
-
-        .filter-pill {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-            transition: all 0.15s;
-        }
-
-        .filter-pill:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .filter-pill.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Alert Item */
-        .alert-item {
-            background: var(--bg-primary);
-            border: 1px solid var(--warning);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .alert-url {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-
-        .alert-meta {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        /* Schedule Item */
-        .schedule-item {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
-        }
-
-        .schedule-header {
+        .scan-results { max-height: 400px; overflow-y: auto; }
+        .scan-result-item { border-bottom: 1px solid var(--border); }
+        .scan-result-item:last-child { border-bottom: none; }
+        .scan-result-header {
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
+        .scan-result-header:hover { background: var(--light-gray); }
+        .scan-result-url { font-weight: 600; font-size: 0.9rem; word-break: break-all; flex: 1; margin-right: 1rem; }
+        .scan-result-details { display: none; padding: 1.5rem; background: var(--light-gray); border-top: 1px solid var(--border); }
+        .scan-result-item.expanded .scan-result-details { display: block; }
 
-        .schedule-name {
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        .detail-item { background: white; padding: 1rem; border-radius: 10px; border: 1px solid var(--border); }
+        .detail-item label { font-size: 0.7rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.25rem; font-weight: 600; }
+        .detail-item .value { font-size: 1.25rem; font-weight: 700; color: var(--black); }
 
-        .schedule-freq {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
+        .engines-list { background: #fee2e2; padding: 1rem; border-radius: 10px; }
+        .engines-list h4 { font-size: 0.8rem; color: #dc2626; margin-bottom: 0.75rem; font-weight: 700; }
+        .engine-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .engine-tag { padding: 0.25rem 0.6rem; background: #dc2626; color: white; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
 
-        .schedule-urls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
-        }
-
-        .schedule-url-tag {
-            padding: 4px 10px;
-            background: var(--primary-light);
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        /* Messages */
-        .message {
-            padding: 12px 16px;
+        .filter-pills { display: flex; gap: 0.5rem; }
+        .filter-pill {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
             border-radius: 8px;
-            margin-bottom: 16px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            font-size: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
+        .filter-pill:hover { border-color: var(--orange); color: var(--orange); }
+        .filter-pill.active { background: var(--orange); border-color: var(--orange); color: white; }
 
-        .message.show { display: flex; }
-        .message.success { background: var(--success-light); color: #166534; }
-        .message.error { background: var(--danger-light); color: #991B1B; }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
+        .alert-item {
+            background: white;
+            border: 2px solid #d97706;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
         }
+        .alert-url { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; color: var(--black); }
+        .alert-meta { font-size: 0.85rem; color: var(--gray); margin-bottom: 1rem; }
+        .alert-engines { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 
-        .empty-state-icon {
-            margin-bottom: 12px;
-            opacity: 0.4;
+        .schedule-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
         }
+        .schedule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .schedule-name { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; color: var(--black); }
+        .schedule-freq { font-size: 0.85rem; color: var(--gray); text-transform: capitalize; }
+        .schedule-urls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+        .schedule-url-tag { padding: 0.25rem 0.6rem; background: var(--orange-light); border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--orange); }
 
-        .empty-state-icon svg {
-            width: 48px;
-            height: 48px;
-        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .status-dot.active { background: #16a34a; }
+        .status-dot.paused { background: var(--gray); }
 
-        .empty-state p {
-            font-size: 14px;
-        }
+        .empty-state { text-align: center; padding: 4rem 2rem; }
+        .empty-state-icon { width: 80px; height: 80px; background: var(--light-gray); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+        .empty-state-icon svg { width: 40px; height: 40px; stroke: #ccc; stroke-width: 1.5; fill: none; }
+        .empty-state-title { font-size: 1.25rem; font-weight: 700; color: var(--black); margin-bottom: 0.5rem; }
+        .empty-state-text { font-size: 0.95rem; color: var(--gray); }
 
-        /* Loading Overlay */
         .loading-overlay {
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             align-items: center;
             justify-content: center;
             z-index: 10;
-            border-radius: 12px;
+            border-radius: 16px;
         }
-
-        [data-theme="dark"] .loading-overlay {
-            background: rgba(0,0,0,0.85);
-        }
-
         .loading-overlay.show { display: flex; }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            padding-top: 16px;
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-weight: 500;
         }
+        .message.show { display: block; }
+        .message.success { background: #dcfce7; color: #166534; }
+        .message.error { background: #fee2e2; color: #991b1b; }
 
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; padding: 1.5rem; }
         .pagination button {
-            padding: 8px 14px;
+            padding: 0.6rem 1.25rem;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            border-radius: 8px;
+            background: white;
+            color: var(--black);
             font-weight: 600;
-            font-size: 13px;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.3s ease;
         }
+        .pagination button:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .pagination button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Checkbox styling */
         .checkbox-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 0;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
             cursor: pointer;
             font-weight: 600;
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 0.9rem;
+            color: var(--gray);
         }
+        .checkbox-row input { width: 18px; height: 18px; accent-color: var(--orange); }
 
-        .checkbox-row input {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--primary);
-        }
-
-        /* Active indicator dot */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .status-dot.active { background: var(--success); }
-        .status-dot.inactive { background: var(--text-muted); }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .detail-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); }
-            .main-wrapper { margin-left: 0; }
-        }
+        @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .detail-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
+
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-spinner"></div>
-        <p style="color: var(--text-secondary); font-size: 14px;">Loading...</p>
+        <p style="color: var(--gray);">Loading URL Health...</p>
     </div>
 
-    <!-- App Layout -->
-    <div class="app-layout" id="appLayout">
-        <!-- Sidebar -->
+    <div class="dashboard" id="dashboard">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="/login/" class="logo">
-                    <div class="logo-icon">
-                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="32" height="32" rx="6" fill="url(#logo-gradient)"/>
-                            <path d="M8 10h6v12H8V10zm10 4h6v8h-6v-8zm-10 8h6v4H8v-4z" fill="white" fill-opacity="0.9"/>
-                            <defs>
-                                <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
-                                    <stop stop-color="#F97316"/>
-                                    <stop offset="1" stop-color="#EA580C"/>
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-                    <span class="logo-text">EXI<span>SCALE</span></span>
-                </a>
+            <div class="sidebar-logo" style="text-align: center; padding: 0 1rem;">
+                <img src="../logos/exiscale-logo.png" alt="ExiScale" style="height: 48px; width: auto;">
             </div>
-
+            
             <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">URL Health</div>
-                    <button class="nav-item active" data-tab="dashboard">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        Overview
-                    </button>
-                    <button class="nav-item" data-tab="scan">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                        Scan URLs
-                    </button>
-                    <button class="nav-item" data-tab="logs">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        History
-                    </button>
-                    <button class="nav-item" data-tab="alerts">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        Alerts
-                    </button>
-                    <button class="nav-item" data-tab="schedules">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        Schedules
-                    </button>
+                <div class="nav-divider">Tools</div>
+                
+                <div class="nav-item active" data-tab="overview" onclick="switchTab('overview')">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Overview
+                </div>
+                
+                <div class="nav-item" data-tab="scan" onclick="switchTab('scan')">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Scan URLs
+                </div>
+                
+                <div class="nav-item" data-tab="history" onclick="switchTab('history')">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    Scan History
+                </div>
+                
+                <div class="nav-item" data-tab="alerts" onclick="switchTab('alerts')">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    Alerts
+                </div>
+                
+                <div class="nav-item" data-tab="schedules" onclick="switchTab('schedules')">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Schedules
                 </div>
             </nav>
-
-            <div class="sidebar-bottom">
-                <a href="/login/" class="back-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                    Back to Dashboard
-                </a>
-            </div>
-
+            
+            <a href="/login/" class="back-link">
+                <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Dashboard
+            </a>
+            
             <div class="sidebar-footer">
-                <div class="user-card">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div class="user-info">
-                        <div class="user-name" id="userName">User</div>
-                        <div class="user-email" id="userEmail">user@example.com</div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">--</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-email" id="userEmail">...</div>
                     </div>
-                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                    </button>
                 </div>
             </div>
         </aside>
-
-        <!-- Main Content -->
-        <main class="main-wrapper">
-            <div class="main-header">
-                <h1 class="page-title" id="pageTitle">Overview</h1>
-                <p class="page-subtitle" id="pageSubtitle">Monitor and protect your URLs with VirusTotal scanning</p>
+        
+        <main class="main-content">
+            
+            <!-- OVERVIEW -->
+            <div class="content-panel active" id="panel-overview">
+                <div class="page-header">
+                    <h1 class="page-title">URL Health Overview</h1>
+                    <p class="page-subtitle">Monitor and protect your URLs with VirusTotal scanning.</p>
+                </div>
+                
+                <div id="overviewMessage" class="message"></div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                        <div class="stat-label">Total URLs</div>
+                        <div class="stat-value" id="statUrls">0</div>
+                        <div class="stat-change neutral">Being monitored</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <div class="stat-label">Clean Scans</div>
+                        <div class="stat-value" id="statClean">0</div>
+                        <div class="stat-change positive">No threats detected</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                        <div class="stat-label">Flagged</div>
+                        <div class="stat-value" id="statFlagged">0</div>
+                        <div class="stat-change negative">Need attention</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                        <div class="stat-label">Total Scans</div>
+                        <div class="stat-value" id="statScans">0</div>
+                        <div class="stat-change neutral">All time</div>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Your URLs</h2>
+                            <button class="btn btn-primary btn-sm" onclick="switchTab('scan')">Add URL</button>
+                        </div>
+                        <div id="dashboardUrlList">
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                                <div class="empty-state-title">No URLs yet</div>
+                                <div class="empty-state-text">Add URLs to start monitoring.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activity</h2>
+                        </div>
+                        <div id="recentActivity">
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                                <div class="empty-state-title">No recent scans</div>
+                                <div class="empty-state-text">Scan results will appear here.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="main-content">
-                <!-- Overview Section -->
-                <section class="page-section active" id="dashboardSection">
-                    <div id="dashboardMessage" class="message"></div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon orange">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            
+            <!-- SCAN -->
+            <div class="content-panel" id="panel-scan">
+                <div class="page-header">
+                    <h1 class="page-title">Scan URLs</h1>
+                    <p class="page-subtitle">Add URLs and run security scans with VirusTotal.</p>
+                </div>
+                <div id="scanMessage" class="message"></div>
+                <div class="grid-2">
+                    <div class="content-card">
+                        <div class="card-header"><h2 class="card-title">Manage URLs</h2></div>
+                        <div style="padding: 1.5rem;">
+                            <div class="form-row">
+                                <input type="url" id="newUrlInput" class="form-input" placeholder="https://example.com">
+                                <button class="btn btn-primary" id="addUrlBtn">Add</button>
                             </div>
-                            <div class="stat-label">Total URLs</div>
-                            <div class="stat-value" id="statUrls">0</div>
-                            <div class="stat-meta">Being monitored</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon green">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <div class="url-list" id="urlList">
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                                <div class="empty-state-title">No URLs yet</div>
+                                <div class="empty-state-text">Add URLs above to get started.</div>
                             </div>
-                            <div class="stat-label">Clean Scans</div>
-                            <div class="stat-value" id="statClean">0</div>
-                            <div class="stat-meta">No threats detected</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon red">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="stat-label">Flagged</div>
-                            <div class="stat-value" id="statFlagged">0</div>
-                            <div class="stat-meta">Need attention</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon purple">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                            </div>
-                            <div class="stat-label">Total Scans</div>
-                            <div class="stat-value" id="statScans">0</div>
-                            <div class="stat-meta">All time</div>
+                        <label class="checkbox-row" id="selectAllRow" style="display: none;">
+                            <input type="checkbox" id="selectAllUrls">
+                            <span>Select All</span>
+                        </label>
+                        <div style="padding: 0 1.5rem 1.5rem;">
+                            <button class="btn btn-primary btn-block" id="runScanBtn">
+                                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                Scan Selected URLs
+                            </button>
                         </div>
                     </div>
-
-                    <div class="grid-2">
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Your URLs</h3>
-                                <button class="btn btn-primary btn-sm" onclick="switchTab('scan')">Add URL</button>
-                            </div>
-                            <div class="panel-body">
-                                <div class="url-list" id="dashboardUrlList">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                        </div>
-                                        <p>No URLs added yet</p>
-                                    </div>
-                                </div>
+                    <div class="content-card" style="position: relative;">
+                        <div class="card-header"><h2 class="card-title">Scan Results</h2></div>
+                        <div class="loading-overlay" id="scanLoading">
+                            <div style="text-align: center;">
+                                <div class="loading-spinner"></div>
+                                <p style="margin-top: 1rem; color: var(--gray);">Scanning with VirusTotal...</p>
                             </div>
                         </div>
-
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Recent Activity</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div id="recentActivity">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                                        </div>
-                                        <p>No recent scans</p>
-                                    </div>
-                                </div>
+                        <div class="scan-results" id="scanResults">
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                                <div class="empty-state-title">Ready to scan</div>
+                                <div class="empty-state-text">Select URLs and click Scan.</div>
                             </div>
                         </div>
                     </div>
-                </section>
-
-                <!-- Scan Section -->
-                <section class="page-section" id="scanSection">
-                    <div id="scanMessage" class="message"></div>
-
-                    <div class="grid-2">
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Manage URLs</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="form-row">
-                                    <input type="url" id="newUrlInput" class="form-input" placeholder="https://example.com">
-                                    <button class="btn btn-primary" id="addUrlBtn">Add</button>
-                                </div>
-                                <div class="url-list" id="urlList">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                        </div>
-                                        <p>No URLs added yet</p>
-                                    </div>
-                                </div>
-                                <label class="checkbox-row">
-                                    <input type="checkbox" id="selectAllUrls">
-                                    <span>Select All</span>
-                                </label>
-                                <button class="btn btn-primary btn-block" id="runScanBtn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                    Scan Selected URLs
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="panel" style="position: relative;">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Scan Results</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="loading-overlay" id="scanLoading">
-                                    <div style="text-align: center;">
-                                        <div class="loading-spinner"></div>
-                                        <p style="margin-top: 12px; color: var(--text-secondary); font-size: 13px;">Scanning with VirusTotal...</p>
-                                    </div>
-                                </div>
-                                <div class="scan-results" id="scanResults">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                        </div>
-                                        <p>Select URLs and click Scan</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- History Section -->
-                <section class="page-section" id="logsSection">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Scan History</h3>
-                            <div class="filter-pills">
-                                <button class="filter-pill active" data-filter="all">All</button>
-                                <button class="filter-pill" data-filter="clean">Clean</button>
-                                <button class="filter-pill" data-filter="suspicious">Suspicious</button>
-                                <button class="filter-pill" data-filter="malicious">Malicious</button>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>URL</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Detections</th>
-                                            <th>Risk Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="logsTableBody">
-                                        <tr>
-                                            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">No scan history yet</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="pagination">
-                                <button id="prevPage">Previous</button>
-                                <span id="pageInfo" style="color: var(--text-secondary); font-weight: 600; font-size: 13px;">Page 1</span>
-                                <button id="nextPage">Next</button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Alerts Section -->
-                <section class="page-section" id="alertsSection">
-                    <div id="alertsMessage" class="message"></div>
-
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Active Alerts</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div id="activeAlerts">
-                                <div class="empty-state">
-                                    <div class="empty-state-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                    </div>
-                                    <p>No active alerts — all clear</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3 class="panel-title">Acknowledged Alerts</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>URL</th>
-                                            <th>Engine</th>
-                                            <th>Detected</th>
-                                            <th>Acknowledged</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="acknowledgedAlertsBody">
-                                        <tr>
-                                            <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 40px;">No acknowledged alerts</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Schedules Section -->
-                <section class="page-section" id="schedulesSection">
-                    <div id="schedulesMessage" class="message"></div>
-
-                    <div class="grid-2">
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Create Schedule</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="form-row">
-                                    <select id="scheduleFrequency" class="form-select">
-                                        <option value="hourly">Every Hour</option>
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                    </select>
-                                    <input type="text" id="scheduleName" class="form-input" placeholder="Schedule name (optional)">
-                                </div>
-                                <div style="margin-bottom: 16px;">
-                                    <label style="font-size: 12px; font-weight: 600; margin-bottom: 8px; display: block; color: var(--text-secondary);">Select URLs:</label>
-                                    <div style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px;" id="scheduleUrlsList"></div>
-                                </div>
-                                <button class="btn btn-primary btn-block" id="addScheduleBtn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                    Create Schedule
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3 class="panel-title">Active Schedules</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div id="schedulesList">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                        </div>
-                                        <p>No schedules created yet</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
+            
+            <!-- HISTORY -->
+            <div class="content-panel" id="panel-history">
+                <div class="page-header">
+                    <h1 class="page-title">Scan History</h1>
+                    <p class="page-subtitle">View your complete scan history and results.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Scans</h2>
+                        <div class="filter-pills">
+                            <button class="filter-pill active" data-filter="all">All</button>
+                            <button class="filter-pill" data-filter="clean">Clean</button>
+                            <button class="filter-pill" data-filter="suspicious">Suspicious</button>
+                            <button class="filter-pill" data-filter="malicious">Malicious</button>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead><tr><th>URL</th><th>Date</th><th>Status</th><th>Detections</th><th>Risk Score</th></tr></thead>
+                        <tbody id="logsTableBody"><tr><td colspan="5" style="text-align: center; color: var(--gray); padding: 3rem;">No scan history yet</td></tr></tbody>
+                    </table>
+                    <div class="pagination">
+                        <button id="prevPage">Previous</button>
+                        <span id="pageInfo" style="color: var(--gray); font-weight: 600;">Page 1</span>
+                        <button id="nextPage">Next</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ALERTS -->
+            <div class="content-panel" id="panel-alerts">
+                <div class="page-header">
+                    <h1 class="page-title">Detection Alerts</h1>
+                    <p class="page-subtitle">Manage security alerts for your URLs.</p>
+                </div>
+                <div id="alertsMessage" class="message"></div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Active Alerts</h2></div>
+                    <div id="activeAlerts">
+                        <div class="empty-state">
+                            <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                            <div class="empty-state-title">All Clear</div>
+                            <div class="empty-state-text">No active alerts at this time.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header"><h2 class="card-title">Acknowledged Alerts</h2></div>
+                    <table class="data-table">
+                        <thead><tr><th>URL</th><th>Engine</th><th>Detected</th><th>Acknowledged</th></tr></thead>
+                        <tbody id="acknowledgedAlertsBody"><tr><td colspan="4" style="text-align: center; color: var(--gray); padding: 3rem;">No acknowledged alerts</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- SCHEDULES -->
+            <div class="content-panel" id="panel-schedules">
+                <div class="page-header">
+                    <h1 class="page-title">Scan Schedules</h1>
+                    <p class="page-subtitle">Set up automated URL scanning.</p>
+                </div>
+                <div id="schedulesMessage" class="message"></div>
+                <div class="grid-2">
+                    <div class="content-card">
+                        <div class="card-header"><h2 class="card-title">Create Schedule</h2></div>
+                        <div style="padding: 1.5rem;">
+                            <div class="form-row">
+                                <select id="scheduleFrequency" class="form-select">
+                                    <option value="hourly">Every Hour</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                </select>
+                                <input type="text" id="scheduleName" class="form-input" placeholder="Schedule name (optional)">
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; display: block; color: var(--gray);">Select URLs:</label>
+                                <div style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem;" id="scheduleUrlsList">
+                                    <p style="color: var(--gray); font-size: 0.85rem; text-align: center; padding: 1rem;">No URLs available</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-block" id="addScheduleBtn">
+                                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Create Schedule
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-card">
+                        <div class="card-header"><h2 class="card-title">Active Schedules</h2></div>
+                        <div id="schedulesList">
+                            <div class="empty-state">
+                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                                <div class="empty-state-title">No schedules</div>
+                                <div class="empty-state-text">Create a schedule to automate scanning.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </main>
     </div>
 
     <script>
-        // =====================================================
-        // CONFIGURATION
-        // =====================================================
-        const CONFIG = {
-            airtable: {
-                apiKey: 'patMUyJg0ED6dzx41.111935258c9b6eb1ec6af7d44487a2c83f13544b664ec225d3f6a590668aeab1',
-                baseId: 'appZwri4LF6oF0QSB',
-                tables: {
-                    users: 'Users',
-                    urls: 'URLs',
-                    scanLogs: 'ScanLogs',
-                    schedules: 'Schedules',
-                    detectionAlerts: 'DetectionAlerts'
-                }
-            },
-            scanEndpoint: '/.netlify/functions/url-health-scan'
-        };
+        // Uses Netlify Functions - no API keys exposed
+        const API_ENDPOINT = '/.netlify/functions/url-health';
+        const SCAN_ENDPOINT = '/.netlify/functions/url-health-scan';
 
-        // =====================================================
-        // STATE
-        // =====================================================
         let state = {
             user: null,
             urlHealthUser: null,
@@ -1347,518 +691,44 @@
             scanLogs: [],
             schedules: [],
             alerts: [],
-            currentTab: 'dashboard',
+            currentTab: 'overview',
             filterStatus: 'all',
             page: 1,
             itemsPerPage: 10
         };
 
-        // Page titles
-        const pageTitles = {
-            dashboard: { title: 'Overview', subtitle: 'Monitor and protect your URLs with VirusTotal scanning' },
-            scan: { title: 'Scan URLs', subtitle: 'Add URLs and run security scans' },
-            logs: { title: 'History', subtitle: 'View your scan history and results' },
-            alerts: { title: 'Alerts', subtitle: 'Manage detection alerts' },
-            schedules: { title: 'Schedules', subtitle: 'Set up automated scanning' }
-        };
-
-        // =====================================================
-        // UTILITIES
-        // =====================================================
-        function showMessage(containerId, message, type) {
-            const el = document.getElementById(containerId);
+        function showMessage(id, msg, type) {
+            const el = document.getElementById(id);
             if (!el) return;
-            el.textContent = message;
+            el.textContent = msg;
             el.className = `message ${type} show`;
             setTimeout(() => el.classList.remove('show'), 5000);
         }
 
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            return new Date(dateString).toLocaleString();
+        function formatDate(d) {
+            if (!d) return '-';
+            return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
 
-        // =====================================================
-        // AIRTABLE API
-        // =====================================================
-        async function airtableRequest(table, method = 'GET', body = null, recordId = null) {
-            let url = `https://api.airtable.com/v0/${CONFIG.airtable.baseId}/${encodeURIComponent(table)}`;
-            if (recordId) url += `/${recordId}`;
-
-            const options = {
-                method,
-                headers: {
-                    'Authorization': `Bearer ${CONFIG.airtable.apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            if (body) options.body = JSON.stringify(body);
-
-            const response = await fetch(url, options);
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.error?.message || 'Request failed');
-            return data;
-        }
-
-        // =====================================================
-        // SESSION CHECK
-        // =====================================================
-        async function checkSession() {
-            const savedSession = localStorage.getItem('exiscale_session');
-            
-            if (!savedSession) {
-                window.location.href = '/login/';
-                return false;
-            }
-
-            try {
-                state.user = JSON.parse(savedSession);
-                const email = state.user.fields?.['Dashboard Email'];
-                
-                if (!email) throw new Error('No email in session');
-
-                const response = await airtableRequest(CONFIG.airtable.tables.users);
-                const urlHealthUser = response.records.find(r => 
-                    r.fields.username?.toLowerCase() === email.toLowerCase()
-                );
-
-                if (!urlHealthUser) {
-                    const newUser = await airtableRequest(CONFIG.airtable.tables.users, 'POST', {
-                        fields: { username: email }
-                    });
-                    state.urlHealthUser = newUser;
-                } else {
-                    state.urlHealthUser = urlHealthUser;
-                }
-
-                return true;
-
-            } catch (error) {
-                console.error('Session error:', error);
-                localStorage.removeItem('exiscale_session');
-                window.location.href = '/login/';
-                return false;
-            }
+        async function apiCall(action, data = {}) {
+            const res = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, ...data })
+            });
+            if (!res.ok) throw new Error(`API error: ${res.status}`);
+            return res.json();
         }
 
         function updateUserUI() {
-            const firstName = state.user?.fields?.['Stacker First Name'] || '';
-            const lastName = state.user?.fields?.['Stacker Last Name'] || '';
-            const email = state.user?.fields?.['Dashboard Email'] || 'user@example.com';
-            const initials = (firstName[0] || '') + (lastName[0] || '');
-            
-            document.getElementById('userAvatar').textContent = initials.toUpperCase() || 'U';
-            document.getElementById('userName').textContent = `${firstName} ${lastName}`.trim() || 'User';
-            document.getElementById('userEmail').textContent = email;
+            const fn = state.user?.fields?.['Stacker First Name'] || state.user?.fields?.['fld3aQ9OHGmHbWDOR'] || '';
+            const ln = state.user?.fields?.['Stacker Last Name'] || state.user?.fields?.['fld057U2rfGEmb5Gh'] || '';
+            const em = state.user?.fields?.['Dashboard Email'] || state.user?.fields?.['fldu08L0Zaj11mKwm'] || '';
+            document.getElementById('userAvatar').textContent = ((fn[0]||'') + (ln[0]||'')).toUpperCase() || '--';
+            document.getElementById('userName').textContent = `${fn} ${ln}`.trim() || 'User';
+            document.getElementById('userEmail').textContent = em;
         }
 
-        // =====================================================
-        // URL MANAGEMENT
-        // =====================================================
-        async function loadUrls() {
-            try {
-                const response = await airtableRequest(CONFIG.airtable.tables.urls);
-                state.urls = response.records
-                    .filter(r => r.fields.user?.includes(state.urlHealthUser.id))
-                    .map(r => ({ id: r.id, url: r.fields.url, addedAt: r.fields.added_at }));
-
-                renderUrlList();
-                renderDashboardUrls();
-                renderScheduleUrls();
-                updateStats();
-            } catch (error) {
-                console.error('Error loading URLs:', error);
-            }
-        }
-
-        async function addUrl(url) {
-            try {
-                await airtableRequest(CONFIG.airtable.tables.urls, 'POST', {
-                    fields: { url, user: [state.urlHealthUser.id], added_at: new Date().toISOString() }
-                });
-                await loadUrls();
-                showMessage('scanMessage', 'URL added successfully', 'success');
-            } catch (error) {
-                showMessage('scanMessage', 'Error adding URL', 'error');
-            }
-        }
-
-        async function deleteUrl(urlId) {
-            if (!confirm('Delete this URL?')) return;
-            try {
-                await airtableRequest(CONFIG.airtable.tables.urls, 'DELETE', null, urlId);
-                await loadUrls();
-                showMessage('scanMessage', 'URL deleted', 'success');
-            } catch (error) {
-                showMessage('scanMessage', 'Error deleting URL', 'error');
-            }
-        }
-
-        function renderUrlList() {
-            const container = document.getElementById('urlList');
-            if (state.urls.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><p>No URLs added yet</p></div>';
-                return;
-            }
-
-            container.innerHTML = state.urls.map(url => {
-                const scans = state.scanLogs.filter(l => l.url === url.url);
-                let statusClass = 'never', statusText = 'Never scanned';
-                if (scans.length > 0) {
-                    const latest = scans.reduce((a, b) => new Date(a.timestamp) > new Date(b.timestamp) ? a : b);
-                    const days = Math.floor((Date.now() - new Date(latest.timestamp)) / 86400000);
-                    statusClass = days <= 7 ? 'fresh' : days <= 30 ? 'aging' : 'old';
-                    statusText = new Date(latest.timestamp).toLocaleDateString();
-                }
-                return `<div class="url-item"><input type="checkbox" class="url-checkbox" data-url-id="${url.id}"><span class="url-text">${url.url}</span><span class="url-status ${statusClass}">${statusText}</span><button class="btn btn-danger btn-sm" onclick="deleteUrl('${url.id}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`;
-            }).join('');
-        }
-
-        function renderDashboardUrls() {
-            const container = document.getElementById('dashboardUrlList');
-            if (state.urls.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><p>No URLs added yet</p></div>';
-                return;
-            }
-            container.innerHTML = state.urls.slice(0, 5).map(url => `<div class="url-item"><span class="url-text">${url.url}</span></div>`).join('');
-            if (state.urls.length > 5) container.innerHTML += `<p style="text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 12px;">+ ${state.urls.length - 5} more</p>`;
-        }
-
-        // =====================================================
-        // SCANNING
-        // =====================================================
-        async function runScans() {
-            const checkboxes = document.querySelectorAll('.url-checkbox:checked');
-            if (checkboxes.length === 0) {
-                showMessage('scanMessage', 'Please select at least one URL', 'error');
-                return;
-            }
-
-            document.getElementById('scanLoading').classList.add('show');
-            document.getElementById('scanResults').innerHTML = '';
-
-            const results = [];
-            for (const checkbox of checkboxes) {
-                const urlId = checkbox.dataset.urlId;
-                const urlObj = state.urls.find(u => u.id === urlId);
-                if (!urlObj) continue;
-
-                try {
-                    const response = await fetch(CONFIG.scanEndpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ url: urlObj.url })
-                    });
-
-                    const result = await response.json();
-                    await airtableRequest(CONFIG.airtable.tables.scanLogs, 'POST', {
-                        fields: {
-                            url: [urlId],
-                            scan_timestamp: new Date().toISOString(),
-                            status: result.verdict || 'error',
-                            detections: result.detections || 0,
-                            result_json: JSON.stringify(result)
-                        }
-                    });
-
-                    results.push({ ...result, url: urlObj.url });
-
-                    if (result.maliciousEngines?.length > 0) {
-                        for (const engine of result.maliciousEngines) {
-                            await createAlertIfNew(urlId, engine);
-                        }
-                    }
-                } catch (error) {
-                    results.push({ url: urlObj.url, verdict: 'error', message: error.message });
-                }
-            }
-
-            document.getElementById('scanLoading').classList.remove('show');
-            displayScanResults(results);
-            await loadScanLogs();
-            await loadAlerts();
-            updateStats();
-        }
-
-        function displayScanResults(results) {
-            const container = document.getElementById('scanResults');
-            container.innerHTML = results.map(r => `
-                <div class="scan-result-item" onclick="this.classList.toggle('expanded')">
-                    <div class="scan-result-header">
-                        <span class="scan-result-url">${r.url}</span>
-                        <span class="status-badge ${r.verdict}">${r.verdict}</span>
-                    </div>
-                    <div class="scan-result-details">
-                        ${r.verdict !== 'error' ? `
-                            <div class="detail-grid">
-                                <div class="detail-item"><label>Detections</label><div class="value">${r.detections || 0}</div></div>
-                                <div class="detail-item"><label>Total Engines</label><div class="value">${r.totalEngines || 'N/A'}</div></div>
-                                <div class="detail-item"><label>Ad Risk Score</label><div class="value">${r.adRiskScore || 0}</div></div>
-                                <div class="detail-item"><label>Risk Level</label><div class="value"><span class="risk-badge ${r.adImpactRisk || 'safe'}">${r.adImpactRisk || 'safe'}</span></div></div>
-                            </div>
-                            ${r.maliciousEngines?.length > 0 ? `<div class="engines-list"><h4>Flagged by ${r.maliciousEngines.length} engines</h4><div class="engine-tags">${r.maliciousEngines.map(e => `<span class="engine-tag">${e}</span>`).join('')}</div></div>` : ''}
-                        ` : `<p style="color: var(--danger);">Error: ${r.message}</p>`}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // =====================================================
-        // SCAN LOGS
-        // =====================================================
-        async function loadScanLogs() {
-            try {
-                const response = await airtableRequest(CONFIG.airtable.tables.scanLogs);
-                const userUrlIds = state.urls.map(u => u.id);
-
-                state.scanLogs = response.records
-                    .filter(r => r.fields.url?.some(id => userUrlIds.includes(id)))
-                    .map(r => {
-                        const urlId = r.fields.url?.[0];
-                        const urlObj = state.urls.find(u => u.id === urlId);
-                        let resultData = {};
-                        try { resultData = JSON.parse(r.fields.result_json || '{}'); } catch(e) {}
-                        return {
-                            id: r.id,
-                            url: urlObj?.url || 'Unknown',
-                            timestamp: r.fields.scan_timestamp,
-                            status: r.fields.status,
-                            detections: r.fields.detections || 0,
-                            adRiskScore: resultData.adRiskScore || 0
-                        };
-                    })
-                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-                renderScanLogs();
-                renderRecentActivity();
-            } catch (error) {
-                console.error('Error loading scan logs:', error);
-            }
-        }
-
-        function renderScanLogs() {
-            const tbody = document.getElementById('logsTableBody');
-            let filtered = state.scanLogs;
-
-            if (state.filterStatus !== 'all') {
-                filtered = filtered.filter(l => l.status === state.filterStatus);
-            }
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">No scan history</td></tr>';
-                return;
-            }
-
-            const start = (state.page - 1) * state.itemsPerPage;
-            const paginated = filtered.slice(start, start + state.itemsPerPage);
-
-            tbody.innerHTML = paginated.map(log => `
-                <tr>
-                    <td style="max-width: 300px; word-break: break-all;">${log.url}</td>
-                    <td>${formatDate(log.timestamp)}</td>
-                    <td><span class="status-badge ${log.status}">${log.status}</span></td>
-                    <td><strong>${log.detections}</strong></td>
-                    <td><span class="risk-badge ${log.adRiskScore >= 16 ? 'block-risk' : log.adRiskScore >= 9 ? 'moderate' : log.adRiskScore > 0 ? 'review' : 'safe'}">${log.adRiskScore}</span></td>
-                </tr>
-            `).join('');
-
-            const totalPages = Math.ceil(filtered.length / state.itemsPerPage);
-            document.getElementById('pageInfo').textContent = `Page ${state.page} of ${totalPages || 1}`;
-            document.getElementById('prevPage').disabled = state.page <= 1;
-            document.getElementById('nextPage').disabled = state.page >= totalPages;
-        }
-
-        function renderRecentActivity() {
-            const container = document.getElementById('recentActivity');
-            const recent = state.scanLogs.slice(0, 5);
-
-            if (recent.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><p>No recent scans</p></div>';
-                return;
-            }
-
-            container.innerHTML = recent.map(log => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px;">
-                    <span style="font-size: 13px; flex: 1; word-break: break-all; margin-right: 12px;">${log.url}</span>
-                    <span class="status-badge ${log.status}">${log.status}</span>
-                </div>
-            `).join('');
-        }
-
-        // =====================================================
-        // ALERTS
-        // =====================================================
-        async function createAlertIfNew(urlId, engineName) {
-            try {
-                const response = await airtableRequest(CONFIG.airtable.tables.detectionAlerts);
-                const exists = response.records.find(r => r.fields.url?.[0] === urlId && r.fields.engine_name === engineName);
-                if (!exists) {
-                    await airtableRequest(CONFIG.airtable.tables.detectionAlerts, 'POST', {
-                        fields: { url: [urlId], user: [state.urlHealthUser.id], engine_name: engineName, first_detected: new Date().toISOString(), acknowledged: false }
-                    });
-                }
-            } catch (error) {
-                console.error('Error creating alert:', error);
-            }
-        }
-
-        async function loadAlerts() {
-            try {
-                const response = await airtableRequest(CONFIG.airtable.tables.detectionAlerts);
-                const userUrlIds = state.urls.map(u => u.id);
-
-                state.alerts = response.records
-                    .filter(r => r.fields.url?.some(id => userUrlIds.includes(id)))
-                    .map(r => ({
-                        id: r.id,
-                        url: state.urls.find(u => u.id === r.fields.url?.[0])?.url || 'Unknown',
-                        engine: r.fields.engine_name,
-                        detected: r.fields.first_detected,
-                        acknowledged: r.fields.acknowledged || false,
-                        acknowledgedAt: r.fields.acknowledged_at
-                    }));
-
-                renderAlerts();
-            } catch (error) {
-                console.error('Error loading alerts:', error);
-            }
-        }
-
-        function renderAlerts() {
-            const activeContainer = document.getElementById('activeAlerts');
-            const ackBody = document.getElementById('acknowledgedAlertsBody');
-
-            const active = state.alerts.filter(a => !a.acknowledged);
-            const acked = state.alerts.filter(a => a.acknowledged);
-
-            const grouped = active.reduce((acc, a) => { if (!acc[a.url]) acc[a.url] = []; acc[a.url].push(a); return acc; }, {});
-
-            if (Object.keys(grouped).length === 0) {
-                activeContainer.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><p>No active alerts — all clear</p></div>';
-            } else {
-                activeContainer.innerHTML = Object.entries(grouped).map(([url, alerts]) => `
-                    <div class="alert-item">
-                        <div class="alert-url">${url}</div>
-                        <div class="alert-meta">First detected: ${formatDate(alerts[0].detected)}</div>
-                        <div class="engine-tags" style="margin: 12px 0;">${alerts.map(a => `<span class="engine-tag">${a.engine}</span>`).join('')}</div>
-                        <button class="btn btn-primary btn-sm" onclick="acknowledgeAlerts('${url}')">Acknowledge All (${alerts.length})</button>
-                    </div>
-                `).join('');
-            }
-
-            if (acked.length === 0) {
-                ackBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 40px;">No acknowledged alerts</td></tr>';
-            } else {
-                ackBody.innerHTML = acked.map(a => `<tr><td>${a.url}</td><td>${a.engine}</td><td>${formatDate(a.detected)}</td><td>${formatDate(a.acknowledgedAt)}</td></tr>`).join('');
-            }
-        }
-
-        async function acknowledgeAlerts(url) {
-            try {
-                const toAck = state.alerts.filter(a => a.url === url && !a.acknowledged);
-                for (const alert of toAck) {
-                    await airtableRequest(CONFIG.airtable.tables.detectionAlerts, 'PATCH', { fields: { acknowledged: true, acknowledged_at: new Date().toISOString() } }, alert.id);
-                }
-                await loadAlerts();
-                showMessage('alertsMessage', `Acknowledged ${toAck.length} alert(s)`, 'success');
-            } catch (error) {
-                showMessage('alertsMessage', 'Error acknowledging alerts', 'error');
-            }
-        }
-
-        // =====================================================
-        // SCHEDULES
-        // =====================================================
-        async function loadSchedules() {
-            try {
-                const response = await airtableRequest(CONFIG.airtable.tables.schedules);
-                state.schedules = response.records
-                    .filter(r => r.fields.user?.includes(state.urlHealthUser.id))
-                    .map(r => ({ id: r.id, name: r.fields.name || 'Unnamed', frequency: r.fields.frequency, enabled: r.fields.enabled !== false, urlIds: r.fields.urls || [] }));
-                renderSchedules();
-            } catch (error) {
-                console.error('Error loading schedules:', error);
-            }
-        }
-
-        function renderScheduleUrls() {
-            const container = document.getElementById('scheduleUrlsList');
-            if (state.urls.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px; padding: 8px;">No URLs available</p>';
-                return;
-            }
-            container.innerHTML = state.urls.map(url => `<label style="display: flex; align-items: center; gap: 8px; padding: 6px; cursor: pointer;"><input type="checkbox" class="schedule-url-checkbox" value="${url.id}" style="accent-color: var(--primary);"><span style="font-size: 12px;">${url.url}</span></label>`).join('');
-        }
-
-        function renderSchedules() {
-            const container = document.getElementById('schedulesList');
-            if (state.schedules.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><p>No schedules created yet</p></div>';
-                return;
-            }
-
-            container.innerHTML = state.schedules.map((s, i) => {
-                const urlNames = s.urlIds.map(id => state.urls.find(u => u.id === id)?.url || 'Unknown');
-                return `
-                    <div class="schedule-item" style="opacity: ${s.enabled ? 1 : 0.6};">
-                        <div class="schedule-header">
-                            <div class="schedule-name"><span class="status-dot ${s.enabled ? 'active' : 'inactive'}"></span> ${s.name}</div>
-                            <div style="display: flex; gap: 6px;">
-                                <button class="btn btn-secondary btn-sm" onclick="toggleSchedule(${i})">${s.enabled ? 'Pause' : 'Resume'}</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteSchedule(${i})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-                            </div>
-                        </div>
-                        <div class="schedule-freq">${s.frequency}</div>
-                        <div class="schedule-urls">${urlNames.map(u => `<span class="schedule-url-tag">${u}</span>`).join('')}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function addSchedule() {
-            const checkboxes = document.querySelectorAll('.schedule-url-checkbox:checked');
-            const urlIds = Array.from(checkboxes).map(cb => cb.value);
-            if (urlIds.length === 0) { showMessage('schedulesMessage', 'Please select at least one URL', 'error'); return; }
-
-            const frequency = document.getElementById('scheduleFrequency').value;
-            const name = document.getElementById('scheduleName').value.trim() || `${frequency} scan`;
-
-            try {
-                await airtableRequest(CONFIG.airtable.tables.schedules, 'POST', { fields: { user: [state.urlHealthUser.id], name, frequency, enabled: true, urls: urlIds } });
-                document.getElementById('scheduleName').value = '';
-                checkboxes.forEach(cb => cb.checked = false);
-                await loadSchedules();
-                showMessage('schedulesMessage', 'Schedule created', 'success');
-            } catch (error) {
-                showMessage('schedulesMessage', 'Error creating schedule', 'error');
-            }
-        }
-
-        async function toggleSchedule(index) {
-            const schedule = state.schedules[index];
-            try {
-                await airtableRequest(CONFIG.airtable.tables.schedules, 'PATCH', { fields: { enabled: !schedule.enabled } }, schedule.id);
-                await loadSchedules();
-            } catch (error) {
-                showMessage('schedulesMessage', 'Error updating schedule', 'error');
-            }
-        }
-
-        async function deleteSchedule(index) {
-            if (!confirm('Delete this schedule?')) return;
-            try {
-                await airtableRequest(CONFIG.airtable.tables.schedules, 'DELETE', null, state.schedules[index].id);
-                await loadSchedules();
-                showMessage('schedulesMessage', 'Schedule deleted', 'success');
-            } catch (error) {
-                showMessage('schedulesMessage', 'Error deleting schedule', 'error');
-            }
-        }
-
-        // =====================================================
-        // STATS
-        // =====================================================
         function updateStats() {
             document.getElementById('statUrls').textContent = state.urls.length;
             document.getElementById('statClean').textContent = state.scanLogs.filter(l => l.status === 'clean').length;
@@ -1866,130 +736,98 @@
             document.getElementById('statScans').textContent = state.scanLogs.length;
         }
 
-        // =====================================================
-        // TAB NAVIGATION
-        // =====================================================
-        function switchTab(tabName) {
-            state.currentTab = tabName;
-            
+        function switchTab(tab) {
+            state.currentTab = tab;
             document.querySelectorAll('.nav-item[data-tab]').forEach(n => n.classList.remove('active'));
-            document.querySelector(`.nav-item[data-tab="${tabName}"]`)?.classList.add('active');
-            
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(`${tabName}Section`)?.classList.add('active');
+            document.querySelector(`.nav-item[data-tab="${tab}"]`)?.classList.add('active');
+            document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`panel-${tab}`)?.classList.add('active');
+        }
 
-            const pageInfo = pageTitles[tabName];
-            if (pageInfo) {
-                document.getElementById('pageTitle').textContent = pageInfo.title;
-                document.getElementById('pageSubtitle').textContent = pageInfo.subtitle;
+        function getRiskClass(s) { return !s || s === 0 ? 'safe' : s < 5 ? 'low' : s < 10 ? 'medium' : 'high'; }
+        function getRiskLabel(s) { return !s || s === 0 ? 'Safe' : s < 5 ? 'Low' : s < 10 ? 'Medium' : 'High'; }
+
+        // Placeholder render functions - will be populated when API is connected
+        function renderUrlList() {
+            const c = document.getElementById('urlList');
+            const sr = document.getElementById('selectAllRow');
+            if (state.urls.length === 0) {
+                c.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div><div class="empty-state-title">No URLs yet</div><div class="empty-state-text">Add URLs above to get started.</div></div>';
+                sr.style.display = 'none';
+                return;
             }
+            sr.style.display = 'flex';
+            c.innerHTML = state.urls.map(u => `<div class="url-item"><input type="checkbox" class="url-checkbox" data-url-id="${u.id}" data-url="${u.url}"><span class="url-text">${u.url}</span><span class="url-status never">Never scanned</span><button class="btn btn-danger btn-sm" onclick="deleteUrl('${u.id}')"><svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>`).join('');
         }
 
-        // =====================================================
-        // THEME
-        // =====================================================
-        function initTheme() {
-            const saved = localStorage.getItem('urlhealth_theme') || 'light';
-            document.body.setAttribute('data-theme', saved);
-            updateThemeIcon(saved);
-        }
-
-        function toggleTheme() {
-            const current = document.body.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.body.setAttribute('data-theme', next);
-            localStorage.setItem('urlhealth_theme', next);
-            updateThemeIcon(next);
-        }
-
-        function updateThemeIcon(theme) {
-            const icon = document.getElementById('themeIcon');
-            if (theme === 'dark') {
-                icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-            } else {
-                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+        function renderDashboardUrls() {
+            const c = document.getElementById('dashboardUrlList');
+            if (state.urls.length === 0) {
+                c.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div><div class="empty-state-title">No URLs yet</div><div class="empty-state-text">Add URLs to start monitoring.</div></div>';
+                return;
             }
+            c.innerHTML = '<div class="url-list">' + state.urls.slice(0, 5).map(u => `<div class="url-item"><span class="url-text">${u.url}</span></div>`).join('') + '</div>' + (state.urls.length > 5 ? `<p style="text-align:center;color:var(--gray);font-size:0.85rem;padding:1rem;">+ ${state.urls.length - 5} more</p>` : '');
         }
 
-        // =====================================================
-        // INIT
-        // =====================================================
-        // ⚠️ DEV MODE: Session check disabled for testing - RE-ENABLE BEFORE LAUNCH
+        function renderScheduleUrls() {
+            const c = document.getElementById('scheduleUrlsList');
+            if (state.urls.length === 0) { c.innerHTML = '<p style="color:var(--gray);font-size:0.85rem;text-align:center;padding:1rem;">No URLs available</p>'; return; }
+            c.innerHTML = state.urls.map(u => `<label style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem;cursor:pointer;"><input type="checkbox" class="schedule-url-checkbox" value="${u.id}" style="accent-color:var(--orange);"><span style="font-size:0.85rem;word-break:break-all;">${u.url}</span></label>`).join('');
+        }
+
         async function init() {
-            initTheme();
-
-            // DISABLED FOR TESTING - Uncomment these 2 lines before launch:
-            // const authenticated = await checkSession();
-            // if (!authenticated) return;
+            // ⚠️ DEV MODE - Uncomment before launch:
+            // const session = localStorage.getItem('exiscale_session');
+            // if (!session) { window.location.href = '/login/'; return; }
+            // state.user = JSON.parse(session);
 
             // Mock user for testing
-            state.user = {
-                fields: {
-                    'Dashboard Email': 'dev@exiscale.com',
-                    'Stacker First Name': 'Dev',
-                    'Stacker Last Name': 'Tester'
-                }
-            };
-            state.urlHealthUser = { id: 'dev_test_user', fields: { username: 'dev@exiscale.com' } };
+            state.user = { fields: { 'Dashboard Email': 'dev@exiscale.com', 'Stacker First Name': 'Dev', 'Stacker Last Name': 'Tester' } };
+            state.urlHealthUser = { id: 'dev_test_user' };
 
             updateUserUI();
-            
-            try {
-                await loadUrls();
-                await loadScanLogs();
-                await loadAlerts();
-                await loadSchedules();
-            } catch(e) {
-                console.log('Data load skipped:', e.message);
-            }
+            renderUrlList();
+            renderDashboardUrls();
+            renderScheduleUrls();
+            updateStats();
 
             document.getElementById('loadingScreen').classList.add('hidden');
-            document.getElementById('appLayout').classList.add('active');
+            document.getElementById('dashboard').classList.add('active');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             init();
 
-            document.querySelectorAll('.nav-item[data-tab]').forEach(nav => {
-                nav.addEventListener('click', () => switchTab(nav.dataset.tab));
-            });
-
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
             document.getElementById('addUrlBtn').addEventListener('click', () => {
                 const input = document.getElementById('newUrlInput');
                 const url = input.value.trim();
-                if (url) { addUrl(url); input.value = ''; }
+                if (url) {
+                    state.urls.push({ id: 'url_' + Date.now(), url });
+                    input.value = '';
+                    renderUrlList();
+                    renderDashboardUrls();
+                    renderScheduleUrls();
+                    updateStats();
+                    showMessage('scanMessage', 'URL added (demo mode)', 'success');
+                }
             });
 
-            document.getElementById('newUrlInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') document.getElementById('addUrlBtn').click();
-            });
-
-            document.getElementById('selectAllUrls').addEventListener('change', (e) => {
-                document.querySelectorAll('.url-checkbox').forEach(cb => cb.checked = e.target.checked);
-            });
-
-            document.getElementById('runScanBtn').addEventListener('click', runScans);
-
-            document.querySelectorAll('.filter-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    state.filterStatus = pill.dataset.filter;
-                    state.page = 1;
-                    renderScanLogs();
-                });
-            });
-
-            document.getElementById('prevPage').addEventListener('click', () => { if (state.page > 1) { state.page--; renderScanLogs(); } });
-            document.getElementById('nextPage').addEventListener('click', () => {
-                const total = Math.ceil(state.scanLogs.length / state.itemsPerPage);
-                if (state.page < total) { state.page++; renderScanLogs(); }
-            });
-
-            document.getElementById('addScheduleBtn').addEventListener('click', addSchedule);
+            document.getElementById('newUrlInput').addEventListener('keypress', e => { if (e.key === 'Enter') document.getElementById('addUrlBtn').click(); });
+            document.getElementById('selectAllUrls').addEventListener('change', e => { document.querySelectorAll('.url-checkbox').forEach(cb => cb.checked = e.target.checked); });
+            document.getElementById('runScanBtn').addEventListener('click', () => showMessage('scanMessage', 'Scanning requires Netlify function', 'error'));
+            document.querySelectorAll('.filter-pill').forEach(p => p.addEventListener('click', () => { document.querySelectorAll('.filter-pill').forEach(x => x.classList.remove('active')); p.classList.add('active'); }));
+            document.getElementById('addScheduleBtn').addEventListener('click', () => showMessage('schedulesMessage', 'Schedules require Netlify function', 'error'));
         });
+
+        function deleteUrl(id) {
+            state.urls = state.urls.filter(u => u.id !== id);
+            renderUrlList();
+            renderDashboardUrls();
+            renderScheduleUrls();
+            updateStats();
+            showMessage('scanMessage', 'URL deleted (demo mode)', 'success');
+        }
     </script>
+
 </body>
 </html>
