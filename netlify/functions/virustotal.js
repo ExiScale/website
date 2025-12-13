@@ -1,8 +1,35 @@
-// netlify/functions/virustotal.js
-// VirusTotal API Proxy for URL Health Checker
+// URL Health - VirusTotal Scan Function
+// Keeps VirusTotal API key secure on server side
 
 const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
-const VT_API_BASE = 'https://www.virustotal.com/api/v3';
+const API_BASE = 'https://www.virustotal.com/api/v3';
+const POLL_INTERVAL = 5000;
+const MAX_ATTEMPTS = 12;
+
+// Ad-impact vendor weights
+const WEIGHT_MAP = {
+    "Google Safebrowsing": 10,
+    "Fortinet": 9,
+    "PhishTank": 8,
+    "OpenPhish": 8,
+    "BitDefender": 7,
+    "ESET": 7,
+    "Kaspersky": 7,
+    "Sophos": 7,
+    "McAfee": 6,
+    "TrendMicro": 6,
+    "Symantec": 6,
+    "Avast": 6,
+    "AVG": 6,
+    "Comodo": 5,
+    "Netcraft": 5,
+    "Spamhaus": 5,
+    "CRDF": 5,
+    "CyRadar": 5
+};
+
+// Helper to delay
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 exports.handler = async (event, context) => {
     // CORS headers
@@ -18,6 +45,7 @@ exports.handler = async (event, context) => {
         return { statusCode: 200, headers, body: '' };
     }
 
+    // Only allow POST
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -26,7 +54,7 @@ exports.handler = async (event, context) => {
         };
     }
 
-    // Check API key is configured
+    // Check API key
     if (!VIRUSTOTAL_API_KEY) {
         return {
             statusCode: 500,
@@ -36,200 +64,148 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        const { action, url, analysisId } = JSON.parse(event.body);
+        const { url } = JSON.parse(event.body);
 
-        if (!action || !url) {
+        if (!url) {
             return {
                 statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'Missing action or url parameter' })
+                body: JSON.stringify({ error: 'URL is required' })
             };
         }
 
-        // Clean the URL - ensure it has protocol
-        let cleanUrl = url.trim();
-        if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
-            cleanUrl = 'http://' + cleanUrl;
+        console.log(`🔍 Scanning URL: ${url}`);
+
+        // Step 1: Submit URL to VirusTotal
+        const submitResponse = await fetch(`${API_BASE}/urls`, {
+            method: 'POST',
+            headers: {
+                'x-apikey': VIRUSTOTAL_API_KEY,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `url=${encodeURIComponent(url)}`
+        });
+
+        if (!submitResponse.ok) {
+            const errorText = await submitResponse.text();
+            console.error('Submit error:', errorText);
+            throw new Error('Failed to submit URL to VirusTotal');
         }
 
-        if (action === 'scan') {
-            // Submit URL for scanning
-            const formData = new URLSearchParams();
-            formData.append('url', cleanUrl);
+        const submitData = await submitResponse.json();
+        const analysisId = submitData.data.id;
+        console.log(`📝 Analysis ID: ${analysisId}`);
 
-            const scanResponse = await fetch(`${VT_API_BASE}/urls`, {
-                method: 'POST',
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
+        // Step 2: Poll for results
+        let analysisData;
+        for (let i = 0; i < MAX_ATTEMPTS; i++) {
+            await delay(POLL_INTERVAL);
+
+            const checkResponse = await fetch(`${API_BASE}/analyses/${analysisId}`, {
+                headers: { 'x-apikey': VIRUSTOTAL_API_KEY }
             });
 
-            if (!scanResponse.ok) {
-                const errorText = await scanResponse.text();
-                console.error('VT Scan Error:', scanResponse.status, errorText);
-                return {
-                    statusCode: scanResponse.status,
-                    headers,
-                    body: JSON.stringify({
-                        error: 'VirusTotal scan failed',
-                        status: scanResponse.status,
-                        details: errorText
-                    })
-                };
+            if (!checkResponse.ok) {
+                console.error('Check error:', await checkResponse.text());
+                continue;
             }
 
-            const scanData = await scanResponse.json();
-
-            return {
-                statusCode: 200,
-                headers,
-                body: JSON.stringify({
-                    success: true,
-                    analysisId: scanData.data?.id,
-                    data: scanData
-                })
-            };
-
-        } else if (action === 'report') {
-            // Get URL report using URL identifier (base64 of URL without padding)
-            const urlId = Buffer.from(cleanUrl).toString('base64').replace(/=/g, '');
-
-            const reportResponse = await fetch(`${VT_API_BASE}/urls/${urlId}`, {
-                method: 'GET',
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY
-                }
-            });
-
-            if (reportResponse.status === 404) {
-                return {
-                    statusCode: 200,
-                    headers,
-                    body: JSON.stringify({
-                        success: true,
-                        notFound: true,
-                        message: 'URL not in database, scan required'
-                    })
-                };
+            analysisData = await checkResponse.json();
+            
+            if (analysisData.data.attributes.status === 'completed') {
+                console.log('✅ Scan completed');
+                break;
             }
 
-            if (!reportResponse.ok) {
-                const errorText = await reportResponse.text();
-                console.error('VT Report Error:', reportResponse.status, errorText);
-                return {
-                    statusCode: reportResponse.status,
-                    headers,
-                    body: JSON.stringify({
-                        error: 'VirusTotal report failed',
-                        status: reportResponse.status
-                    })
-                };
-            }
-
-            const reportData = await reportResponse.json();
-
-            // Extract relevant stats
-            const stats = reportData.data?.attributes?.last_analysis_stats || {};
-
-            const malicious = stats.malicious || 0;
-            const suspicious = stats.suspicious || 0;
-            const harmless = stats.harmless || 0;
-            const undetected = stats.undetected || 0;
-            const total = malicious + suspicious + harmless + undetected;
-
-            // Calculate risk score
-            const riskScore = total > 0 ? Math.round(((malicious + suspicious) / total) * 100) : 0;
-
-            // Determine status
-            let status = 'clean';
-            if (malicious > 0) {
-                status = 'malicious';
-            } else if (suspicious > 0) {
-                status = 'suspicious';
-            }
-
-            return {
-                statusCode: 200,
-                headers,
-                body: JSON.stringify({
-                    success: true,
-                    url: url,
-                    status: status,
-                    stats: { malicious, suspicious, harmless, undetected, total },
-                    riskScore: riskScore,
-                    detections: malicious + suspicious,
-                    lastAnalysisDate: reportData.data?.attributes?.last_analysis_date,
-                    categories: reportData.data?.attributes?.categories || {}
-                })
-            };
-
-        } else if (action === 'analysis') {
-            // Check analysis status
-            if (!analysisId) {
-                return {
-                    statusCode: 400,
-                    headers,
-                    body: JSON.stringify({ error: 'Missing analysisId' })
-                };
-            }
-
-            const analysisResponse = await fetch(`${VT_API_BASE}/analyses/${analysisId}`, {
-                method: 'GET',
-                headers: {
-                    'x-apikey': VIRUSTOTAL_API_KEY
-                }
-            });
-
-            if (!analysisResponse.ok) {
-                return {
-                    statusCode: analysisResponse.status,
-                    headers,
-                    body: JSON.stringify({ error: 'Analysis check failed' })
-                };
-            }
-
-            const analysisData = await analysisResponse.json();
-
-            return {
-                statusCode: 200,
-                headers,
-                body: JSON.stringify({
-                    success: true,
-                    status: analysisData.data?.attributes?.status,
-                    stats: analysisData.data?.attributes?.stats || {}
-                })
-            };
-
-        } else {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: 'Invalid action. Use: scan, report, or analysis' })
-            };
+            console.log(`⏳ Waiting... (${i + 1}/${MAX_ATTEMPTS})`);
         }
+
+        if (!analysisData || analysisData.data.attributes.status !== 'completed') {
+            throw new Error('Scan did not complete in time');
+        }
+
+        // Step 3: Process results
+        const stats = analysisData.data.attributes.stats;
+        const detections = (stats.malicious || 0) + (stats.suspicious || 0);
+        const totalEngines = Object.values(stats).reduce((a, b) => a + b, 0);
+
+        // Determine verdict
+        let verdict = 'clean';
+        if (detections >= 5) verdict = 'malicious';
+        else if (detections > 0) verdict = 'suspicious';
+
+        const verdictExplanation = 
+            verdict === 'clean' ? 'No vendors flagged this URL.' :
+            verdict === 'suspicious' ? 'A few vendors flagged this as suspicious.' :
+            'Multiple vendors detected malware or phishing behavior.';
+
+        // Get malicious engines
+        const allResults = analysisData.data.attributes.results;
+        const maliciousEngines = Object.entries(allResults)
+            .filter(([_, r]) => r.category === 'malicious')
+            .map(([engine]) => engine);
+
+        const suspiciousEngines = Object.entries(allResults)
+            .filter(([_, r]) => r.category === 'suspicious')
+            .map(([engine]) => engine);
+
+        // Calculate ad-impact score
+        const flaggedByAdVendors = maliciousEngines.filter(engine =>
+            Object.keys(WEIGHT_MAP).some(v => 
+                engine.toLowerCase().includes(v.toLowerCase())
+            )
+        );
+
+        const adRiskScore = flaggedByAdVendors.reduce((sum, engine) => {
+            const vendor = Object.keys(WEIGHT_MAP).find(v => 
+                engine.toLowerCase().includes(v.toLowerCase())
+            );
+            return sum + (WEIGHT_MAP[vendor] || 3);
+        }, 0);
+
+        let adImpactRisk = 'safe';
+        if (adRiskScore >= 16) adImpactRisk = 'block-risk';
+        else if (adRiskScore >= 9) adImpactRisk = 'moderate';
+        else if (adRiskScore > 0) adImpactRisk = 'review';
+
+        const lastScanDate = new Date(
+            analysisData.data.attributes.date * 1000
+        ).toISOString();
+
+        // Build response
+        const result = {
+            url,
+            verdict,
+            verdictExplanation,
+            detections,
+            totalEngines,
+            lastScanDate,
+            maliciousEngines,
+            suspiciousEngines,
+            flaggedByAdVendors,
+            adRiskScore,
+            adImpactRisk,
+            hasAdImpact: adImpactRisk !== 'safe',
+            stats
+        };
+
+        console.log(`📊 Result: ${verdict} (${detections} detections, ad risk: ${adRiskScore})`);
+
+        return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify(result)
+        };
 
     } catch (error) {
-        console.error('Function error:', error);
+        console.error('❌ Scan error:', error);
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: 'Internal server error', message: error.message })
+            body: JSON.stringify({
+                error: error.message,
+                verdict: 'error'
+            })
         };
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
