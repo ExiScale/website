@@ -1,7 +1,7 @@
 // URL Health - Airtable Operations Function
 // Keeps Airtable API key secure on server side
 
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
 const AIRTABLE_API = 'https://api.airtable.com/v0';
 
