@@ -1,0 +1,393 @@
+// URL Health - Airtable Operations Function
+// Keeps Airtable API key secure on server side
+
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
+const AIRTABLE_API = 'https://api.airtable.com/v0';
+
+const TABLES = {
+    users: 'Users',
+    urls: 'URLs',
+    scanLogs: 'ScanLogs',
+    schedules: 'Schedules',
+    alerts: 'DetectionAlerts'
+};
+
+// Helper: Make Airtable request
+async function airtableRequest(table, method = 'GET', body = null, recordId = null) {
+    let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`;
+    if (recordId) url += `/${recordId}`;
+
+    const options = {
+        method,
+        headers: {
+            'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+            'Content-Type': 'application/json'
+        }
+    };
+
+    if (body && (method === 'POST' || method === 'PATCH')) {
+        options.body = JSON.stringify(body);
+    }
+
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error?.message || `Airtable error: ${response.status}`);
+    }
+
+    return data;
+}
+
+// Helper: Get all records (handles pagination)
+async function getAllRecords(table, filterFormula = null) {
+    let allRecords = [];
+    let offset = null;
+
+    do {
+        let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100`;
+        if (filterFormula) url += `&filterByFormula=${encodeURIComponent(filterFormula)}`;
+        if (offset) url += `&offset=${offset}`;
+
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` }
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || 'Airtable error');
+
+        allRecords = allRecords.concat(data.records);
+        offset = data.offset;
+    } while (offset);
+
+    return allRecords;
+}
+
+// Action handlers
+const handlers = {
+    // Get or create user by email
+    async getOrCreateUser({ email }) {
+        if (!email) throw new Error('Email is required');
+
+        const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
+        
+        if (records.length > 0) {
+            return { user: records[0] };
+        }
+
+        // Create new user
+        const newUser = await airtableRequest(TABLES.users, 'POST', {
+            fields: { username: email }
+        });
+
+        return { user: newUser };
+    },
+
+    // Get URLs for user
+    async getUrls({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({user}))`);
+        
+        const urls = records.map(r => ({
+            id: r.id,
+            url: r.fields.url,
+            addedAt: r.fields.added_at
+        }));
+
+        return { urls };
+    },
+
+    // Add URL
+    async addUrl({ userId, url }) {
+        if (!userId || !url) throw new Error('userId and url are required');
+
+        const record = await airtableRequest(TABLES.urls, 'POST', {
+            fields: {
+                url,
+                user: [userId],
+                added_at: new Date().toISOString()
+            }
+        });
+
+        return { 
+            url: { 
+                id: record.id, 
+                url: record.fields.url, 
+                addedAt: record.fields.added_at 
+            } 
+        };
+    },
+
+    // Delete URL
+    async deleteUrl({ urlId }) {
+        if (!urlId) throw new Error('urlId is required');
+
+        await airtableRequest(TABLES.urls, 'DELETE', null, urlId);
+        return { success: true };
+    },
+
+    // Save scan log
+    async saveScanLog({ urlId, status, detections, resultJson }) {
+        if (!urlId) throw new Error('urlId is required');
+
+        const record = await airtableRequest(TABLES.scanLogs, 'POST', {
+            fields: {
+                url: [urlId],
+                scan_timestamp: new Date().toISOString(),
+                status: status || 'unknown',
+                detections: detections || 0,
+                result_json: resultJson || '{}'
+            }
+        });
+
+        return { log: record };
+    },
+
+    // Get scan logs for user (via their URLs)
+    async getScanLogs({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        // First get user's URLs
+        const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({user}))`);
+        const urlIds = urlRecords.map(r => r.id);
+        const urlMap = {};
+        urlRecords.forEach(r => { urlMap[r.id] = r.fields.url; });
+
+        if (urlIds.length === 0) {
+            return { logs: [] };
+        }
+
+        // Get scan logs for those URLs
+        const logRecords = await getAllRecords(TABLES.scanLogs);
+        
+        const logs = logRecords
+            .filter(r => {
+                const logUrlIds = r.fields.url || [];
+                return logUrlIds.some(id => urlIds.includes(id));
+            })
+            .map(r => {
+                const urlId = (r.fields.url || [])[0];
+                let resultData = {};
+                try {
+                    resultData = JSON.parse(r.fields.result_json || '{}');
+                } catch (e) {}
+
+                return {
+                    id: r.id,
+                    urlId,
+                    url: urlMap[urlId] || 'Unknown',
+                    timestamp: r.fields.scan_timestamp,
+                    status: r.fields.status,
+                    detections: r.fields.detections || 0,
+                    adRiskScore: resultData.adRiskScore || 0
+                };
+            })
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        return { logs };
+    },
+
+    // Get alerts for user
+    async getAlerts({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({user}))`);
+        
+        const alerts = records.map(r => ({
+            id: r.id,
+            urlId: (r.fields.url || [])[0],
+            url: r.fields.url_text || 'Unknown',
+            engine: r.fields.engine_name,
+            detected: r.fields.detected_at,
+            acknowledged: r.fields.acknowledged || false,
+            acknowledgedAt: r.fields.acknowledged_at
+        }));
+
+        return { alerts };
+    },
+
+    // Create alert
+    async createAlert({ urlId, userId, engineName }) {
+        if (!urlId || !userId || !engineName) {
+            throw new Error('urlId, userId, and engineName are required');
+        }
+
+        // Check if alert already exists for this URL + engine
+        const existing = await getAllRecords(
+            TABLES.alerts, 
+            `AND(FIND('${urlId}', ARRAYJOIN({url})), {engine_name} = '${engineName}', {acknowledged} = FALSE())`
+        );
+
+        if (existing.length > 0) {
+            return { alert: existing[0], existed: true };
+        }
+
+        // Get URL text for display
+        let urlText = 'Unknown';
+        try {
+            const urlRecord = await airtableRequest(TABLES.urls, 'GET', null, urlId);
+            urlText = urlRecord.fields.url || 'Unknown';
+        } catch (e) {}
+
+        const record = await airtableRequest(TABLES.alerts, 'POST', {
+            fields: {
+                url: [urlId],
+                user: [userId],
+                url_text: urlText,
+                engine_name: engineName,
+                detected_at: new Date().toISOString(),
+                acknowledged: false
+            }
+        });
+
+        return { alert: record, existed: false };
+    },
+
+    // Acknowledge alert
+    async acknowledgeAlert({ alertId }) {
+        if (!alertId) throw new Error('alertId is required');
+
+        const record = await airtableRequest(TABLES.alerts, 'PATCH', {
+            fields: {
+                acknowledged: true,
+                acknowledged_at: new Date().toISOString()
+            }
+        }, alertId);
+
+        return { alert: record };
+    },
+
+    // Get schedules for user
+    async getSchedules({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({user}))`);
+        
+        const schedules = records.map(r => ({
+            id: r.id,
+            name: r.fields.name || 'Unnamed Schedule',
+            frequency: r.fields.frequency || 'daily',
+            urlIds: r.fields.urls || [],
+            enabled: r.fields.enabled !== false,
+            lastRun: r.fields.last_run,
+            nextRun: r.fields.next_run
+        }));
+
+        return { schedules };
+    },
+
+    // Create schedule
+    async createSchedule({ userId, name, frequency, urlIds }) {
+        if (!userId || !urlIds || urlIds.length === 0) {
+            throw new Error('userId and urlIds are required');
+        }
+
+        const record = await airtableRequest(TABLES.schedules, 'POST', {
+            fields: {
+                name: name || `${frequency} scan`,
+                frequency: frequency || 'daily',
+                urls: urlIds,
+                user: [userId],
+                enabled: true,
+                created_at: new Date().toISOString()
+            }
+        });
+
+        return { schedule: record };
+    },
+
+    // Update schedule
+    async updateSchedule({ scheduleId, enabled, name, frequency }) {
+        if (!scheduleId) throw new Error('scheduleId is required');
+
+        const fields = {};
+        if (enabled !== undefined) fields.enabled = enabled;
+        if (name !== undefined) fields.name = name;
+        if (frequency !== undefined) fields.frequency = frequency;
+
+        const record = await airtableRequest(TABLES.schedules, 'PATCH', { fields }, scheduleId);
+        return { schedule: record };
+    },
+
+    // Delete schedule
+    async deleteSchedule({ scheduleId }) {
+        if (!scheduleId) throw new Error('scheduleId is required');
+
+        await airtableRequest(TABLES.schedules, 'DELETE', null, scheduleId);
+        return { success: true };
+    }
+};
+
+exports.handler = async (event, context) => {
+    // CORS headers
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Content-Type': 'application/json'
+    };
+
+    // Handle preflight
+    if (event.httpMethod === 'OPTIONS') {
+        return { statusCode: 200, headers, body: '' };
+    }
+
+    // Only allow POST
+    if (event.httpMethod !== 'POST') {
+        return {
+            statusCode: 405,
+            headers,
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
+    }
+
+    // Check API key
+    if (!AIRTABLE_API_KEY) {
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'Airtable API key not configured' })
+        };
+    }
+
+    try {
+        const { action, ...data } = JSON.parse(event.body);
+
+        if (!action) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Action is required' })
+            };
+        }
+
+        const handler = handlers[action];
+        if (!handler) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: `Unknown action: ${action}` })
+            };
+        }
+
+        console.log(`📦 Action: ${action}`, data);
+        const result = await handler(data);
+        console.log(`✅ ${action} completed`);
+
+        return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify(result)
+        };
+
+    } catch (error) {
+        console.error('❌ Error:', error);
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: error.message })
+        };
+    }
+};
