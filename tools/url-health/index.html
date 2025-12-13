@@ -887,8 +887,10 @@
                     // Save scan log via API
                     await apiCall('saveScanLog', {
                         urlId,
+                        userId: state.urlHealthUser.id,
                         status: result.verdict || 'error',
                         detections: result.detections || 0,
+                        adRiskScore: result.adRiskScore || 0,
                         resultJson: JSON.stringify(result)
                     });
 
@@ -1208,18 +1210,24 @@
                     'Stacker Last Name': 'Tester'
                 }
             };
-            state.urlHealthUser = { id: 'dev_test_user', fields: { username: 'dev@exiscale.com' } };
 
             updateUserUI();
             
-            // Try loading data from API
+            // Get or create URL Health user from Airtable
             try {
+                const email = state.user.fields['Dashboard Email'];
+                const result = await apiCall('getOrCreateUser', { email });
+                state.urlHealthUser = result.user;
+                console.log('Got user:', state.urlHealthUser.id);
+
+                // Now load data with the real user ID
                 await loadUrls();
                 await loadScanLogs();
                 await loadAlerts();
                 await loadSchedules();
             } catch(e) {
-                console.log('Data load error (expected if function not deployed):', e.message);
+                console.log('Data load error:', e.message);
+                state.urlHealthUser = { id: 'dev_test_user' };
             }
 
             document.getElementById('loadingScreen').classList.add('hidden');
