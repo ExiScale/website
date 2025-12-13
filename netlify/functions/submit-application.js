@@ -133,11 +133,11 @@ exports.handler = async (event, context) => {
 
         // Submit to Airtable
         const response = await fetch(
-            `https://api.airtable.com/v0/${process.env.AIRTABLE_PP_BASE_ID}/Merchant%20Applications`,
+            `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID_PP}/Merchant%20Applications`,
             {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${process.env.AIRTABLE_PP_KEY}`,
+                    'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY_PP}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ fields })
