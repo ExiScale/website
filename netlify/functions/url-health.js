@@ -88,7 +88,8 @@ const handlers = {
     async getUrls({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({user}))`);
+        // URLs table uses "added_by" field to link to Users
+        const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
         
         const urls = records.map(r => ({
             id: r.id,
@@ -106,8 +107,8 @@ const handlers = {
         const record = await airtableRequest(TABLES.urls, 'POST', {
             fields: {
                 url,
-                user: [userId],
-                added_at: new Date().toISOString()
+                added_by: [userId],
+                added_at: new Date().toISOString().split('T')[0]
             }
         });
 
@@ -129,18 +130,24 @@ const handlers = {
     },
 
     // Save scan log
-    async saveScanLog({ urlId, status, detections, resultJson }) {
+    async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
         if (!urlId) throw new Error('urlId is required');
 
-        const record = await airtableRequest(TABLES.scanLogs, 'POST', {
-            fields: {
-                url: [urlId],
-                scan_timestamp: new Date().toISOString(),
-                status: status || 'unknown',
-                detections: detections || 0,
-                result_json: resultJson || '{}'
-            }
-        });
+        const fields = {
+            url: [urlId],
+            scan_timestamp: new Date().toISOString(),
+            status: status || 'unknown',
+            detections: detections || 0,
+            ad_risk_score: adRiskScore || 0,
+            result_json: resultJson || '{}'
+        };
+
+        // Add scanned_by if userId provided
+        if (userId) {
+            fields.scanned_by = [userId];
+        }
+
+        const record = await airtableRequest(TABLES.scanLogs, 'POST', { fields });
 
         return { log: record };
     },
@@ -149,8 +156,8 @@ const handlers = {
     async getScanLogs({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // First get user's URLs
-        const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({user}))`);
+        // First get user's URLs using "added_by" field
+        const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
         const urlIds = urlRecords.map(r => r.id);
         const urlMap = {};
         urlRecords.forEach(r => { urlMap[r.id] = r.fields.url; });
@@ -159,7 +166,7 @@ const handlers = {
             return { logs: [] };
         }
 
-        // Get scan logs for those URLs
+        // Get all scan logs and filter by URL
         const logRecords = await getAllRecords(TABLES.scanLogs);
         
         const logs = logRecords
@@ -169,10 +176,6 @@ const handlers = {
             })
             .map(r => {
                 const urlId = (r.fields.url || [])[0];
-                let resultData = {};
-                try {
-                    resultData = JSON.parse(r.fields.result_json || '{}');
-                } catch (e) {}
 
                 return {
                     id: r.id,
@@ -181,7 +184,7 @@ const handlers = {
                     timestamp: r.fields.scan_timestamp,
                     status: r.fields.status,
                     detections: r.fields.detections || 0,
-                    adRiskScore: resultData.adRiskScore || 0
+                    adRiskScore: r.fields.ad_risk_score || 0
                 };
             })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -193,14 +196,15 @@ const handlers = {
     async getAlerts({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({user}))`);
+        // DetectionAlerts uses "account" field to link to Users
+        const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({account}))`);
         
         const alerts = records.map(r => ({
             id: r.id,
             urlId: (r.fields.url || [])[0],
             url: r.fields.url_text || 'Unknown',
             engine: r.fields.engine_name,
-            detected: r.fields.detected_at,
+            detected: r.fields.first_detected,
             acknowledged: r.fields.acknowledged || false,
             acknowledgedAt: r.fields.acknowledged_at
         }));
@@ -209,7 +213,7 @@ const handlers = {
     },
 
     // Create alert
-    async createAlert({ urlId, userId, engineName }) {
+    async createAlert({ urlId, userId, engineName, urlText }) {
         if (!urlId || !userId || !engineName) {
             throw new Error('urlId, userId, and engineName are required');
         }
@@ -224,20 +228,21 @@ const handlers = {
             return { alert: existing[0], existed: true };
         }
 
-        // Get URL text for display
-        let urlText = 'Unknown';
-        try {
-            const urlRecord = await airtableRequest(TABLES.urls, 'GET', null, urlId);
-            urlText = urlRecord.fields.url || 'Unknown';
-        } catch (e) {}
+        // Get URL text if not provided
+        let displayUrl = urlText || 'Unknown';
+        if (!urlText) {
+            try {
+                const urlRecord = await airtableRequest(TABLES.urls, 'GET', null, urlId);
+                displayUrl = urlRecord.fields.url || 'Unknown';
+            } catch (e) {}
+        }
 
         const record = await airtableRequest(TABLES.alerts, 'POST', {
             fields: {
                 url: [urlId],
-                user: [userId],
-                url_text: urlText,
+                account: [userId],
                 engine_name: engineName,
-                detected_at: new Date().toISOString(),
+                first_detected: new Date().toISOString(),
                 acknowledged: false
             }
         });
@@ -246,15 +251,19 @@ const handlers = {
     },
 
     // Acknowledge alert
-    async acknowledgeAlert({ alertId }) {
+    async acknowledgeAlert({ alertId, userId }) {
         if (!alertId) throw new Error('alertId is required');
 
-        const record = await airtableRequest(TABLES.alerts, 'PATCH', {
-            fields: {
-                acknowledged: true,
-                acknowledged_at: new Date().toISOString()
-            }
-        }, alertId);
+        const fields = {
+            acknowledged: true,
+            acknowledged_at: new Date().toISOString()
+        };
+
+        if (userId) {
+            fields.acknowledged_by = [userId];
+        }
+
+        const record = await airtableRequest(TABLES.alerts, 'PATCH', { fields }, alertId);
 
         return { alert: record };
     },
@@ -263,16 +272,18 @@ const handlers = {
     async getSchedules({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({user}))`);
+        // Schedules uses "account" field to link to Users
+        const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({account}))`);
         
         const schedules = records.map(r => ({
             id: r.id,
             name: r.fields.name || 'Unnamed Schedule',
             frequency: r.fields.frequency || 'daily',
-            urlIds: r.fields.urls || [],
+            urlIds: r.fields.rules || [],
             enabled: r.fields.enabled !== false,
-            lastRun: r.fields.last_run,
-            nextRun: r.fields.next_run
+            lastRun: r.fields.last_scan,
+            scheduledTime: r.fields.scheduled_time,
+            scheduledDay: r.fields.scheduled_day
         }));
 
         return { schedules };
@@ -288,10 +299,9 @@ const handlers = {
             fields: {
                 name: name || `${frequency} scan`,
                 frequency: frequency || 'daily',
-                urls: urlIds,
-                user: [userId],
-                enabled: true,
-                created_at: new Date().toISOString()
+                rules: JSON.stringify({ urlIds }),
+                account: [userId],
+                enabled: true
             }
         });
 
