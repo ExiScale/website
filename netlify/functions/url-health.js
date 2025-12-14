@@ -1,4 +1,4 @@
-// URL Health - Airtable Operations Function v5.1
+// URL Health - Airtable Operations Function v5.2 DEBUG
 // Uses Field IDs for READING, Field Names for WRITING
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
