@@ -1060,19 +1060,38 @@
                 // Build engine list if fullResults available
                 let engineListHtml = '<p style="padding: 16px; text-align: center; color: #6b7280;">No detailed engine data available</p>';
                 if (r.fullResults && Object.keys(r.fullResults).length > 0) {
+                    // Debug: log first few engines to see structure
+                    console.log('Engine data sample:', Object.entries(r.fullResults).slice(0, 3));
+                    
                     const engines = Object.entries(r.fullResults).sort((a, b) => {
-                        const order = { malicious: 0, suspicious: 1, harmless: 2, undetected: 3 };
-                        return (order[a[1].category] || 4) - (order[b[1].category] || 4);
+                        // Sort: malicious first, then suspicious, then harmless/clean, then undetected
+                        const getOrder = (cat) => {
+                            const c = (cat || '').toLowerCase();
+                            if (c === 'malicious' || c === 'phishing' || c === 'malware') return 0;
+                            if (c === 'suspicious') return 1;
+                            if (c === 'harmless' || c === 'clean' || c === 'safe') return 2;
+                            return 3; // undetected, timeout, etc
+                        };
+                        return getOrder(a[1].category) - getOrder(b[1].category);
                     });
                     
                     engineListHtml = engines.map(([name, data]) => {
-                        const catColors = {
-                            malicious: { bg: '#fee2e2', color: '#dc2626', text: 'Malicious' },
-                            suspicious: { bg: '#fef3c7', color: '#d97706', text: 'Suspicious' },
-                            harmless: { bg: '#dcfce7', color: '#16a34a', text: 'Clean' },
-                            undetected: { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' }
-                        };
-                        const cat = catColors[data.category] || catColors.undetected;
+                        // VirusTotal returns category: harmless, undetected, suspicious, malicious, clean, timeout
+                        const category = (data.category || data.result || 'undetected').toLowerCase();
+                        
+                        let cat = { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' };
+                        
+                        if (category === 'malicious' || category === 'phishing' || category === 'malware') {
+                            cat = { bg: '#fee2e2', color: '#dc2626', text: 'Malicious' };
+                        } else if (category === 'suspicious') {
+                            cat = { bg: '#fef3c7', color: '#d97706', text: 'Suspicious' };
+                        } else if (category === 'harmless' || category === 'clean' || category === 'safe') {
+                            cat = { bg: '#dcfce7', color: '#16a34a', text: 'Clean' };
+                        } else if (category === 'undetected' || category === 'unrated' || !category) {
+                            cat = { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' };
+                        } else if (category === 'timeout') {
+                            cat = { bg: '#e5e7eb', color: '#9ca3af', text: 'Timeout' };
+                        }
                         
                         return `<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #e5e7eb;">
                             <span style="font-size: 13px; font-weight: 500; color: #374151;">${name}</span>
