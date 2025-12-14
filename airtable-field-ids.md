@@ -1,3 +1,4 @@
+[Uploading airtable-field-ids (3).md…]()
 # ExiScale Airtable Field IDs Reference
 
 ## [ALL] Clients Table
@@ -175,6 +176,87 @@
 | Dashboard Email | fldbGyOphgSnyRiR7 |
 | Dashboard Password | fld0IjZffmMvo2Qpf |
 | Account Number (Slash) (from [ALL] Users) | fldZ6sV3PRlCd4Ybr |
+
+---
+
+## URL Health - Users Table
+| Field Name | Field ID |
+|------------|----------|
+| Stacker Username | fldkzHy4CCPVQpTZS |
+| username | fldTCQ88S6vZjo4AY |
+| password | fldbxL4Gk5qwBUNNW |
+| alert_emails | fldwOCLqBZ7nBPZoz |
+| telegram_chat_ids | fldwGGK4ne4jLb4EZ |
+| created_at | fld1PLagIqPHViYHv |
+| URLs | fldx0i1b6bC8Z8ndz |
+| Schedules | fldfskRWTImgPLQjk |
+| ScanLogs | fldiJtgEpBmIbyfrx |
+| DetectionAlerts | fld6cH4hIPyZSbSY7 |
+| Stacker First Name | fldChMLSLkfoglAwu |
+| Stacker Last Name | fldRnLVVgl8vBs0n3 |
+| email | fldH5zPtaEtItPeGu |
+| role | fldTeHQZlrfSdrg7M |
+| telegram_token | fldr9CH9AYaORNtyR |
+| alert_frequency_hours | fldzfqndw2WfTIrLY |
+
+## URL Health - URLs Table
+| Field Name | Field ID |
+|------------|----------|
+| url | fld08YBIrSWdPbsD1 |
+| tags | fldF7Hh1w0dWnt9n4 |
+| added_by | fldTyt1Z3FM5UbQgE |
+| added_at | fld7EJsunaY0yT4FZ |
+| ScanLogs | fldjTbsaETsFCKxk3 |
+| DetectionAlerts | fld3Vw1grIf6mk1ZJ |
+
+## URL Health - Schedules Table
+| Field Name | Field ID |
+|------------|----------|
+| name | fldGabCZ7h5gjDuSS |
+| account | fldjkFwADD1Ij4EVs |
+| frequency | fldHQxA8HH6YVhvay |
+| enabled | fldt6FgE1yHFwOayj |
+| scheduled_time | fldFsGMSx1058GBah |
+| scheduled_day | fldhBYiRMKKQFR8yb |
+| scheduled_date | fldNDBE9g9Hk39XkP |
+| rules | fldtpHgjNy11ghWv4 |
+| created_by | fldUFIF72rGkQvy9H |
+| last_scan | fld1DFgZ4vpcM2MSb |
+
+## URL Health - ScanLogs Table
+| Field Name | Field ID |
+|------------|----------|
+| scan_id | fldEiYwuZFTjvmSho |
+| url | fld0vDbZi6z8NkQr5 |
+| scan_timestamp | fld7DBPtFFT9qn4Qd |
+| status | fldt0JXOqd1uqF5Ng |
+| detections | fldzJsEVIHQawX1uV |
+| ad_risk_score | fldIFl1XLkGp73WQq |
+| result_json | fldG8e0y7Kp19ZlTI |
+| scanned_by | fldPmZQYjdF8kGKN6 |
+| acknowledged | fldJmpMn3zfIX4vfz |
+
+## URL Health - DetectionAlerts Table
+| Field Name | Field ID |
+|------------|----------|
+| alert_id | fldNgjTZuHXBFXkh1 |
+| url | fldwGPOAUsWIwCNMn |
+| account | fldszN7Y8jhlvWh5e |
+| engine_name | fldjp5WpmyWUPJmmB |
+| first_detected | fldQDrUQimH6qwS7P |
+| acknowledged | fldQY7jwX0SclE34y |
+| acknowledged_at | fld170gA8NwaUKPAT |
+| acknowledged_by | fldrUOGji8nWhKgCn |
+| ack_token | fldrybtvUrybbRMGh |
+| token_expires | fldE4LpfG6gVF0DjO |
+
+## URL Health - Config Table
+| Field Name | Field ID |
+|------------|----------|
+| config_key | fldMu4krIkBFIfKjw |
+| config_value | fldPE47HH5FhENPdx |
+| description | fldNgT20i4mbWmfoo |
+| created_at | fldfit4e8ypeRxOgg |
 
 ---
 
