@@ -1,5 +1,6 @@
-// URL Health - Airtable Operations Function
+// URL Health - Airtable Operations Function v3
 // Keeps Airtable API key secure on server side
+// FIELD NAMES: added_by (URLs), account (Schedules/Alerts), scanned_by (ScanLogs)
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
@@ -66,29 +67,25 @@ async function getAllRecords(table, filterFormula = null) {
 
 // Action handlers
 const handlers = {
-    // Get or create user by email
+    // Get user by email (Users table is synced - READ ONLY)
     async getOrCreateUser({ email }) {
         if (!email) throw new Error('Email is required');
 
+        // Users table is externally synced - can only READ, not create
         const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
         
         if (records.length > 0) {
             return { user: records[0] };
         }
 
-        // Create new user
-        const newUser = await airtableRequest(TABLES.users, 'POST', {
-            fields: { username: email }
-        });
-
-        return { user: newUser };
+        // User not found - return null (don't try to create)
+        return { user: null, message: 'User not found in synced table' };
     },
 
-    // Get URLs for user
+    // Get URLs for user - uses "added_by" field
     async getUrls({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // URLs table uses "added_by" field to link to Users
         const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
         
         const urls = records.map(r => ({
@@ -100,13 +97,13 @@ const handlers = {
         return { urls };
     },
 
-    // Add URL
+    // Add URL - uses "added_by" field
     async addUrl({ userId, url }) {
         if (!userId || !url) throw new Error('userId and url are required');
 
         const record = await airtableRequest(TABLES.urls, 'POST', {
             fields: {
-                url,
+                url: url,
                 added_by: [userId],
                 added_at: new Date().toISOString().split('T')[0]
             }
@@ -129,7 +126,7 @@ const handlers = {
         return { success: true };
     },
 
-    // Save scan log
+    // Save scan log - uses "scanned_by" field
     async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
         if (!urlId) throw new Error('urlId is required');
 
@@ -142,7 +139,6 @@ const handlers = {
             result_json: resultJson || '{}'
         };
 
-        // Add scanned_by if userId provided
         if (userId) {
             fields.scanned_by = [userId];
         }
@@ -152,11 +148,10 @@ const handlers = {
         return { log: record };
     },
 
-    // Get scan logs for user (via their URLs)
+    // Get scan logs for user - uses "added_by" to find user's URLs
     async getScanLogs({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // First get user's URLs using "added_by" field
         const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
         const urlIds = urlRecords.map(r => r.id);
         const urlMap = {};
@@ -166,7 +161,6 @@ const handlers = {
             return { logs: [] };
         }
 
-        // Get all scan logs and filter by URL
         const logRecords = await getAllRecords(TABLES.scanLogs);
         
         const logs = logRecords
@@ -176,7 +170,6 @@ const handlers = {
             })
             .map(r => {
                 const urlId = (r.fields.url || [])[0];
-
                 return {
                     id: r.id,
                     urlId,
@@ -192,11 +185,10 @@ const handlers = {
         return { logs };
     },
 
-    // Get alerts for user
+    // Get alerts for user - uses "account" field
     async getAlerts({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // DetectionAlerts uses "account" field to link to Users
         const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({account}))`);
         
         const alerts = records.map(r => ({
@@ -212,13 +204,12 @@ const handlers = {
         return { alerts };
     },
 
-    // Create alert
+    // Create alert - uses "account" field
     async createAlert({ urlId, userId, engineName, urlText }) {
         if (!urlId || !userId || !engineName) {
             throw new Error('urlId, userId, and engineName are required');
         }
 
-        // Check if alert already exists for this URL + engine
         const existing = await getAllRecords(
             TABLES.alerts, 
             `AND(FIND('${urlId}', ARRAYJOIN({url})), {engine_name} = '${engineName}', {acknowledged} = FALSE())`
@@ -228,7 +219,6 @@ const handlers = {
             return { alert: existing[0], existed: true };
         }
 
-        // Get URL text if not provided
         let displayUrl = urlText || 'Unknown';
         if (!urlText) {
             try {
@@ -250,7 +240,7 @@ const handlers = {
         return { alert: record, existed: false };
     },
 
-    // Acknowledge alert
+    // Acknowledge alert - uses "acknowledged_by" field
     async acknowledgeAlert({ alertId, userId }) {
         if (!alertId) throw new Error('alertId is required');
 
@@ -268,11 +258,10 @@ const handlers = {
         return { alert: record };
     },
 
-    // Get schedules for user
+    // Get schedules for user - uses "account" field
     async getSchedules({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // Schedules uses "account" field to link to Users
         const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({account}))`);
         
         const schedules = records.map(r => ({
@@ -289,7 +278,7 @@ const handlers = {
         return { schedules };
     },
 
-    // Create schedule
+    // Create schedule - uses "account" field
     async createSchedule({ userId, name, frequency, urlIds }) {
         if (!userId || !urlIds || urlIds.length === 0) {
             throw new Error('userId and urlIds are required');
@@ -331,7 +320,6 @@ const handlers = {
 };
 
 exports.handler = async (event, context) => {
-    // CORS headers
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -339,12 +327,10 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json'
     };
 
-    // Handle preflight
     if (event.httpMethod === 'OPTIONS') {
         return { statusCode: 200, headers, body: '' };
     }
 
-    // Only allow POST
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -353,7 +339,6 @@ exports.handler = async (event, context) => {
         };
     }
 
-    // Check API key
     if (!AIRTABLE_API_KEY) {
         return {
             statusCode: 500,
@@ -382,7 +367,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 Action: ${action}`, data);
+        console.log(`📦 v3 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
