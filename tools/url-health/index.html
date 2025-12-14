@@ -502,22 +502,18 @@
                         <div class="card-header">
                             <h2 class="card-title">⚡ Quick Scan</h2>
                         </div>
-                        <div style="padding: 0;">
-                            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
-                            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                                <input type="text" id="quickScanInput" placeholder="https://example.com" style="flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px;" onkeypress="if(event.key==='Enter')quickScan()">
-                                <button class="btn btn-primary" onclick="quickScan()" id="quickScanBtn">
-                                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                    Scan
-                                </button>
-                            </div>
-                            <div id="quickScanResult" style="display: none;">
-                                <!-- Quick scan results appear here -->
-                            </div>
-                            <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
-                                <div class="loading-spinner"></div>
-                                <p style="color: var(--text-secondary); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
-                            </div>
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <input type="text" id="quickScanInput" placeholder="https://example.com" style="flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px;" onkeypress="if(event.key==='Enter')quickScan()">
+                            <button class="btn btn-primary" onclick="quickScan()" id="quickScanBtn">
+                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                Scan
+                            </button>
+                        </div>
+                        <div id="quickScanResult" style="display: none;"></div>
+                        <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--text-secondary); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
                         </div>
                     </div>
                     <div class="content-card">
