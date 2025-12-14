@@ -781,14 +781,18 @@
         }
 
         async function addUrl(url) {
-            try {
-                await apiCall('addUrl', { userId: state.urlHealthUser.id, url });
-                await loadUrls();
-                showMessage('scanMessage', 'URL added successfully', 'success');
-            } catch (error) {
-                showMessage('scanMessage', 'Error adding URL: ' + error.message, 'error');
-            }
+        if (!state.urlHealthUser) {
+            showMessage('scanMessage', 'No user found - cannot add URL', 'error');
+            return;
         }
+        try {
+            await apiCall('addUrl', { userId: state.urlHealthUser.id, url });
+            await loadUrls();
+            showMessage('scanMessage', 'URL added successfully', 'success');
+        } catch (error) {
+            showMessage('scanMessage', 'Error adding URL: ' + error.message, 'error');
+        }
+    }
 
         async function deleteUrl(urlId) {
             if (!confirm('Delete this URL?')) return;
@@ -1203,31 +1207,41 @@
             // if (!authenticated) return;
 
             // Mock user for testing - REMOVE BEFORE LAUNCH
+            // Use an email that EXISTS in your synced Users table
             state.user = {
                 fields: {
-                    'Dashboard Email': 'dev@exiscale.com',
-                    'Stacker First Name': 'Dev',
-                    'Stacker Last Name': 'Tester'
+                    'Dashboard Email': 'rtalent@icloud.com',
+                    'Stacker First Name': 'Ronnie',
+                    'Stacker Last Name': 'Talent'
                 }
             };
 
             updateUserUI();
             
-            // Get or create URL Health user from Airtable
+            // Get user from Airtable (Users table is synced/read-only)
             try {
-                const email = state.user.fields['rtalent@icloud.com'];
+                const email = state.user.fields['Dashboard Email'];
                 const result = await apiCall('getOrCreateUser', { email });
-                state.urlHealthUser = result.user;
-                console.log('Got user:', state.urlHealthUser.id);
+                
+                if (result.user) {
+                    state.urlHealthUser = result.user;
+                    console.log('✅ Found user:', state.urlHealthUser.id);
+                } else {
+                    // User not in synced table - use email as fallback identifier
+                    console.log('⚠️ User not in synced table, limited functionality');
+                    state.urlHealthUser = null;
+                }
 
-                // Now load data with the real user ID
-                await loadUrls();
-                await loadScanLogs();
-                await loadAlerts();
-                await loadSchedules();
+                // Load data if we have a user
+                if (state.urlHealthUser) {
+                    await loadUrls();
+                    await loadScanLogs();
+                    await loadAlerts();
+                    await loadSchedules();
+                }
             } catch(e) {
                 console.log('Data load error:', e.message);
-                state.urlHealthUser = { id: 'dev_test_user' };
+                state.urlHealthUser = null;
             }
 
             document.getElementById('loadingScreen').classList.add('hidden');
