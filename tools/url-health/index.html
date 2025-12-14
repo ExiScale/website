@@ -817,17 +817,31 @@
             sr.style.display = 'flex';
             c.innerHTML = state.urls.map(u => {
                 const scans = state.scanLogs.filter(l => l.url === u.url);
-                let statusClass = 'never', statusText = 'Never scanned';
+                let statusClass = 'never', statusText = 'Never scanned', badgeStyle = 'background:#f3f4f6;color:#6b7280;';
                 if (scans.length > 0) {
                     const latest = scans.reduce((a, b) => new Date(a.timestamp) > new Date(b.timestamp) ? a : b);
-                    const days = Math.floor((Date.now() - new Date(latest.timestamp)) / 86400000);
-                    statusClass = days <= 7 ? 'fresh' : 'stale';
-                    statusText = formatDate(latest.timestamp);
+                    const status = latest.status || 'unknown';
+                    if (status === 'clean') {
+                        statusClass = 'clean';
+                        statusText = 'Clean';
+                        badgeStyle = 'background:#dcfce7;color:#16a34a;';
+                    } else if (status === 'suspicious') {
+                        statusClass = 'suspicious';
+                        statusText = 'Suspicious';
+                        badgeStyle = 'background:#fef3c7;color:#d97706;';
+                    } else if (status === 'malicious') {
+                        statusClass = 'malicious';
+                        statusText = 'Malicious';
+                        badgeStyle = 'background:#fee2e2;color:#dc2626;';
+                    } else {
+                        statusText = 'Scanned';
+                        badgeStyle = 'background:#f3f4f6;color:#6b7280;';
+                    }
                 }
                 return `<div class="url-item">
                     <input type="checkbox" class="url-checkbox" data-url-id="${u.id}" data-url="${u.url}">
                     <span class="url-text">${u.url}</span>
-                    <span class="url-status ${statusClass}">${statusText}</span>
+                    <span class="url-status" style="${badgeStyle}font-weight:600;padding:4px 12px;border-radius:12px;font-size:11px;">${statusText}</span>
                     <button class="btn btn-danger btn-sm" onclick="deleteUrl('${u.id}')">
                         <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
@@ -931,7 +945,48 @@
                 return;
             }
 
-            container.innerHTML = results.map(r => `
+            container.innerHTML = results.map(r => {
+                // Build engine list from full results
+                let engineListHtml = '';
+                if (r.fullResults) {
+                    const engines = Object.entries(r.fullResults).sort((a, b) => {
+                        // Sort: malicious first, then suspicious, then others
+                        const order = { malicious: 0, suspicious: 1, harmless: 2, undetected: 3 };
+                        return (order[a[1].category] || 4) - (order[b[1].category] || 4);
+                    });
+                    
+                    engineListHtml = engines.map(([name, data]) => {
+                        let badgeClass = 'engine-safe';
+                        let badgeText = 'Clean';
+                        let badgeColor = '#16a34a';
+                        let bgColor = '#dcfce7';
+                        
+                        if (data.category === 'malicious') {
+                            badgeClass = 'engine-malicious';
+                            badgeText = 'Malicious';
+                            badgeColor = '#dc2626';
+                            bgColor = '#fee2e2';
+                        } else if (data.category === 'suspicious') {
+                            badgeClass = 'engine-suspicious';
+                            badgeText = 'Suspicious';
+                            badgeColor = '#d97706';
+                            bgColor = '#fef3c7';
+                        } else if (data.category === 'undetected') {
+                            badgeText = 'Undetected';
+                            badgeColor = '#6b7280';
+                            bgColor = '#f3f4f6';
+                        }
+                        
+                        return `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
+                                <span style="font-size: 13px; font-weight: 500;">${name}</span>
+                                <span style="font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: ${bgColor}; color: ${badgeColor};">${badgeText}</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                return `
                 <div class="scan-result-item" onclick="this.classList.toggle('expanded')">
                     <div class="scan-result-header">
                         <span class="scan-result-url">${r.url}</span>
@@ -949,51 +1004,37 @@
                     ` : ''}
                     <div class="scan-result-details">
                         ${r.verdict !== 'error' ? `
-                            <div class="detail-grid">
-                                <div class="detail-item"><label>Detections</label><div class="value">${r.detections || 0}</div></div>
-                                <div class="detail-item"><label>Total Engines</label><div class="value">${r.totalEngines || '-'}</div></div>
-                                <div class="detail-item"><label>Ad Risk Score</label><div class="value">${r.adRiskScore || 0}</div></div>
-                                <div class="detail-item"><label>Risk Level</label><div class="value"><span class="risk-badge ${getRiskClass(r.adRiskScore)}">${getRiskLabel(r.adRiskScore)}</span></div></div>
+                            <!-- Summary Stats -->
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+                                <div style="padding: 12px 20px; background: #dcfce7; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #16a34a;">${r.stats?.harmless || 0}</div>
+                                    <div style="font-size: 11px; color: #166534; font-weight: 600;">Harmless</div>
+                                </div>
+                                <div style="padding: 12px 20px; background: #f3f4f6; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #6b7280;">${r.stats?.undetected || 0}</div>
+                                    <div style="font-size: 11px; color: #4b5563; font-weight: 600;">Undetected</div>
+                                </div>
+                                <div style="padding: 12px 20px; background: #fef3c7; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #d97706;">${r.stats?.suspicious || 0}</div>
+                                    <div style="font-size: 11px; color: #92400e; font-weight: 600;">Suspicious</div>
+                                </div>
+                                <div style="padding: 12px 20px; background: #fee2e2; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
+                                    <div style="font-size: 24px; font-weight: 700; color: #dc2626;">${r.stats?.malicious || 0}</div>
+                                    <div style="font-size: 11px; color: #991b1b; font-weight: 600;">Malicious</div>
+                                </div>
                             </div>
-                            ${r.maliciousEngines?.length > 0 ? `
-                                <div class="engines-list" style="margin-top: 16px; border-left: 4px solid #dc2626;">
-                                    <h4 style="color: #dc2626;">🚨 Flagged by ${r.maliciousEngines.length} engine(s)</h4>
-                                    <div class="engine-tags">${r.maliciousEngines.map(e => `<span class="engine-tag" style="background: #dc2626;">${e}</span>`).join('')}</div>
+                            
+                            <!-- All Engines List -->
+                            <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                                <div style="padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; font-size: 13px; color: #374151; position: sticky; top: 0;">
+                                    🛡️ All Security Vendors (${r.totalEngines || 0})
                                 </div>
-                            ` : ''}
-                            ${r.suspiciousEngines?.length > 0 ? `
-                                <div class="engines-list" style="margin-top: 12px; border-left: 4px solid #f59e0b;">
-                                    <h4 style="color: #f59e0b;">⚠️ Suspicious (${r.suspiciousEngines.length})</h4>
-                                    <div class="engine-tags">${r.suspiciousEngines.map(e => `<span class="engine-tag" style="background: #f59e0b;">${e}</span>`).join('')}</div>
-                                </div>
-                            ` : ''}
-                            ${r.stats ? `
-                                <div style="margin-top: 16px; padding: 16px; background: var(--bg-secondary, #f5f5f5); border-radius: 8px;">
-                                    <h4 style="margin-bottom: 12px; font-size: 13px; color: var(--text-secondary, #666);">📊 Engine Breakdown</h4>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                                        <div style="padding: 8px 16px; background: #dcfce7; border-radius: 8px; text-align: center;">
-                                            <div style="font-size: 20px; font-weight: 700; color: #16a34a;">${r.stats.harmless || 0}</div>
-                                            <div style="font-size: 11px; color: #166534;">Harmless</div>
-                                        </div>
-                                        <div style="padding: 8px 16px; background: #e5e7eb; border-radius: 8px; text-align: center;">
-                                            <div style="font-size: 20px; font-weight: 700; color: #6b7280;">${r.stats.undetected || 0}</div>
-                                            <div style="font-size: 11px; color: #4b5563;">Undetected</div>
-                                        </div>
-                                        <div style="padding: 8px 16px; background: #fef3c7; border-radius: 8px; text-align: center;">
-                                            <div style="font-size: 20px; font-weight: 700; color: #d97706;">${r.stats.suspicious || 0}</div>
-                                            <div style="font-size: 11px; color: #92400e;">Suspicious</div>
-                                        </div>
-                                        <div style="padding: 8px 16px; background: #fee2e2; border-radius: 8px; text-align: center;">
-                                            <div style="font-size: 20px; font-weight: 700; color: #dc2626;">${r.stats.malicious || 0}</div>
-                                            <div style="font-size: 11px; color: #991b1b;">Malicious</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : ''}
+                                ${engineListHtml || '<div style="padding: 16px; text-align: center; color: #6b7280;">No engine data available</div>'}
+                            </div>
                         ` : `<p style="color: #dc2626;">Error: ${r.message || 'Scan failed'}</p>`}
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         // =====================================================
