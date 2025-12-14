@@ -1,4 +1,4 @@
-// URL Health - Airtable Operations Function v5.2 DEBUG
+// URL Health - Airtable Operations Function v5.3
 // Uses Field IDs for READING, Field Names for WRITING
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
@@ -29,7 +29,7 @@ const FIELDS = {
     urls: {
         url: 'fld08YBIrSWdPbsD1',
         tags: 'fldF7Hh1w0dWnt9n4',
-        added_by: 'fldTyt1Z3FM5UbQgE',
+        added_by: 'fldTyt1Z3FN5UbQgE',
         added_at: 'fld7EJsunaY0yT4FZ',
         scanLogs: 'fldjTbsaETsFCKxk3',
         detectionAlerts: 'fld3Vw1grIf6mk1ZJ'
@@ -159,20 +159,7 @@ const handlers = {
         const F = FIELDS.urls;
         const allRecords = await getAllRecords(TABLES.urls);
         
-        // Debug: log first record to see structure
-        if (allRecords.length > 0) {
-            console.log(`📋 Sample record fields:`, JSON.stringify(allRecords[0].fields));
-            console.log(`📋 Looking for field ID: ${F.added_by}`);
-        }
-        
-        const userRecords = allRecords.filter(r => {
-            const addedBy = r.fields[F.added_by];
-            const match = hasLinkedRecord(addedBy, userId);
-            if (addedBy) {
-                console.log(`📋 Record ${r.id}: added_by=${JSON.stringify(addedBy)}, match=${match}`);
-            }
-            return match;
-        });
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.added_by], userId));
         
         console.log(`✅ Found ${userRecords.length} URLs`);
         
@@ -474,7 +461,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v5.2 Action: ${action}`, data);
+        console.log(`📦 v5.3 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
