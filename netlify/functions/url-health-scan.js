@@ -186,7 +186,8 @@ exports.handler = async (event, context) => {
             adRiskScore,
             adImpactRisk,
             hasAdImpact: adImpactRisk !== 'safe',
-            stats
+            stats,
+            fullResults: allResults  // Include all engine results for detailed display
         };
 
         console.log(`📊 Result: ${verdict} (${detections} detections, ad risk: ${adRiskScore})`);
