@@ -1215,7 +1215,7 @@
             
             // Get or create URL Health user from Airtable
             try {
-                const email = state.user.fields['Dashboard Email'];
+                const email = state.user.fields['rtalent@icloud.com'];
                 const result = await apiCall('getOrCreateUser', { email });
                 state.urlHealthUser = result.user;
                 console.log('Got user:', state.urlHealthUser.id);
