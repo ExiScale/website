@@ -1054,9 +1054,6 @@
             }
 
             container.innerHTML = results.map((r, idx) => {
-                // Debug: log full result
-                console.log('📊 Full scan result:', r);
-                
                 const verdictColors = {
                     clean: { bg: '#dcfce7', color: '#16a34a', border: '#16a34a' },
                     suspicious: { bg: '#fef3c7', color: '#d97706', border: '#d97706' },
@@ -1068,43 +1065,33 @@
                 // Build engine list if fullResults available
                 let engineListHtml = '<p style="padding: 16px; text-align: center; color: #6b7280;">No detailed engine data available</p>';
                 if (r.fullResults && Object.keys(r.fullResults).length > 0) {
-                    // Debug: log sample engine data to see structure
-                    const sampleEngines = Object.entries(r.fullResults).slice(0, 5);
-                    console.log('🔍 Engine data structure:', sampleEngines.map(([name, data]) => ({
-                        name,
-                        category: data.category,
-                        result: data.result,
-                        method: data.method,
-                        allKeys: Object.keys(data)
-                    })));
-                    
                     const engines = Object.entries(r.fullResults).sort((a, b) => {
                         // Sort: malicious first, then suspicious, then harmless/clean, then undetected
                         const getOrder = (cat) => {
                             const c = (cat || '').toLowerCase();
-                            if (c === 'malicious' || c === 'phishing' || c === 'malware') return 0;
-                            if (c === 'suspicious') return 1;
-                            if (c === 'harmless' || c === 'clean' || c === 'safe') return 2;
+                            if (c.includes('malicious') || c.includes('phishing') || c.includes('malware')) return 0;
+                            if (c.includes('suspicious')) return 1;
+                            if (c.includes('harmless') || c.includes('clean') || c.includes('safe')) return 2;
                             return 3; // undetected, timeout, etc
                         };
                         return getOrder(a[1].category) - getOrder(b[1].category);
                     });
                     
                     engineListHtml = engines.map(([name, data]) => {
-                        // VirusTotal returns category: harmless, undetected, suspicious, malicious, clean, timeout
-                        const category = (data.category || data.result || 'undetected').toLowerCase();
+                        // VirusTotal returns category like: SCAN_CATEGORY_HARMLESS, SCAN_CATEGORY_UNDETECTED, etc.
+                        const rawCategory = (data.category || data.result || 'undetected').toLowerCase();
                         
                         let cat = { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' };
                         
-                        if (category === 'malicious' || category === 'phishing' || category === 'malware') {
+                        if (rawCategory.includes('malicious') || rawCategory.includes('phishing') || rawCategory.includes('malware')) {
                             cat = { bg: '#fee2e2', color: '#dc2626', text: 'Malicious' };
-                        } else if (category === 'suspicious') {
+                        } else if (rawCategory.includes('suspicious')) {
                             cat = { bg: '#fef3c7', color: '#d97706', text: 'Suspicious' };
-                        } else if (category === 'harmless' || category === 'clean' || category === 'safe') {
+                        } else if (rawCategory.includes('harmless') || rawCategory.includes('clean') || rawCategory.includes('safe')) {
                             cat = { bg: '#dcfce7', color: '#16a34a', text: 'Clean' };
-                        } else if (category === 'undetected' || category === 'unrated' || !category) {
+                        } else if (rawCategory.includes('undetected') || rawCategory.includes('unrated') || !rawCategory) {
                             cat = { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' };
-                        } else if (category === 'timeout') {
+                        } else if (rawCategory.includes('timeout')) {
                             cat = { bg: '#e5e7eb', color: '#9ca3af', text: 'Timeout' };
                         }
                         
