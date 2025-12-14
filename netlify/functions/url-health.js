@@ -1,5 +1,5 @@
-// URL Health - Airtable Operations Function v5
-// Uses Field IDs instead of field names for stability
+// URL Health - Airtable Operations Function v5.1
+// Uses Field IDs for READING, Field Names for WRITING
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
@@ -178,22 +178,23 @@ const handlers = {
 
         console.log(`➕ Adding URL: ${url} for user: ${userId}`);
 
-        const F = FIELDS.urls;
+        // Airtable requires field NAMES for writing, not IDs
         const record = await airtableRequest(TABLES.urls, 'POST', {
             fields: {
-                [F.url]: url,
-                [F.added_by]: [userId],
-                [F.added_at]: new Date().toISOString().split('T')[0]
+                'url': url,
+                'added_by': [userId],
+                'added_at': new Date().toISOString().split('T')[0]
             }
         });
 
         console.log(`✅ URL added: ${record.id}`);
 
+        const F = FIELDS.urls;
         return { 
             url: { 
                 id: record.id, 
-                url: record.fields[F.url], 
-                addedAt: record.fields[F.added_at] 
+                url: record.fields.url || record.fields[F.url], 
+                addedAt: record.fields.added_at || record.fields[F.added_at] 
             } 
         };
     },
@@ -210,18 +211,18 @@ const handlers = {
     async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
         if (!urlId) throw new Error('urlId is required');
 
-        const F = FIELDS.scanLogs;
+        // Airtable requires field NAMES for writing
         const fields = {
-            [F.url]: [urlId],
-            [F.scan_timestamp]: new Date().toISOString(),
-            [F.status]: status || 'unknown',
-            [F.detections]: detections || 0,
-            [F.ad_risk_score]: adRiskScore || 0,
-            [F.result_json]: resultJson || '{}'
+            'url': [urlId],
+            'scan_timestamp': new Date().toISOString(),
+            'status': status || 'unknown',
+            'detections': detections || 0,
+            'ad_risk_score': adRiskScore || 0,
+            'result_json': resultJson || '{}'
         };
 
         if (userId) {
-            fields[F.scanned_by] = [userId];
+            fields['scanned_by'] = [userId];
         }
 
         const record = await airtableRequest(TABLES.scanLogs, 'POST', { fields });
@@ -314,13 +315,14 @@ const handlers = {
             return { alert: existing, existed: true };
         }
 
+        // Airtable requires field NAMES for writing
         const record = await airtableRequest(TABLES.alerts, 'POST', {
             fields: {
-                [F.url]: [urlId],
-                [F.account]: [userId],
-                [F.engine_name]: engineName,
-                [F.first_detected]: new Date().toISOString(),
-                [F.acknowledged]: false
+                'url': [urlId],
+                'account': [userId],
+                'engine_name': engineName,
+                'first_detected': new Date().toISOString(),
+                'acknowledged': false
             }
         });
 
@@ -331,14 +333,14 @@ const handlers = {
     async acknowledgeAlert({ alertId, userId }) {
         if (!alertId) throw new Error('alertId is required');
 
-        const F = FIELDS.alerts;
+        // Airtable requires field NAMES for writing
         const fields = {
-            [F.acknowledged]: true,
-            [F.acknowledged_at]: new Date().toISOString()
+            'acknowledged': true,
+            'acknowledged_at': new Date().toISOString()
         };
 
         if (userId) {
-            fields[F.acknowledged_by] = [userId];
+            fields['acknowledged_by'] = [userId];
         }
 
         const record = await airtableRequest(TABLES.alerts, 'PATCH', { fields }, alertId);
@@ -374,14 +376,14 @@ const handlers = {
             throw new Error('userId and urlIds are required');
         }
 
-        const F = FIELDS.schedules;
+        // Airtable requires field NAMES for writing
         const record = await airtableRequest(TABLES.schedules, 'POST', {
             fields: {
-                [F.name]: name || `${frequency} scan`,
-                [F.frequency]: frequency || 'daily',
-                [F.rules]: JSON.stringify({ urlIds }),
-                [F.account]: [userId],
-                [F.enabled]: true
+                'name': name || `${frequency} scan`,
+                'frequency': frequency || 'daily',
+                'rules': JSON.stringify({ urlIds }),
+                'account': [userId],
+                'enabled': true
             }
         });
 
@@ -392,11 +394,11 @@ const handlers = {
     async updateSchedule({ scheduleId, enabled, name, frequency }) {
         if (!scheduleId) throw new Error('scheduleId is required');
 
-        const F = FIELDS.schedules;
+        // Airtable requires field NAMES for writing
         const fields = {};
-        if (enabled !== undefined) fields[F.enabled] = enabled;
-        if (name !== undefined) fields[F.name] = name;
-        if (frequency !== undefined) fields[F.frequency] = frequency;
+        if (enabled !== undefined) fields['enabled'] = enabled;
+        if (name !== undefined) fields['name'] = name;
+        if (frequency !== undefined) fields['frequency'] = frequency;
 
         const record = await airtableRequest(TABLES.schedules, 'PATCH', { fields }, scheduleId);
         return { schedule: record };
@@ -459,7 +461,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v5 Action: ${action}`, data);
+        console.log(`📦 v5.1 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
