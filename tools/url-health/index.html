@@ -825,6 +825,11 @@
             }
         }
 
+        function normalizeUrl(url) {
+            // Remove protocol and trailing slashes for comparison
+            return url.replace(/^https?:\/\//, '').replace(/\/+$/, '').toLowerCase();
+        }
+
         function renderUrlList() {
             const c = document.getElementById('urlList');
             const sr = document.getElementById('selectAllRow');
@@ -835,26 +840,23 @@
             }
             sr.style.display = 'flex';
             c.innerHTML = state.urls.map(u => {
-                const scans = state.scanLogs.filter(l => l.url === u.url);
-                let statusClass = 'never', statusText = 'Never scanned', badgeStyle = 'background:#f3f4f6;color:#6b7280;';
+                const normalizedUrlU = normalizeUrl(u.url);
+                const scans = state.scanLogs.filter(l => normalizeUrl(l.url) === normalizedUrlU);
+                let statusText = 'Never scanned', badgeStyle = 'background:#f3f4f6;color:#6b7280;';
                 if (scans.length > 0) {
                     const latest = scans.reduce((a, b) => new Date(a.timestamp) > new Date(b.timestamp) ? a : b);
                     const status = latest.status || 'unknown';
                     if (status === 'clean') {
-                        statusClass = 'clean';
                         statusText = 'Clean';
                         badgeStyle = 'background:#dcfce7;color:#16a34a;';
                     } else if (status === 'suspicious') {
-                        statusClass = 'suspicious';
                         statusText = 'Suspicious';
                         badgeStyle = 'background:#fef3c7;color:#d97706;';
                     } else if (status === 'malicious') {
-                        statusClass = 'malicious';
                         statusText = 'Malicious';
                         badgeStyle = 'background:#fee2e2;color:#dc2626;';
                     } else {
                         statusText = 'Scanned';
-                        badgeStyle = 'background:#f3f4f6;color:#6b7280;';
                     }
                 }
                 return `<div class="url-item">
@@ -902,7 +904,7 @@
                 }
                 
                 // Step 2: Scan the URL
-                const scanResponse = await fetch(SCAN_API_URL, {
+                const scanResponse = await fetch(SCAN_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url })
@@ -1047,96 +1049,88 @@
                 return;
             }
 
-            container.innerHTML = results.map(r => {
-                // Build engine list from full results
-                let engineListHtml = '';
-                if (r.fullResults) {
+            container.innerHTML = results.map((r, idx) => {
+                const verdictColors = {
+                    clean: { bg: '#dcfce7', color: '#16a34a', border: '#16a34a' },
+                    suspicious: { bg: '#fef3c7', color: '#d97706', border: '#d97706' },
+                    malicious: { bg: '#fee2e2', color: '#dc2626', border: '#dc2626' },
+                    error: { bg: '#f3f4f6', color: '#6b7280', border: '#6b7280' }
+                };
+                const vc = verdictColors[r.verdict] || verdictColors.error;
+
+                // Build engine list if fullResults available
+                let engineListHtml = '<p style="padding: 16px; text-align: center; color: #6b7280;">No detailed engine data available</p>';
+                if (r.fullResults && Object.keys(r.fullResults).length > 0) {
                     const engines = Object.entries(r.fullResults).sort((a, b) => {
-                        // Sort: malicious first, then suspicious, then others
                         const order = { malicious: 0, suspicious: 1, harmless: 2, undetected: 3 };
                         return (order[a[1].category] || 4) - (order[b[1].category] || 4);
                     });
                     
                     engineListHtml = engines.map(([name, data]) => {
-                        let badgeClass = 'engine-safe';
-                        let badgeText = 'Clean';
-                        let badgeColor = '#16a34a';
-                        let bgColor = '#dcfce7';
+                        const catColors = {
+                            malicious: { bg: '#fee2e2', color: '#dc2626', text: 'Malicious' },
+                            suspicious: { bg: '#fef3c7', color: '#d97706', text: 'Suspicious' },
+                            harmless: { bg: '#dcfce7', color: '#16a34a', text: 'Clean' },
+                            undetected: { bg: '#f3f4f6', color: '#6b7280', text: 'Undetected' }
+                        };
+                        const cat = catColors[data.category] || catColors.undetected;
                         
-                        if (data.category === 'malicious') {
-                            badgeClass = 'engine-malicious';
-                            badgeText = 'Malicious';
-                            badgeColor = '#dc2626';
-                            bgColor = '#fee2e2';
-                        } else if (data.category === 'suspicious') {
-                            badgeClass = 'engine-suspicious';
-                            badgeText = 'Suspicious';
-                            badgeColor = '#d97706';
-                            bgColor = '#fef3c7';
-                        } else if (data.category === 'undetected') {
-                            badgeText = 'Undetected';
-                            badgeColor = '#6b7280';
-                            bgColor = '#f3f4f6';
-                        }
-                        
-                        return `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">
-                                <span style="font-size: 13px; font-weight: 500;">${name}</span>
-                                <span style="font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; background: ${bgColor}; color: ${badgeColor};">${badgeText}</span>
-                            </div>
-                        `;
+                        return `<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #e5e7eb;">
+                            <span style="font-size: 13px; font-weight: 500; color: #374151;">${name}</span>
+                            <span style="font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 12px; background: ${cat.bg}; color: ${cat.color};">${cat.text}</span>
+                        </div>`;
                     }).join('');
                 }
 
                 return `
-                <div class="scan-result-item" onclick="this.classList.toggle('expanded')">
-                    <div class="scan-result-header">
-                        <span class="scan-result-url">${r.url}</span>
-                        <span class="status-badge ${r.verdict || 'error'}">${r.verdict || 'Error'}</span>
-                    </div>
-                    ${r.verdict !== 'error' ? `
-                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
-                            ${r.verdictExplanation || 'Click to see details'}
+                <div style="background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; margin-bottom: 16px; overflow: hidden;">
+                    <!-- Header - Always visible -->
+                    <div style="padding: 16px; border-left: 4px solid ${vc.border}; cursor: pointer;" onclick="document.getElementById('scanDetail${idx}').style.display = document.getElementById('scanDetail${idx}').style.display === 'none' ? 'block' : 'none'">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong style="font-size: 15px; color: #111; word-break: break-all;">${r.url}</strong>
+                            <span style="background: ${vc.bg}; color: ${vc.color}; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase;">${r.verdict || 'Unknown'}</span>
                         </div>
-                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; display: flex; gap: 16px; flex-wrap: wrap;">
-                            <span>🔍 Detections: <strong style="color: ${r.detections > 0 ? '#dc2626' : '#16a34a'}">${r.detections || 0}</strong></span>
-                            <span>🛡️ Engines: <strong>${r.totalEngines || 0}</strong></span>
-                            <span>⚠️ Risk: <span class="risk-badge ${getRiskClass(r.adRiskScore)}">${getRiskLabel(r.adRiskScore)}</span></span>
+                        <p style="font-size: 13px; color: ${vc.color}; margin: 8px 0;">${r.verdictExplanation || ''}</p>
+                        <div style="display: flex; gap: 20px; font-size: 13px; color: #6b7280; flex-wrap: wrap;">
+                            <span>🔍 <strong style="color: ${r.detections > 0 ? '#dc2626' : '#16a34a'};">${r.detections || 0}</strong> detections</span>
+                            <span>🛡️ <strong>${r.totalEngines || 0}</strong> engines</span>
+                            <span>⚠️ Risk: <strong style="color: ${vc.color};">${getRiskLabel(r.adRiskScore)}</strong></span>
                         </div>
-                    ` : ''}
-                    <div class="scan-result-details">
-                        ${r.verdict !== 'error' ? `
-                            <!-- Summary Stats -->
-                            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-                                <div style="padding: 12px 20px; background: #dcfce7; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #16a34a;">${r.stats?.harmless || 0}</div>
-                                    <div style="font-size: 11px; color: #166534; font-weight: 600;">Harmless</div>
-                                </div>
-                                <div style="padding: 12px 20px; background: #f3f4f6; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #6b7280;">${r.stats?.undetected || 0}</div>
-                                    <div style="font-size: 11px; color: #4b5563; font-weight: 600;">Undetected</div>
-                                </div>
-                                <div style="padding: 12px 20px; background: #fef3c7; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #d97706;">${r.stats?.suspicious || 0}</div>
-                                    <div style="font-size: 11px; color: #92400e; font-weight: 600;">Suspicious</div>
-                                </div>
-                                <div style="padding: 12px 20px; background: #fee2e2; border-radius: 8px; text-align: center; flex: 1; min-width: 80px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #dc2626;">${r.stats?.malicious || 0}</div>
-                                    <div style="font-size: 11px; color: #991b1b; font-weight: 600;">Malicious</div>
-                                </div>
-                            </div>
-                            
-                            <!-- All Engines List -->
-                            <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; max-height: 300px; overflow-y: auto;">
-                                <div style="padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; font-size: 13px; color: #374151; position: sticky; top: 0;">
-                                    🛡️ All Security Vendors (${r.totalEngines || 0})
-                                </div>
-                                ${engineListHtml || '<div style="padding: 16px; text-align: center; color: #6b7280;">No engine data available</div>'}
-                            </div>
-                        ` : `<p style="color: #dc2626;">Error: ${r.message || 'Scan failed'}</p>`}
+                        <p style="font-size: 11px; color: #9ca3af; margin-top: 8px;">Click to ${r.fullResults ? 'view all engines' : 'see details'} ▼</p>
                     </div>
-                </div>
-            `}).join('');
+                    
+                    <!-- Details - Expandable -->
+                    <div id="scanDetail${idx}" style="display: none; border-top: 1px solid #e5e7eb;">
+                        <!-- Stats Summary -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 16px; background: #f9fafb;">
+                            <div style="text-align: center; padding: 12px; background: #dcfce7; border-radius: 8px;">
+                                <div style="font-size: 22px; font-weight: 700; color: #16a34a;">${r.stats?.harmless || 0}</div>
+                                <div style="font-size: 10px; color: #166534; font-weight: 600;">HARMLESS</div>
+                            </div>
+                            <div style="text-align: center; padding: 12px; background: #f3f4f6; border-radius: 8px;">
+                                <div style="font-size: 22px; font-weight: 700; color: #6b7280;">${r.stats?.undetected || 0}</div>
+                                <div style="font-size: 10px; color: #4b5563; font-weight: 600;">UNDETECTED</div>
+                            </div>
+                            <div style="text-align: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                                <div style="font-size: 22px; font-weight: 700; color: #d97706;">${r.stats?.suspicious || 0}</div>
+                                <div style="font-size: 10px; color: #92400e; font-weight: 600;">SUSPICIOUS</div>
+                            </div>
+                            <div style="text-align: center; padding: 12px; background: #fee2e2; border-radius: 8px;">
+                                <div style="font-size: 22px; font-weight: 700; color: #dc2626;">${r.stats?.malicious || 0}</div>
+                                <div style="font-size: 10px; color: #991b1b; font-weight: 600;">MALICIOUS</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Engine List -->
+                        <div style="max-height: 350px; overflow-y: auto;">
+                            <div style="padding: 12px 16px; background: #f3f4f6; font-weight: 600; font-size: 12px; color: #374151; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0;">
+                                ALL SECURITY VENDORS (${r.totalEngines || 0})
+                            </div>
+                            ${engineListHtml}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         // =====================================================
