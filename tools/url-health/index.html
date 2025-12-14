@@ -269,7 +269,7 @@
         .url-status.stale { background: #fef3c7; color: #d97706; }
         .url-status.never { background: #f3f4f6; color: #6b7280; }
 
-        .scan-results { max-height: 400px; overflow-y: auto; }
+        .scan-results { min-height: 300px; max-height: 400px; overflow-y: auto; }
         .scan-result-item { border-bottom: 1px solid var(--border); }
         .scan-result-item:last-child { border-bottom: none; }
         .scan-result-header {
@@ -353,6 +353,7 @@
             justify-content: center;
             z-index: 10;
             border-radius: 16px;
+            min-height: 300px;
         }
         .loading-overlay.show { display: flex; }
 
