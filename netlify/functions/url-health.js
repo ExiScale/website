@@ -1,4 +1,4 @@
-// URL Health - Airtable Operations Function v5.3
+// URL Health - Airtable Operations Function v5.4
 // Uses Field IDs for READING, Field Names for WRITING
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
@@ -208,13 +208,20 @@ const handlers = {
     },
 
     // Save scan log
-    async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
+    async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson, urlText }) {
         if (!urlId) throw new Error('urlId is required');
+
+        // Create a readable scan name
+        const timestamp = new Date().toISOString();
+        const dateStr = timestamp.split('T')[0];
+        const timeStr = timestamp.split('T')[1].substring(0, 5);
+        const scanName = urlText ? `${urlText} - ${dateStr} ${timeStr}` : `Scan - ${dateStr} ${timeStr}`;
 
         // Airtable requires field NAMES for writing
         const fields = {
+            'scan_id': scanName,
             'url': [urlId],
-            'scan_timestamp': new Date().toISOString(),
+            'scan_timestamp': timestamp,
             'status': status || 'unknown',
             'detections': detections || 0,
             'ad_risk_score': adRiskScore || 0,
@@ -461,7 +468,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v5.3 Action: ${action}`, data);
+        console.log(`📦 v5.4 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
