@@ -442,7 +442,7 @@
                 </div>
             </nav>
             
-            <a href="/login/" class="back-link">
+            <a href="/dashboard/" class="back-link">
                 <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 Back to Dashboard
             </a>
@@ -1202,46 +1202,45 @@
         // INIT
         // =====================================================
         async function init() {
-            // ⚠️ DEV MODE: Uncomment these lines before launch
-            // const authenticated = await checkSession();
-            // if (!authenticated) return;
+            // Check session from dashboard login
+            const savedSession = localStorage.getItem('exiscale_session');
+            if (!savedSession) {
+                window.location.href = '/login/';
+                return;
+            }
 
-            // Mock user for testing - REMOVE BEFORE LAUNCH
-            // Use an email that EXISTS in your synced Users table
-            state.user = {
-                fields: {
-                    'Dashboard Email': 'rtalent@icloud.com',
-                    'Stacker First Name': 'Ronnie',
-                    'Stacker Last Name': 'Talent'
-                }
-            };
-
-            updateUserUI();
-            
-            // Get user from Airtable (Users table is synced/read-only)
             try {
-                const email = state.user.fields['Dashboard Email'];
+                // Parse session from dashboard
+                state.user = JSON.parse(savedSession);
+                const email = state.user.fields?.['Dashboard Email'] || state.user.fields?.['fldu08L0Zaj11mKwm'];
+                
+                if (!email) {
+                    throw new Error('No email in session');
+                }
+
+                updateUserUI();
+
+                // Look up user in URL Health Users table (username = email)
                 const result = await apiCall('getOrCreateUser', { email });
                 
                 if (result.user) {
                     state.urlHealthUser = result.user;
                     console.log('✅ Found user:', state.urlHealthUser.id);
-                } else {
-                    // User not in synced table - use email as fallback identifier
-                    console.log('⚠️ User not in synced table, limited functionality');
-                    state.urlHealthUser = null;
-                }
 
-                // Load data if we have a user
-                if (state.urlHealthUser) {
+                    // Load all user data
                     await loadUrls();
                     await loadScanLogs();
                     await loadAlerts();
                     await loadSchedules();
+                } else {
+                    console.log('⚠️ User not found in URL Health Users table');
+                    showMessage('scanMessage', 'Your account is not set up for URL Health. Please contact support.', 'error');
                 }
             } catch(e) {
-                console.log('Data load error:', e.message);
-                state.urlHealthUser = null;
+                console.error('Init error:', e.message);
+                localStorage.removeItem('exiscale_session');
+                window.location.href = '/login/';
+                return;
             }
 
             document.getElementById('loadingScreen').classList.add('hidden');
