@@ -159,7 +159,20 @@ const handlers = {
         const F = FIELDS.urls;
         const allRecords = await getAllRecords(TABLES.urls);
         
-        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.added_by], userId));
+        // Debug: log first record to see structure
+        if (allRecords.length > 0) {
+            console.log(`📋 Sample record fields:`, JSON.stringify(allRecords[0].fields));
+            console.log(`📋 Looking for field ID: ${F.added_by}`);
+        }
+        
+        const userRecords = allRecords.filter(r => {
+            const addedBy = r.fields[F.added_by];
+            const match = hasLinkedRecord(addedBy, userId);
+            if (addedBy) {
+                console.log(`📋 Record ${r.id}: added_by=${JSON.stringify(addedBy)}, match=${match}`);
+            }
+            return match;
+        });
         
         console.log(`✅ Found ${userRecords.length} URLs`);
         
@@ -461,7 +474,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v5.1 Action: ${action}`, data);
+        console.log(`📦 v5.2 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
