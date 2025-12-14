@@ -1,4 +1,4 @@
-[Uploading airtable-field-ids (3).md…]()
+[airtable-field-ids (4).md](https://github.com/user-attachments/files/24147559/airtable-field-ids.4.md)
 # ExiScale Airtable Field IDs Reference
 
 ## [ALL] Clients Table
@@ -204,7 +204,7 @@
 |------------|----------|
 | url | fld08YBIrSWdPbsD1 |
 | tags | fldF7Hh1w0dWnt9n4 |
-| added_by | fldTyt1Z3FM5UbQgE |
+| added_by | fldTyt1Z3FN5UbQgE |
 | added_at | fld7EJsunaY0yT4FZ |
 | ScanLogs | fldjTbsaETsFCKxk3 |
 | DetectionAlerts | fld3Vw1grIf6mk1ZJ |
