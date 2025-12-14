@@ -896,7 +896,8 @@
                         status: result.verdict || 'error',
                         detections: result.detections || 0,
                         adRiskScore: result.adRiskScore || 0,
-                        resultJson: JSON.stringify(result)
+                        resultJson: JSON.stringify(result),
+                        urlText: urlValue
                     });
 
                     results.push({ ...result, url: urlValue });
@@ -936,6 +937,16 @@
                         <span class="scan-result-url">${r.url}</span>
                         <span class="status-badge ${r.verdict || 'error'}">${r.verdict || 'Error'}</span>
                     </div>
+                    ${r.verdict !== 'error' ? `
+                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+                            ${r.verdictExplanation || 'Click to see details'}
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; display: flex; gap: 16px; flex-wrap: wrap;">
+                            <span>🔍 Detections: <strong style="color: ${r.detections > 0 ? '#dc2626' : '#16a34a'}">${r.detections || 0}</strong></span>
+                            <span>🛡️ Engines: <strong>${r.totalEngines || 0}</strong></span>
+                            <span>⚠️ Risk: <span class="risk-badge ${getRiskClass(r.adRiskScore)}">${getRiskLabel(r.adRiskScore)}</span></span>
+                        </div>
+                    ` : ''}
                     <div class="scan-result-details">
                         ${r.verdict !== 'error' ? `
                             <div class="detail-grid">
@@ -945,9 +956,38 @@
                                 <div class="detail-item"><label>Risk Level</label><div class="value"><span class="risk-badge ${getRiskClass(r.adRiskScore)}">${getRiskLabel(r.adRiskScore)}</span></div></div>
                             </div>
                             ${r.maliciousEngines?.length > 0 ? `
-                                <div class="engines-list">
-                                    <h4>Flagged by ${r.maliciousEngines.length} engine(s)</h4>
-                                    <div class="engine-tags">${r.maliciousEngines.map(e => `<span class="engine-tag">${e}</span>`).join('')}</div>
+                                <div class="engines-list" style="margin-top: 16px; border-left: 4px solid #dc2626;">
+                                    <h4 style="color: #dc2626;">🚨 Flagged by ${r.maliciousEngines.length} engine(s)</h4>
+                                    <div class="engine-tags">${r.maliciousEngines.map(e => `<span class="engine-tag" style="background: #dc2626;">${e}</span>`).join('')}</div>
+                                </div>
+                            ` : ''}
+                            ${r.suspiciousEngines?.length > 0 ? `
+                                <div class="engines-list" style="margin-top: 12px; border-left: 4px solid #f59e0b;">
+                                    <h4 style="color: #f59e0b;">⚠️ Suspicious (${r.suspiciousEngines.length})</h4>
+                                    <div class="engine-tags">${r.suspiciousEngines.map(e => `<span class="engine-tag" style="background: #f59e0b;">${e}</span>`).join('')}</div>
+                                </div>
+                            ` : ''}
+                            ${r.stats ? `
+                                <div style="margin-top: 16px; padding: 16px; background: var(--bg-secondary, #f5f5f5); border-radius: 8px;">
+                                    <h4 style="margin-bottom: 12px; font-size: 13px; color: var(--text-secondary, #666);">📊 Engine Breakdown</h4>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                                        <div style="padding: 8px 16px; background: #dcfce7; border-radius: 8px; text-align: center;">
+                                            <div style="font-size: 20px; font-weight: 700; color: #16a34a;">${r.stats.harmless || 0}</div>
+                                            <div style="font-size: 11px; color: #166534;">Harmless</div>
+                                        </div>
+                                        <div style="padding: 8px 16px; background: #e5e7eb; border-radius: 8px; text-align: center;">
+                                            <div style="font-size: 20px; font-weight: 700; color: #6b7280;">${r.stats.undetected || 0}</div>
+                                            <div style="font-size: 11px; color: #4b5563;">Undetected</div>
+                                        </div>
+                                        <div style="padding: 8px 16px; background: #fef3c7; border-radius: 8px; text-align: center;">
+                                            <div style="font-size: 20px; font-weight: 700; color: #d97706;">${r.stats.suspicious || 0}</div>
+                                            <div style="font-size: 11px; color: #92400e;">Suspicious</div>
+                                        </div>
+                                        <div style="padding: 8px 16px; background: #fee2e2; border-radius: 8px; text-align: center;">
+                                            <div style="font-size: 20px; font-weight: 700; color: #dc2626;">${r.stats.malicious || 0}</div>
+                                            <div style="font-size: 11px; color: #991b1b;">Malicious</div>
+                                        </div>
+                                    </div>
                                 </div>
                             ` : ''}
                         ` : `<p style="color: #dc2626;">Error: ${r.message || 'Scan failed'}</p>`}
