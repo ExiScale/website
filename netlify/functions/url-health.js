@@ -1,16 +1,75 @@
-// URL Health - Airtable Operations Function v4
-// FIXED: Linked record filtering done in JavaScript (Airtable formulas can't filter by record ID)
+// URL Health - Airtable Operations Function v5
+// Uses Field IDs instead of field names for stability
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
 const AIRTABLE_API = 'https://api.airtable.com/v0';
 
+// Table names
 const TABLES = {
     users: 'Users',
     urls: 'URLs',
     scanLogs: 'ScanLogs',
     schedules: 'Schedules',
     alerts: 'DetectionAlerts'
+};
+
+// Field IDs - immune to field name changes
+const FIELDS = {
+    // Users table
+    users: {
+        username: 'fldTCQ88S6vZjo4AY',
+        email: 'fldH5zPtaEtItPeGu',
+        urls: 'fldx0i1b6bC8Z8ndz',
+        schedules: 'fldfskRWTImgPLQjk',
+        scanLogs: 'fldiJtgEpBmIbyfrx',
+        detectionAlerts: 'fld6cH4hIPyZSbSY7'
+    },
+    // URLs table
+    urls: {
+        url: 'fld08YBIrSWdPbsD1',
+        tags: 'fldF7Hh1w0dWnt9n4',
+        added_by: 'fldTyt1Z3FM5UbQgE',
+        added_at: 'fld7EJsunaY0yT4FZ',
+        scanLogs: 'fldjTbsaETsFCKxk3',
+        detectionAlerts: 'fld3Vw1grIf6mk1ZJ'
+    },
+    // ScanLogs table
+    scanLogs: {
+        scan_id: 'fldEiYwuZFTjvmSho',
+        url: 'fld0vDbZi6z8NkQr5',
+        scan_timestamp: 'fld7DBPtFFT9qn4Qd',
+        status: 'fldt0JXOqd1uqF5Ng',
+        detections: 'fldzJsEVIHQawX1uV',
+        ad_risk_score: 'fldIFl1XLkGp73WQq',
+        result_json: 'fldG8e0y7Kp19ZlTI',
+        scanned_by: 'fldPmZQYjdF8kGKN6',
+        acknowledged: 'fldJmpMn3zfIX4vfz'
+    },
+    // Schedules table
+    schedules: {
+        name: 'fldGabCZ7h5gjDuSS',
+        account: 'fldjkFwADD1Ij4EVs',
+        frequency: 'fldHQxA8HH6YVhvay',
+        enabled: 'fldt6FgE1yHFwOayj',
+        scheduled_time: 'fldFsGMSx1058GBah',
+        scheduled_day: 'fldhBYiRMKKQFR8yb',
+        scheduled_date: 'fldNDBE9g9Hk39XkP',
+        rules: 'fldtpHgjNy11ghWv4',
+        created_by: 'fldUFIF72rGkQvy9H',
+        last_scan: 'fld1DFgZ4vpcM2MSb'
+    },
+    // DetectionAlerts table
+    alerts: {
+        alert_id: 'fldNgjTZuHXBFXkh1',
+        url: 'fldwGPOAUsWIwCNMn',
+        account: 'fldszN7Y8jhlvWh5e',
+        engine_name: 'fldjp5WpmyWUPJmmB',
+        first_detected: 'fldQDrUQimH6qwS7P',
+        acknowledged: 'fldQY7jwX0SclE34y',
+        acknowledged_at: 'fld170gA8NwaUKPAT',
+        acknowledged_by: 'fldrUOGji8nWhKgCn'
+    }
 };
 
 // Helper: Make Airtable request
@@ -40,13 +99,13 @@ async function airtableRequest(table, method = 'GET', body = null, recordId = nu
     return data;
 }
 
-// Helper: Get all records (handles pagination)
+// Helper: Get all records with field IDs
 async function getAllRecords(table, filterFormula = null) {
     let allRecords = [];
     let offset = null;
 
     do {
-        let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100`;
+        let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100&returnFieldsByFieldId=true`;
         if (filterFormula) url += `&filterByFormula=${encodeURIComponent(filterFormula)}`;
         if (offset) url += `&offset=${offset}`;
 
@@ -79,6 +138,7 @@ const handlers = {
         console.log(`🔍 Looking for user with username = '${email}'`);
         
         // Users table is synced - READ ONLY
+        // Note: filterByFormula still needs field name, but we use ID for reading
         const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
         
         if (records.length > 0) {
@@ -96,17 +156,17 @@ const handlers = {
 
         console.log(`🔍 Getting URLs for user: ${userId}`);
         
-        // Fetch all URLs and filter by added_by containing userId
+        const F = FIELDS.urls;
         const allRecords = await getAllRecords(TABLES.urls);
         
-        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.added_by, userId));
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.added_by], userId));
         
         console.log(`✅ Found ${userRecords.length} URLs`);
         
         const urls = userRecords.map(r => ({
             id: r.id,
-            url: r.fields.url,
-            addedAt: r.fields.added_at
+            url: r.fields[F.url],
+            addedAt: r.fields[F.added_at]
         }));
 
         return { urls };
@@ -118,11 +178,12 @@ const handlers = {
 
         console.log(`➕ Adding URL: ${url} for user: ${userId}`);
 
+        const F = FIELDS.urls;
         const record = await airtableRequest(TABLES.urls, 'POST', {
             fields: {
-                url: url,
-                added_by: [userId],
-                added_at: new Date().toISOString().split('T')[0]
+                [F.url]: url,
+                [F.added_by]: [userId],
+                [F.added_at]: new Date().toISOString().split('T')[0]
             }
         });
 
@@ -131,8 +192,8 @@ const handlers = {
         return { 
             url: { 
                 id: record.id, 
-                url: record.fields.url, 
-                addedAt: record.fields.added_at 
+                url: record.fields[F.url], 
+                addedAt: record.fields[F.added_at] 
             } 
         };
     },
@@ -149,21 +210,23 @@ const handlers = {
     async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
         if (!urlId) throw new Error('urlId is required');
 
+        const F = FIELDS.scanLogs;
         const fields = {
-            url: [urlId],
-            scan_timestamp: new Date().toISOString(),
-            status: status || 'unknown',
-            detections: detections || 0,
-            ad_risk_score: adRiskScore || 0,
-            result_json: resultJson || '{}'
+            [F.url]: [urlId],
+            [F.scan_timestamp]: new Date().toISOString(),
+            [F.status]: status || 'unknown',
+            [F.detections]: detections || 0,
+            [F.ad_risk_score]: adRiskScore || 0,
+            [F.result_json]: resultJson || '{}'
         };
 
         if (userId) {
-            fields.scanned_by = [userId];
+            fields[F.scanned_by] = [userId];
         }
 
         const record = await airtableRequest(TABLES.scanLogs, 'POST', { fields });
 
+        console.log(`✅ Scan log saved: ${record.id}`);
         return { log: record };
     },
 
@@ -171,13 +234,16 @@ const handlers = {
     async getScanLogs({ userId }) {
         if (!userId) throw new Error('userId is required');
 
+        const FU = FIELDS.urls;
+        const FS = FIELDS.scanLogs;
+
         // First get user's URLs
         const allUrls = await getAllRecords(TABLES.urls);
-        const userUrls = allUrls.filter(r => hasLinkedRecord(r.fields.added_by, userId));
+        const userUrls = allUrls.filter(r => hasLinkedRecord(r.fields[FU.added_by], userId));
         
         const urlIds = userUrls.map(r => r.id);
         const urlMap = {};
-        userUrls.forEach(r => { urlMap[r.id] = r.fields.url; });
+        userUrls.forEach(r => { urlMap[r.id] = r.fields[FU.url]; });
 
         if (urlIds.length === 0) {
             return { logs: [] };
@@ -188,19 +254,19 @@ const handlers = {
         
         const logs = allLogs
             .filter(r => {
-                const logUrlIds = r.fields.url || [];
+                const logUrlIds = r.fields[FS.url] || [];
                 return logUrlIds.some(id => urlIds.includes(id));
             })
             .map(r => {
-                const urlId = (r.fields.url || [])[0];
+                const urlId = (r.fields[FS.url] || [])[0];
                 return {
                     id: r.id,
                     urlId,
                     url: urlMap[urlId] || 'Unknown',
-                    timestamp: r.fields.scan_timestamp,
-                    status: r.fields.status,
-                    detections: r.fields.detections || 0,
-                    adRiskScore: r.fields.ad_risk_score || 0
+                    timestamp: r.fields[FS.scan_timestamp],
+                    status: r.fields[FS.status],
+                    detections: r.fields[FS.detections] || 0,
+                    adRiskScore: r.fields[FS.ad_risk_score] || 0
                 };
             })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -212,34 +278,36 @@ const handlers = {
     async getAlerts({ userId }) {
         if (!userId) throw new Error('userId is required');
 
+        const F = FIELDS.alerts;
         const allRecords = await getAllRecords(TABLES.alerts);
-        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.account, userId));
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.account], userId));
         
         const alerts = userRecords.map(r => ({
             id: r.id,
-            urlId: (r.fields.url || [])[0],
-            url: r.fields.url_text || 'Unknown',
-            engine: r.fields.engine_name,
-            detected: r.fields.first_detected,
-            acknowledged: r.fields.acknowledged || false,
-            acknowledgedAt: r.fields.acknowledged_at
+            urlId: (r.fields[F.url] || [])[0],
+            engine: r.fields[F.engine_name],
+            detected: r.fields[F.first_detected],
+            acknowledged: r.fields[F.acknowledged] || false,
+            acknowledgedAt: r.fields[F.acknowledged_at]
         }));
 
         return { alerts };
     },
 
     // Create alert
-    async createAlert({ urlId, userId, engineName, urlText }) {
+    async createAlert({ urlId, userId, engineName }) {
         if (!urlId || !userId || !engineName) {
             throw new Error('urlId, userId, and engineName are required');
         }
 
+        const F = FIELDS.alerts;
+
         // Check for existing unacknowledged alert
         const allAlerts = await getAllRecords(TABLES.alerts);
         const existing = allAlerts.find(r => 
-            hasLinkedRecord(r.fields.url, urlId) && 
-            r.fields.engine_name === engineName && 
-            !r.fields.acknowledged
+            hasLinkedRecord(r.fields[F.url], urlId) && 
+            r.fields[F.engine_name] === engineName && 
+            !r.fields[F.acknowledged]
         );
 
         if (existing) {
@@ -248,11 +316,11 @@ const handlers = {
 
         const record = await airtableRequest(TABLES.alerts, 'POST', {
             fields: {
-                url: [urlId],
-                account: [userId],
-                engine_name: engineName,
-                first_detected: new Date().toISOString(),
-                acknowledged: false
+                [F.url]: [urlId],
+                [F.account]: [userId],
+                [F.engine_name]: engineName,
+                [F.first_detected]: new Date().toISOString(),
+                [F.acknowledged]: false
             }
         });
 
@@ -263,13 +331,14 @@ const handlers = {
     async acknowledgeAlert({ alertId, userId }) {
         if (!alertId) throw new Error('alertId is required');
 
+        const F = FIELDS.alerts;
         const fields = {
-            acknowledged: true,
-            acknowledged_at: new Date().toISOString()
+            [F.acknowledged]: true,
+            [F.acknowledged_at]: new Date().toISOString()
         };
 
         if (userId) {
-            fields.acknowledged_by = [userId];
+            fields[F.acknowledged_by] = [userId];
         }
 
         const record = await airtableRequest(TABLES.alerts, 'PATCH', { fields }, alertId);
@@ -281,18 +350,19 @@ const handlers = {
     async getSchedules({ userId }) {
         if (!userId) throw new Error('userId is required');
 
+        const F = FIELDS.schedules;
         const allRecords = await getAllRecords(TABLES.schedules);
-        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.account, userId));
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.account], userId));
         
         const schedules = userRecords.map(r => ({
             id: r.id,
-            name: r.fields.name || 'Unnamed Schedule',
-            frequency: r.fields.frequency || 'daily',
-            urlIds: r.fields.rules || [],
-            enabled: r.fields.enabled !== false,
-            lastRun: r.fields.last_scan,
-            scheduledTime: r.fields.scheduled_time,
-            scheduledDay: r.fields.scheduled_day
+            name: r.fields[F.name] || 'Unnamed Schedule',
+            frequency: r.fields[F.frequency] || 'daily',
+            urlIds: r.fields[F.rules] || [],
+            enabled: r.fields[F.enabled] !== false,
+            lastRun: r.fields[F.last_scan],
+            scheduledTime: r.fields[F.scheduled_time],
+            scheduledDay: r.fields[F.scheduled_day]
         }));
 
         return { schedules };
@@ -304,13 +374,14 @@ const handlers = {
             throw new Error('userId and urlIds are required');
         }
 
+        const F = FIELDS.schedules;
         const record = await airtableRequest(TABLES.schedules, 'POST', {
             fields: {
-                name: name || `${frequency} scan`,
-                frequency: frequency || 'daily',
-                rules: JSON.stringify({ urlIds }),
-                account: [userId],
-                enabled: true
+                [F.name]: name || `${frequency} scan`,
+                [F.frequency]: frequency || 'daily',
+                [F.rules]: JSON.stringify({ urlIds }),
+                [F.account]: [userId],
+                [F.enabled]: true
             }
         });
 
@@ -321,10 +392,11 @@ const handlers = {
     async updateSchedule({ scheduleId, enabled, name, frequency }) {
         if (!scheduleId) throw new Error('scheduleId is required');
 
+        const F = FIELDS.schedules;
         const fields = {};
-        if (enabled !== undefined) fields.enabled = enabled;
-        if (name !== undefined) fields.name = name;
-        if (frequency !== undefined) fields.frequency = frequency;
+        if (enabled !== undefined) fields[F.enabled] = enabled;
+        if (name !== undefined) fields[F.name] = name;
+        if (frequency !== undefined) fields[F.frequency] = frequency;
 
         const record = await airtableRequest(TABLES.schedules, 'PATCH', { fields }, scheduleId);
         return { schedule: record };
@@ -387,7 +459,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v4 Action: ${action}`, data);
+        console.log(`📦 v5 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
