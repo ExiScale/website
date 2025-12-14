@@ -500,14 +500,23 @@
                 <div class="grid-2">
                     <div class="content-card">
                         <div class="card-header">
-                            <h2 class="card-title">Your URLs</h2>
-                            <button class="btn btn-primary btn-sm" onclick="switchTab('scan')">Add URL</button>
+                            <h2 class="card-title">⚡ Quick Scan</h2>
                         </div>
-                        <div id="dashboardUrlList">
-                            <div class="empty-state">
-                                <div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
-                                <div class="empty-state-title">No URLs yet</div>
-                                <div class="empty-state-text">Add URLs to start monitoring.</div>
+                        <div style="padding: 0;">
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
+                            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                                <input type="text" id="quickScanInput" placeholder="https://example.com" style="flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px;" onkeypress="if(event.key==='Enter')quickScan()">
+                                <button class="btn btn-primary" onclick="quickScan()" id="quickScanBtn">
+                                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    Scan
+                                </button>
+                            </div>
+                            <div id="quickScanResult" style="display: none;">
+                                <!-- Quick scan results appear here -->
+                            </div>
+                            <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
+                                <div class="loading-spinner"></div>
+                                <p style="color: var(--text-secondary); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
                             </div>
                         </div>
                     </div>
@@ -773,7 +782,6 @@
                 const result = await apiCall('getUrls', { userId: state.urlHealthUser.id });
                 state.urls = result.urls || [];
                 renderUrlList();
-                renderDashboardUrls();
                 renderScheduleUrls();
                 updateStats();
             } catch (error) {
@@ -849,17 +857,100 @@
             }).join('');
         }
 
-        function renderDashboardUrls() {
-            const c = document.getElementById('dashboardUrlList');
-            if (state.urls.length === 0) {
-                c.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div><div class="empty-state-title">No URLs yet</div><div class="empty-state-text">Add URLs to start monitoring.</div></div>';
+        // Quick Scan from Dashboard
+        async function quickScan() {
+            const input = document.getElementById('quickScanInput');
+            const resultDiv = document.getElementById('quickScanResult');
+            const loadingDiv = document.getElementById('quickScanLoading');
+            const btn = document.getElementById('quickScanBtn');
+            
+            let url = input.value.trim();
+            if (!url) {
+                alert('Please enter a URL');
                 return;
             }
-            let html = '<div class="url-list">';
-            html += state.urls.slice(0, 5).map(u => `<div class="url-item"><span class="url-text">${u.url}</span></div>`).join('');
-            html += '</div>';
-            if (state.urls.length > 5) html += `<p style="text-align:center;color:var(--gray);font-size:0.85rem;padding:1rem;">+ ${state.urls.length - 5} more</p>`;
-            c.innerHTML = html;
+            
+            // Normalize URL
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
+            // Show loading
+            btn.disabled = true;
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+            
+            try {
+                // Step 1: Add URL to user's list
+                const addResult = await apiCall('addUrl', { userId: state.urlHealthUser.id, url });
+                const urlId = addResult.url?.id;
+                
+                if (urlId) {
+                    // Reload URLs to include the new one
+                    await loadUrls();
+                }
+                
+                // Step 2: Scan the URL
+                const scanResponse = await fetch(SCAN_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                
+                const scanResult = await scanResponse.json();
+                
+                // Step 3: Save scan log
+                if (urlId) {
+                    await apiCall('saveScanLog', {
+                        urlId,
+                        userId: state.urlHealthUser.id,
+                        status: scanResult.verdict || 'error',
+                        detections: scanResult.detections || 0,
+                        adRiskScore: scanResult.adRiskScore || 0,
+                        resultJson: JSON.stringify(scanResult),
+                        urlText: url
+                    });
+                    await loadScanLogs();
+                }
+                
+                // Step 4: Display result
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                
+                const statusColor = scanResult.verdict === 'clean' ? '#16a34a' : 
+                                   scanResult.verdict === 'suspicious' ? '#d97706' : 
+                                   scanResult.verdict === 'malicious' ? '#dc2626' : '#6b7280';
+                const statusBg = scanResult.verdict === 'clean' ? '#dcfce7' : 
+                                scanResult.verdict === 'suspicious' ? '#fef3c7' : 
+                                scanResult.verdict === 'malicious' ? '#fee2e2' : '#f3f4f6';
+                
+                resultDiv.innerHTML = `
+                    <div style="padding: 16px; background: ${statusBg}; border-radius: 8px; border-left: 4px solid ${statusColor};">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong style="font-size: 14px; word-break: break-all;">${url}</strong>
+                            <span style="background: ${statusColor}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase;">${scanResult.verdict || 'Unknown'}</span>
+                        </div>
+                        <p style="font-size: 13px; color: ${statusColor}; margin-bottom: 8px;">${scanResult.verdictExplanation || ''}</p>
+                        <div style="display: flex; gap: 16px; font-size: 12px; color: #666;">
+                            <span>🔍 Detections: <strong>${scanResult.detections || 0}</strong></span>
+                            <span>🛡️ Engines: <strong>${scanResult.totalEngines || 0}</strong></span>
+                        </div>
+                    </div>
+                `;
+                
+                input.value = '';
+                updateStats();
+                renderRecentActivity();
+                renderUrlList();
+                
+            } catch (error) {
+                console.error('Quick scan error:', error);
+                loadingDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<div style="padding: 16px; background: #fee2e2; border-radius: 8px; color: #dc2626;">Error: ${error.message}</div>`;
+            } finally {
+                btn.disabled = false;
+            }
         }
 
         function renderScheduleUrls() {
@@ -1046,6 +1137,7 @@
                 state.scanLogs = result.logs || [];
                 renderScanLogs();
                 renderRecentActivity();
+                updateStats();  // Update stats after scan logs are loaded
             } catch (error) {
                 console.error('Error loading scan logs:', error);
             }
