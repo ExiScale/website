@@ -395,9 +395,11 @@
             color: var(--gray);
         }
         .checkbox-row input { width: 18px; height: 18px; accent-color: var(--orange); }
+        
+        .scan-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; align-items: start; }
 
         @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .detail-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } .scan-layout { grid-template-columns: 1fr; } }
         @media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -553,7 +555,7 @@
                     <p class="page-subtitle">Add URLs and run security scans.</p>
                 </div>
                 <div id="scanMessage" class="message"></div>
-                <div class="grid-2">
+                <div class="scan-layout">
                     <div class="content-card">
                         <div class="card-header"><h2 class="card-title">Manage URLs</h2></div>
                         <div style="padding: 1.5rem;">
@@ -580,7 +582,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="content-card" style="position: relative;">
+                    <div class="content-card" style="position: relative; min-height: 500px;">
                         <div class="card-header"><h2 class="card-title">Scan Results</h2></div>
                         <div class="loading-overlay" id="scanLoading">
                             <div style="text-align: center;">
@@ -588,7 +590,7 @@
                                 <p style="margin-top: 1rem; color: var(--gray);">Scanning...</p>
                             </div>
                         </div>
-                        <div class="scan-results" id="scanResults">
+                        <div class="scan-results" id="scanResults" style="padding: 1.5rem;">
                             <div class="empty-state">
                                 <div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                                 <div class="empty-state-title">Ready to scan</div>
