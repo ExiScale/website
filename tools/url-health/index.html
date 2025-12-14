@@ -1054,6 +1054,9 @@
             }
 
             container.innerHTML = results.map((r, idx) => {
+                // Debug: log full result
+                console.log('📊 Full scan result:', r);
+                
                 const verdictColors = {
                     clean: { bg: '#dcfce7', color: '#16a34a', border: '#16a34a' },
                     suspicious: { bg: '#fef3c7', color: '#d97706', border: '#d97706' },
@@ -1065,6 +1068,16 @@
                 // Build engine list if fullResults available
                 let engineListHtml = '<p style="padding: 16px; text-align: center; color: #6b7280;">No detailed engine data available</p>';
                 if (r.fullResults && Object.keys(r.fullResults).length > 0) {
+                    // Debug: log sample engine data to see structure
+                    const sampleEngines = Object.entries(r.fullResults).slice(0, 5);
+                    console.log('🔍 Engine data structure:', sampleEngines.map(([name, data]) => ({
+                        name,
+                        category: data.category,
+                        result: data.result,
+                        method: data.method,
+                        allKeys: Object.keys(data)
+                    })));
+                    
                     const engines = Object.entries(r.fullResults).sort((a, b) => {
                         // Sort: malicious first, then suspicious, then harmless/clean, then undetected
                         const getOrder = (cat) => {
