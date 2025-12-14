@@ -1,38 +1,426 @@
-// URL Health - VirusTotal Scan Function
-// Keeps VirusTotal API key secure on server side
+// URL Health - Airtable Operations Function v5.4
+// Uses Field IDs for READING, Field Names for WRITING
 
-const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
-const API_BASE = 'https://www.virustotal.com/api/v3';
-const POLL_INTERVAL = 5000;
-const MAX_ATTEMPTS = 12;
+const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
+const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
+const AIRTABLE_API = 'https://api.airtable.com/v0';
 
-// Ad-impact vendor weights
-const WEIGHT_MAP = {
-    "Google Safebrowsing": 10,
-    "Fortinet": 9,
-    "PhishTank": 8,
-    "OpenPhish": 8,
-    "BitDefender": 7,
-    "ESET": 7,
-    "Kaspersky": 7,
-    "Sophos": 7,
-    "McAfee": 6,
-    "TrendMicro": 6,
-    "Symantec": 6,
-    "Avast": 6,
-    "AVG": 6,
-    "Comodo": 5,
-    "Netcraft": 5,
-    "Spamhaus": 5,
-    "CRDF": 5,
-    "CyRadar": 5
+// Table names
+const TABLES = {
+    users: 'Users',
+    urls: 'URLs',
+    scanLogs: 'ScanLogs',
+    schedules: 'Schedules',
+    alerts: 'DetectionAlerts'
 };
 
-// Helper to delay
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+// Field IDs - immune to field name changes
+const FIELDS = {
+    // Users table
+    users: {
+        username: 'fldTCQ88S6vZjo4AY',
+        email: 'fldH5zPtaEtItPeGu',
+        urls: 'fldx0i1b6bC8Z8ndz',
+        schedules: 'fldfskRWTImgPLQjk',
+        scanLogs: 'fldiJtgEpBmIbyfrx',
+        detectionAlerts: 'fld6cH4hIPyZSbSY7'
+    },
+    // URLs table
+    urls: {
+        url: 'fld08YBIrSWdPbsD1',
+        tags: 'fldF7Hh1w0dWnt9n4',
+        added_by: 'fldTyt1Z3FN5UbQgE',
+        added_at: 'fld7EJsunaY0yT4FZ',
+        scanLogs: 'fldjTbsaETsFCKxk3',
+        detectionAlerts: 'fld3Vw1grIf6mk1ZJ'
+    },
+    // ScanLogs table
+    scanLogs: {
+        scan_id: 'fldEiYwuZFTjvmSho',
+        url: 'fld0vDbZi6z8NkQr5',
+        scan_timestamp: 'fld7DBPtFFT9qn4Qd',
+        status: 'fldt0JXOqd1uqF5Ng',
+        detections: 'fldzJsEVIHQawX1uV',
+        ad_risk_score: 'fldIFl1XLkGp73WQq',
+        result_json: 'fldG8e0y7Kp19ZlTI',
+        scanned_by: 'fldPmZQYjdF8kGKN6',
+        acknowledged: 'fldJmpMn3zfIX4vfz'
+    },
+    // Schedules table
+    schedules: {
+        name: 'fldGabCZ7h5gjDuSS',
+        account: 'fldjkFwADD1Ij4EVs',
+        frequency: 'fldHQxA8HH6YVhvay',
+        enabled: 'fldt6FgE1yHFwOayj',
+        scheduled_time: 'fldFsGMSx1058GBah',
+        scheduled_day: 'fldhBYiRMKKQFR8yb',
+        scheduled_date: 'fldNDBE9g9Hk39XkP',
+        rules: 'fldtpHgjNy11ghWv4',
+        created_by: 'fldUFIF72rGkQvy9H',
+        last_scan: 'fld1DFgZ4vpcM2MSb'
+    },
+    // DetectionAlerts table
+    alerts: {
+        alert_id: 'fldNgjTZuHXBFXkh1',
+        url: 'fldwGPOAUsWIwCNMn',
+        account: 'fldszN7Y8jhlvWh5e',
+        engine_name: 'fldjp5WpmyWUPJmmB',
+        first_detected: 'fldQDrUQimH6qwS7P',
+        acknowledged: 'fldQY7jwX0SclE34y',
+        acknowledged_at: 'fld170gA8NwaUKPAT',
+        acknowledged_by: 'fldrUOGji8nWhKgCn'
+    }
+};
+
+// Helper: Make Airtable request
+async function airtableRequest(table, method = 'GET', body = null, recordId = null) {
+    let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`;
+    if (recordId) url += `/${recordId}`;
+
+    const options = {
+        method,
+        headers: {
+            'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+            'Content-Type': 'application/json'
+        }
+    };
+
+    if (body && (method === 'POST' || method === 'PATCH')) {
+        options.body = JSON.stringify(body);
+    }
+
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error?.message || `Airtable error: ${response.status}`);
+    }
+
+    return data;
+}
+
+// Helper: Get all records with field IDs
+async function getAllRecords(table, filterFormula = null) {
+    let allRecords = [];
+    let offset = null;
+
+    do {
+        let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100&returnFieldsByFieldId=true`;
+        if (filterFormula) url += `&filterByFormula=${encodeURIComponent(filterFormula)}`;
+        if (offset) url += `&offset=${offset}`;
+
+        const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` }
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error?.message || 'Airtable error');
+
+        allRecords = allRecords.concat(data.records);
+        offset = data.offset;
+    } while (offset);
+
+    return allRecords;
+}
+
+// Helper: Check if a linked field contains a specific record ID
+function hasLinkedRecord(linkedField, recordId) {
+    if (!linkedField || !Array.isArray(linkedField)) return false;
+    return linkedField.includes(recordId);
+}
+
+// Action handlers
+const handlers = {
+    // Find user by email in username field
+    async getOrCreateUser({ email }) {
+        if (!email) throw new Error('Email is required');
+
+        console.log(`🔍 Looking for user with username = '${email}'`);
+        
+        // Users table is synced - READ ONLY
+        // Note: filterByFormula still needs field name, but we use ID for reading
+        const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
+        
+        if (records.length > 0) {
+            console.log(`✅ Found user: ${records[0].id}`);
+            return { user: records[0] };
+        }
+
+        console.log(`❌ User not found for email: ${email}`);
+        return { user: null, message: 'User not found' };
+    },
+
+    // Get URLs for user - filter by linked record ID in JavaScript
+    async getUrls({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        console.log(`🔍 Getting URLs for user: ${userId}`);
+        
+        const F = FIELDS.urls;
+        const allRecords = await getAllRecords(TABLES.urls);
+        
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.added_by], userId));
+        
+        console.log(`✅ Found ${userRecords.length} URLs`);
+        
+        const urls = userRecords.map(r => ({
+            id: r.id,
+            url: r.fields[F.url],
+            addedAt: r.fields[F.added_at]
+        }));
+
+        return { urls };
+    },
+
+    // Add URL
+    async addUrl({ userId, url }) {
+        if (!userId || !url) throw new Error('userId and url are required');
+
+        console.log(`➕ Adding URL: ${url} for user: ${userId}`);
+
+        // Airtable requires field NAMES for writing, not IDs
+        const record = await airtableRequest(TABLES.urls, 'POST', {
+            fields: {
+                'url': url,
+                'added_by': [userId],
+                'added_at': new Date().toISOString().split('T')[0]
+            }
+        });
+
+        console.log(`✅ URL added: ${record.id}`);
+
+        const F = FIELDS.urls;
+        return { 
+            url: { 
+                id: record.id, 
+                url: record.fields.url || record.fields[F.url], 
+                addedAt: record.fields.added_at || record.fields[F.added_at] 
+            } 
+        };
+    },
+
+    // Delete URL
+    async deleteUrl({ urlId }) {
+        if (!urlId) throw new Error('urlId is required');
+
+        await airtableRequest(TABLES.urls, 'DELETE', null, urlId);
+        return { success: true };
+    },
+
+    // Save scan log
+    async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson, urlText }) {
+        if (!urlId) throw new Error('urlId is required');
+
+        // Create a readable scan name
+        const timestamp = new Date().toISOString();
+        const dateStr = timestamp.split('T')[0];
+        const timeStr = timestamp.split('T')[1].substring(0, 5);
+        const scanName = urlText ? `${urlText} - ${dateStr} ${timeStr}` : `Scan - ${dateStr} ${timeStr}`;
+
+        // Airtable requires field NAMES for writing
+        const fields = {
+            'scan_id': scanName,
+            'url': [urlId],
+            'scan_timestamp': timestamp,
+            'status': status || 'unknown',
+            'detections': detections || 0,
+            'ad_risk_score': adRiskScore || 0,
+            'result_json': resultJson || '{}'
+        };
+
+        if (userId) {
+            fields['scanned_by'] = [userId];
+        }
+
+        const record = await airtableRequest(TABLES.scanLogs, 'POST', { fields });
+
+        console.log(`✅ Scan log saved: ${record.id}`);
+        return { log: record };
+    },
+
+    // Get scan logs for user's URLs
+    async getScanLogs({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const FU = FIELDS.urls;
+        const FS = FIELDS.scanLogs;
+
+        // First get user's URLs
+        const allUrls = await getAllRecords(TABLES.urls);
+        const userUrls = allUrls.filter(r => hasLinkedRecord(r.fields[FU.added_by], userId));
+        
+        const urlIds = userUrls.map(r => r.id);
+        const urlMap = {};
+        userUrls.forEach(r => { urlMap[r.id] = r.fields[FU.url]; });
+
+        if (urlIds.length === 0) {
+            return { logs: [] };
+        }
+
+        // Get all scan logs and filter by user's URLs
+        const allLogs = await getAllRecords(TABLES.scanLogs);
+        
+        const logs = allLogs
+            .filter(r => {
+                const logUrlIds = r.fields[FS.url] || [];
+                return logUrlIds.some(id => urlIds.includes(id));
+            })
+            .map(r => {
+                const urlId = (r.fields[FS.url] || [])[0];
+                return {
+                    id: r.id,
+                    urlId,
+                    url: urlMap[urlId] || 'Unknown',
+                    timestamp: r.fields[FS.scan_timestamp],
+                    status: r.fields[FS.status],
+                    detections: r.fields[FS.detections] || 0,
+                    adRiskScore: r.fields[FS.ad_risk_score] || 0
+                };
+            })
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        return { logs };
+    },
+
+    // Get alerts for user - filter by account linked record
+    async getAlerts({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const F = FIELDS.alerts;
+        const allRecords = await getAllRecords(TABLES.alerts);
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.account], userId));
+        
+        const alerts = userRecords.map(r => ({
+            id: r.id,
+            urlId: (r.fields[F.url] || [])[0],
+            engine: r.fields[F.engine_name],
+            detected: r.fields[F.first_detected],
+            acknowledged: r.fields[F.acknowledged] || false,
+            acknowledgedAt: r.fields[F.acknowledged_at]
+        }));
+
+        return { alerts };
+    },
+
+    // Create alert
+    async createAlert({ urlId, userId, engineName }) {
+        if (!urlId || !userId || !engineName) {
+            throw new Error('urlId, userId, and engineName are required');
+        }
+
+        const F = FIELDS.alerts;
+
+        // Check for existing unacknowledged alert
+        const allAlerts = await getAllRecords(TABLES.alerts);
+        const existing = allAlerts.find(r => 
+            hasLinkedRecord(r.fields[F.url], urlId) && 
+            r.fields[F.engine_name] === engineName && 
+            !r.fields[F.acknowledged]
+        );
+
+        if (existing) {
+            return { alert: existing, existed: true };
+        }
+
+        // Airtable requires field NAMES for writing
+        const record = await airtableRequest(TABLES.alerts, 'POST', {
+            fields: {
+                'url': [urlId],
+                'account': [userId],
+                'engine_name': engineName,
+                'first_detected': new Date().toISOString(),
+                'acknowledged': false
+            }
+        });
+
+        return { alert: record, existed: false };
+    },
+
+    // Acknowledge alert
+    async acknowledgeAlert({ alertId, userId }) {
+        if (!alertId) throw new Error('alertId is required');
+
+        // Airtable requires field NAMES for writing
+        const fields = {
+            'acknowledged': true,
+            'acknowledged_at': new Date().toISOString()
+        };
+
+        if (userId) {
+            fields['acknowledged_by'] = [userId];
+        }
+
+        const record = await airtableRequest(TABLES.alerts, 'PATCH', { fields }, alertId);
+
+        return { alert: record };
+    },
+
+    // Get schedules for user - filter by account linked record
+    async getSchedules({ userId }) {
+        if (!userId) throw new Error('userId is required');
+
+        const F = FIELDS.schedules;
+        const allRecords = await getAllRecords(TABLES.schedules);
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields[F.account], userId));
+        
+        const schedules = userRecords.map(r => ({
+            id: r.id,
+            name: r.fields[F.name] || 'Unnamed Schedule',
+            frequency: r.fields[F.frequency] || 'daily',
+            urlIds: r.fields[F.rules] || [],
+            enabled: r.fields[F.enabled] !== false,
+            lastRun: r.fields[F.last_scan],
+            scheduledTime: r.fields[F.scheduled_time],
+            scheduledDay: r.fields[F.scheduled_day]
+        }));
+
+        return { schedules };
+    },
+
+    // Create schedule
+    async createSchedule({ userId, name, frequency, urlIds }) {
+        if (!userId || !urlIds || urlIds.length === 0) {
+            throw new Error('userId and urlIds are required');
+        }
+
+        // Airtable requires field NAMES for writing
+        const record = await airtableRequest(TABLES.schedules, 'POST', {
+            fields: {
+                'name': name || `${frequency} scan`,
+                'frequency': frequency || 'daily',
+                'rules': JSON.stringify({ urlIds }),
+                'account': [userId],
+                'enabled': true
+            }
+        });
+
+        return { schedule: record };
+    },
+
+    // Update schedule
+    async updateSchedule({ scheduleId, enabled, name, frequency }) {
+        if (!scheduleId) throw new Error('scheduleId is required');
+
+        // Airtable requires field NAMES for writing
+        const fields = {};
+        if (enabled !== undefined) fields['enabled'] = enabled;
+        if (name !== undefined) fields['name'] = name;
+        if (frequency !== undefined) fields['frequency'] = frequency;
+
+        const record = await airtableRequest(TABLES.schedules, 'PATCH', { fields }, scheduleId);
+        return { schedule: record };
+    },
+
+    // Delete schedule
+    async deleteSchedule({ scheduleId }) {
+        if (!scheduleId) throw new Error('scheduleId is required');
+
+        await airtableRequest(TABLES.schedules, 'DELETE', null, scheduleId);
+        return { success: true };
+    }
+};
 
 exports.handler = async (event, context) => {
-    // CORS headers
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -40,12 +428,10 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json'
     };
 
-    // Handle preflight
     if (event.httpMethod === 'OPTIONS') {
         return { statusCode: 200, headers, body: '' };
     }
 
-    // Only allow POST
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -54,143 +440,37 @@ exports.handler = async (event, context) => {
         };
     }
 
-    // Check API key
-    if (!VIRUSTOTAL_API_KEY) {
+    if (!AIRTABLE_API_KEY) {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ error: 'VirusTotal API key not configured' })
+            body: JSON.stringify({ error: 'Airtable API key not configured' })
         };
     }
 
     try {
-        const { url } = JSON.parse(event.body);
+        const { action, ...data } = JSON.parse(event.body);
 
-        if (!url) {
+        if (!action) {
             return {
                 statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'URL is required' })
+                body: JSON.stringify({ error: 'Action is required' })
             };
         }
 
-        console.log(`🔍 Scanning URL: ${url}`);
-
-        // Step 1: Submit URL to VirusTotal
-        const submitResponse = await fetch(`${API_BASE}/urls`, {
-            method: 'POST',
-            headers: {
-                'x-apikey': VIRUSTOTAL_API_KEY,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `url=${encodeURIComponent(url)}`
-        });
-
-        if (!submitResponse.ok) {
-            const errorText = await submitResponse.text();
-            console.error('Submit error:', errorText);
-            throw new Error('Failed to submit URL to VirusTotal');
+        const handler = handlers[action];
+        if (!handler) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: `Unknown action: ${action}` })
+            };
         }
 
-        const submitData = await submitResponse.json();
-        const analysisId = submitData.data.id;
-        console.log(`📝 Analysis ID: ${analysisId}`);
-
-        // Step 2: Poll for results
-        let analysisData;
-        for (let i = 0; i < MAX_ATTEMPTS; i++) {
-            await delay(POLL_INTERVAL);
-
-            const checkResponse = await fetch(`${API_BASE}/analyses/${analysisId}`, {
-                headers: { 'x-apikey': VIRUSTOTAL_API_KEY }
-            });
-
-            if (!checkResponse.ok) {
-                console.error('Check error:', await checkResponse.text());
-                continue;
-            }
-
-            analysisData = await checkResponse.json();
-            
-            if (analysisData.data.attributes.status === 'completed') {
-                console.log('✅ Scan completed');
-                break;
-            }
-
-            console.log(`⏳ Waiting... (${i + 1}/${MAX_ATTEMPTS})`);
-        }
-
-        if (!analysisData || analysisData.data.attributes.status !== 'completed') {
-            throw new Error('Scan did not complete in time');
-        }
-
-        // Step 3: Process results
-        const stats = analysisData.data.attributes.stats;
-        const detections = (stats.malicious || 0) + (stats.suspicious || 0);
-        const totalEngines = Object.values(stats).reduce((a, b) => a + b, 0);
-
-        // Determine verdict
-        let verdict = 'clean';
-        if (detections >= 5) verdict = 'malicious';
-        else if (detections > 0) verdict = 'suspicious';
-
-        const verdictExplanation = 
-            verdict === 'clean' ? 'No vendors flagged this URL.' :
-            verdict === 'suspicious' ? 'A few vendors flagged this as suspicious.' :
-            'Multiple vendors detected malware or phishing behavior.';
-
-        // Get malicious engines
-        const allResults = analysisData.data.attributes.results;
-        const maliciousEngines = Object.entries(allResults)
-            .filter(([_, r]) => r.category === 'malicious')
-            .map(([engine]) => engine);
-
-        const suspiciousEngines = Object.entries(allResults)
-            .filter(([_, r]) => r.category === 'suspicious')
-            .map(([engine]) => engine);
-
-        // Calculate ad-impact score
-        const flaggedByAdVendors = maliciousEngines.filter(engine =>
-            Object.keys(WEIGHT_MAP).some(v => 
-                engine.toLowerCase().includes(v.toLowerCase())
-            )
-        );
-
-        const adRiskScore = flaggedByAdVendors.reduce((sum, engine) => {
-            const vendor = Object.keys(WEIGHT_MAP).find(v => 
-                engine.toLowerCase().includes(v.toLowerCase())
-            );
-            return sum + (WEIGHT_MAP[vendor] || 3);
-        }, 0);
-
-        let adImpactRisk = 'safe';
-        if (adRiskScore >= 16) adImpactRisk = 'block-risk';
-        else if (adRiskScore >= 9) adImpactRisk = 'moderate';
-        else if (adRiskScore > 0) adImpactRisk = 'review';
-
-        const lastScanDate = new Date(
-            analysisData.data.attributes.date * 1000
-        ).toISOString();
-
-        // Build response
-        const result = {
-            url,
-            verdict,
-            verdictExplanation,
-            detections,
-            totalEngines,
-            lastScanDate,
-            maliciousEngines,
-            suspiciousEngines,
-            flaggedByAdVendors,
-            adRiskScore,
-            adImpactRisk,
-            hasAdImpact: adImpactRisk !== 'safe',
-            stats,
-            fullResults: allResults  // Include all engine results for detailed display
-        };
-
-        console.log(`📊 Result: ${verdict} (${detections} detections, ad risk: ${adRiskScore})`);
+        console.log(`📦 v5.4 Action: ${action}`, data);
+        const result = await handler(data);
+        console.log(`✅ ${action} completed`);
 
         return {
             statusCode: 200,
@@ -199,14 +479,11 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('❌ Scan error:', error);
+        console.error('❌ Error:', error);
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({
-                error: error.message,
-                verdict: 'error'
-            })
+            body: JSON.stringify({ error: error.message })
         };
     }
 };
