@@ -498,22 +498,36 @@
                 </div>
                 
                 <div class="grid-2">
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h2 class="card-title">⚡ Quick Scan</h2>
-                        </div>
-                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
-                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                            <input type="text" id="quickScanInput" placeholder="https://example.com" style="flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px;" onkeypress="if(event.key==='Enter')quickScan()">
-                            <button class="btn btn-primary" onclick="quickScan()" id="quickScanBtn">
-                                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                Scan
-                            </button>
-                        </div>
-                        <div id="quickScanResult" style="display: none;"></div>
-                        <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
-                            <div class="loading-spinner"></div>
-                            <p style="color: var(--text-secondary); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
+                    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); border: 1px solid rgba(249,115,22,0.2); position: relative; overflow: hidden;">
+                        <!-- Orange glow effect -->
+                        <div style="position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                        
+                        <div style="position: relative; z-index: 1;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                    <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; stroke: white; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                </div>
+                                <div>
+                                    <h2 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0;">Quick Scan</h2>
+                                    <p style="color: rgba(255,255,255,0.5); font-size: 12px; margin: 0;">Instant security analysis</p>
+                                </div>
+                            </div>
+                            
+                            <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin: 20px 0 16px 0; line-height: 1.5;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
+                            
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="quickScanInput" placeholder="https://example.com" onkeypress="if(event.key==='Enter')quickScan()" style="flex: 1; padding: 14px 18px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 14px; background: rgba(0,0,0,0.3); color: #fff; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='rgba(249,115,22,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                                <button onclick="quickScan()" id="quickScanBtn" style="padding: 14px 24px; background: linear-gradient(135deg, #f97316, #ea580c); border: none; border-radius: 10px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(249,115,22,0.3);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(249,115,22,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(249,115,22,0.3)'">
+                                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    Scan Now
+                                </button>
+                            </div>
+                            
+                            <div id="quickScanResult" style="display: none; margin-top: 20px;"></div>
+                            <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
+                                <div class="loading-spinner" style="border-top-color: #f97316;"></div>
+                                <p style="color: rgba(255,255,255,0.6); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
+                            </div>
                         </div>
                     </div>
                     <div class="content-card">
@@ -913,23 +927,23 @@
                 loadingDiv.style.display = 'none';
                 resultDiv.style.display = 'block';
                 
-                const statusColor = scanResult.verdict === 'clean' ? '#16a34a' : 
-                                   scanResult.verdict === 'suspicious' ? '#d97706' : 
-                                   scanResult.verdict === 'malicious' ? '#dc2626' : '#6b7280';
-                const statusBg = scanResult.verdict === 'clean' ? '#dcfce7' : 
-                                scanResult.verdict === 'suspicious' ? '#fef3c7' : 
-                                scanResult.verdict === 'malicious' ? '#fee2e2' : '#f3f4f6';
+                const statusColor = scanResult.verdict === 'clean' ? '#22c55e' : 
+                                   scanResult.verdict === 'suspicious' ? '#f59e0b' : 
+                                   scanResult.verdict === 'malicious' ? '#ef4444' : '#9ca3af';
+                const statusBg = scanResult.verdict === 'clean' ? 'rgba(34,197,94,0.15)' : 
+                                scanResult.verdict === 'suspicious' ? 'rgba(245,158,11,0.15)' : 
+                                scanResult.verdict === 'malicious' ? 'rgba(239,68,68,0.15)' : 'rgba(156,163,175,0.15)';
                 
                 resultDiv.innerHTML = `
-                    <div style="padding: 16px; background: ${statusBg}; border-radius: 8px; border-left: 4px solid ${statusColor};">
+                    <div style="padding: 16px; background: ${statusBg}; border-radius: 10px; border: 1px solid ${statusColor}40;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <strong style="font-size: 14px; word-break: break-all;">${url}</strong>
+                            <strong style="font-size: 14px; word-break: break-all; color: #fff;">${url}</strong>
                             <span style="background: ${statusColor}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase;">${scanResult.verdict || 'Unknown'}</span>
                         </div>
                         <p style="font-size: 13px; color: ${statusColor}; margin-bottom: 8px;">${scanResult.verdictExplanation || ''}</p>
-                        <div style="display: flex; gap: 16px; font-size: 12px; color: #666;">
-                            <span>🔍 Detections: <strong>${scanResult.detections || 0}</strong></span>
-                            <span>🛡️ Engines: <strong>${scanResult.totalEngines || 0}</strong></span>
+                        <div style="display: flex; gap: 16px; font-size: 12px; color: rgba(255,255,255,0.6);">
+                            <span>🔍 Detections: <strong style="color: #fff;">${scanResult.detections || 0}</strong></span>
+                            <span>🛡️ Engines: <strong style="color: #fff;">${scanResult.totalEngines || 0}</strong></span>
                         </div>
                     </div>
                 `;
@@ -943,7 +957,7 @@
                 console.error('Quick scan error:', error);
                 loadingDiv.style.display = 'none';
                 resultDiv.style.display = 'block';
-                resultDiv.innerHTML = `<div style="padding: 16px; background: #fee2e2; border-radius: 8px; color: #dc2626;">Error: ${error.message}</div>`;
+                resultDiv.innerHTML = `<div style="padding: 16px; background: rgba(239,68,68,0.15); border-radius: 10px; border: 1px solid rgba(239,68,68,0.3); color: #ef4444;">Error: ${error.message}</div>`;
             } finally {
                 btn.disabled = false;
             }
