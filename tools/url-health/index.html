@@ -500,36 +500,30 @@
                 </div>
                 
                 <div class="grid-2">
-                    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #252525 50%, #1a1a1a 100%); border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); border: 1px solid rgba(249,115,22,0.25); position: relative; overflow: hidden;">
+                    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #252525 50%, #1a1a1a 100%); border-radius: 12px; padding: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.3); border: 1px solid rgba(249,115,22,0.25); position: relative; overflow: hidden;">
                         <!-- Orange glow effects -->
-                        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle at top right, rgba(249,115,22,0.2) 0%, transparent 70%); pointer-events: none;"></div>
-                        <div style="position: absolute; bottom: 0; left: 0; width: 150px; height: 150px; background: radial-gradient(circle at bottom left, rgba(249,115,22,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                        <div style="position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: radial-gradient(circle at top right, rgba(249,115,22,0.15) 0%, transparent 70%); pointer-events: none;"></div>
                         
                         <div style="position: relative; z-index: 1;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                    <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; stroke: white; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                                <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                 </div>
-                                <div>
-                                    <h2 style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0;">Quick Scan</h2>
-                                    <p style="color: rgba(255,255,255,0.5); font-size: 12px; margin: 0;">Instant security analysis</p>
-                                </div>
+                                <h2 style="color: #ffffff; font-size: 16px; font-weight: 700; margin: 0;">Quick Scan</h2>
                             </div>
                             
-                            <p style="color: rgba(255,255,255,0.7); font-size: 13px; margin: 20px 0 16px 0; line-height: 1.5;">Enter a URL to scan immediately. It will be added to your monitored URLs.</p>
-                            
-                            <div style="display: flex; gap: 10px;">
-                                <input type="text" id="quickScanInput" placeholder="https://example.com" onkeypress="if(event.key==='Enter')quickScan()" style="flex: 1; padding: 14px 18px; border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 14px; background: rgba(0,0,0,0.3); color: #fff; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='rgba(249,115,22,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
-                                <button onclick="quickScan()" id="quickScanBtn" style="padding: 14px 24px; background: linear-gradient(135deg, #f97316, #ea580c); border: none; border-radius: 10px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(249,115,22,0.3);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(249,115,22,0.4)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(249,115,22,0.3)'">
-                                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                    Scan Now
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="quickScanInput" placeholder="https://example.com" onkeypress="if(event.key==='Enter')quickScan()" style="flex: 1; padding: 10px 14px; border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px; background: rgba(0,0,0,0.3); color: #fff; outline: none;" onfocus="this.style.borderColor='rgba(249,115,22,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                                <button onclick="quickScan()" id="quickScanBtn" style="padding: 10px 18px; background: linear-gradient(135deg, #f97316, #ea580c); border: none; border-radius: 8px; color: white; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    Scan
                                 </button>
                             </div>
                             
-                            <div id="quickScanResult" style="display: none; margin-top: 20px;"></div>
-                            <div id="quickScanLoading" style="display: none; text-align: center; padding: 24px;">
+                            <div id="quickScanResult" style="display: none; margin-top: 16px;"></div>
+                            <div id="quickScanLoading" style="display: none; text-align: center; padding: 16px;">
                                 <div class="loading-spinner" style="border-top-color: #f97316;"></div>
-                                <p style="color: rgba(255,255,255,0.6); margin-top: 12px; font-size: 13px;">Scanning URL...</p>
+                                <p style="color: rgba(255,255,255,0.6); margin-top: 8px; font-size: 12px;">Scanning...</p>
                             </div>
                         </div>
                     </div>
@@ -582,7 +576,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="content-card" style="position: relative; min-height: 500px;">
+                    <div class="content-card" id="scanResultsCard" style="position: relative; min-height: calc(100vh - 250px);">
                         <div class="card-header"><h2 class="card-title">Scan Results</h2></div>
                         <div class="loading-overlay" id="scanLoading">
                             <div style="text-align: center;">
@@ -590,7 +584,7 @@
                                 <p style="margin-top: 1rem; color: var(--gray);">Scanning...</p>
                             </div>
                         </div>
-                        <div class="scan-results" id="scanResults" style="padding: 1.5rem;">
+                        <div class="scan-results" id="scanResults" style="padding: 1.5rem; max-height: calc(100vh - 300px); overflow-y: auto;">
                             <div class="empty-state">
                                 <div class="empty-state-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                                 <div class="empty-state-title">Ready to scan</div>
@@ -828,6 +822,7 @@
         }
 
         function normalizeUrl(url) {
+            if (!url) return '';
             // Remove protocol and trailing slashes for comparison
             return url.replace(/^https?:\/\//, '').replace(/\/+$/, '').toLowerCase();
         }
@@ -841,9 +836,11 @@
                 return;
             }
             sr.style.display = 'flex';
+            
             c.innerHTML = state.urls.map(u => {
                 const normalizedUrlU = normalizeUrl(u.url);
                 const scans = state.scanLogs.filter(l => normalizeUrl(l.url) === normalizedUrlU);
+                
                 let statusText = 'Never scanned', badgeStyle = 'background:#f3f4f6;color:#6b7280;';
                 if (scans.length > 0) {
                     const latest = scans.reduce((a, b) => new Date(a.timestamp) > new Date(b.timestamp) ? a : b);
@@ -1124,7 +1121,7 @@
                         </div>
                         
                         <!-- Engine List -->
-                        <div style="max-height: 350px; overflow-y: auto;">
+                        <div style="max-height: calc(100vh - 450px); min-height: 300px; overflow-y: auto;">
                             <div style="padding: 12px 16px; background: #f3f4f6; font-weight: 600; font-size: 12px; color: #374151; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0;">
                                 ALL SECURITY VENDORS (${r.totalEngines || 0})
                             </div>
@@ -1144,7 +1141,8 @@
                 state.scanLogs = result.logs || [];
                 renderScanLogs();
                 renderRecentActivity();
-                updateStats();  // Update stats after scan logs are loaded
+                renderUrlList();  // Re-render URL list with scan status badges
+                updateStats();
             } catch (error) {
                 console.error('Error loading scan logs:', error);
             }
