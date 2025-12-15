@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
     try {
         const data = JSON.parse(event.body);
         
-        // Map form fields to Airtable field names (exactly matching Airtable columns)
+        // Map form fields to Airtable field names (EXACTLY matching Airtable columns)
         const fields = {
             // Screening
             "US Citizen": data.us_citizen || null,
@@ -66,7 +66,7 @@ exports.handler = async (event, context) => {
             "Business Start Date": data.business_start_date || null,
             "Sale Method": data.sale_method ? (Array.isArray(data.sale_method) ? data.sale_method : [data.sale_method]) : null,
             
-            // Principal Information
+            // Principal Information (Note: Airtable uses "Principle" spelling)
             "Principle First Name": data.principal_first_name || null,
             "Principle Middle Initial": data.principal_middle || null,
             "Principle Last Name": data.principal_last_name || null,
@@ -120,16 +120,18 @@ exports.handler = async (event, context) => {
             "Product Stored At Business": data.product_stored || null,
             "Order Processor": data.order_processor || null
             
-            // Note: Document fields (Bank Statements, Processing Statements, ID / Passport) 
-            // require file upload handling which is not implemented yet
+            // Note: File upload fields (Bank Statements, Processing Statements, ID / Passport) 
+            // require separate file upload handling - not implemented yet
         };
 
-        // Remove null values
+        // Remove null/undefined/empty values (Airtable doesn't like them)
         Object.keys(fields).forEach(key => {
             if (fields[key] === null || fields[key] === undefined || fields[key] === '') {
                 delete fields[key];
             }
         });
+
+        console.log('Submitting to Airtable:', JSON.stringify(fields, null, 2));
 
         // Submit to Airtable
         const response = await fetch(
@@ -147,11 +149,15 @@ exports.handler = async (event, context) => {
         const result = await response.json();
 
         if (!response.ok) {
-            console.error('Airtable error:', result);
+            console.error('Airtable error:', JSON.stringify(result, null, 2));
             return {
                 statusCode: 400,
                 headers,
-                body: JSON.stringify({ error: 'Failed to submit application', details: result })
+                body: JSON.stringify({ 
+                    error: 'Failed to submit application', 
+                    details: result,
+                    fieldsAttempted: Object.keys(fields)
+                })
             };
         }
 
