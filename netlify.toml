@@ -5,6 +5,10 @@
 [functions]
   node_bundler = "esbuild"
 
+# Scheduled function - runs every hour
+[functions."url-health-cron"]
+  schedule = "0 * * * *"
+
 [[headers]]
   for = "/*"
   [headers.values]
