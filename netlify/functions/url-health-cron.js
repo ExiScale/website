@@ -1,15 +1,53 @@
 // URL Health Scheduled Scanner
 // Runs on a schedule to execute due scans
 
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
+const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
+const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
 const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
 
+// Table names (must match exactly what's in Airtable)
 const TABLES = {
     schedules: 'Schedules',
     urls: 'URLs',
     scanLogs: 'ScanLogs',
-    alerts: 'Alerts'
+    alerts: 'DetectionAlerts'
+};
+
+// Field IDs for Schedules table
+const SCHEDULE_FIELDS = {
+    name: 'fldGabCZ7h5gjDuSS',
+    account: 'fldjkFwADD1Ij4EVs',
+    frequency: 'fldHQxA8HH6YVhvay',
+    enabled: 'fldt6FgE1yHFwOayj',
+    scheduled_time: 'fldFsGMSx1058GBah',
+    scheduled_day: 'fldhBYiRMKKQFR8yb',
+    rules: 'fldtpHgjNy11ghWv4',
+    last_scan: 'fld1DFgZ4vpcM2MSb'
+};
+
+// Field IDs for URLs table
+const URL_FIELDS = {
+    url: 'fld08YBIrSWdPbsD1'
+};
+
+// Field IDs for ScanLogs table
+const SCANLOG_FIELDS = {
+    url: 'fld0vDbZi6z8NkQr5',
+    scan_timestamp: 'fld7DBPtFFT9qn4Qd',
+    status: 'fldt0JXOqd1uqF5Ng',
+    detections: 'fldzJsEVIHQawX1uV',
+    ad_risk_score: 'fldIFl1XLkGp73WQq',
+    result_json: 'fldG8e0y7Kp19ZlTI',
+    scanned_by: 'fldPmZQYjdF8kGKN6'
+};
+
+// Field IDs for DetectionAlerts table
+const ALERT_FIELDS = {
+    url: 'fldwGPOAUsWIwCNMn',
+    account: 'fldszN7Y8jhlvWh5e',
+    engine_name: 'fldjp5WpmyWUPJmmB',
+    first_detected: 'fldQDrUQimH6qwS7P',
+    acknowledged: 'fldQY7jwX0SclE34y'
 };
 
 // Airtable API helper
@@ -40,13 +78,13 @@ async function airtableRequest(table, method = 'GET', body = null, recordId = nu
     return response.json();
 }
 
-// Get all records with optional filter
+// Get all records with optional filter - returns field IDs
 async function getAllRecords(table, filterFormula = null) {
     let allRecords = [];
     let offset = null;
     
     do {
-        let url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100`;
+        let url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100&returnFieldsByFieldId=true`;
         if (filterFormula) url += `&filterByFormula=${encodeURIComponent(filterFormula)}`;
         if (offset) url += `&offset=${offset}`;
         
@@ -127,8 +165,8 @@ async function scanUrl(url) {
 // Check if a schedule is due to run
 function isScheduleDue(schedule) {
     const now = new Date();
-    const lastScan = schedule.fields.last_scan ? new Date(schedule.fields.last_scan) : null;
-    const frequency = schedule.fields.frequency;
+    const lastScan = schedule.fields[SCHEDULE_FIELDS.last_scan] ? new Date(schedule.fields[SCHEDULE_FIELDS.last_scan]) : null;
+    const frequency = schedule.fields[SCHEDULE_FIELDS.frequency];
     
     // If never scanned, it's due
     if (!lastScan) return true;
@@ -141,10 +179,9 @@ function isScheduleDue(schedule) {
             return hoursSinceLastScan >= 1;
         case 'daily':
             // Check if scheduled_time matches (if set)
-            if (schedule.fields.scheduled_time) {
-                const [hour, minute] = schedule.fields.scheduled_time.split(':').map(Number);
+            if (schedule.fields[SCHEDULE_FIELDS.scheduled_time]) {
+                const [hour, minute] = schedule.fields[SCHEDULE_FIELDS.scheduled_time].split(':').map(Number);
                 const nowHour = now.getUTCHours();
-                const nowMinute = now.getUTCMinutes();
                 // Run if it's the right hour and hasn't run today
                 if (nowHour === hour && daysSinceLastScan >= 1) {
                     return true;
@@ -154,9 +191,9 @@ function isScheduleDue(schedule) {
             return daysSinceLastScan >= 1;
         case 'weekly':
             // Check if scheduled_day matches (if set)
-            if (schedule.fields.scheduled_day) {
+            if (schedule.fields[SCHEDULE_FIELDS.scheduled_day]) {
                 const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                const scheduledDayIndex = days.indexOf(schedule.fields.scheduled_day.toLowerCase());
+                const scheduledDayIndex = days.indexOf(schedule.fields[SCHEDULE_FIELDS.scheduled_day].toLowerCase());
                 const todayIndex = now.getUTCDay();
                 if (scheduledDayIndex === todayIndex && daysSinceLastScan >= 7) {
                     return true;
@@ -171,7 +208,7 @@ function isScheduleDue(schedule) {
 
 // Parse URL IDs from rules field
 function getUrlIdsFromSchedule(schedule) {
-    const rules = schedule.fields.rules;
+    const rules = schedule.fields[SCHEDULE_FIELDS.rules];
     if (!rules) return [];
     
     try {
@@ -194,6 +231,11 @@ function getUrlIdsFromSchedule(schedule) {
 exports.handler = async (event, context) => {
     console.log('🕐 URL Health Cron Job Started:', new Date().toISOString());
     
+    // Debug: Check environment variables
+    console.log('📋 ENV Check - Base ID exists:', !!AIRTABLE_BASE_ID);
+    console.log('📋 ENV Check - API Key exists:', !!AIRTABLE_API_KEY);
+    console.log('📋 ENV Check - VT Key exists:', !!VIRUSTOTAL_API_KEY);
+    
     const results = {
         checked: 0,
         due: 0,
@@ -202,7 +244,8 @@ exports.handler = async (event, context) => {
     };
 
     try {
-        // Get all enabled schedules
+        // Get all enabled schedules (filter uses field NAME)
+        console.log('📋 Fetching schedules from table:', TABLES.schedules);
         const schedules = await getAllRecords(TABLES.schedules, '{enabled} = TRUE()');
         results.checked = schedules.length;
         console.log(`📋 Found ${schedules.length} enabled schedules`);
@@ -211,25 +254,27 @@ exports.handler = async (event, context) => {
         const allUrls = await getAllRecords(TABLES.urls);
         const urlMap = {};
         allUrls.forEach(u => {
-            urlMap[u.id] = u.fields.url;
+            urlMap[u.id] = u.fields[URL_FIELDS.url];
         });
 
         // Process each schedule
         for (const schedule of schedules) {
             try {
+                const scheduleName = schedule.fields[SCHEDULE_FIELDS.name] || 'Unnamed';
+                
                 if (!isScheduleDue(schedule)) {
-                    console.log(`⏭️ Schedule "${schedule.fields.name}" not due yet`);
+                    console.log(`⏭️ Schedule "${scheduleName}" not due yet`);
                     continue;
                 }
 
                 results.due++;
-                console.log(`✅ Schedule "${schedule.fields.name}" is due - running scans`);
+                console.log(`✅ Schedule "${scheduleName}" is due - running scans`);
 
                 // Get URL IDs from the schedule
                 const urlIds = getUrlIdsFromSchedule(schedule);
                 
                 if (urlIds.length === 0) {
-                    console.log(`⚠️ No URLs configured for schedule "${schedule.fields.name}"`);
+                    console.log(`⚠️ No URLs configured for schedule "${scheduleName}"`);
                     continue;
                 }
 
@@ -244,17 +289,19 @@ exports.handler = async (event, context) => {
                     console.log(`🔍 Scanning: ${urlText}`);
                     const scanResult = await scanUrl(urlText);
                     
-                    // Save scan log
-                    const accountId = schedule.fields.account?.[0] || null;
+                    // Save scan log using field IDs
+                    const accountIds = schedule.fields[SCHEDULE_FIELDS.account];
+                    const accountId = Array.isArray(accountIds) ? accountIds[0] : null;
+                    
                     await airtableRequest(TABLES.scanLogs, 'POST', {
                         fields: {
-                            url: [urlId],
-                            scan_timestamp: new Date().toISOString(),
-                            status: scanResult.verdict,
-                            detections: scanResult.detections || 0,
-                            ad_risk_score: 0,
-                            result_json: JSON.stringify(scanResult),
-                            ...(accountId && { scanned_by: [accountId] })
+                            [SCANLOG_FIELDS.url]: [urlId],
+                            [SCANLOG_FIELDS.scan_timestamp]: new Date().toISOString(),
+                            [SCANLOG_FIELDS.status]: scanResult.verdict,
+                            [SCANLOG_FIELDS.detections]: scanResult.detections || 0,
+                            [SCANLOG_FIELDS.ad_risk_score]: 0,
+                            [SCANLOG_FIELDS.result_json]: JSON.stringify(scanResult),
+                            ...(accountId && { [SCANLOG_FIELDS.scanned_by]: [accountId] })
                         }
                     });
 
@@ -264,12 +311,11 @@ exports.handler = async (event, context) => {
                     if (scanResult.verdict === 'malicious' && accountId) {
                         await airtableRequest(TABLES.alerts, 'POST', {
                             fields: {
-                                url: [urlId],
-                                account: [accountId],
-                                alert_type: 'malicious_detection',
-                                message: `Scheduled scan detected malicious content: ${scanResult.detections} vendors flagged this URL`,
-                                created_at: new Date().toISOString(),
-                                status: 'unread'
+                                [ALERT_FIELDS.url]: [urlId],
+                                [ALERT_FIELDS.account]: [accountId],
+                                [ALERT_FIELDS.engine_name]: 'Scheduled Scan',
+                                [ALERT_FIELDS.first_detected]: new Date().toISOString(),
+                                [ALERT_FIELDS.acknowledged]: false
                             }
                         });
                         console.log(`🚨 Alert created for malicious URL: ${urlText}`);
@@ -279,19 +325,20 @@ exports.handler = async (event, context) => {
                     await new Promise(resolve => setTimeout(resolve, 2000));
                 }
 
-                // Update last_scan timestamp
+                // Update last_scan timestamp using field ID
                 await airtableRequest(TABLES.schedules, 'PATCH', {
                     fields: {
-                        last_scan: new Date().toISOString()
+                        [SCHEDULE_FIELDS.last_scan]: new Date().toISOString()
                     }
                 }, schedule.id);
 
-                console.log(`✅ Schedule "${schedule.fields.name}" completed`);
+                console.log(`✅ Schedule "${scheduleName}" completed`);
 
             } catch (scheduleError) {
-                console.error(`❌ Error processing schedule "${schedule.fields.name}":`, scheduleError);
+                const scheduleName = schedule.fields[SCHEDULE_FIELDS.name] || 'Unknown';
+                console.error(`❌ Error processing schedule "${scheduleName}":`, scheduleError);
                 results.errors.push({
-                    schedule: schedule.fields.name,
+                    schedule: scheduleName,
                     error: scheduleError.message
                 });
             }
