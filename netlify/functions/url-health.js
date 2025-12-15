@@ -71,10 +71,19 @@ const handlers = {
     async getOrCreateUser({ email }) {
         if (!email) throw new Error('Email is required');
 
-        // Users table is externally synced - can only READ, not create
-        const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
+        // Try to find user by username field
+        console.log(`🔍 getOrCreateUser: Looking for email=${email}`);
+        let records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
+        console.log(`🔍 getOrCreateUser: Found ${records.length} users by username`);
+        
+        // If not found, try email field
+        if (records.length === 0) {
+            records = await getAllRecords(TABLES.users, `{email} = '${email}'`);
+            console.log(`🔍 getOrCreateUser: Found ${records.length} users by email field`);
+        }
         
         if (records.length > 0) {
+            console.log(`🔍 getOrCreateUser: User ID=${records[0].id}`);
             return { user: records[0] };
         }
 
@@ -86,7 +95,16 @@ const handlers = {
     async getUrls({ userId }) {
         if (!userId) throw new Error('userId is required');
 
+        // Debug: Get ALL URLs first to see what's there
+        const allRecords = await getAllRecords(TABLES.urls);
+        console.log(`🔍 getUrls: Total URLs in DB: ${allRecords.length}`);
+        if (allRecords.length > 0) {
+            console.log(`🔍 getUrls: Sample URL added_by:`, allRecords[0].fields.added_by);
+        }
+
+        // Get URLs where added_by contains this user ID
         const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
+        console.log(`🔍 getUrls: userId=${userId}, filtered to ${records.length} URLs`);
         
         const urls = records.map(r => ({
             id: r.id,
@@ -148,19 +166,22 @@ const handlers = {
         return { log: record };
     },
 
-    // Get scan logs for user - uses "added_by" to find user's URLs
+    // Get scan logs for user's URLs
     async getScanLogs({ userId }) {
         if (!userId) throw new Error('userId is required');
 
+        // Get user's URLs first
         const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
         const urlIds = urlRecords.map(r => r.id);
         const urlMap = {};
         urlRecords.forEach(r => { urlMap[r.id] = r.fields.url; });
+        console.log(`🔍 getScanLogs: userId=${userId}, found ${urlRecords.length} URLs`);
 
         if (urlIds.length === 0) {
             return { logs: [] };
         }
 
+        // Get all scan logs and filter for user's URLs
         const logRecords = await getAllRecords(TABLES.scanLogs);
         
         const logs = logRecords
@@ -182,14 +203,16 @@ const handlers = {
             })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+        console.log(`🔍 getScanLogs: found ${logs.length} logs for user's URLs`);
         return { logs };
     },
 
-    // Get alerts for user - uses "account" field
+    // Get alerts for user
     async getAlerts({ userId }) {
         if (!userId) throw new Error('userId is required');
 
         const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({account}))`);
+        console.log(`🔍 getAlerts: userId=${userId}, found ${records.length} alerts`);
         
         const alerts = records.map(r => ({
             id: r.id,
@@ -258,11 +281,12 @@ const handlers = {
         return { alert: record };
     },
 
-    // Get schedules for user - uses "account" field
+    // Get schedules for user
     async getSchedules({ userId }) {
         if (!userId) throw new Error('userId is required');
 
         const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({account}))`);
+        console.log(`🔍 getSchedules: userId=${userId}, found ${records.length} schedules`);
         
         const schedules = records.map(r => {
             // Parse urlIds from rules JSON
