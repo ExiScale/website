@@ -1,11 +1,11 @@
-// URL Health Scheduled Scanner
-// Runs on a schedule to execute due scans
+// URL Health Cron - Scheduled URL Scanning
+// Runs hourly to check enabled schedules and scan URLs that are due
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
 const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
+const AIRTABLE_API = 'https://api.airtable.com/v0';
 
-// Table names (must match exactly what's in Airtable)
 const TABLES = {
     schedules: 'Schedules',
     urls: 'URLs',
@@ -13,49 +13,11 @@ const TABLES = {
     alerts: 'DetectionAlerts'
 };
 
-// Field IDs for Schedules table
-const SCHEDULE_FIELDS = {
-    name: 'fldGabCZ7h5gjDuSS',
-    account: 'fldjkFwADD1Ij4EVs',
-    frequency: 'fldHQxA8HH6YVhvay',
-    enabled: 'fldt6FgE1yHFwOayj',
-    scheduled_time: 'fldFsGMSx1058GBah',
-    scheduled_day: 'fldhBYiRMKKQFR8yb',
-    rules: 'fldtpHgjNy11ghWv4',
-    last_scan: 'fld1DFgZ4vpcM2MSb'
-};
-
-// Field IDs for URLs table
-const URL_FIELDS = {
-    url: 'fld08YBIrSWdPbsD1'
-};
-
-// Field IDs for ScanLogs table
-const SCANLOG_FIELDS = {
-    url: 'fld0vDbZi6z8NkQr5',
-    scan_timestamp: 'fld7DBPtFFT9qn4Qd',
-    status: 'fldt0JXOqd1uqF5Ng',
-    detections: 'fldzJsEVIHQawX1uV',
-    ad_risk_score: 'fldIFl1XLkGp73WQq',
-    result_json: 'fldG8e0y7Kp19ZlTI',
-    scanned_by: 'fldPmZQYjdF8kGKN6'
-};
-
-// Field IDs for DetectionAlerts table
-const ALERT_FIELDS = {
-    url: 'fldwGPOAUsWIwCNMn',
-    account: 'fldszN7Y8jhlvWh5e',
-    engine_name: 'fldjp5WpmyWUPJmmB',
-    first_detected: 'fldQDrUQimH6qwS7P',
-    acknowledged: 'fldQY7jwX0SclE34y'
-};
-
-// Airtable API helper
+// Helper: Make Airtable request
 async function airtableRequest(table, method = 'GET', body = null, recordId = null) {
-    const url = recordId 
-        ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}/${recordId}`
-        : `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`;
-    
+    let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}`;
+    if (recordId) url += `/${recordId}`;
+
     const options = {
         method,
         headers: {
@@ -63,179 +25,156 @@ async function airtableRequest(table, method = 'GET', body = null, recordId = nu
             'Content-Type': 'application/json'
         }
     };
-    
+
     if (body && (method === 'POST' || method === 'PATCH')) {
         options.body = JSON.stringify(body);
     }
-    
+
     const response = await fetch(url, options);
+    const data = await response.json();
+
     if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Airtable error: ${error}`);
+        throw new Error(`Airtable error: ${JSON.stringify(data.error)}`);
     }
-    
-    if (method === 'DELETE') return { success: true };
-    return response.json();
+
+    return data;
 }
 
-// Get all records with optional filter - returns field IDs
+// Helper: Get all records with pagination
 async function getAllRecords(table, filterFormula = null) {
     let allRecords = [];
     let offset = null;
-    
+
     do {
-        let url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100&returnFieldsByFieldId=true`;
+        let url = `${AIRTABLE_API}/${AIRTABLE_BASE_ID}/${encodeURIComponent(table)}?pageSize=100`;
         if (filterFormula) url += `&filterByFormula=${encodeURIComponent(filterFormula)}`;
         if (offset) url += `&offset=${offset}`;
-        
+
         const response = await fetch(url, {
             headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` }
         });
-        
-        if (!response.ok) throw new Error(`Airtable error: ${await response.text()}`);
-        
+
         const data = await response.json();
-        allRecords = allRecords.concat(data.records || []);
+        if (!response.ok) throw new Error(`Airtable error: ${JSON.stringify(data.error)}`);
+
+        allRecords = allRecords.concat(data.records);
         offset = data.offset;
     } while (offset);
-    
+
     return allRecords;
 }
 
-// Scan a URL using VirusTotal
-async function scanUrl(url) {
-    try {
-        // Submit URL for scanning
-        const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
-            method: 'POST',
-            headers: {
-                'x-apikey': VIRUSTOTAL_API_KEY,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `url=${encodeURIComponent(url)}`
-        });
+// Scan URL with VirusTotal
+async function scanWithVirusTotal(urlToScan) {
+    // Submit URL for scanning
+    const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
+        method: 'POST',
+        headers: {
+            'x-apikey': VIRUSTOTAL_API_KEY,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `url=${encodeURIComponent(urlToScan)}`
+    });
 
-        if (!submitResponse.ok) {
-            throw new Error(`VirusTotal submit failed: ${submitResponse.status}`);
-        }
-
-        const submitData = await submitResponse.json();
-        const analysisId = submitData.data.id;
-
-        // Wait for analysis to complete
-        await new Promise(resolve => setTimeout(resolve, 15000));
-
-        // Get analysis results
-        const analysisResponse = await fetch(
-            `https://www.virustotal.com/api/v3/analyses/${analysisId}`,
-            { headers: { 'x-apikey': VIRUSTOTAL_API_KEY } }
-        );
-
-        if (!analysisResponse.ok) {
-            throw new Error(`VirusTotal analysis failed: ${analysisResponse.status}`);
-        }
-
-        const analysisData = await analysisResponse.json();
-        const stats = analysisData.data.attributes.stats;
-        const detections = stats.malicious + stats.suspicious;
-        const totalEngines = Object.values(stats).reduce((a, b) => a + b, 0);
-
-        let verdict = 'clean';
-        if (stats.malicious > 0) verdict = 'malicious';
-        else if (stats.suspicious > 0) verdict = 'suspicious';
-
-        return {
-            success: true,
-            verdict,
-            detections,
-            totalEngines,
-            stats
-        };
-    } catch (error) {
-        console.error(`Error scanning ${url}:`, error.message);
-        return {
-            success: false,
-            verdict: 'error',
-            detections: 0,
-            error: error.message
-        };
+    if (!submitResponse.ok) {
+        throw new Error(`VirusTotal submit failed: ${submitResponse.status}`);
     }
+
+    const submitData = await submitResponse.json();
+    const analysisId = submitData.data.id;
+
+    // Wait a bit for analysis
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // Get analysis results
+    const resultResponse = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+        headers: { 'x-apikey': VIRUSTOTAL_API_KEY }
+    });
+
+    if (!resultResponse.ok) {
+        throw new Error(`VirusTotal result failed: ${resultResponse.status}`);
+    }
+
+    const resultData = await resultResponse.json();
+    const stats = resultData.data.attributes.stats;
+    const results = resultData.data.attributes.results || {};
+
+    const malicious = stats.malicious || 0;
+    const suspicious = stats.suspicious || 0;
+    const detections = malicious + suspicious;
+
+    let status = 'clean';
+    if (malicious > 0) status = 'malicious';
+    else if (suspicious > 0) status = 'suspicious';
+
+    return {
+        status,
+        detections,
+        stats,
+        results,
+        analysisId
+    };
 }
 
-// Check if a schedule is due to run
+// Check if schedule is due
 function isScheduleDue(schedule) {
     const now = new Date();
-    const lastScan = schedule.fields[SCHEDULE_FIELDS.last_scan] ? new Date(schedule.fields[SCHEDULE_FIELDS.last_scan]) : null;
-    const frequency = schedule.fields[SCHEDULE_FIELDS.frequency];
-    
-    // If never scanned, it's due
-    if (!lastScan) return true;
-    
+    const lastScan = schedule.fields.last_scan ? new Date(schedule.fields.last_scan) : null;
+    const frequency = schedule.fields.frequency || 'daily';
+
+    if (!lastScan) return true; // Never scanned
+
     const hoursSinceLastScan = (now - lastScan) / (1000 * 60 * 60);
-    const daysSinceLastScan = hoursSinceLastScan / 24;
-    
+
     switch (frequency) {
         case 'hourly':
             return hoursSinceLastScan >= 1;
         case 'daily':
-            // Check if scheduled_time matches (if set)
-            if (schedule.fields[SCHEDULE_FIELDS.scheduled_time]) {
-                const [hour, minute] = schedule.fields[SCHEDULE_FIELDS.scheduled_time].split(':').map(Number);
-                const nowHour = now.getUTCHours();
-                // Run if it's the right hour and hasn't run today
-                if (nowHour === hour && daysSinceLastScan >= 1) {
-                    return true;
-                }
-                return false;
-            }
-            return daysSinceLastScan >= 1;
+            return hoursSinceLastScan >= 24;
         case 'weekly':
-            // Check if scheduled_day matches (if set)
-            if (schedule.fields[SCHEDULE_FIELDS.scheduled_day]) {
-                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-                const scheduledDayIndex = days.indexOf(schedule.fields[SCHEDULE_FIELDS.scheduled_day].toLowerCase());
-                const todayIndex = now.getUTCDay();
-                if (scheduledDayIndex === todayIndex && daysSinceLastScan >= 7) {
-                    return true;
-                }
-                return false;
-            }
-            return daysSinceLastScan >= 7;
+            return hoursSinceLastScan >= 168;
         default:
-            return false;
+            return hoursSinceLastScan >= 24;
     }
 }
 
-// Parse URL IDs from rules field
-function getUrlIdsFromSchedule(schedule) {
-    const rules = schedule.fields[SCHEDULE_FIELDS.rules];
+// Get URL IDs from schedule rules
+function getUrlIds(schedule) {
+    const rules = schedule.fields.rules;
     if (!rules) return [];
-    
+
     try {
-        // Handle JSON format: {"urlIds":["rec123","rec456"]}
-        if (rules.startsWith('{')) {
-            const parsed = JSON.parse(rules);
-            return parsed.urlIds || [];
+        if (typeof rules === 'string') {
+            if (rules.startsWith('{')) {
+                const parsed = JSON.parse(rules);
+                return parsed.urlIds || [];
+            }
+            if (rules.startsWith('[')) {
+                return JSON.parse(rules);
+            }
         }
-        // Handle array format: ["rec123","rec456"]
-        if (rules.startsWith('[')) {
-            return JSON.parse(rules);
-        }
+        return [];
     } catch (e) {
-        console.error('Error parsing rules:', e);
+        console.log(`⚠️ Could not parse rules: ${rules}`);
+        return [];
     }
-    return [];
 }
 
-// Main handler
 exports.handler = async (event, context) => {
-    console.log('🕐 URL Health Cron Job Started:', new Date().toISOString());
-    
-    // Debug: Check environment variables
-    console.log('📋 ENV Check - Base ID exists:', !!AIRTABLE_BASE_ID);
-    console.log('📋 ENV Check - API Key exists:', !!AIRTABLE_API_KEY);
-    console.log('📋 ENV Check - VT Key exists:', !!VIRUSTOTAL_API_KEY);
-    
+    console.log(`🕐 URL Health Cron Job Started: ${new Date().toISOString()}`);
+
+    // Check env vars
+    console.log(`📋 ENV Check - Base ID exists: ${!!AIRTABLE_BASE_ID}`);
+    console.log(`📋 ENV Check - API Key exists: ${!!AIRTABLE_API_KEY}`);
+    console.log(`📋 ENV Check - VT Key exists: ${!!VIRUSTOTAL_API_KEY}`);
+
+    if (!AIRTABLE_API_KEY || !VIRUSTOTAL_API_KEY) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Missing API keys' })
+        };
+    }
+
     const results = {
         checked: 0,
         due: 0,
@@ -244,24 +183,23 @@ exports.handler = async (event, context) => {
     };
 
     try {
-        // Get all enabled schedules (filter uses field NAME)
-        console.log('📋 Fetching schedules from table:', TABLES.schedules);
+        // Get all enabled schedules
+        console.log(`📋 Fetching schedules from table: ${TABLES.schedules}`);
         const schedules = await getAllRecords(TABLES.schedules, '{enabled} = TRUE()');
-        results.checked = schedules.length;
         console.log(`📋 Found ${schedules.length} enabled schedules`);
 
-        // Get all URLs for reference
+        // Get all URLs for lookup
         const allUrls = await getAllRecords(TABLES.urls);
         const urlMap = {};
         allUrls.forEach(u => {
-            urlMap[u.id] = u.fields[URL_FIELDS.url];
+            urlMap[u.id] = u.fields.url;
         });
 
-        // Process each schedule
         for (const schedule of schedules) {
+            results.checked++;
+            const scheduleName = schedule.fields.name || 'Unnamed';
+
             try {
-                const scheduleName = schedule.fields[SCHEDULE_FIELDS.name] || 'Unnamed';
-                
                 if (!isScheduleDue(schedule)) {
                     console.log(`⏭️ Schedule "${scheduleName}" not due yet`);
                     continue;
@@ -270,98 +208,85 @@ exports.handler = async (event, context) => {
                 results.due++;
                 console.log(`✅ Schedule "${scheduleName}" is due - running scans`);
 
-                // Get URL IDs from the schedule
-                const urlIds = getUrlIdsFromSchedule(schedule);
-                
-                if (urlIds.length === 0) {
-                    console.log(`⚠️ No URLs configured for schedule "${scheduleName}"`);
-                    continue;
-                }
+                const urlIds = getUrlIds(schedule);
+                const accountId = schedule.fields.account ? schedule.fields.account[0] : null;
 
-                // Scan each URL
                 for (const urlId of urlIds) {
-                    const urlText = urlMap[urlId];
-                    if (!urlText) {
+                    const urlToScan = urlMap[urlId];
+                    if (!urlToScan) {
                         console.log(`⚠️ URL ID ${urlId} not found`);
                         continue;
                     }
 
-                    console.log(`🔍 Scanning: ${urlText}`);
-                    const scanResult = await scanUrl(urlText);
-                    
-                    // Save scan log using field IDs
-                    const accountIds = schedule.fields[SCHEDULE_FIELDS.account];
-                    const accountId = Array.isArray(accountIds) ? accountIds[0] : null;
-                    
-                    await airtableRequest(TABLES.scanLogs, 'POST', {
-                        fields: {
-                            [SCANLOG_FIELDS.url]: [urlId],
-                            [SCANLOG_FIELDS.scan_timestamp]: new Date().toISOString(),
-                            [SCANLOG_FIELDS.status]: scanResult.verdict,
-                            [SCANLOG_FIELDS.detections]: scanResult.detections || 0,
-                            [SCANLOG_FIELDS.ad_risk_score]: 0,
-                            [SCANLOG_FIELDS.result_json]: JSON.stringify(scanResult),
-                            ...(accountId && { [SCANLOG_FIELDS.scanned_by]: [accountId] })
-                        }
-                    });
+                    console.log(`🔍 Scanning: ${urlToScan}`);
 
-                    results.scanned++;
+                    try {
+                        const scanResult = await scanWithVirusTotal(urlToScan);
+                        results.scanned++;
 
-                    // Create alert if malicious
-                    if (scanResult.verdict === 'malicious' && accountId) {
-                        await airtableRequest(TABLES.alerts, 'POST', {
+                        // Save scan log using FIELD NAMES
+                        await airtableRequest(TABLES.scanLogs, 'POST', {
                             fields: {
-                                [ALERT_FIELDS.url]: [urlId],
-                                [ALERT_FIELDS.account]: [accountId],
-                                [ALERT_FIELDS.engine_name]: 'Scheduled Scan',
-                                [ALERT_FIELDS.first_detected]: new Date().toISOString(),
-                                [ALERT_FIELDS.acknowledged]: false
+                                url: [urlId],
+                                scan_timestamp: new Date().toISOString(),
+                                status: scanResult.status,
+                                detections: scanResult.detections,
+                                ad_risk_score: 0,
+                                result_json: JSON.stringify(scanResult)
                             }
                         });
-                        console.log(`🚨 Alert created for malicious URL: ${urlText}`);
-                    }
 
-                    // Small delay between scans to avoid rate limiting
-                    await new Promise(resolve => setTimeout(resolve, 2000));
+                        console.log(`✅ Saved scan log: ${scanResult.status}, ${scanResult.detections} detections`);
+
+                        // Create alerts for malicious detections
+                        if (scanResult.status === 'malicious' && accountId) {
+                            const maliciousEngines = Object.entries(scanResult.results || {})
+                                .filter(([_, r]) => r.category === 'malicious')
+                                .map(([name, _]) => name);
+
+                            for (const engineName of maliciousEngines.slice(0, 5)) {
+                                await airtableRequest(TABLES.alerts, 'POST', {
+                                    fields: {
+                                        url: [urlId],
+                                        account: [accountId],
+                                        engine_name: engineName,
+                                        first_detected: new Date().toISOString(),
+                                        acknowledged: false
+                                    }
+                                });
+                                console.log(`🚨 Created alert for ${engineName}`);
+                            }
+                        }
+
+                    } catch (scanError) {
+                        console.log(`❌ Scan error for ${urlToScan}: ${scanError.message}`);
+                    }
                 }
 
-                // Update last_scan timestamp using field ID
+                // Update last_scan timestamp using FIELD NAMES
                 await airtableRequest(TABLES.schedules, 'PATCH', {
                     fields: {
-                        [SCHEDULE_FIELDS.last_scan]: new Date().toISOString()
+                        last_scan: new Date().toISOString()
                     }
                 }, schedule.id);
 
                 console.log(`✅ Schedule "${scheduleName}" completed`);
 
             } catch (scheduleError) {
-                const scheduleName = schedule.fields[SCHEDULE_FIELDS.name] || 'Unknown';
-                console.error(`❌ Error processing schedule "${scheduleName}":`, scheduleError);
-                results.errors.push({
-                    schedule: scheduleName,
-                    error: scheduleError.message
-                });
+                console.log(`❌ Error processing schedule "${scheduleName}": ${scheduleError}`);
+                results.errors.push({ schedule: scheduleName, error: scheduleError.message });
             }
         }
 
-        console.log('🏁 Cron job completed:', results);
-        
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: 'Scheduled scans completed',
-                results
-            })
-        };
-
     } catch (error) {
-        console.error('❌ Cron job failed:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                error: error.message,
-                results
-            })
-        };
+        console.log(`❌ Cron job error: ${error}`);
+        results.errors.push({ error: error.message });
     }
+
+    console.log(`🏁 Cron job completed: ${JSON.stringify(results, null, 2)}`);
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify(results)
+    };
 };
