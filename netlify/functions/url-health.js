@@ -1,6 +1,6 @@
-// URL Health - Airtable Operations Function v3
-// Keeps Airtable API key secure on server side
-// FIELD NAMES: added_by (URLs), account (Schedules/Alerts), scanned_by (ScanLogs)
+// URL Health - Airtable Operations Function v4
+// FIXED: Linked record filtering done in JavaScript (Airtable formulas can't filter by record ID)
+// Users.username = email, URLs.added_by = linked user, Alerts/Schedules.account = linked user
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
@@ -65,48 +65,46 @@ async function getAllRecords(table, filterFormula = null) {
     return allRecords;
 }
 
+// Helper: Check if a linked field contains a specific record ID
+function hasLinkedRecord(linkedField, recordId) {
+    if (!linkedField || !Array.isArray(linkedField)) return false;
+    return linkedField.includes(recordId);
+}
+
 // Action handlers
 const handlers = {
-    // Get user by email (Users table is synced - READ ONLY)
+    // Find user by email in username field
     async getOrCreateUser({ email }) {
         if (!email) throw new Error('Email is required');
 
-        // Try to find user by username field
-        console.log(`🔍 getOrCreateUser: Looking for email=${email}`);
-        let records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
-        console.log(`🔍 getOrCreateUser: Found ${records.length} users by username`);
+        console.log(`🔍 Looking for user with username = '${email}'`);
         
-        // If not found, try email field
-        if (records.length === 0) {
-            records = await getAllRecords(TABLES.users, `{email} = '${email}'`);
-            console.log(`🔍 getOrCreateUser: Found ${records.length} users by email field`);
-        }
+        // Users table is synced - READ ONLY, username field contains email
+        const records = await getAllRecords(TABLES.users, `{username} = '${email}'`);
         
         if (records.length > 0) {
-            console.log(`🔍 getOrCreateUser: User ID=${records[0].id}`);
+            console.log(`✅ Found user: ${records[0].id}`);
             return { user: records[0] };
         }
 
-        // User not found - return null (don't try to create)
-        return { user: null, message: 'User not found in synced table' };
+        console.log(`❌ User not found for email: ${email}`);
+        return { user: null, message: 'User not found' };
     },
 
-    // Get URLs for user - uses "added_by" field
+    // Get URLs for user - filter by linked record ID in JavaScript
     async getUrls({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // Debug: Get ALL URLs first to see what's there
-        const allRecords = await getAllRecords(TABLES.urls);
-        console.log(`🔍 getUrls: Total URLs in DB: ${allRecords.length}`);
-        if (allRecords.length > 0) {
-            console.log(`🔍 getUrls: Sample URL added_by:`, allRecords[0].fields.added_by);
-        }
-
-        // Get URLs where added_by contains this user ID
-        const records = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
-        console.log(`🔍 getUrls: userId=${userId}, filtered to ${records.length} URLs`);
+        console.log(`🔍 Getting URLs for user: ${userId}`);
         
-        const urls = records.map(r => ({
+        // Fetch all URLs and filter by added_by containing userId
+        const allRecords = await getAllRecords(TABLES.urls);
+        
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.added_by, userId));
+        
+        console.log(`✅ Found ${userRecords.length} URLs for user`);
+        
+        const urls = userRecords.map(r => ({
             id: r.id,
             url: r.fields.url,
             addedAt: r.fields.added_at
@@ -115,9 +113,11 @@ const handlers = {
         return { urls };
     },
 
-    // Add URL - uses "added_by" field
+    // Add URL
     async addUrl({ userId, url }) {
         if (!userId || !url) throw new Error('userId and url are required');
+
+        console.log(`➕ Adding URL: ${url} for user: ${userId}`);
 
         const record = await airtableRequest(TABLES.urls, 'POST', {
             fields: {
@@ -126,6 +126,8 @@ const handlers = {
                 added_at: new Date().toISOString().split('T')[0]
             }
         });
+
+        console.log(`✅ URL added: ${record.id}`);
 
         return { 
             url: { 
@@ -144,7 +146,7 @@ const handlers = {
         return { success: true };
     },
 
-    // Save scan log - uses "scanned_by" field
+    // Save scan log
     async saveScanLog({ urlId, userId, status, detections, adRiskScore, resultJson }) {
         if (!urlId) throw new Error('urlId is required');
 
@@ -170,21 +172,24 @@ const handlers = {
     async getScanLogs({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        // Get user's URLs first
-        const urlRecords = await getAllRecords(TABLES.urls, `FIND('${userId}', ARRAYJOIN({added_by}))`);
-        const urlIds = urlRecords.map(r => r.id);
+        // First get user's URLs
+        const allUrls = await getAllRecords(TABLES.urls);
+        const userUrls = allUrls.filter(r => hasLinkedRecord(r.fields.added_by, userId));
+        
+        const urlIds = userUrls.map(r => r.id);
         const urlMap = {};
-        urlRecords.forEach(r => { urlMap[r.id] = r.fields.url; });
-        console.log(`🔍 getScanLogs: userId=${userId}, found ${urlRecords.length} URLs`);
+        userUrls.forEach(r => { urlMap[r.id] = r.fields.url; });
+
+        console.log(`🔍 Found ${userUrls.length} URLs for user, fetching scan logs`);
 
         if (urlIds.length === 0) {
             return { logs: [] };
         }
 
-        // Get all scan logs and filter for user's URLs
-        const logRecords = await getAllRecords(TABLES.scanLogs);
+        // Get all scan logs and filter by user's URLs
+        const allLogs = await getAllRecords(TABLES.scanLogs);
         
-        const logs = logRecords
+        const logs = allLogs
             .filter(r => {
                 const logUrlIds = r.fields.url || [];
                 return logUrlIds.some(id => urlIds.includes(id));
@@ -203,18 +208,20 @@ const handlers = {
             })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-        console.log(`🔍 getScanLogs: found ${logs.length} logs for user's URLs`);
+        console.log(`✅ Found ${logs.length} scan logs`);
         return { logs };
     },
 
-    // Get alerts for user
+    // Get alerts for user - filter by account linked record
     async getAlerts({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        const records = await getAllRecords(TABLES.alerts, `FIND('${userId}', ARRAYJOIN({account}))`);
-        console.log(`🔍 getAlerts: userId=${userId}, found ${records.length} alerts`);
+        const allRecords = await getAllRecords(TABLES.alerts);
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.account, userId));
         
-        const alerts = records.map(r => ({
+        console.log(`✅ Found ${userRecords.length} alerts for user`);
+        
+        const alerts = userRecords.map(r => ({
             id: r.id,
             urlId: (r.fields.url || [])[0],
             url: r.fields.url_text || 'Unknown',
@@ -227,27 +234,22 @@ const handlers = {
         return { alerts };
     },
 
-    // Create alert - uses "account" field
+    // Create alert
     async createAlert({ urlId, userId, engineName, urlText }) {
         if (!urlId || !userId || !engineName) {
             throw new Error('urlId, userId, and engineName are required');
         }
 
-        const existing = await getAllRecords(
-            TABLES.alerts, 
-            `AND(FIND('${urlId}', ARRAYJOIN({url})), {engine_name} = '${engineName}', {acknowledged} = FALSE())`
+        // Check for existing unacknowledged alert
+        const allAlerts = await getAllRecords(TABLES.alerts);
+        const existing = allAlerts.find(r => 
+            hasLinkedRecord(r.fields.url, urlId) && 
+            r.fields.engine_name === engineName && 
+            !r.fields.acknowledged
         );
 
-        if (existing.length > 0) {
-            return { alert: existing[0], existed: true };
-        }
-
-        let displayUrl = urlText || 'Unknown';
-        if (!urlText) {
-            try {
-                const urlRecord = await airtableRequest(TABLES.urls, 'GET', null, urlId);
-                displayUrl = urlRecord.fields.url || 'Unknown';
-            } catch (e) {}
+        if (existing) {
+            return { alert: existing, existed: true };
         }
 
         const record = await airtableRequest(TABLES.alerts, 'POST', {
@@ -263,7 +265,7 @@ const handlers = {
         return { alert: record, existed: false };
     },
 
-    // Acknowledge alert - uses "acknowledged_by" field
+    // Acknowledge alert
     async acknowledgeAlert({ alertId, userId }) {
         if (!alertId) throw new Error('alertId is required');
 
@@ -281,14 +283,16 @@ const handlers = {
         return { alert: record };
     },
 
-    // Get schedules for user
+    // Get schedules for user - filter by account linked record
     async getSchedules({ userId }) {
         if (!userId) throw new Error('userId is required');
 
-        const records = await getAllRecords(TABLES.schedules, `FIND('${userId}', ARRAYJOIN({account}))`);
-        console.log(`🔍 getSchedules: userId=${userId}, found ${records.length} schedules`);
+        const allRecords = await getAllRecords(TABLES.schedules);
+        const userRecords = allRecords.filter(r => hasLinkedRecord(r.fields.account, userId));
         
-        const schedules = records.map(r => {
+        console.log(`✅ Found ${userRecords.length} schedules for user`);
+        
+        const schedules = userRecords.map(r => {
             // Parse urlIds from rules JSON
             let urlIds = [];
             if (r.fields.rules) {
@@ -315,7 +319,7 @@ const handlers = {
         return { schedules };
     },
 
-    // Create schedule - uses "account" field
+    // Create schedule
     async createSchedule({ userId, name, frequency, urlIds }) {
         if (!userId || !urlIds || urlIds.length === 0) {
             throw new Error('userId and urlIds are required');
@@ -404,7 +408,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        console.log(`📦 v3 Action: ${action}`, data);
+        console.log(`📦 v4 Action: ${action}`, data);
         const result = await handler(data);
         console.log(`✅ ${action} completed`);
 
