@@ -280,19 +280,6 @@
             transform: translateX(3px);
         }
         
-        /* Settings Button */
-        .settings-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            color: var(--gray);
-        }
-        .settings-btn:hover { background: var(--orange-light); color: var(--orange); }
-        .settings-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
-        
         /* Settings Modal */
         .settings-overlay {
             position: fixed;
@@ -497,10 +484,10 @@
         }
 
         .sidebar-footer { padding: 1.5rem 1rem; border-top: 1px solid var(--border); margin-top: auto; }
-        .user-info { display: flex; flex-direction: column; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 12px; }
-        .user-info-top { display: flex; align-items: center; justify-content: space-between; }
-        .user-actions { display: flex; align-items: center; gap: 0.25rem; }
-        .user-info-bottom { }
+        .user-info { display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem; }
+        .user-info-top { display: flex; align-items: center; gap: 0.75rem; }
+        .user-details { flex: 1; overflow: hidden; }
+        .user-actions { display: flex; gap: 0.5rem; }
         .user-avatar {
             width: 42px;
             height: 42px;
@@ -512,12 +499,30 @@
             color: white;
             font-weight: 700;
             font-size: 1rem;
+            flex-shrink: 0;
         }
         .user-name { font-weight: 600; font-size: 0.95rem; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .user-email { font-size: 0.8rem; color: var(--gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .logout-btn { background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: all 0.3s ease; color: var(--gray); }
-        .logout-btn:hover { background: #fee2e2; color: #dc2626; }
-        .logout-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: var(--light-gray);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .action-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .action-btn.settings-btn:hover { background: var(--orange-light); color: var(--orange); border-color: var(--orange); }
+        .action-btn.logout-btn:hover { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
 
         /* Main Content */
         .main-content { flex: 1; margin-left: 280px; padding: 2.5rem; min-height: 100vh; }
@@ -809,18 +814,20 @@
                 <div class="user-info">
                     <div class="user-info-top">
                         <div class="user-avatar" id="userAvatar">--</div>
-                        <div class="user-actions">
-                            <button class="settings-btn" onclick="openSettings()" title="Settings">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                            </button>
-                            <button class="logout-btn" onclick="logout()" title="Sign out">
-                                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                            </button>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Loading...</div>
+                            <div class="user-email" id="userEmail">...</div>
                         </div>
                     </div>
-                    <div class="user-info-bottom">
-                        <div class="user-name" id="userName">Loading...</div>
-                        <div class="user-email" id="userEmail">...</div>
+                    <div class="user-actions">
+                        <button class="action-btn settings-btn" onclick="openSettings()">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            Settings
+                        </button>
+                        <button class="action-btn logout-btn" onclick="logout()">
+                            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
