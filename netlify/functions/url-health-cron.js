@@ -1,16 +1,19 @@
-// URL Health Cron - Scheduled URL Scanning
+// URL Health Cron - Scheduled URL Scanning with Email Alerts
 // Runs hourly to check enabled schedules and scan URLs that are due
+// Sends email alerts via Klaviyo when malicious/suspicious URLs detected
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_URL_HEALTH_API_KEY;
 const AIRTABLE_BASE_ID = 'appZwri4LF6oF0QSB';
 const VIRUSTOTAL_API_KEY = process.env.VIRUSTOTAL_API_KEY;
+const KLAVIYO_API_KEY = process.env.EXISCALE_KLAVIYO_KEY;
 const AIRTABLE_API = 'https://api.airtable.com/v0';
 
 const TABLES = {
     schedules: 'Schedules',
     urls: 'URLs',
     scanLogs: 'ScanLogs',
-    alerts: 'DetectionAlerts'
+    alerts: 'DetectionAlerts',
+    users: 'Users'
 };
 
 // Helper: Make Airtable request
@@ -64,9 +67,76 @@ async function getAllRecords(table, filterFormula = null) {
     return allRecords;
 }
 
+// Send email alert via Klaviyo Track Event (triggers a flow)
+async function sendKlaviyoAlert(email, urlScanned, status, detections, engines) {
+    if (!KLAVIYO_API_KEY) {
+        console.log('⚠️ KLAVIYO_API_KEY not configured, skipping email');
+        return;
+    }
+
+    const statusLabel = status === 'malicious' ? 'MALICIOUS' : 'SUSPICIOUS';
+
+    try {
+        // Use Klaviyo Track API to create an event
+        const response = await fetch('https://a.klaviyo.com/api/events/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
+                'Content-Type': 'application/json',
+                'revision': '2024-02-15'
+            },
+            body: JSON.stringify({
+                data: {
+                    type: 'event',
+                    attributes: {
+                        profile: {
+                            data: {
+                                type: 'profile',
+                                attributes: {
+                                    email: email
+                                }
+                            }
+                        },
+                        metric: {
+                            data: {
+                                type: 'metric',
+                                attributes: {
+                                    name: 'URL Health Alert'
+                                }
+                            }
+                        },
+                        properties: {
+                            url: urlScanned,
+                            status: status,
+                            status_label: statusLabel,
+                            detections: detections,
+                            engines: engines.join(', '),
+                            engine_list: engines,
+                            dashboard_url: 'https://exiscale.com/tools/url-health/',
+                            scan_time: new Date().toISOString()
+                        },
+                        time: new Date().toISOString()
+                    }
+                }
+            })
+        });
+
+        if (response.ok) {
+            console.log(`📧 Klaviyo event tracked for ${email}`);
+            return true;
+        } else {
+            const result = await response.json();
+            console.log(`❌ Klaviyo failed: ${JSON.stringify(result)}`);
+            return false;
+        }
+    } catch (error) {
+        console.log(`❌ Klaviyo error: ${error.message}`);
+        return false;
+    }
+}
+
 // Scan URL with VirusTotal
 async function scanWithVirusTotal(urlToScan) {
-    // Submit URL for scanning
     const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
         method: 'POST',
         headers: {
@@ -83,10 +153,8 @@ async function scanWithVirusTotal(urlToScan) {
     const submitData = await submitResponse.json();
     const analysisId = submitData.data.id;
 
-    // Wait a bit for analysis
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Get analysis results
     const resultResponse = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
         headers: { 'x-apikey': VIRUSTOTAL_API_KEY }
     });
@@ -107,11 +175,17 @@ async function scanWithVirusTotal(urlToScan) {
     if (malicious > 0) status = 'malicious';
     else if (suspicious > 0) status = 'suspicious';
 
+    // Get engine names that flagged it
+    const flaggedEngines = Object.entries(results)
+        .filter(([_, r]) => r.category === 'malicious' || r.category === 'suspicious')
+        .map(([name, _]) => name);
+
     return {
         status,
         detections,
         stats,
         results,
+        flaggedEngines,
         analysisId
     };
 }
@@ -122,7 +196,7 @@ function isScheduleDue(schedule) {
     const lastScan = schedule.fields.last_scan ? new Date(schedule.fields.last_scan) : null;
     const frequency = schedule.fields.frequency || 'daily';
 
-    if (!lastScan) return true; // Never scanned
+    if (!lastScan) return true;
 
     const hoursSinceLastScan = (now - lastScan) / (1000 * 60 * 60);
 
@@ -163,10 +237,10 @@ function getUrlIds(schedule) {
 exports.handler = async (event, context) => {
     console.log(`🕐 URL Health Cron Job Started: ${new Date().toISOString()}`);
 
-    // Check env vars
     console.log(`📋 ENV Check - Base ID exists: ${!!AIRTABLE_BASE_ID}`);
     console.log(`📋 ENV Check - API Key exists: ${!!AIRTABLE_API_KEY}`);
     console.log(`📋 ENV Check - VT Key exists: ${!!VIRUSTOTAL_API_KEY}`);
+    console.log(`📋 ENV Check - Klaviyo Key exists: ${!!KLAVIYO_API_KEY}`);
 
     if (!AIRTABLE_API_KEY || !VIRUSTOTAL_API_KEY) {
         return {
@@ -179,11 +253,12 @@ exports.handler = async (event, context) => {
         checked: 0,
         due: 0,
         scanned: 0,
+        alerts: 0,
+        emailsSent: 0,
         errors: []
     };
 
     try {
-        // Get all enabled schedules
         console.log(`📋 Fetching schedules from table: ${TABLES.schedules}`);
         const schedules = await getAllRecords(TABLES.schedules, '{enabled} = TRUE()');
         console.log(`📋 Found ${schedules.length} enabled schedules`);
@@ -193,6 +268,13 @@ exports.handler = async (event, context) => {
         const urlMap = {};
         allUrls.forEach(u => {
             urlMap[u.id] = u.fields.url;
+        });
+
+        // Get all users for email lookup
+        const allUsers = await getAllRecords(TABLES.users);
+        const userMap = {};
+        allUsers.forEach(u => {
+            userMap[u.id] = u.fields.username; // username contains email
         });
 
         for (const schedule of schedules) {
@@ -210,6 +292,7 @@ exports.handler = async (event, context) => {
 
                 const urlIds = getUrlIds(schedule);
                 const accountId = schedule.fields.account ? schedule.fields.account[0] : null;
+                const userEmail = accountId ? userMap[accountId] : null;
 
                 for (const urlId of urlIds) {
                     const urlToScan = urlMap[urlId];
@@ -224,7 +307,7 @@ exports.handler = async (event, context) => {
                         const scanResult = await scanWithVirusTotal(urlToScan);
                         results.scanned++;
 
-                        // Save scan log using FIELD NAMES
+                        // Save scan log
                         await airtableRequest(TABLES.scanLogs, 'POST', {
                             fields: {
                                 url: [urlId],
@@ -238,13 +321,12 @@ exports.handler = async (event, context) => {
 
                         console.log(`✅ Saved scan log: ${scanResult.status}, ${scanResult.detections} detections`);
 
-                        // Create alerts for malicious detections
-                        if (scanResult.status === 'malicious' && accountId) {
-                            const maliciousEngines = Object.entries(scanResult.results || {})
-                                .filter(([_, r]) => r.category === 'malicious')
-                                .map(([name, _]) => name);
+                        // If malicious or suspicious, create alerts and send email
+                        if ((scanResult.status === 'malicious' || scanResult.status === 'suspicious') && accountId) {
+                            results.alerts++;
 
-                            for (const engineName of maliciousEngines.slice(0, 5)) {
+                            // Create alerts in Airtable
+                            for (const engineName of scanResult.flaggedEngines.slice(0, 5)) {
                                 await airtableRequest(TABLES.alerts, 'POST', {
                                     fields: {
                                         url: [urlId],
@@ -256,6 +338,18 @@ exports.handler = async (event, context) => {
                                 });
                                 console.log(`🚨 Created alert for ${engineName}`);
                             }
+
+                            // Send Klaviyo event for email notification
+                            if (userEmail) {
+                                const sent = await sendKlaviyoAlert(
+                                    userEmail,
+                                    urlToScan,
+                                    scanResult.status,
+                                    scanResult.detections,
+                                    scanResult.flaggedEngines.slice(0, 5)
+                                );
+                                if (sent) results.emailsSent++;
+                            }
                         }
 
                     } catch (scanError) {
@@ -263,7 +357,7 @@ exports.handler = async (event, context) => {
                     }
                 }
 
-                // Update last_scan timestamp using FIELD NAMES
+                // Update last_scan timestamp
                 await airtableRequest(TABLES.schedules, 'PATCH', {
                     fields: {
                         last_scan: new Date().toISOString()
