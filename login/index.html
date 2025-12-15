@@ -263,6 +263,207 @@
             letter-spacing: 0.05em;
         }
         
+        /* Nav item link style - clickable look */
+        .nav-item-link {
+            opacity: 1 !important;
+        }
+        .nav-item-link:hover { 
+            background: var(--orange-light); 
+            color: var(--orange); 
+        }
+        .nav-item-link .nav-arrow {
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .nav-item-link:hover .nav-arrow {
+            opacity: 1;
+            transform: translateX(3px);
+        }
+        
+        /* Settings Button */
+        .settings-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: var(--gray);
+        }
+        .settings-btn:hover { background: var(--orange-light); color: var(--orange); }
+        .settings-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        
+        /* Settings Modal */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .settings-overlay.show { display: flex; }
+        
+        .settings-modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: fadeInScale 0.3s ease;
+        }
+        
+        .settings-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .settings-header h2 { font-size: 1.25rem; font-weight: 700; color: var(--black); }
+        .settings-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: var(--gray);
+        }
+        .settings-close:hover { background: #fee2e2; color: #dc2626; }
+        .settings-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        
+        .settings-body { padding: 2rem; }
+        
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+        .settings-section:last-child { margin-bottom: 0; }
+        .settings-section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+        
+        .settings-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .settings-group { margin-bottom: 1rem; }
+        .settings-group:last-child { margin-bottom: 0; }
+        .settings-group.full-width { grid-column: 1 / -1; }
+        
+        .settings-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .settings-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--light-gray);
+        }
+        .settings-input:focus { 
+            outline: none; 
+            border-color: var(--orange); 
+            background: white; 
+            box-shadow: 0 0 0 4px rgba(255,106,21,0.1); 
+        }
+        .settings-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .settings-hint {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        
+        .settings-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .settings-btn-cancel {
+            padding: 0.85rem 1.5rem;
+            background: var(--light-gray);
+            color: var(--gray);
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .settings-btn-cancel:hover { background: #e5e5e5; color: var(--black); }
+        
+        .settings-btn-save {
+            padding: 0.85rem 1.5rem;
+            background: var(--orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .settings-btn-save:hover { background: #ff7a25; }
+        .settings-btn-save:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .settings-success {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .settings-success.show { display: block; }
+        
+        .settings-error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .settings-error.show { display: block; }
+        
         /* Coming Soon Toast */
         .coming-soon-toast {
             position: fixed;
@@ -582,11 +783,11 @@
 
                 <div class="nav-divider"><span>Tools</span></div>
                 
-                <!-- URL Health - Clickable with Preview badge -->
-                <a href="/tools/url-health/" class="nav-item" style="opacity: 0.85;">
+                <!-- URL Health Checker -->
+                <a href="/tools/url-health/" class="nav-item nav-item-link">
                     <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     URL Health Checker
-                    <span class="preview-badge">Preview</span>
+                    <svg class="nav-arrow" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: auto;"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </a>
                 
                 <div class="nav-item coming-soon" data-tab="ai-images" onclick="showComingSoon('AI Image Generator')">
@@ -609,6 +810,9 @@
                         <div class="user-name" id="userName">Loading...</div>
                         <div class="user-email" id="userEmail">...</div>
                     </div>
+                    <button class="settings-btn" onclick="openSettings()" title="Settings">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </button>
                     <button class="logout-btn" onclick="logout()" title="Sign out">
                         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
@@ -669,7 +873,7 @@
                     </div>
                     
                     <div class="action-card" onclick="window.open('https://t.me/exiscaleofficial', '_blank')">
-                        <div class="action-icon" style="background: #e3f2fd;"><svg viewBox="0 0 24 24" style="stroke: #0088cc;"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.5 7.5a2.25 2.25 0 0 0 .126 4.073l3.9 1.205 2.1 6.574a1.5 1.5 0 0 0 2.7.3l2.1-3 4.5 3.3a2.25 2.25 0 0 0 3.4-1.5l2.7-16.5a2.25 2.25 0 0 0-3.004-2.167z"></path></svg></div>
+                        <div class="action-icon" style="background: #e3f2fd;"><svg viewBox="0 0 24 24" style="stroke: #0088cc; fill: none;"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg></div>
                         <div class="action-content"><h3>Telegram</h3><p>Message us on Telegram</p></div>
                     </div>
                     
@@ -836,7 +1040,13 @@
                 balances: 'fldfkjkMZ5wkWkNuY',
                 topupsInvoices: 'fld9AFSfFJ59zrPPq',
                 topupsPayments: 'fldAFQqOy5E7GnpwY',
-                accountNumberSlash: 'fldaCDSjXywkjSBui'
+                accountNumberSlash: 'fldaCDSjXywkjSBui',
+                // Billing Address Fields - Add field IDs from Airtable
+                address: 'fldADDRESS_PLACEHOLDER',
+                city: 'fldCITY_PLACEHOLDER',
+                state: 'fldSTATE_PLACEHOLDER',
+                zip: 'fldZIP_PLACEHOLDER',
+                country: 'fldCOUNTRY_PLACEHOLDER'
             },
             // [ALL] Clients
             clients: {
@@ -1420,12 +1630,239 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+
+        // Settings Functions
+        function openSettings() {
+            const overlay = document.getElementById('settingsOverlay');
+            overlay.classList.add('show');
+            
+            // Populate form with current user data
+            document.getElementById('settingsFirstName').value = currentUser.fields[F.users.firstName] || '';
+            document.getElementById('settingsLastName').value = currentUser.fields[F.users.lastName] || '';
+            document.getElementById('settingsEmail').value = currentUser.fields[F.users.dashboardEmail] || '';
+            document.getElementById('settingsPassword').value = '';
+            document.getElementById('settingsAddress').value = currentUser.fields[F.users.address] || '';
+            document.getElementById('settingsCity').value = currentUser.fields[F.users.city] || '';
+            document.getElementById('settingsState').value = currentUser.fields[F.users.state] || '';
+            document.getElementById('settingsZip').value = currentUser.fields[F.users.zip] || '';
+            document.getElementById('settingsCountry').value = currentUser.fields[F.users.country] || '';
+            
+            // Clear any previous messages
+            document.getElementById('settingsSuccess').classList.remove('show');
+            document.getElementById('settingsError').classList.remove('show');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsOverlay').classList.remove('show');
+        }
+
+        function closeSettingsOnOverlay(event) {
+            if (event.target === document.getElementById('settingsOverlay')) {
+                closeSettings();
+            }
+        }
+
+        async function saveSettings() {
+            const saveBtn = document.getElementById('settingsSaveBtn');
+            const saveText = document.getElementById('settingsSaveText');
+            const spinner = document.getElementById('settingsSpinner');
+            const successMsg = document.getElementById('settingsSuccess');
+            const errorMsg = document.getElementById('settingsError');
+            
+            // Get form values
+            const firstName = document.getElementById('settingsFirstName').value.trim();
+            const lastName = document.getElementById('settingsLastName').value.trim();
+            const password = document.getElementById('settingsPassword').value;
+            const address = document.getElementById('settingsAddress').value.trim();
+            const city = document.getElementById('settingsCity').value.trim();
+            const state = document.getElementById('settingsState').value.trim();
+            const zip = document.getElementById('settingsZip').value.trim();
+            const country = document.getElementById('settingsCountry').value.trim();
+            
+            // Validation
+            if (!firstName || !lastName) {
+                errorMsg.textContent = 'First name and last name are required.';
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+                return;
+            }
+            
+            if (password && password.length < 8) {
+                errorMsg.textContent = 'Password must be at least 8 characters.';
+                errorMsg.classList.add('show');
+                successMsg.classList.remove('show');
+                return;
+            }
+            
+            // Show loading state
+            saveBtn.disabled = true;
+            saveText.textContent = 'Saving...';
+            spinner.style.display = 'block';
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+            
+            try {
+                // Build fields to update
+                const fieldsToUpdate = {
+                    [F.users.firstName]: firstName,
+                    [F.users.lastName]: lastName,
+                    [F.users.address]: address,
+                    [F.users.city]: city,
+                    [F.users.state]: state,
+                    [F.users.zip]: zip,
+                    [F.users.country]: country
+                };
+                
+                // Only update password if provided
+                if (password) {
+                    fieldsToUpdate[F.users.dashboardPassword] = password;
+                }
+                
+                // Make API call to update user
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        table: TABLES.users,
+                        action: 'update',
+                        recordId: currentUser.id,
+                        fields: fieldsToUpdate
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to update settings');
+                
+                const result = await response.json();
+                
+                // Update local currentUser with new values
+                currentUser.fields[F.users.firstName] = firstName;
+                currentUser.fields[F.users.lastName] = lastName;
+                currentUser.fields[F.users.address] = address;
+                currentUser.fields[F.users.city] = city;
+                currentUser.fields[F.users.state] = state;
+                currentUser.fields[F.users.zip] = zip;
+                currentUser.fields[F.users.country] = country;
+                if (password) {
+                    currentUser.fields[F.users.dashboardPassword] = password;
+                }
+                
+                // Update session storage
+                localStorage.setItem('exiscale_session', JSON.stringify(currentUser));
+                
+                // Update UI
+                updateUserUI();
+                
+                // Show success message
+                successMsg.classList.add('show');
+                
+                // Close modal after a brief delay
+                setTimeout(() => {
+                    closeSettings();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Settings save error:', error);
+                errorMsg.textContent = 'Failed to save settings. Please try again.';
+                errorMsg.classList.add('show');
+            } finally {
+                saveBtn.disabled = false;
+                saveText.textContent = 'Save Changes';
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Close settings with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('settingsOverlay').classList.contains('show')) {
+                closeSettings();
+            }
+        });
     </script>
 
     <!-- Coming Soon Toast -->
     <div class="coming-soon-toast" id="comingSoonToast">
         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         <span id="comingSoonFeature">Coming soon!</span>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOnOverlay(event)">
+        <div class="settings-modal" onclick="event.stopPropagation()">
+            <div class="settings-header">
+                <h2>Account Settings</h2>
+                <button class="settings-close" onclick="closeSettings()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-success" id="settingsSuccess">Settings saved successfully!</div>
+                <div class="settings-error" id="settingsError"></div>
+                
+                <div class="settings-section">
+                    <div class="settings-section-title">Personal Information</div>
+                    <div class="settings-row">
+                        <div class="settings-group">
+                            <label class="settings-label">First Name</label>
+                            <input type="text" class="settings-input" id="settingsFirstName" placeholder="First name">
+                        </div>
+                        <div class="settings-group">
+                            <label class="settings-label">Last Name</label>
+                            <input type="text" class="settings-input" id="settingsLastName" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <label class="settings-label">Email Address</label>
+                        <input type="email" class="settings-input" id="settingsEmail" disabled>
+                        <p class="settings-hint">Contact support to change your email address.</p>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-section-title">Security</div>
+                    <div class="settings-group">
+                        <label class="settings-label">New Password</label>
+                        <input type="password" class="settings-input" id="settingsPassword" placeholder="Leave blank to keep current">
+                        <p class="settings-hint">Minimum 8 characters. Leave blank to keep current password.</p>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-section-title">Billing Address</div>
+                    <p class="settings-hint" style="margin-bottom: 1rem; margin-top: -0.5rem;">This address will appear on your invoices for ad spend top-ups.</p>
+                    <div class="settings-group">
+                        <label class="settings-label">Street Address</label>
+                        <input type="text" class="settings-input" id="settingsAddress" placeholder="123 Main Street">
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-group">
+                            <label class="settings-label">City</label>
+                            <input type="text" class="settings-input" id="settingsCity" placeholder="City">
+                        </div>
+                        <div class="settings-group">
+                            <label class="settings-label">State / Province</label>
+                            <input type="text" class="settings-input" id="settingsState" placeholder="State">
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="settings-group">
+                            <label class="settings-label">ZIP / Postal Code</label>
+                            <input type="text" class="settings-input" id="settingsZip" placeholder="12345">
+                        </div>
+                        <div class="settings-group">
+                            <label class="settings-label">Country</label>
+                            <input type="text" class="settings-input" id="settingsCountry" placeholder="Country">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <button class="settings-btn-cancel" onclick="closeSettings()">Cancel</button>
+                <button class="settings-btn-save" id="settingsSaveBtn" onclick="saveSettings()">
+                    <span id="settingsSaveText">Save Changes</span>
+                    <div class="spinner" id="settingsSpinner" style="display: none;"></div>
+                </button>
+            </div>
+        </div>
     </div>
 
 <script src='//fw-cdn.com/10686344/3499220.js' chat='true'></script>
