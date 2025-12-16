@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ExiScale Dashboard v23 - URL Health Integration -->
+<!-- ExiScale Dashboard v25 - MID Application Link -->
 <!-- Now uses Airtable field IDs instead of field names for immunity to column renames -->
 <!-- Generated: December 2025 -->
 <html lang="en">
@@ -782,11 +782,11 @@
 
                 <div class="nav-divider"><span>Payment Processing</span></div>
                 
-                <div class="nav-item coming-soon" data-tab="merchant-services" onclick="showComingSoon('Merchant Services')">
+                <a href="/payment-processing/" class="nav-item nav-item-link">
                     <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                     Apply for MIDs
-                    <span class="coming-soon-badge">Soon</span>
-                </div>
+                    <svg class="nav-arrow" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: auto;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
 
                 <div class="nav-divider"><span>Tools</span></div>
                 
@@ -1054,14 +1054,12 @@
                 topupsInvoices: 'fld9AFSfFJ59zrPPq',
                 topupsPayments: 'fldAFQqOy5E7GnpwY',
                 accountNumberSlash: 'fldaCDSjXywkjSBui',
-                // Billing Address Fields - Add field IDs from Airtable
                 address: 'fldADDRESS_PLACEHOLDER',
                 city: 'fldCITY_PLACEHOLDER',
                 state: 'fldSTATE_PLACEHOLDER',
                 zip: 'fldZIP_PLACEHOLDER',
                 country: 'fldCOUNTRY_PLACEHOLDER'
             },
-            // [ALL] Clients
             clients: {
                 clientKey: 'fldsaPK9ggYFWBej2',
                 source: 'fldfoVDCAM9pEFiMA',
@@ -1071,52 +1069,43 @@
                 clientEmailW: 'fld7aPRO1NdTVhXkM',
                 clientEmailC: 'fldVdn4IF5AiDj421'
             },
-            // [ALL] Orders
             orders: {
                 orderName: 'fldYlJ1TUHzW3m0vB',
                 source: 'fldxHxNvx196VFZrq',
                 linkedClient: 'fldQFdsYNFCouBO7X',
                 linkedTRX: 'fldI6F3SSgk0V3T3W',
-                // DigiStore
                 orderIdD: 'fldqw6z68E8xLujRi',
                 productNameD: 'fldHhV2dZzM0VmEKm',
                 amountD: 'fldSKXGeRTu4W1a6B',
                 billingStatusD: 'fldlAGfbTs2ffSp3c',
                 latestTxnDateD: 'fldji0S4t4ChDPjFL',
-                // Whop
                 orderIdW: 'fldq7qqQdZQYLZF2s',
                 productNameW: 'fldWiqKUVvoc6jWMO',
                 amountW: 'fldh25l0sqfAvee19',
                 billingStatusW: 'fldRe1hQH21SC0NIo',
                 createdAtW: 'fld1In2f9dZpcqDD4',
-                // Crypto
                 orderIdC: 'fldyersTXhZq86UoO',
                 productNameC: 'fldtxNhUb35BZOFZl',
                 amountC: 'fldcH5lSNavtFZZY2',
                 billingStatusC: 'fld1o4PdCu1ULnP18',
                 createdAtC: 'fld1E9C9pvJ4K9Fyw'
             },
-            // [ALL] Transactions
             transactions: {
                 transactionId: 'fldMZkh9lukv1gyCk',
                 source: 'fldjn0H8Wf8hWQN4y',
                 orders: 'fldFuec3aYhNYkjta',
                 client: 'fldXrQTYP5AzVVThh',
-                // DigiStore
                 amountD: 'fldL9cUvxHjKC0Rcg',
                 txnTypeD: 'fldvA2AiQDgRM2v9v',
                 occurredAtD: 'fldCniq0qW7Vm8mYo',
-                // Whop
                 amountW: 'fldNDaIFstDpwkvC3',
                 txnStatusW: 'fldJPRTJ8IHWzfImp',
                 txnTypeW: 'fld69lXXSyMxAV8yA',
                 createdAtW: 'fldxdwykX4uIuGJrr',
-                // Crypto
                 amountC: 'fldNzQ9QDoRMqBraC',
                 txnStatusC: 'fldVAldeWVfDfoQ7I',
                 createdAtC: 'fldekCvIGnJ2AFhQ6'
             },
-            // Balances
             balances: {
                 virtualAccountName: 'fldY1uYxPKnkQpsgv',
                 allClients: 'fldGkm0EoJ14B3Mad',
@@ -1126,7 +1115,6 @@
                 spent: 'fldJyZjFyiMSLxtl3',
                 allUsers: 'flduXoeZ1O5K5We90'
             },
-            // Top-Ups (Invoices)
             topupsInvoices: {
                 invoice: 'fldb200HeCH6c42mK',
                 clientName: 'fldOL9I3UVllV6OVa',
@@ -1137,7 +1125,6 @@
                 status: 'fldVqVAQFmdvrQaiu',
                 payments: 'flddag3VgM7FieIIJ'
             },
-            // Top-Ups (Payments)
             topupsPayments: {
                 name: 'fldFH2ScXH7A0uk8a',
                 clientName: 'fldd6kaq700fV5nHj',
@@ -1155,7 +1142,6 @@
         let userData = { orders: [], transactions: [], balances: [], topups: [] };
 
         async function apiCall(table, filterFormula = null, params = {}) {
-            // Always request field IDs in response to match our F constant mappings
             params.returnFieldsByFieldId = true;
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
@@ -1167,10 +1153,8 @@
         }
 
         async function authenticateUser(email, password) {
-            // Escape special characters in email and password for Airtable formula
             const escapedEmail = email.replace(/"/g, '\\"');
             const escapedPassword = password.replace(/"/g, '\\"');
-            // Using field IDs instead of names for immunity to column renames
             const filterFormula = `AND({${F.users.dashboardEmail}}="${escapedEmail}", {${F.users.dashboardPassword}}="${escapedPassword}")`;
             const result = await apiCall(TABLES.users, filterFormula);
             return (result.records && result.records.length > 0) ? result.records[0] : null;
@@ -1227,7 +1211,6 @@
                 const user = await authenticateUser(email, password);
                 if (user) {
                     currentUser = user;
-                    // Save session to localStorage for URL Health tool
                     localStorage.setItem('exiscale_session', JSON.stringify(user));
                     await loadDashboard();
                 } else {
@@ -1247,7 +1230,6 @@
 
         function skipToDashboard() {
             currentUser = { id: 'test', fields: { [F.users.firstName]: 'Test', [F.users.lastName]: 'User', [F.users.dashboardEmail]: 'test@example.com', [F.users.clients]: [] }};
-            // Save session for URL Health tool
             localStorage.setItem('exiscale_session', JSON.stringify(currentUser));
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
@@ -1259,7 +1241,6 @@
             currentUser = null;
             userClients = [];
             userData = { orders: [], transactions: [], balances: [], topups: [] };
-            // Clear session
             localStorage.removeItem('exiscale_session');
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('loginScreen').style.display = 'flex';
@@ -1269,7 +1250,6 @@
             switchTab('home');
         }
 
-        // Check for existing session on page load
         window.addEventListener('DOMContentLoaded', async function() {
             const savedSession = localStorage.getItem('exiscale_session');
             if (savedSession) {
@@ -1389,24 +1369,18 @@
                 return;
             }
             
-            // Helper: check if a Whop order has any successful (paid) transactions
             function hasSuccessfulWhopTransaction(orderRecordId) {
                 return userData.transactions.some(txn => {
                     const f = txn.fields;
                     const source = (f[F.transactions.source] || '').toLowerCase();
                     if (source !== 'whop') return false;
-                    
-                    // Check if this transaction is linked to the order
                     const linkedOrders = f[F.transactions.orders] || [];
                     if (!linkedOrders.includes(orderRecordId)) return false;
-                    
-                    // Check if status is paid
                     const status = (f[F.transactions.txnStatusW] || '').toLowerCase();
                     return status === 'paid';
                 });
             }
             
-            // Separate orders into active and cancelled
             let activeOrders = [];
             let cancelledOrders = [];
             
@@ -1425,13 +1399,10 @@
                 status = (status || 'Active').toLowerCase();
                 
                 if (status === 'cancelled' || status === 'canceled') {
-                    // For Whop cancelled orders, only show if there's at least one paid transaction
-                    // Otherwise it was a failed payment attempt
                     if (sourceLower === 'whop') {
                         if (hasSuccessfulWhopTransaction(order.id)) {
                             cancelledOrders.push(order);
                         }
-                        // If no successful transactions, skip (failed payment)
                     } else {
                         cancelledOrders.push(order);
                     }
@@ -1444,7 +1415,6 @@
             
             let html = '';
             
-            // Active Orders Section
             if (activeOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #dcfce7; border-bottom: 1px solid var(--border);"><h3 style="font-size: 0.9rem; font-weight: 700; color: #16a34a; margin: 0;">Active Orders (${activeOrders.length})</h3></div>`;
                 html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order ID</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
@@ -1470,7 +1440,6 @@
                 html += '</tbody></table>';
             }
             
-            // Cancelled Orders Section
             if (cancelledOrders.length > 0) {
                 html += `<div style="padding: 1rem 1.5rem; background: #fee2e2; border-bottom: 1px solid var(--border); ${activeOrders.length > 0 ? 'border-top: 1px solid var(--border);' : ''}"><h3 style="font-size: 0.9rem; font-weight: 700; color: #dc2626; margin: 0;">Cancelled Orders (${cancelledOrders.length})</h3></div>`;
                 html += `<table class="data-table"><thead><tr><th ${colWidths[0]}>Order ID</th><th ${colWidths[1]}>Product</th><th ${colWidths[2]}>Source</th><th ${colWidths[3]}>Amount</th><th ${colWidths[4]}>Status</th></tr></thead><tbody>`;
@@ -1496,7 +1465,6 @@
                 return;
             }
             
-            // Sort transactions by date (most recent first)
             const sortedTransactions = [...userData.transactions].sort((a, b) => {
                 const aSource = (a.fields[F.transactions.source] || '').toLowerCase();
                 const bSource = (b.fields[F.transactions.source] || '').toLowerCase();
@@ -1536,11 +1504,8 @@
                     status = 'Paid';
                     date = '-';
                 }
-                // Skip transactions with Open status (payments that didn't go through)
                 if (status.toLowerCase() === 'open') return;
-                // Format date
                 if (date && date !== '-') { try { date = new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch(e) {} }
-                // Capitalize first letter
                 status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
                 html += `<tr><td><strong>${f[F.transactions.transactionId] || '-'}</strong></td><td>${date}</td><td><span class="source-badge ${sourceLower}">${source}</span></td><td>${formatCurrency(amount)}</td><td><span class="status-badge ${status.toLowerCase()}">${status}</span></td></tr>`;
             });
@@ -1571,7 +1536,6 @@
                 return;
             }
             
-            // Sort topups by date (most recent first)
             const sortedTopups = [...userData.topups].sort((a, b) => {
                 const aDate = a.fields[F.topupsInvoices.invoiceDate] || a.fields[F.topupsInvoices.dateFromPayments] || '';
                 const bDate = b.fields[F.topupsInvoices.invoiceDate] || b.fields[F.topupsInvoices.dateFromPayments] || '';
@@ -1644,12 +1608,10 @@
             }, 3000);
         }
 
-        // Settings Functions
         function openSettings() {
             const overlay = document.getElementById('settingsOverlay');
             overlay.classList.add('show');
             
-            // Populate form with current user data
             document.getElementById('settingsFirstName').value = currentUser.fields[F.users.firstName] || '';
             document.getElementById('settingsLastName').value = currentUser.fields[F.users.lastName] || '';
             document.getElementById('settingsEmail').value = currentUser.fields[F.users.dashboardEmail] || '';
@@ -1660,7 +1622,6 @@
             document.getElementById('settingsZip').value = currentUser.fields[F.users.zip] || '';
             document.getElementById('settingsCountry').value = currentUser.fields[F.users.country] || '';
             
-            // Clear any previous messages
             document.getElementById('settingsSuccess').classList.remove('show');
             document.getElementById('settingsError').classList.remove('show');
         }
@@ -1682,7 +1643,6 @@
             const successMsg = document.getElementById('settingsSuccess');
             const errorMsg = document.getElementById('settingsError');
             
-            // Get form values
             const firstName = document.getElementById('settingsFirstName').value.trim();
             const lastName = document.getElementById('settingsLastName').value.trim();
             const password = document.getElementById('settingsPassword').value;
@@ -1692,7 +1652,6 @@
             const zip = document.getElementById('settingsZip').value.trim();
             const country = document.getElementById('settingsCountry').value.trim();
             
-            // Validation
             if (!firstName || !lastName) {
                 errorMsg.textContent = 'First name and last name are required.';
                 errorMsg.classList.add('show');
@@ -1707,7 +1666,6 @@
                 return;
             }
             
-            // Show loading state
             saveBtn.disabled = true;
             saveText.textContent = 'Saving...';
             spinner.style.display = 'block';
@@ -1715,7 +1673,6 @@
             successMsg.classList.remove('show');
             
             try {
-                // Build fields to update
                 const fieldsToUpdate = {
                     [F.users.firstName]: firstName,
                     [F.users.lastName]: lastName,
@@ -1726,12 +1683,10 @@
                     [F.users.country]: country
                 };
                 
-                // Only update password if provided
                 if (password) {
                     fieldsToUpdate[F.users.dashboardPassword] = password;
                 }
                 
-                // Make API call to update user
                 const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1747,7 +1702,6 @@
                 
                 const result = await response.json();
                 
-                // Update local currentUser with new values
                 currentUser.fields[F.users.firstName] = firstName;
                 currentUser.fields[F.users.lastName] = lastName;
                 currentUser.fields[F.users.address] = address;
@@ -1759,16 +1713,12 @@
                     currentUser.fields[F.users.dashboardPassword] = password;
                 }
                 
-                // Update session storage
                 localStorage.setItem('exiscale_session', JSON.stringify(currentUser));
                 
-                // Update UI
                 updateUserUI();
                 
-                // Show success message
                 successMsg.classList.add('show');
                 
-                // Close modal after a brief delay
                 setTimeout(() => {
                     closeSettings();
                 }, 1500);
@@ -1784,7 +1734,6 @@
             }
         }
 
-        // Close settings with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && document.getElementById('settingsOverlay').classList.contains('show')) {
                 closeSettings();
