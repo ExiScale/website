@@ -64,7 +64,7 @@ exports.handler = async (event, context) => {
             "Equipment Software": data.equipment || null,
             "Business Type": data.business_type || null,
             "Business Start Date": data.business_start_date || null,
-            "Sale Method": data.sale_method ? (Array.isArray(data.sale_method) ? data.sale_method : [data.sale_method]) : null,
+            "Sale Method": data.sale_method ? (Array.isArray(data.sale_method) ? data.sale_method.join(', ') : data.sale_method) : null,
             
             // Principal Information (Note: Airtable uses "Principle" spelling)
             "Principle First Name": data.principal_first_name || null,
