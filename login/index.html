@@ -1568,7 +1568,7 @@
                 let invoiceLink = '-';
                 if (invoiceAttachment) {
                     // Use get-attachment function to get fresh URL (Airtable URLs expire)
-                    const attachmentUrl = `https://whimsical-halva-08252d.netlify.app/.netlify/functions/get-attachment?table=${encodeURIComponent('Top-Ups (Invoices)')}&recordId=${topup.id}&field=${encodeURIComponent('Invoice PDF')}`;
+                    const attachmentUrl = `https://whimsical-halva-08252d.netlify.app/.netlify/functions/get-attachment?table=${encodeURIComponent('Top-Ups (Invoices)')}&recordId=${topup.id}&field=${encodeURIComponent('Invoice (PDF)')}`;
                     invoiceLink = `<a href="${attachmentUrl}" target="_blank" style="color: var(--orange); font-weight: 600;">View PDF</a>`;
                 }
                 html += `<tr><td><strong>${f[F.topupsInvoices.invoice] || '-'}</strong></td><td>${date}</td><td style="color: #16a34a; font-weight: 600;">${formatCurrency(amount)}</td><td>${invoiceLink}</td></tr>`;
