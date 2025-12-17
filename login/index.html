@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Dashboard | ExiScale</title>
+    <title>ExiScale | Client Dashboard</title>
     <link rel="icon" type="image/png" href="../exiscale-favicon.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1254,7 +1254,23 @@
             const savedSession = localStorage.getItem('exiscale_session');
             if (savedSession) {
                 try {
-                    currentUser = JSON.parse(savedSession);
+                    const cachedUser = JSON.parse(savedSession);
+                    // Re-fetch user data from Airtable to get latest info
+                    const email = cachedUser.fields[F.users.dashboardEmail];
+                    if (email) {
+                        const filterFormula = `{${F.users.dashboardEmail}}="${email.replace(/"/g, '\\"')}"`;
+                        const result = await apiCall(TABLES.users, filterFormula);
+                        if (result.records && result.records.length > 0) {
+                            currentUser = result.records[0];
+                            // Update localStorage with fresh data
+                            localStorage.setItem('exiscale_session', JSON.stringify(currentUser));
+                        } else {
+                            // User not found, use cached data
+                            currentUser = cachedUser;
+                        }
+                    } else {
+                        currentUser = cachedUser;
+                    }
                     document.getElementById('loginScreen').style.display = 'none';
                     document.getElementById('dashboard').classList.add('active');
                     await loadDashboard();
