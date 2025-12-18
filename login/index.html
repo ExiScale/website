@@ -1553,9 +1553,10 @@
             }
             
             const sortedTopups = [...userData.topups].sort((a, b) => {
-                const aDate = a.fields[F.topupsInvoices.invoiceDate] || a.fields[F.topupsInvoices.dateFromPayments] || '';
-                const bDate = b.fields[F.topupsInvoices.invoiceDate] || b.fields[F.topupsInvoices.dateFromPayments] || '';
-                return new Date(bDate || 0) - new Date(aDate || 0);
+                const aInvoice = a.fields[F.topupsInvoices.invoice] || '';
+                const bInvoice = b.fields[F.topupsInvoices.invoice] || '';
+                // Sort descending by invoice name (newest first)
+                return bInvoice.localeCompare(aInvoice, undefined, { numeric: true });
             });
             
             let html = `<table class="data-table"><thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>View Invoice</th></tr></thead><tbody>`;
